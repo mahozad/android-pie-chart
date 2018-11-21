@@ -1,0 +1,5 @@
+<resources>
+  <style name="TestAppTheme" parent="Theme.AppCompat">
+    <item name="colorSurface">#181818</item>
+  </style>
+</resources>

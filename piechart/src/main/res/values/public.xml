@@ -1,0 +1,8 @@
+<!-- All resources in a library default to public. To prevent users of your library
+     from accessing resources intended only for internal use, you should use this
+     automatic private designation mechanism by declaring one or more public resources.
+     Alternately, you can make all resources private by adding an empty <public /> element,
+     which marks nothing as public, which makes everything else (all resources) private. -->
+<resources>
+  <public name="my_lib_name" type="string"/>
+</resources>

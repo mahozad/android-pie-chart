@@ -1,0 +1,2 @@
+rootProject.name = "Android Pie Chart"
+include ':piechart'

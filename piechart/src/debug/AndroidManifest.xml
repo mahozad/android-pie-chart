@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+  <application
+      android:name="io.github.mahozad.TestApplication"
+      android:allowBackup="true"
+      android:fullBackupContent="@xml/backup_descriptor"
+      android:icon="@mipmap/image"
+      android:roundIcon="@mipmap/image"
+      android:label="Test Application"
+      android:theme="@style/TestAppTheme"
+      android:supportsRtl="true">
+    <activity
+        android:name="io.github.mahozad.TestActivity"
+        android:label="@string/title_activity_test">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
+  </application>
+</manifest>

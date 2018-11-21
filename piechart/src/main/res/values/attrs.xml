@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <!-- Declares two custom attributes, showText and labelPosition, that belong to a styleable entity named PieChart -->
+  <!-- The name of the styleable entity is, by convention, the same name as the name of the class that defines the custom view.
+       Although it's not strictly necessary to follow this convention, many popular code editors depend on this naming convention
+       to provide statement completion.-->
+  <!-- Once you define the custom attributes, you can use them in layout XML files just like built-in attributes.
+       The only difference is that your custom attributes belong to a different namespace.
+       Instead of belonging to the http://schemas.android.com/apk/res/android namespace,
+       they belong to http://schemas.android.com/apk/res/[your package name]-->
+  <declare-styleable name="PieChart">
+    <attr name="showText" format="boolean"/>
+    <attr name="labelPosition" format="enum">
+      <enum name="left" value="0"/>
+      <enum name="right" value="1"/>
+    </attr>
+  </declare-styleable>
+</resources>
