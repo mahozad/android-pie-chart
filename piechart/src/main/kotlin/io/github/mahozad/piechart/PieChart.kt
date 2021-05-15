@@ -242,6 +242,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
          */
         // clipping should be applied before drawing other things
         canvas.clipPath(clip)
+
         var currentAngle = startAngle.toFloat()
         for (slice in slices) {
             mainPaint.color = slice.color
@@ -249,9 +250,21 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             pie.reset()
             pie.moveTo(centerX, centerY)
             pie.arcTo(enclosingRect, currentAngle, sliceSweep)
-            currentAngle += sliceSweep
             canvas.drawPath(pie, mainPaint)
+
+            mainPaint.color = ContextCompat.getColor(context, android.R.color.black)
+            mainPaint.textSize = 120f
+            val label = slice.label
+            val endAngle = (currentAngle + sliceSweep) % 360
+            val middleAngle = ((currentAngle + endAngle) / 2 % 360).toRadian()
+            val x = centerX + cos(middleAngle) * pieRadius / 2
+            val y = centerY + sin((middleAngle)) * pieRadius / 2
+            // TODO: Adjust the x and y to account for the text width and height
+            canvas.drawText(label, x, y, mainPaint)
+
+            currentAngle += sliceSweep
         }
+
         mainPaint.color = ContextCompat.getColor(context, android.R.color.black)
         mainPaint.alpha = (overlayAlpha * 255).toInt()
         canvas.drawPath(overlay, mainPaint)
