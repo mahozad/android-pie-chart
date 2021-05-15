@@ -24,7 +24,7 @@ const val DEFAULT_HOLE_RATIO = 0.25f
 const val DEFAULT_OVERLAY_RATIO = 0.55f
 const val DEFAULT_OVERLAY_ALPHA = 0.25f
 const val DEFAULT_GAP = 8f
-val DEFAULT_DRAWING_DIRECTION = CLOCKWISE
+val defaultDrawingDirection = CLOCKWISE
 
 /**
  * This is the order that these commonly used view methods are run:
@@ -81,7 +81,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             field = width
             invalidate()
         }
-    var drawingDirection = DEFAULT_DRAWING_DIRECTION
+    var drawingDirection = defaultDrawingDirection
     val slices = mutableListOf(
         Slice(0.43f, ContextCompat.getColor(context, android.R.color.holo_green_dark)),
         Slice(0.21f, ContextCompat.getColor(context, android.R.color.holo_orange_dark)),
@@ -105,10 +105,9 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 overlayRatio = getFloat(R.styleable.PieChart_overlayRatio, DEFAULT_OVERLAY_RATIO)
                 overlayAlpha = getFloat(R.styleable.PieChart_overlayAlpha, DEFAULT_OVERLAY_ALPHA)
                 gap = getDimension(R.styleable.PieChart_gap, DEFAULT_GAP)
-                drawingDirection = Direction.values()[getInt(
-                    R.styleable.PieChart_drawingDirection,
-                    DEFAULT_DRAWING_DIRECTION.ordinal
-                )]
+                drawingDirection = Direction.values()[
+                        getInt(R.styleable.PieChart_drawingDirection, defaultDrawingDirection.ordinal)
+                ]
             } finally {
                 // TypedArray objects are a shared resource and must be recycled after use
                 recycle()
