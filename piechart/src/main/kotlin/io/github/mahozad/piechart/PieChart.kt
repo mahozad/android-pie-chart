@@ -9,6 +9,7 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
+import androidx.annotation.FloatRange
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.minus
 import io.github.mahozad.piechart.PieChart.Direction.CLOCKWISE
@@ -44,7 +45,13 @@ val DEFAULT_DRAWING_DIRECTION = CLOCKWISE
  */
 class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
-    data class Slice(val fraction: Float, @ColorInt val color: Int)
+    data class Slice(
+        @FloatRange(from = 0.0, to = 1.0) val fraction: Float,
+        @ColorInt val color: Int,
+        // Scale the slice with canvas.scale(slice.scale, slice.scale, centerX, centerY)
+        // Can also assign its default value to the slice fraction
+        @FloatRange(from = 0.0, to = 1.0) val scale: Float = 1f
+    )
 
     enum class Direction { CLOCKWISE, COUNTER_CLOCKWISE }
 
