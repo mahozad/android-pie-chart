@@ -49,8 +49,20 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         @FloatRange(from = 0.0, to = 1.0) val fraction: Float,
         @ColorInt val color: Int,
         val label: String = fraction.toString(),
-        // Scale the slice with canvas.scale(slice.scale, slice.scale, centerX, centerY)
-        // Can also assign its default value to the slice fraction
+        /**
+         * Can also set the default value to the slice fraction.
+         *
+         * Scale the slice like this:
+         * ```kotlin
+         * val scaleMatrix = Matrix()
+         * scaleMatrix.setScale(slice.scale, slice.scale, centerX, centerY)
+         * piePath.transform(scaleMatrix)
+         * ```
+         * Or with the canvas which seems to scale the whole drawing:
+         * ```kotlin
+         * canvas.scale(slice.scale, slice.scale, centerX, centerY)
+         * ```
+         */
         @FloatRange(from = 0.0, to = 1.0) val scale: Float = 1f
     )
 
