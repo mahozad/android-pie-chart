@@ -13,6 +13,23 @@ import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
 
+/**
+ * This is the order that these commonly used view methods are run:
+ * 1. Constructor    // choose your desired size
+ * 2. onMeasure      // parent will determine if your desired size is acceptable
+ * 3. onSizeChanged
+ * 4. onLayout
+ * 5. onDraw         // draw your view content at the size specified by the parent
+ *
+ * Any time that you make a change to your view that affects the appearance but not the size,
+ * then call invalidate(). This will cause onDraw to be called again (but not all of those other previous methods).
+ *
+ * Any time that you make a change to your view that would affect the size, then call requestLayout().
+ * This will start the process of measuring and drawing all over again from onMeasure.
+ * This call is usually combined with a call to invalidate().
+ *
+ * See [this helpful post](https://stackoverflow.com/a/42430834) for more information.
+ */
 class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     var isTextShown: Boolean private set
