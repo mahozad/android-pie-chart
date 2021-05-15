@@ -13,6 +13,7 @@ import androidx.annotation.FloatRange
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.minus
 import io.github.mahozad.piechart.PieChart.Direction.CLOCKWISE
+import java.text.NumberFormat
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.min
@@ -48,7 +49,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     data class Slice(
         @FloatRange(from = 0.0, to = 1.0) val fraction: Float,
         @ColorInt val color: Int,
-        val label: String = fraction.toString(),
+        val label: String = NumberFormat.getPercentInstance().format(fraction),
         /**
          * Can also set the default value to the slice fraction.
          *
