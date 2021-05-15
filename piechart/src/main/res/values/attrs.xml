@@ -13,9 +13,22 @@
     <attr name="startAngle" format="integer"/>
     <attr name="holeRatio" format="float"/>
     <attr name="overlayRatio" format="float"/>
-    <attr name="labelPosition" format="enum">
-      <enum name="start" value="0"/>
-      <enum name="end" value="1"/>
+    <attr name="overlayAlpha" format="float"/>
+    <attr name="overlayColor" format="enum">
+      <enum name="black" value="0"/>
+      <enum name="white" value="1"/>
+      <enum name="darkenedSliceColor" value="2"/>
+      <enum name="lightenedSliceColor" value="3"/>
+      <enum name="customColors" value="4"/>
+    </attr>
+    <attr name="drawingDirection" format="enum">
+      <enum name="clockwise" value="0"/>
+      <enum name="counterClockwise" value="1"/>
+    </attr>
+    <attr name="sortSlices" format="enum">
+      <enum name="none" value="0"/>
+      <enum name="asc" value="1"/>
+      <enum name="desc" value="2"/>
     </attr>
   </declare-styleable>
 </resources>

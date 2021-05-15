@@ -11,6 +11,7 @@ import android.view.View
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.minus
+import io.github.mahozad.piechart.PieChart.Direction.CLOCKWISE
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.min
@@ -20,7 +21,9 @@ const val DEFAULT_SIZE = 448
 const val DEFAULT_START_ANGLE = -90
 const val DEFAULT_HOLE_RATIO = 0.25f
 const val DEFAULT_OVERLAY_RATIO = 0.55f
+const val DEFAULT_OVERLAY_ALPHA = 0.25f
 const val DEFAULT_GAP = 8f
+val DEFAULT_DRAWING_DIRECTION = CLOCKWISE
 
 /**
  * This is the order that these commonly used view methods are run:
@@ -43,6 +46,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     data class Slice(val fraction: Float, @ColorInt val color: Int)
 
+    enum class Direction { CLOCKWISE, COUNTER_CLOCKWISE }
+
     var startAngle = DEFAULT_START_ANGLE
         set(angle) {
             field = angle.coerceIn(-360, 360)
@@ -58,11 +63,17 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             field = ratio.coerceIn(0f, 1f)
             invalidate()
         }
+    var overlayAlpha = DEFAULT_OVERLAY_ALPHA
+        set(alpha) {
+            field = alpha.coerceIn(0f, 1f)
+            invalidate()
+        }
     var gap = DEFAULT_GAP
         set(width) {
             field = width
             invalidate()
         }
+    var drawingDirection = DEFAULT_DRAWING_DIRECTION
     val slices = mutableListOf(
         Slice(0.43f, ContextCompat.getColor(context, android.R.color.holo_green_dark)),
         Slice(0.21f, ContextCompat.getColor(context, android.R.color.holo_orange_dark)),
@@ -84,7 +95,12 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 startAngle = getInt(R.styleable.PieChart_startAngle, DEFAULT_START_ANGLE)
                 holeRatio = getFloat(R.styleable.PieChart_holeRatio, DEFAULT_HOLE_RATIO)
                 overlayRatio = getFloat(R.styleable.PieChart_overlayRatio, DEFAULT_OVERLAY_RATIO)
+                overlayAlpha = getFloat(R.styleable.PieChart_overlayAlpha, DEFAULT_OVERLAY_ALPHA)
                 gap = getDimension(R.styleable.PieChart_gap, DEFAULT_GAP)
+                drawingDirection = Direction.values()[getInt(
+                    R.styleable.PieChart_drawingDirection,
+                    DEFAULT_DRAWING_DIRECTION.ordinal
+                )]
             } finally {
                 // TypedArray objects are a shared resource and must be recycled after use
                 recycle()
@@ -217,16 +233,16 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         paint.style = Paint.Style.FILL
         var angle = startAngle.toFloat()
         for (slice in slices) {
-            pie.reset()
             paint.color = slice.color
             val sliceSweep = slice.fraction * 360
+            pie.reset()
             pie.moveTo(centerX, centerY)
             pie.arcTo(enclosingRect, angle, sliceSweep)
             angle += sliceSweep
             canvas.drawPath(pie, paint)
         }
         paint.color = ContextCompat.getColor(context, android.R.color.black)
-        paint.alpha = 64
+        paint.alpha = (overlayAlpha * 255).toInt()
         canvas.drawPath(overlay, paint)
     }
 
