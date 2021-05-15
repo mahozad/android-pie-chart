@@ -130,7 +130,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private fun makeGaps(): Path {
         val gaps = Path()
         val gapLength = pieRadius
-        var sliceEndAngle = -90f
+        var sliceEndAngle = startAngle.toFloat()
         for (slice in slices) {
             sliceEndAngle += slice.fraction * 360
 
