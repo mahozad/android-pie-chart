@@ -1,12 +1,11 @@
 package io.github.mahozad.piechart
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Path
-import android.graphics.RectF
+import android.graphics.*
+import android.graphics.Paint.ANTI_ALIAS_FLAG
 import android.util.AttributeSet
 import android.view.View
+import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.minus
 import kotlin.math.PI
@@ -25,9 +24,19 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         set(ratio) {
             field = ratio.coerceIn(0f, 1f)
         }
+    var startAngle = -90
+        set(angle) {
+            field = angle.coerceIn(-360, 360)
+        }
     var gap = 8f
     private val textPosition: Int
-    private val slices = mutableListOf<Float>(0.43f, 0.21f, 0.19f, 0.15f, 0.02f)
+    private val slices = mutableListOf(
+        Slice(0.43f, ContextCompat.getColor(context, android.R.color.holo_green_dark)),
+        Slice(0.21f, ContextCompat.getColor(context, android.R.color.holo_orange_dark)),
+        Slice(0.19f, ContextCompat.getColor(context, android.R.color.holo_blue_dark)),
+        Slice(0.15f, ContextCompat.getColor(context, android.R.color.holo_red_light)),
+        Slice(0.02f, ContextCompat.getColor(context, android.R.color.holo_purple))
+    )
     private val clip = Path()
     private val enclosingRect = RectF()
     private val pie = Path()
@@ -120,7 +129,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         val gapLength = pieRadius
         var sliceEndAngle = -90f
         for (slice in slices) {
-            sliceEndAngle += slice * 360
+            sliceEndAngle += slice.fraction * 360
 
             // Calculate bottom right corner of the gap rectangle
             var angle = (sliceEndAngle + 90).toRadian()
@@ -178,24 +187,25 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
          */
         // clip should be called before drawing other things
         canvas.clipPath(clip)
-        val paint = Paint()
+
+        val paint = Paint(ANTI_ALIAS_FLAG)
         paint.style = Paint.Style.FILL
-        paint.color = ContextCompat.getColor(context, android.R.color.holo_blue_dark)
-        pie.moveTo(centerX, centerY)
-        pie.arcTo(enclosingRect, -90f, 0f)
-        pie.moveTo(centerX, centerY)
-        pie.arcTo(enclosingRect, 0f, 17f)
-        pie.moveTo(centerX, centerY)
-        pie.arcTo(enclosingRect, 17f, 69f)
-        pie.moveTo(centerX, centerY)
-        pie.arcTo(enclosingRect, 69f, 120f)
-        pie.moveTo(centerX, centerY)
-        pie.arcTo(enclosingRect, 120f, 270f)
-        canvas.drawPath(pie, paint)
+        var angle = startAngle.toFloat()
+        for (slice in slices) {
+            pie.reset()
+            paint.color = slice.color
+            val sliceSweep = slice.fraction * 360
+            pie.moveTo(centerX, centerY)
+            pie.arcTo(enclosingRect, angle, sliceSweep)
+            angle += sliceSweep
+            canvas.drawPath(pie, paint)
+        }
         paint.color = ContextCompat.getColor(context, android.R.color.black)
         paint.alpha = 64
         canvas.drawPath(overlay, paint)
     }
+
+    data class Slice(val fraction: Float, @ColorInt val color: Int)
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
