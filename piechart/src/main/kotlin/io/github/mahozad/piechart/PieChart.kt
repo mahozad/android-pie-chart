@@ -40,7 +40,7 @@ val defaultDrawingDirection = CLOCKWISE
  *
  * Any time that you make a change to your view that would affect the size, then call requestLayout().
  * This will start the process of measuring and drawing all over again from onMeasure.
- * This call is usually combined with a call to invalidate().
+ * This call is usually accompanied (preceded) by a call to invalidate().
  *
  * See [this helpful post](https://stackoverflow.com/a/42430834) for more information.
  */
@@ -111,6 +111,14 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private var centerX = 0f
     private var centerY = 0f
 
+    /**
+     * Attributes are a powerful way of controlling the behavior and appearance of views,
+     * but they can only be read when the view is initialized. To provide dynamic behavior,
+     * expose a property getter and setter pair for each custom attribute.
+     *
+     * A good rule to follow is to always expose any property that affects the
+     * visible appearance or behavior of your custom view.
+     */
     init {
         context.theme.obtainStyledAttributes(attrs, R.styleable.PieChart, 0, 0).apply {
             try {
@@ -130,29 +138,14 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     }
 
     /**
-     * Attributes are a powerful way of controlling the behavior and appearance of views, but they can only be read when the view is initialized.
-     * To provide dynamic behavior, expose a property getter and setter pair for each custom attribute.
+     * This method is called when your view is first assigned a size, and again
+     * if the size of your view changes for any reason.
      *
-     * Notice that setShowText calls invalidate() and requestLayout().
-     * These calls are crucial to ensure that the view behaves reliably.
-     * You have to invalidate the view after any change to its properties that might change its appearance,
-     * so that the system knows that it needs to be redrawn. Likewise, you need to request a new layout if
-     * a property changes that might affect the size or shape of the view. Forgetting these method calls can cause hard-to-find bugs.
+     * Calculate positions, dimensions, and any other values related to your
+     * view's size in onSizeChanged(), instead of recalculating them every time you draw.
      *
-     * A good rule to follow is to always expose any property that affects the visible appearance or behavior of your custom view.
-     */
-    // fun setIsTextShown(shouldShowText: Boolean) {
-    //     isTextShown = shouldShowText
-    //     invalidate()
-    //     requestLayout()
-    // }
-
-    /**
-     * This method is called when your view is first assigned a size, and again if the size of your view changes for any reason.
-     * Calculate positions, dimensions, and any other values related to your view's size in onSizeChanged(),
-     * instead of recalculating them every time you draw.
-     *
-     * When your view is assigned a size, the layout manager assumes that the size includes all of the view's padding.
+     * When your view is assigned a size, the layout manager assumes that
+     * the size includes all of the view's padding.
      * You must handle the padding values when you calculate your view's size.
      */
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
@@ -247,7 +240,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
          * and many drawing objects require expensive initialization. Creating drawing objects within your
          * onDraw() method significantly reduces performance and can make your UI appear sluggish.
          */
-        // clip should be called before drawing other things
+        // clipping should be applied before drawing other things
         canvas.clipPath(clip)
         var currentAngle = startAngle.toFloat()
         for (slice in slices) {
