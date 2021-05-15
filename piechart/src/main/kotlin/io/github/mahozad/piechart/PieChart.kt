@@ -105,6 +105,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private val pie = Path()
     private val clip = Path()
     private val overlay = Path()
+    private val mainPaint: Paint = Paint(ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
     private val enclosingRect = RectF()
     private var pieRadius = 0f
     private var centerX = 0f
@@ -248,22 +249,19 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
          */
         // clip should be called before drawing other things
         canvas.clipPath(clip)
-
-        val paint = Paint(ANTI_ALIAS_FLAG)
-        paint.style = Paint.Style.FILL
-        var angle = startAngle.toFloat()
+        var currentAngle = startAngle.toFloat()
         for (slice in slices) {
-            paint.color = slice.color
+            mainPaint.color = slice.color
             val sliceSweep = slice.fraction * 360
             pie.reset()
             pie.moveTo(centerX, centerY)
-            pie.arcTo(enclosingRect, angle, sliceSweep)
-            angle += sliceSweep
-            canvas.drawPath(pie, paint)
+            pie.arcTo(enclosingRect, currentAngle, sliceSweep)
+            currentAngle += sliceSweep
+            canvas.drawPath(pie, mainPaint)
         }
-        paint.color = ContextCompat.getColor(context, android.R.color.black)
-        paint.alpha = (overlayAlpha * 255).toInt()
-        canvas.drawPath(overlay, paint)
+        mainPaint.color = ContextCompat.getColor(context, android.R.color.black)
+        mainPaint.alpha = (overlayAlpha * 255).toInt()
+        canvas.drawPath(overlay, mainPaint)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
