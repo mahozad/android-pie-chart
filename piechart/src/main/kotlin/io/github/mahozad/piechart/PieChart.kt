@@ -17,6 +17,10 @@ import kotlin.math.min
 import kotlin.math.sin
 
 const val DEFAULT_SIZE = 448
+const val DEFAULT_START_ANGLE = -90
+const val DEFAULT_HOLE_RATIO = 0.25f
+const val DEFAULT_OVERLAY_RATIO = 0.55f
+const val DEFAULT_GAP = 8f
 
 /**
  * This is the order that these commonly used view methods are run:
@@ -37,32 +41,39 @@ const val DEFAULT_SIZE = 448
  */
 class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
-    var isTextShown: Boolean private set
-    var holeRadiusRatio = 0.25f
-        set(ratio) {
-            field = ratio.coerceIn(0f, 1f)
-        }
-    var overlayRatio = 0.55f
-        set(ratio) {
-            field = ratio.coerceIn(0f, 1f)
-        }
-    var startAngle = -90
+    data class Slice(val fraction: Float, @ColorInt val color: Int)
+
+    var startAngle = DEFAULT_START_ANGLE
         set(angle) {
             field = angle.coerceIn(-360, 360)
+            invalidate()
         }
-    var gap = 8f
-    private val textPosition: Int
-    private val slices = mutableListOf(
+    var holeRatio = DEFAULT_HOLE_RATIO
+        set(ratio) {
+            field = ratio.coerceIn(0f, 1f)
+            invalidate()
+        }
+    var overlayRatio = DEFAULT_OVERLAY_RATIO
+        set(ratio) {
+            field = ratio.coerceIn(0f, 1f)
+            invalidate()
+        }
+    var gap = DEFAULT_GAP
+        set(width) {
+            field = width
+            invalidate()
+        }
+    val slices = mutableListOf(
         Slice(0.43f, ContextCompat.getColor(context, android.R.color.holo_green_dark)),
         Slice(0.21f, ContextCompat.getColor(context, android.R.color.holo_orange_dark)),
         Slice(0.19f, ContextCompat.getColor(context, android.R.color.holo_blue_dark)),
         Slice(0.15f, ContextCompat.getColor(context, android.R.color.holo_red_light)),
         Slice(0.02f, ContextCompat.getColor(context, android.R.color.holo_purple))
     )
-    private val clip = Path()
-    private val enclosingRect = RectF()
     private val pie = Path()
+    private val clip = Path()
     private val overlay = Path()
+    private val enclosingRect = RectF()
     private var pieRadius = 0f
     private var centerX = 0f
     private var centerY = 0f
@@ -70,8 +81,10 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     init {
         context.theme.obtainStyledAttributes(attrs, R.styleable.PieChart, 0, 0).apply {
             try {
-                isTextShown = getBoolean(R.styleable.PieChart_showText, false)
-                textPosition = getInteger(R.styleable.PieChart_labelPosition, 0)
+                startAngle = getInt(R.styleable.PieChart_startAngle, DEFAULT_START_ANGLE)
+                holeRatio = getFloat(R.styleable.PieChart_holeRatio, DEFAULT_HOLE_RATIO)
+                overlayRatio = getFloat(R.styleable.PieChart_overlayRatio, DEFAULT_OVERLAY_RATIO)
+                gap = getDimension(R.styleable.PieChart_gap, DEFAULT_GAP)
             } finally {
                 // TypedArray objects are a shared resource and must be recycled after use
                 recycle()
@@ -91,11 +104,11 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
      *
      * A good rule to follow is to always expose any property that affects the visible appearance or behavior of your custom view.
      */
-    fun setIsTextShown(shouldShowText: Boolean) {
-        isTextShown = shouldShowText
-        invalidate()
-        requestLayout()
-    }
+    // fun setIsTextShown(shouldShowText: Boolean) {
+    //     isTextShown = shouldShowText
+    //     invalidate()
+    //     requestLayout()
+    // }
 
     /**
      * This method is called when your view is first assigned a size, and again if the size of your view changes for any reason.
@@ -117,7 +130,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         enclosingRect.set(RectF(0f, 0f, effectiveWidth, effectiveHeight))
         pie.reset()
         pieRadius = min(effectiveWidth, effectiveHeight) / 2f
-        val holeRadius = holeRadiusRatio * pieRadius
+        val holeRadius = holeRatio * pieRadius
         val overlayRadius = overlayRatio * pieRadius
         overlay.set(Path().apply { addCircle(centerX, centerY, overlayRadius, Path.Direction.CW) })
         val circle = Path().apply { addCircle(centerX, centerY, pieRadius, Path.Direction.CW) }
@@ -207,8 +220,6 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         paint.alpha = 64
         canvas.drawPath(overlay, paint)
     }
-
-    data class Slice(val fraction: Float, @ColorInt val color: Int)
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)

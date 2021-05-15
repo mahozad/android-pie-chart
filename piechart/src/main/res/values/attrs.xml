@@ -9,10 +9,13 @@
        Instead of belonging to the http://schemas.android.com/apk/res/android namespace,
        they belong to http://schemas.android.com/apk/res/[your package name]-->
   <declare-styleable name="PieChart">
-    <attr name="showText" format="boolean"/>
+    <attr name="gap" format="dimension"/>
+    <attr name="startAngle" format="integer"/>
+    <attr name="holeRatio" format="float"/>
+    <attr name="overlayRatio" format="float"/>
     <attr name="labelPosition" format="enum">
-      <enum name="left" value="0"/>
-      <enum name="right" value="1"/>
+      <enum name="start" value="0"/>
+      <enum name="end" value="1"/>
     </attr>
   </declare-styleable>
 </resources>
