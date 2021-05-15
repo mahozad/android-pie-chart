@@ -178,15 +178,22 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private fun Float.toRadian() = (this / 180) * PI.toFloat()
 
     /**
-     * The clip path (and maybe some other features) do not on emulators with
-     * hardware acceleration enabled.
-     * Try to call `setLayerType(LAYER_TYPE_SOFTWARE, null)` to use software rendering.
+     * The clip path (and maybe some other features) do not work on
+     * emulators with hardware acceleration enabled.
+     *
+     * Try to disable hardware acceleration of device
+     * or disable hardware acceleration for activity or whole application
+     * or call `setLayerType(LAYER_TYPE_SOFTWARE, null)` here to use software rendering.
      * See the following posts:
-     *  https://stackoverflow.com/q/16889815
-     *  https://stackoverflow.com/q/16432565
-     *  https://stackoverflow.com/q/8895677
-     *  https://stackoverflow.com/a/23517980
-     *  https://stackoverflow.com/q/13672802
+     * [1](https://stackoverflow.com/q/16889815),
+     * [2](https://stackoverflow.com/q/16432565),
+     * [3](https://stackoverflow.com/q/8895677),
+     * [4](https://stackoverflow.com/a/23517980),
+     * [5](https://stackoverflow.com/q/13672802)
+     *
+     * Another solution would be to not use clip path and instead use the
+     * operations on the paths themselves
+     * (differencing the gaps and the hole from the pie and the overlay path).
      */
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
