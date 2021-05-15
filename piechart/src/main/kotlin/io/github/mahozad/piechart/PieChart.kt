@@ -1,11 +1,8 @@
 package io.github.mahozad.piechart
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Paint
+import android.graphics.*
 import android.graphics.Paint.ANTI_ALIAS_FLAG
-import android.graphics.Path
-import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
@@ -252,15 +249,21 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             pie.arcTo(enclosingRect, currentAngle, sliceSweep)
             canvas.drawPath(pie, mainPaint)
 
+            // For getting the text dimensions see https://stackoverflow.com/a/42091739
             mainPaint.color = ContextCompat.getColor(context, android.R.color.black)
             mainPaint.textSize = 120f
+            mainPaint.textAlign = Paint.Align.CENTER
             val label = slice.label
+
+            val bounds = Rect()
+            mainPaint.getTextBounds(label, 0, label.length, bounds)
+            val textHeight = bounds.height()
+
             val endAngle = (currentAngle + sliceSweep) % 360
             val middleAngle = ((currentAngle + endAngle) / 2 % 360).toRadian()
             val x = centerX + cos(middleAngle) * pieRadius / 2
             val y = centerY + sin((middleAngle)) * pieRadius / 2
-            // TODO: Adjust the x and y to account for the text width and height
-            canvas.drawText(label, x, y, mainPaint)
+            canvas.drawText(label, x, (y + y + textHeight) / 2, mainPaint)
 
             currentAngle += sliceSweep
         }
@@ -272,7 +275,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        val widthMode = MeasureSpec.getMode(widthMeasureSpec)
+        val widthMode = View.MeasureSpec.getMode(widthMeasureSpec)
         val specWidth = MeasureSpec.getSize(widthMeasureSpec)
         val heightMode = MeasureSpec.getMode(heightMeasureSpec)
         val specHeight = MeasureSpec.getSize(heightMeasureSpec)
