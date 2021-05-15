@@ -17,8 +17,11 @@ import kotlin.math.sin
 class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     var isTextShown: Boolean private set
-    var pieRadius = 0f
     var holeRadiusRatio = 0.25f
+        set(ratio) {
+            field = ratio.coerceIn(0f, 1f)
+        }
+    var overlayRatio = 0.55f
         set(ratio) {
             field = ratio.coerceIn(0f, 1f)
         }
@@ -28,6 +31,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private val clip = Path()
     private val enclosingRect = RectF()
     private val pie = Path()
+    private val overlay = Path()
+    private var pieRadius = 0f
     private var centerX = 0f
     private var centerY = 0f
 
@@ -101,6 +106,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         pie.reset()
         pieRadius = min(effectiveWidth, effectiveHeight) / 2f
         val holeRadius = holeRadiusRatio * pieRadius
+        val overlayRadius = overlayRatio * pieRadius
+        overlay.set(Path().apply { addCircle(centerX, centerY, overlayRadius, Path.Direction.CW) })
         val circle = Path().apply { addCircle(centerX, centerY, pieRadius, Path.Direction.CW) }
         val hole = Path().apply { addCircle(centerX, centerY, holeRadius, Path.Direction.CW) }
         val gaps = makeGaps()
@@ -176,6 +183,9 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         pie.moveTo(centerX, centerY)
         pie.arcTo(enclosingRect, 120f, 270f)
         canvas.drawPath(pie, paint)
+        paint.color = ContextCompat.getColor(context, android.R.color.black)
+        paint.alpha = 64
+        canvas.drawPath(overlay, paint)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
