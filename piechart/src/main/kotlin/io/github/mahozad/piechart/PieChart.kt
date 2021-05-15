@@ -182,6 +182,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
      * hardware acceleration enabled.
      * Try to call `setLayerType(LAYER_TYPE_SOFTWARE, null)` to use software rendering.
      * See the following posts:
+     *  https://stackoverflow.com/q/16889815
+     *  https://stackoverflow.com/q/16432565
      *  https://stackoverflow.com/q/8895677
      *  https://stackoverflow.com/a/23517980
      *  https://stackoverflow.com/q/13672802
