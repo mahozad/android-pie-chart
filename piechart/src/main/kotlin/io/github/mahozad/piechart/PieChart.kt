@@ -1,8 +1,11 @@
 package io.github.mahozad.piechart
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Paint
 import android.graphics.Paint.ANTI_ALIAS_FLAG
+import android.graphics.Path
+import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
@@ -12,6 +15,8 @@ import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
+
+const val DEFAULT_SIZE = 448
 
 /**
  * This is the order that these commonly used view methods are run:
@@ -91,25 +96,6 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         invalidate()
         requestLayout()
     }
-
-    // private val textPaint = Paint(ANTI_ALIAS_FLAG).apply {
-    //     color = textColor
-    //     if (textHeight == 0f) {
-    //         textHeight = textSize
-    //     } else {
-    //         textSize = textHeight
-    //     }
-    // }
-    //
-    // private val piePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-    //     style = Paint.Style.FILL
-    //     textSize = textHeight
-    // }
-    //
-    // private val shadowPaint = Paint(0).apply {
-    //     color = 0x101010
-    //     maskFilter = BlurMaskFilter(8f, BlurMaskFilter.Blur.NORMAL)
-    // }
 
     /**
      * This method is called when your view is first assigned a size, and again if the size of your view changes for any reason.
@@ -226,12 +212,25 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        /**
-         * With regard to widthMeasureSpec and heightMeasureSpec
-         * calculate the required width and height of the component
-         */
-        val myWidth = 456
-        val myHeight = 456
-        setMeasuredDimension(myWidth, myHeight)
+        val widthMode = MeasureSpec.getMode(widthMeasureSpec)
+        val specWidth = MeasureSpec.getSize(widthMeasureSpec)
+        val heightMode = MeasureSpec.getMode(heightMeasureSpec)
+        val specHeight = MeasureSpec.getSize(heightMeasureSpec)
+        val suggestedWidth = calculateSize(widthMode, specWidth)
+        val suggestedHeight = calculateSize(heightMode, specHeight)
+        val (width, height) = makeWidthAndHeightEqual(suggestedWidth, suggestedHeight)
+        // This MUST be called
+        setMeasuredDimension(width, height)
+    }
+
+    private fun makeWidthAndHeightEqual(w: Int, h: Int) = Pair(min(w, h), min(w, h))
+
+    private fun calculateSize(mode: Int, specSize: Int) = when (mode) {
+        // Must be this size
+        MeasureSpec.EXACTLY -> specSize
+        // Can't be bigger than...
+        MeasureSpec.AT_MOST -> min(specSize, DEFAULT_SIZE)
+        // Can be whatever you want
+        else -> DEFAULT_SIZE
     }
 }
