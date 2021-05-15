@@ -48,6 +48,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     data class Slice(
         @FloatRange(from = 0.0, to = 1.0) val fraction: Float,
         @ColorInt val color: Int,
+        val label: String = fraction.toString(),
         // Scale the slice with canvas.scale(slice.scale, slice.scale, centerX, centerY)
         // Can also assign its default value to the slice fraction
         @FloatRange(from = 0.0, to = 1.0) val scale: Float = 1f
