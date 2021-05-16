@@ -294,7 +294,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        val widthMode = View.MeasureSpec.getMode(widthMeasureSpec)
+        val widthMode = MeasureSpec.getMode(widthMeasureSpec)
         val specWidth = MeasureSpec.getSize(widthMeasureSpec)
         val heightMode = MeasureSpec.getMode(heightMeasureSpec)
         val specHeight = MeasureSpec.getSize(heightMeasureSpec)
