@@ -337,8 +337,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         // Must be this size
         MeasureSpec.EXACTLY -> specSize
         // Can't be bigger than...
-        MeasureSpec.AT_MOST -> min(specSize, DEFAULT_SIZE)
+        MeasureSpec.AT_MOST -> specSize
         // Can be whatever you want
-        else -> DEFAULT_SIZE
+        else -> specSize
     }
 }
