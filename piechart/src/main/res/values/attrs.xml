@@ -12,6 +12,15 @@
 
   <declare-styleable name="PieChart">
     <attr name="gap" format="dimension"/>
+    <!-- Indicated where the gap should be created;
+         middle means that half the gap is overlapping the previous slice
+         and the rest are overlapping the next slice
+     -->
+    <attr name="gapPosition" format="enum">
+      <enum name="middle" value="0"/>
+      <enum name="precedingSlice" value="1"/>
+      <enum name="succeedingSlice" value="2"/>
+    </attr>
     <attr name="startAngle" format="integer"/>
     <!-- Size of text. Recommended dimension type for text is "sp" for scaled-pixels (example: 15sp).
          Supported values include the following:<p/>

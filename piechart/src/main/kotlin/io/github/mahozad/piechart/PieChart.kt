@@ -10,6 +10,7 @@ import androidx.annotation.FloatRange
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.minus
 import io.github.mahozad.piechart.PieChart.Direction.CLOCKWISE
+import io.github.mahozad.piechart.PieChart.GapPosition.*
 import io.github.mahozad.piechart.PieChart.GradientType.RADIAL
 import java.text.NumberFormat
 import kotlin.math.PI
@@ -25,6 +26,7 @@ const val DEFAULT_OVERLAY_ALPHA = 0.25f
 const val DEFAULT_GAP = 8f /* px */
 const val DEFAULT_LABEL_SIZE = 24f /* sp */
 const val DEFAULT_LABEL_OFFSET = 0.75f
+val defaultGapPosition = MIDDLE
 val defaultGradientType = RADIAL
 val defaultDrawingDirection = CLOCKWISE
 
@@ -71,6 +73,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     enum class Direction { CLOCKWISE, COUNTER_CLOCKWISE }
     enum class GradientType { RADIAL, SWEEP }
+    enum class GapPosition { MIDDLE, PRECEDING_SLICE, SUCCEEDING_SLICE }
 
     var startAngle = DEFAULT_START_ANGLE
         set(angle) {
@@ -107,6 +110,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             field = offset
             invalidate()
         }
+    var gapPosition = MIDDLE
     var gradientType = defaultGradientType
     var drawingDirection = defaultDrawingDirection
     val slices = mutableListOf(
@@ -143,6 +147,9 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 gap = getDimension(R.styleable.PieChart_gap, DEFAULT_GAP)
                 labelSize = getDimension(R.styleable.PieChart_labelSize, spToPx(DEFAULT_LABEL_SIZE))
                 labelOffset = getFloat(R.styleable.PieChart_labelOffset, DEFAULT_LABEL_OFFSET)
+                gapPosition = GapPosition.values()[
+                        getInt(R.styleable.PieChart_gapPosition, defaultGapPosition.ordinal)
+                ]
                 gradientType = GradientType.values()[
                         getInt(R.styleable.PieChart_gradientType, defaultGradientType.ordinal)
                 ]
@@ -199,8 +206,18 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
             // Calculate bottom right corner of the gap rectangle
             var angle = (sliceEndAngle + 90).toRadian()
-            var x = centerX + gap * cos(angle)
-            var y = centerY + gap * sin(angle)
+            var x: Float
+            var y: Float
+            if (gapPosition == PRECEDING_SLICE) {
+                x = centerX
+                y = centerY
+            } else if (gapPosition == SUCCEEDING_SLICE) {
+                x = centerX + gap * cos(angle)
+                y = centerY + gap * sin(angle)
+            } else /* if gapPosition == middle */ {
+                x = centerX + gap / 2 * cos(angle)
+                y = centerY + gap / 2 * sin(angle)
+            }
             gaps.moveTo(x, y)
 
             // Calculate top right corner of the gap rectangle
