@@ -327,25 +327,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        val widthMode = MeasureSpec.getMode(widthMeasureSpec)
-        val specWidth = MeasureSpec.getSize(widthMeasureSpec)
-        val heightMode = MeasureSpec.getMode(heightMeasureSpec)
-        val specHeight = MeasureSpec.getSize(heightMeasureSpec)
-        val suggestedWidth = calculateSize(widthMode, specWidth)
-        val suggestedHeight = calculateSize(heightMode, specHeight)
-        val (width, height) = makeWidthAndHeightEqual(suggestedWidth, suggestedHeight)
+        val (width, height) = SizeUtil().calculateWidthAndHeight(widthMeasureSpec, heightMeasureSpec)
         // This MUST be called
         setMeasuredDimension(width, height)
-    }
-
-    private fun makeWidthAndHeightEqual(w: Int, h: Int) = Pair(min(w, h), min(w, h))
-
-    private fun calculateSize(mode: Int, specSize: Int) = when (mode) {
-        // Must be this size
-        MeasureSpec.EXACTLY -> specSize
-        // Can't be bigger than...
-        MeasureSpec.AT_MOST -> specSize
-        // Can be whatever you want
-        else -> specSize
     }
 }
