@@ -182,11 +182,12 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         val holeRadius = holeRatio * pieRadius
         val overlayRadius = overlayRatio * pieRadius
         overlay.set(Path().apply { addCircle(centerX, centerY, overlayRadius, Path.Direction.CW) })
-        val circle = Path().apply { addCircle(centerX, centerY, pieRadius, Path.Direction.CW) }
+        val rect = Path().apply { addRect(enclosingRect, Path.Direction.CW) }
         val hole = Path().apply { addCircle(centerX, centerY, holeRadius, Path.Direction.CW) }
         val gaps = makeGaps()
         // Could also have set the fillType to EVEN_ODD and just add the other paths to the clip
-        clip.set(circle - hole - gaps)
+        // Or could abandon using clip path and do the operations on the pie itself
+        clip.set(rect - hole - gaps)
     }
 
     private fun makeGaps(): Path {
