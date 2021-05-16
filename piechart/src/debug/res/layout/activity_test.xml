@@ -11,15 +11,20 @@
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:text="This is the test Activity"
+      android:textSize="24sp"
+      android:gravity="center"
+      app:layout_constraintVertical_chainStyle="spread"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintBottom_toTopOf="@id/pieChart"
       app:layout_constraintTop_toTopOf="parent"/>
 
   <io.github.mahozad.piechart.PieChart
       android:id="@+id/pieChart"
       android:layout_width="0dp"
-      android:layout_height="0dp"
+      android:layout_height="wrap_content"
       app:layout_constraintStart_toStartOf="parent"
+      app:labelSize="24sp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toBottomOf="@id/hint"
       app:layout_constraintBottom_toBottomOf="parent">
