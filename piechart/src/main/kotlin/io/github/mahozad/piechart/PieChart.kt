@@ -48,6 +48,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     data class Slice(
         @FloatRange(from = 0.0, to = 1.0) val fraction: Float,
         @ColorInt val color: Int,
+        @ColorInt val colorEnd: Int = color,
         val label: String = NumberFormat.getPercentInstance().format(fraction),
         /**
          * Can also set the default value to the slice fraction.
@@ -258,19 +259,21 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
         var currentAngle = startAngle.toFloat()
         for (slice in slices) {
-            mainPaint.color = slice.color
+            val gradient = RadialGradient(centerX, centerY, pieRadius, slice.color, slice.colorEnd, Shader.TileMode.MIRROR)
+            mainPaint.shader = gradient
             val sliceSweep = slice.fraction * 360
             pie.reset()
             pie.moveTo(centerX, centerY)
             pie.arcTo(enclosingRect, currentAngle, sliceSweep)
             canvas.drawPath(pie, mainPaint)
 
-            // For getting the text dimensions see https://stackoverflow.com/a/42091739
+            mainPaint.shader = null // Clear the gradient
             mainPaint.color = ContextCompat.getColor(context, android.R.color.black)
             mainPaint.textSize = labelSize
             mainPaint.textAlign = Paint.Align.CENTER
             val label = slice.label
 
+            // For help on text dimensions see https://stackoverflow.com/a/42091739
             val bounds = Rect()
             mainPaint.getTextBounds(label, 0, label.length, bounds)
             val textHeight = bounds.height()
