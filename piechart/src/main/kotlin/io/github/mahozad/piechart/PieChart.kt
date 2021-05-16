@@ -221,19 +221,21 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             gaps.moveTo(x, y)
 
             // Calculate top right corner of the gap rectangle
-            x += gapLength * cos(sliceEndAngle.toRadian())
-            y += gapLength * sin(sliceEndAngle.toRadian())
+            angle -= (PI / 2).toFloat()
+            x += gapLength * cos(angle)
+            y += gapLength * sin(angle)
             gaps.lineTo(x, y)
 
             // Calculate top left corner of the gap rectangle
-            angle -= PI.toFloat()
+            angle -= (PI / 2).toFloat()
             x += gap * cos(angle)
             y += gap * sin(angle)
             gaps.lineTo(x, y)
 
             // Calculate bottom left corner of the gap rectangle
-            x -= gapLength * cos(sliceEndAngle.toRadian())
-            y -= gapLength * sin(sliceEndAngle.toRadian())
+            angle -= (PI / 2).toFloat()
+            x += gapLength * cos(angle)
+            y += gapLength * sin(angle)
             gaps.lineTo(x, y)
 
             // Join to the first point
