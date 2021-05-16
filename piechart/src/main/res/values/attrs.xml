@@ -8,9 +8,21 @@
        The only difference is that your custom attributes belong to a different namespace.
        Instead of belonging to the http://schemas.android.com/apk/res/android namespace,
        they belong to http://schemas.android.com/apk/res/[your package name]-->
+  <eat-comment/>
+
   <declare-styleable name="PieChart">
     <attr name="gap" format="dimension"/>
     <attr name="startAngle" format="integer"/>
+    <!-- Size of text. Recommended dimension type for text is "sp" for scaled-pixels (example: 15sp).
+         Supported values include the following:<p/>
+    <ul>
+        <li><b>px</b> Pixels</li>
+        <li><b>sp</b> Scaled pixels (scaled to relative pixel size on screen). See {@link android.util.DisplayMetrics} for more information.</li>
+        <li><b>pt</b> Points</li>
+        <li><b>dip</b> Device independent pixels. See {@link android.util.DisplayMetrics} for more information.</li>
+    </ul> -->
+    <attr name="labelSize" format="dimension"/>
+    <attr name="labelOffset" format="float"/>
     <attr name="holeRatio" format="float"/>
     <attr name="overlayRatio" format="float"/>
     <attr name="overlayAlpha" format="float"/>

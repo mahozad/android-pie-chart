@@ -22,6 +22,8 @@ const val DEFAULT_HOLE_RATIO = 0.25f
 const val DEFAULT_OVERLAY_RATIO = 0.55f
 const val DEFAULT_OVERLAY_ALPHA = 0.25f
 const val DEFAULT_GAP = 8f
+const val DEFAULT_LABEL_SIZE = 40f
+const val DEFAULT_LABEL_OFFSET = 0.75f
 val defaultDrawingDirection = CLOCKWISE
 
 /**
@@ -91,6 +93,16 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             field = width
             invalidate()
         }
+    var labelSize = DEFAULT_LABEL_SIZE
+        set(size) {
+            field = size
+            invalidate()
+        }
+    var labelOffset = DEFAULT_LABEL_OFFSET
+        set(offset) {
+            field = offset
+            invalidate()
+        }
     var drawingDirection = defaultDrawingDirection
     val slices = mutableListOf(
         Slice(0.43f, ContextCompat.getColor(context, android.R.color.holo_green_dark)),
@@ -124,6 +136,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 overlayRatio = getFloat(R.styleable.PieChart_overlayRatio, DEFAULT_OVERLAY_RATIO)
                 overlayAlpha = getFloat(R.styleable.PieChart_overlayAlpha, DEFAULT_OVERLAY_ALPHA)
                 gap = getDimension(R.styleable.PieChart_gap, DEFAULT_GAP)
+                labelSize = getDimension(R.styleable.PieChart_labelSize, DEFAULT_LABEL_SIZE)
+                labelOffset = getFloat(R.styleable.PieChart_labelOffset, DEFAULT_LABEL_OFFSET)
                 drawingDirection = Direction.values()[
                         getInt(R.styleable.PieChart_drawingDirection, defaultDrawingDirection.ordinal)
                 ]
@@ -251,7 +265,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
             // For getting the text dimensions see https://stackoverflow.com/a/42091739
             mainPaint.color = ContextCompat.getColor(context, android.R.color.black)
-            mainPaint.textSize = 120f
+            mainPaint.textSize = labelSize
             mainPaint.textAlign = Paint.Align.CENTER
             val label = slice.label
 
@@ -261,8 +275,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
             val endAngle = (currentAngle + sliceSweep) % 360
             val middleAngle = ((currentAngle + endAngle) / 2 % 360).toRadian()
-            val x = centerX + cos(middleAngle) * pieRadius / 2
-            val y = centerY + sin((middleAngle)) * pieRadius / 2
+            val x = centerX + cos(middleAngle) * pieRadius * labelOffset
+            val y = centerY + sin((middleAngle)) * pieRadius * labelOffset
             canvas.drawText(label, x, (y + y + textHeight) / 2, mainPaint)
 
             currentAngle += sliceSweep
