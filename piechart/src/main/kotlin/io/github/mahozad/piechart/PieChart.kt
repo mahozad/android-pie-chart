@@ -17,7 +17,7 @@ import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
 
-const val DEFAULT_SIZE = 448
+const val DEFAULT_SIZE = 256 /* dp */
 const val DEFAULT_START_ANGLE = -90
 const val DEFAULT_HOLE_RATIO = 0.25f
 const val DEFAULT_OVERLAY_RATIO = 0.55f
