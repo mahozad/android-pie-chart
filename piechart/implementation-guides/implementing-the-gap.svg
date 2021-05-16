@@ -19,7 +19,7 @@
      id="defs2">
     <marker
        style="overflow:visible"
-       id="marker3851"
+       id="marker2757"
        refX="0"
        refY="0"
        orient="auto"
@@ -29,7 +29,35 @@
          transform="scale(0.4)"
          style="fill:#f36827;fill-opacity:1;fill-rule:evenodd;stroke:#f36827;stroke-width:1pt;stroke-opacity:1"
          d="M 5.77,0 L -2.88,5 V -5 Z"
-         id="path3849" />
+         id="path2755" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="TriangleInM"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="TriangleInM"
+       inkscape:isstock="true">
+      <path
+         transform="scale(-0.4)"
+         style="fill-rule:evenodd;stroke:#f36827;stroke-width:1pt;stroke-opacity:1;fill:#f36827;fill-opacity:1"
+         d="M 5.77,0.0 L -2.88,5.0 L -2.88,-5.0 L 5.77,0.0 z "
+         id="path2193" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker1539"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="TriangleInM"
+       inkscape:isstock="true">
+      <path
+         transform="scale(-0.4)"
+         style="fill:#f36827;fill-opacity:1;fill-rule:evenodd;stroke:#f36827;stroke-width:1pt;stroke-opacity:1"
+         d="M 5.77,0 L -2.88,5 V -5 Z"
+         id="path1537" />
     </marker>
     <marker
        style="overflow:visible"
@@ -72,20 +100,6 @@
          style="fill:#000000;fill-opacity:0;fill-rule:evenodd;stroke:#143be7;stroke-width:1pt;stroke-opacity:0.98431"
          d="M 5.77,0 L -2.88,5 V -5 Z"
          id="path2506" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="TriangleInM"
-       refX="0"
-       refY="0"
-       orient="auto"
-       inkscape:stockid="TriangleInM"
-       inkscape:isstock="true">
-      <path
-         transform="scale(-0.4)"
-         style="fill:#f36827;fill-opacity:1;fill-rule:evenodd;stroke:#f36827;stroke-width:1pt;stroke-opacity:1"
-         d="M 5.77,0 L -2.88,5 V -5 Z"
-         id="path995" />
     </marker>
     <marker
        style="overflow:visible"
@@ -239,13 +253,13 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.534"
-     inkscape:cx="143.72"
-     inkscape:cy="223.55"
+     inkscape:zoom="2.9139"
+     inkscape:cx="113.2"
+     inkscape:cy="122.76"
      inkscape:document-units="px"
      inkscape:current-layer="layer2"
      inkscape:document-rotation="0"
-     showgrid="false"
+     showgrid="true"
      units="px"
      lock-margins="true"
      inkscape:pagecheckerboard="false"
@@ -326,6 +340,10 @@
        transform="translate(0,304)"
        width="100%"
        height="100%" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
+       d="M 32,268 L 58,261"
+       id="path1884" />
     <use
        x="0"
        y="0"
@@ -350,6 +368,19 @@
        transform="translate(59,187)"
        width="100%"
        height="100%" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#f36827;stroke-width:0.5;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
+       id="path1495"
+       sodipodi:type="arc"
+       sodipodi:cx="91"
+       sodipodi:cy="151"
+       sodipodi:rx="12"
+       sodipodi:ry="12"
+       sodipodi:start="0"
+       sodipodi:end="1.309"
+       sodipodi:arc-type="arc"
+       d="M 103,151 A 12,12 0 0 1 94.106,162.59"
+       sodipodi:open="true" />
     <use
        x="0"
        y="0"
@@ -414,18 +445,18 @@
        r="1" />
     <path
        style="fill:none;fill-opacity:0.6285;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleOutM);stop-color:#000000"
-       d="M 30,31 C 6,17.144 5,41 -23,41"
+       d="M 30,30 C 17,2 4,19 -28,19"
        id="path857"
        sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
        style="font-weight:500;font-size:5.33333px;line-height:1.25;font-family:Vazir;-inkscape-font-specification:'Vazir Medium';text-align:center;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;direction:ltr;text-anchor:middle;fill:none;fill-opacity:0.45794;stroke:#000000;stroke-linecap:round;stroke-opacity:1;stop-color:#000000"
-       x="-48.095"
-       y="42.518"
+       x="-52.984"
+       y="20.527"
        id="text1239"><tspan
          sodipodi:role="line"
-         x="-48.095"
-         y="42.518"
+         x="-52.984"
+         y="20.527"
          id="tspan1241"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.33333px;font-family:Roboto;-inkscape-font-specification:Roboto;direction:ltr;fill:#000000;fill-opacity:1;stroke:none">(centerX,centerY)</tspan></text>
     <circle
@@ -494,19 +525,23 @@
          id="tspan1417"
          x="-135.46"
          y="146.75"
-         style="text-align:start;direction:ltr;text-anchor:start;stroke:none">Find the angle of the bottom side of the gap rectangle:</tspan><tspan
+         style="text-align:start;direction:ltr;text-anchor:start;stroke:none">Find the angle of the bottom side of the gap:</tspan><tspan
          sodipodi:role="line"
          x="-135.46"
          y="153.42"
          style="text-align:start;direction:ltr;text-anchor:start;stroke:none"
-         id="tspan1421">angle = endAngle + 90 // In degrees</tspan><tspan
+         id="tspan1421">angle = endAngle + 90 <tspan
+   style="fill:#a1a1a1;fill-opacity:1"
+   id="tspan3011">// In degrees</tspan></tspan><tspan
          sodipodi:role="line"
          x="-135.46"
          y="160.08"
          style="text-align:start;direction:ltr;text-anchor:start;stroke:none"
-         id="tspan1423">angle = endAngle.toRadian() + PI / 2 // In radian</tspan></text>
+         id="tspan1423">angle = endAngle.toRadian() + PI / 2 <tspan
+   style="fill:#a1a1a1;fill-opacity:1"
+   id="tspan3009">// In radian</tspan></tspan></text>
     <circle
-       style="fill:#c0d99f;fill-opacity:1;stroke-linecap:round;stop-color:#000000"
+       style="fill:#bdc4b4;fill-opacity:1;stroke-linecap:round;stop-color:#000000"
        id="circle1427"
        cx="32"
        cy="-36"
@@ -518,7 +553,7 @@
        cy="-36"
        r="1" />
     <path
-       style="fill:#66f3de;fill-opacity:0.6285;stroke-linecap:round;stop-color:#000000"
+       style="fill:#e3e475;fill-opacity:0.6285;stroke-linecap:round;stop-color:#000000"
        id="path1431"
        sodipodi:type="arc"
        sodipodi:cx="32"
@@ -530,19 +565,27 @@
        sodipodi:arc-type="slice"
        d="M 32,-63 A 27,27 0 0 1 58.08,-42.988 L 32,-36 Z" />
     <path
-       style="fill:#000000;fill-opacity:1;stroke:#ed124f;stroke-width:10;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.5;stop-color:#000000"
+       style="mix-blend-mode:normal;fill:#000000;fill-opacity:1;stroke:#f47196;stroke-width:10;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.5;stop-color:#000000"
        d="M 32,-36 L 58,-43"
        id="path1435" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.33333px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;direction:ltr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:10;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.5;stop-color:#000000"
-       x="-89.154"
-       y="-34.473"
+       x="-135.7"
+       y="-41.082"
        id="text1443"><tspan
          sodipodi:role="line"
          id="tspan1441"
-         x="-89.154"
-         y="-34.473">Goal: make the gap (the red rectangle)</tspan></text>
+         x="-135.7"
+         y="-41.082">Goal: make the gap (the red rectangle)</tspan><tspan
+         sodipodi:role="line"
+         x="-135.7"
+         y="-34.415"
+         id="tspan1076">We should just find the coordinates of</tspan><tspan
+         sodipodi:role="line"
+         x="-135.7"
+         y="-27.749"
+         id="tspan1078">the four corners of the rectangle</tspan></text>
     <circle
        style="fill:#000000;fill-opacity:1;stroke-linecap:round;stop-color:#000000"
        id="circle1409-2"
@@ -554,22 +597,9 @@
        d="M 91,151 L 98.004,177"
        id="path1415-8" />
     <path
-       style="fill:#000000;fill-opacity:1;stroke:#ed124f;stroke-width:0.5;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:0.5,0.5;stroke-dashoffset:0;stroke-opacity:0.5;stop-color:#000000"
+       style="fill:#000000;fill-opacity:1;stroke:#eb58ff;stroke-width:0.5;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:0.5, 1.50000000000000000;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
        d="M 91,151 H 139"
        id="path1493" />
-    <path
-       style="fill:none;fill-opacity:1;stroke:#eb124e;stroke-width:0.5;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.50196;stop-color:#000000"
-       id="path1495"
-       sodipodi:type="arc"
-       sodipodi:cx="91"
-       sodipodi:cy="151"
-       sodipodi:rx="12"
-       sodipodi:ry="12"
-       sodipodi:start="0"
-       sodipodi:end="1.309"
-       sodipodi:arc-type="arc"
-       d="M 103,151 A 12,12 0 0 1 94.106,162.59"
-       sodipodi:open="true" />
     <path
        style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker1265);stop-color:#000000"
        d="M 103,159 C 113,161 109,167 124,167"
@@ -588,16 +618,18 @@
          style="fill:#000000;fill-opacity:1;stroke:none">angle</tspan></text>
     <g
        id="g1549"
-       transform="rotate(-15,-20.159,12)">
+       transform="rotate(-15,76.458,-217.27)"
+       style="fill:#d89aa5;fill-opacity:1">
       <path
-         style="fill:#000000;fill-opacity:1;stroke:#ed124f;stroke-width:10;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.5;stop-color:#000000"
+         style="fill:#d89aa5;fill-opacity:1;stroke:#f47196;stroke-width:10;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.50196;stop-color:#000000"
          d="M -31,12 L -4.0741,11.968"
          id="path1435-6" />
       <g
-         id="g1543">
+         id="g1543"
+         style="fill:#d89aa5;fill-opacity:1">
         <path
            style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
-           d="M -33,7 C -36,7 -33,12 -36,12"
+           d="M -36.246,6.8611 C -39.246,6.8611 -36.246,11.861 -39.246,11.861"
            id="path1535"
            sodipodi:nodetypes="cc" />
         <use
@@ -605,26 +637,27 @@
            y="0"
            xlink:href="#path1535"
            id="use1539"
-           transform="matrix(1,0,0,-1,0,24)"
+           transform="matrix(1,0,0,-1,0,23.722)"
            width="100%"
-           height="100%" />
+           height="100%"
+           style="fill:#d89aa5;fill-opacity:1" />
       </g>
     </g>
     <path
        style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker1561);stop-color:#000000"
-       d="M -37,16 C -58,13 -56,26 -65,26"
+       d="M 22,34 C -8,34 -2,44 -28,44"
        id="path1551"
        sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.33333px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;direction:ltr;text-anchor:start;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
-       x="-78.444"
-       y="26.88"
+       x="-41.444"
+       y="44.88"
        id="text1613"><tspan
          sodipodi:role="line"
          id="tspan1611"
-         x="-78.444"
-         y="26.88"
+         x="-41.444"
+         y="44.88"
          style="fill:#000000;fill-opacity:1;stroke:none">gap</tspan></text>
     <circle
        style="fill:#000000;fill-opacity:1;stroke-linecap:round;stop-color:#000000"
@@ -637,7 +670,7 @@
        d="M 32,209 L 39.004,235"
        id="path1627" />
     <path
-       style="fill:#000000;fill-opacity:1;stroke:#ed124f;stroke-width:10;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.5;stop-color:#000000"
+       style="fill:#000000;fill-opacity:1;stroke:#f47196;stroke-width:10;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.50196;stop-color:#000000"
        d="M 32,209 L 58,202"
        id="path1435-6-7" />
     <circle
@@ -699,13 +732,9 @@
        cy="268"
        r="1" />
     <path
-       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:0.5, 1.50000000000000000;stroke-opacity:1;stop-color:#000000;stroke-dashoffset:0"
        d="M 32,268 L 39.004,294"
        id="path1876" />
-    <path
-       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
-       d="M 32,268 L 58,261"
-       id="path1884" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.33333px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;direction:ltr;text-anchor:start;fill:#000000;fill-opacity:0;stroke:#d014e7;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.98431;stop-color:#000000"
@@ -721,38 +750,16 @@
          x="-135.46"
          y="270.42"
          id="tspan2226"
-         style="fill:#000000;fill-opacity:1;stroke:none">angle = angle - 90 // In degrees</tspan><tspan
+         style="fill:#000000;fill-opacity:1;stroke:none">angle = angle - 90 <tspan
+   style="fill:#a1a1a1;fill-opacity:1"
+   id="tspan3015">// In degrees</tspan></tspan><tspan
          sodipodi:role="line"
          x="-135.46"
          y="277.08"
          id="tspan2228"
-         style="fill:#000000;fill-opacity:1;stroke:none">angle = angle - (PI / 2)</tspan></text>
-    <circle
-       style="fill:none;fill-opacity:0;stroke:#f36827;stroke-width:0.5;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker3851);stop-color:#000000"
-       id="path1886"
-       sodipodi:type="arc"
-       sodipodi:cx="33.341"
-       sodipodi:cy="149.59"
-       sodipodi:rx="10"
-       sodipodi:ry="10"
-       sodipodi:start="6.0214"
-       sodipodi:end="1.309"
-       sodipodi:open="true"
-       sodipodi:arc-type="arc"
-       d="M 43,147 A 10,10 0 0 1 35.929,159.25" />
-    <circle
-       style="fill:none;fill-opacity:0;stroke:#f36827;stroke-width:0.5;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#TriangleInM);stop-color:#000000"
-       id="circle2332"
-       sodipodi:type="arc"
-       sodipodi:cx="32.412"
-       sodipodi:cy="269.34"
-       sodipodi:rx="10"
-       sodipodi:ry="10"
-       sodipodi:start="6.0214"
-       sodipodi:end="1.309"
-       sodipodi:open="true"
-       sodipodi:arc-type="arc"
-       d="M 42.071,266.75 A 10,10 0 0 1 35,279" />
+         style="fill:#000000;fill-opacity:1;stroke:none">angle = angle - (PI / 2) <tspan
+   style="fill:#a1a1a1;fill-opacity:1"
+   id="tspan3017">// In radian</tspan></tspan></text>
     <circle
        style="fill:#000000;fill-opacity:1;stroke-linecap:round;stop-color:#000000"
        id="circle3329"
@@ -760,7 +767,7 @@
        cy="327"
        r="1" />
     <path
-       style="fill:#000000;fill-opacity:1;stroke:#ed124f;stroke-width:10;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.5;stop-color:#000000"
+       style="fill:#000000;fill-opacity:1;stroke:#f47196;stroke-width:10;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.50196;stop-color:#000000"
        d="M 32,327 L 58,320"
        id="path3335" />
     <circle
@@ -928,9 +935,47 @@
          style="fill:#000000;fill-opacity:1;stroke:none"
          id="tspan3570" /></text>
     <path
-       style="fill:#000000;fill-opacity:1;stroke:#5772a4;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.98431;stop-color:#000000"
+       style="fill:#000000;fill-opacity:1;stroke:#5772a4;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:1,3;stroke-dashoffset:0;stroke-opacity:0.98431;stop-color:#000000"
        d="M -168,396 H 174"
        id="path3613" />
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:0.5, 1.50000000000000000;stroke-dashoffset:0;stop-color:#000000;font-variation-settings:normal;opacity:1;vector-effect:none;stroke-linecap:square;stroke-linejoin:miter;stroke-opacity:1;stop-opacity:1"
+       d="M 32,150 L 58,143"
+       id="path1068" />
+    <path
+       style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#f36827;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000;stop-opacity:1;marker-start:url(#marker1539)"
+       id="path1243"
+       sodipodi:type="arc"
+       sodipodi:cx="32"
+       sodipodi:cy="268"
+       sodipodi:rx="11"
+       sodipodi:ry="11"
+       sodipodi:start="6.0214"
+       sodipodi:end="1.309"
+       sodipodi:arc-type="arc"
+       d="M 42.625,265.15 A 11,11 0 0 1 34.847,278.63"
+       sodipodi:open="true" />
+    <path
+       style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#f36827;stroke-width:0.5;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000;stop-opacity:1;marker-end:url(#marker2757)"
+       id="path1757"
+       sodipodi:type="arc"
+       sodipodi:cx="32"
+       sodipodi:cy="150"
+       sodipodi:rx="11"
+       sodipodi:ry="11"
+       sodipodi:start="6.0214"
+       sodipodi:end="1.309"
+       sodipodi:arc-type="arc"
+       d="M 42.625,147.15 A 11,11 0 0 1 34.847,160.63"
+       sodipodi:open="true" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path1493"
+       id="use3007"
+       transform="rotate(-90,91,151)"
+       width="100%"
+       height="100%" />
   </g>
   <inkscape:templateinfo>
     <inkscape:name>alaki</inkscape:name>
