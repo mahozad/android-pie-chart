@@ -273,7 +273,6 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
      * (differencing the gaps and the hole from the pie and the overlay path).
      */
     override fun onDraw(canvas: Canvas) {
-        super.onDraw(canvas)
         /**
          * The android.graphics framework divides drawing into two areas:
          * - What to draw, handled by Canvas
