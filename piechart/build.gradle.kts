@@ -52,6 +52,12 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
+            /**
+             * NOTE: To remove Log statements in the application release,
+             *  use the *proguard-android-optimize.txt* version.
+             *  See [here](https://stackoverflow.com/q/33067142) and
+             *      [here](https://stackoverflow.com/q/2446248/) for more information
+             */
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
