@@ -8,15 +8,29 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="343.86"
-   height="527"
-   viewBox="0 0 343.86 527"
+   width="341.41"
+   height="624.1"
+   viewBox="0 0 341.41 624.1"
    version="1.1"
    id="svg8"
    inkscape:version="1.0.2 (e86c870879, 2021-01-15, custom)"
    sodipodi:docname="implementing-the-gap.svg">
   <defs
      id="defs2">
+    <marker
+       style="overflow:visible"
+       id="marker3851"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="TriangleOutM"
+       inkscape:isstock="true">
+      <path
+         transform="scale(0.4)"
+         style="fill:#f36827;fill-opacity:1;fill-rule:evenodd;stroke:#f36827;stroke-width:1pt;stroke-opacity:1"
+         d="M 5.77,0 L -2.88,5 V -5 Z"
+         id="path3849" />
+    </marker>
     <marker
        style="overflow:visible"
        id="marker3359"
@@ -69,7 +83,7 @@
        inkscape:isstock="true">
       <path
          transform="scale(-0.4)"
-         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1"
+         style="fill:#f36827;fill-opacity:1;fill-rule:evenodd;stroke:#f36827;stroke-width:1pt;stroke-opacity:1"
          d="M 5.77,0 L -2.88,5 V -5 Z"
          id="path995" />
     </marker>
@@ -213,24 +227,9 @@
        inkscape:isstock="true">
       <path
          transform="matrix(0.2,0,0,0.2,-0.6,0)"
-         style="fill:#143be7;fill-opacity:0.98431;fill-rule:evenodd;stroke:#143be7;stroke-width:1pt;stroke-opacity:0.98431"
+         style="fill:#f36827;fill-opacity:1;fill-rule:evenodd;stroke:#f36827;stroke-width:1pt;stroke-opacity:1"
          d="M 5.77,0 L -2.88,5 V -5 Z"
          id="path1025-0" />
-    </marker>
-    <marker
-       style="overflow:visible"
-       id="marker2336"
-       refX="0"
-       refY="0"
-       orient="auto"
-       inkscape:stockid="TriangleInS"
-       inkscape:isstock="true"
-       inkscape:collect="always">
-      <path
-         transform="scale(-0.2)"
-         style="fill:#143be7;fill-opacity:0.98431;fill-rule:evenodd;stroke:#143be7;stroke-width:1pt;stroke-opacity:0.98431"
-         d="M 5.77,0 L -2.88,5 V -5 Z"
-         id="path2334" />
     </marker>
   </defs>
   <sodipodi:namedview
@@ -240,13 +239,13 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="100.74"
-     inkscape:cx="202.32"
-     inkscape:cy="307.71"
+     inkscape:zoom="1.534"
+     inkscape:cx="143.72"
+     inkscape:cy="223.55"
      inkscape:document-units="px"
      inkscape:current-layer="layer2"
      inkscape:document-rotation="0"
-     showgrid="true"
+     showgrid="false"
      units="px"
      lock-margins="true"
      inkscape:pagecheckerboard="false"
@@ -264,7 +263,7 @@
      inkscape:window-maximized="1"
      inkscape:snap-object-midpoints="true"
      inkscape:snap-center="true"
-     inkscape:snap-grids="false"
+     inkscape:snap-grids="true"
      inkscape:object-paths="false"
      fit-margin-top="32"
      fit-margin-left="32"
@@ -275,7 +274,7 @@
        id="grid10"
        dotted="false"
        empspacing="4"
-       originx="170.13"
+       originx="167.68"
        originy="95" />
   </sodipodi:namedview>
   <metadata
@@ -294,13 +293,119 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="vector"
-     transform="translate(170.13,95)">
-    <circle
-       style="fill:#1daf00;fill-opacity:0.45794;stroke-linecap:round;stop-color:#000000"
-       id="path833"
-       cx="32"
-       cy="32"
-       r="27" />
+     transform="translate(167.68,95)">
+    <use
+       x="0"
+       y="0"
+       xlink:href="#circle1427"
+       id="use1092"
+       transform="translate(0,363)"
+       width="100%"
+       height="100%" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path1431"
+       id="use1094"
+       transform="translate(0,363)"
+       width="100%"
+       height="100%" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#circle1427"
+       id="use1088"
+       transform="translate(0,304)"
+       width="100%"
+       height="100%" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path1431"
+       id="use1090"
+       transform="translate(0,304)"
+       width="100%"
+       height="100%" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#circle1427"
+       id="use1078"
+       transform="translate(0,245)"
+       width="100%"
+       height="100%" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path1431"
+       id="use1080"
+       transform="translate(0,245)"
+       width="100%"
+       height="100%" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#circle1427"
+       id="use1074"
+       transform="translate(59,187)"
+       width="100%"
+       height="100%" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path1431"
+       id="use1076"
+       transform="translate(59,187)"
+       width="100%"
+       height="100%" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#circle1427"
+       id="use1070"
+       transform="translate(0,186)"
+       width="100%"
+       height="100%" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path1431"
+       id="use1072"
+       transform="translate(0,186)"
+       width="100%"
+       height="100%" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#circle1427"
+       id="use1066"
+       transform="translate(0,127)"
+       width="100%"
+       height="100%" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path1431"
+       id="use1068"
+       transform="translate(0,127)"
+       width="100%"
+       height="100%" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#circle1427"
+       id="use1062"
+       transform="translate(-0.04005,68)"
+       width="100%"
+       height="100%" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path1431"
+       id="use1064"
+       transform="translate(-0.04005,68)"
+       width="100%"
+       height="100%" />
     <circle
        style="fill:#000000;fill-opacity:1;stroke-linecap:round;stop-color:#000000"
        id="path835"
@@ -308,19 +413,7 @@
        cy="32"
        r="1" />
     <path
-       style="fill:#1eabda;fill-opacity:0.45794;stroke-linecap:round;stop-color:#000000"
-       id="path837"
-       sodipodi:type="arc"
-       sodipodi:cx="32"
-       sodipodi:cy="32"
-       sodipodi:rx="27"
-       sodipodi:ry="27"
-       sodipodi:start="4.7124"
-       sodipodi:end="6.0214"
-       sodipodi:arc-type="slice"
-       d="M 32,5 A 27,27 0 0 1 58.08,25.012 L 32,32 Z" />
-    <path
-       style="fill:none;fill-opacity:0.45794;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleOutM);stop-color:#000000"
+       style="fill:none;fill-opacity:0.6285;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleOutM);stop-color:#000000"
        d="M 30,31 C 6,17.144 5,41 -23,41"
        id="path857"
        sodipodi:nodetypes="cc" />
@@ -336,35 +429,17 @@
          id="tspan1241"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.33333px;font-family:Roboto;-inkscape-font-specification:Roboto;direction:ltr;fill:#000000;fill-opacity:1;stroke:none">(centerX,centerY)</tspan></text>
     <circle
-       style="fill:#1daf00;fill-opacity:0.45794;stroke-linecap:round;stop-color:#000000"
-       id="circle1249"
-       cx="32"
-       cy="91"
-       r="27" />
-    <circle
        style="fill:#000000;fill-opacity:1;stroke-linecap:round;stop-color:#000000"
        id="circle1251"
        cx="32"
        cy="91"
        r="1" />
     <path
-       style="fill:#1eabda;fill-opacity:0.45794;stroke-linecap:round;stop-color:#000000"
-       id="path1253"
-       sodipodi:type="arc"
-       sodipodi:cx="32"
-       sodipodi:cy="91"
-       sodipodi:rx="27"
-       sodipodi:ry="27"
-       sodipodi:start="4.7124"
-       sodipodi:end="6.0214"
-       sodipodi:arc-type="slice"
-       d="M 32,64 A 27,27 0 0 1 58.08,84.012 L 32,91 Z" />
-    <path
-       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-linecap:round;stroke-opacity:1;stop-color:#000000"
+       style="fill:#000000;fill-opacity:1;stroke:#0a5a73;stroke-linecap:butt;stroke-opacity:1;stop-color:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none"
        d="M 32,32 V 5"
        id="path1337" />
     <path
-       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-linecap:round;stroke-opacity:1;stop-color:#000000"
+       style="fill:#000000;fill-opacity:1;stroke:#0a5a73;stroke-linecap:butt;stroke-opacity:1;stop-color:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none"
        d="M 32,32 L 58,25"
        id="path1339" />
     <text
@@ -400,56 +475,38 @@
          x="-34.859"
          y="92.188">Move to (centerX,centerY)</tspan></text>
     <circle
-       style="fill:#1daf00;fill-opacity:0.45794;stroke-linecap:round;stop-color:#000000"
-       id="circle1407"
-       cx="32"
-       cy="150"
-       r="27" />
-    <circle
        style="fill:#000000;fill-opacity:1;stroke-linecap:round;stop-color:#000000"
        id="circle1409"
        cx="32"
        cy="150"
        r="1" />
     <path
-       style="fill:#1eabda;fill-opacity:0.45794;stroke-linecap:round;stop-color:#000000"
-       id="path1411"
-       sodipodi:type="arc"
-       sodipodi:cx="32"
-       sodipodi:cy="150"
-       sodipodi:rx="27"
-       sodipodi:ry="27"
-       sodipodi:start="4.7124"
-       sodipodi:end="6.0214"
-       sodipodi:arc-type="slice"
-       d="M 32,123 A 27,27 0 0 1 58.08,143.01 L 32,150 Z" />
-    <path
-       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
        d="M 32,150 L 39,176"
        id="path1415" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.33333px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;direction:rtl;text-anchor:start;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
-       x="-133.46"
+       x="-135.46"
        y="146.75"
        id="text1419"><tspan
          sodipodi:role="line"
          id="tspan1417"
-         x="-133.46"
+         x="-135.46"
          y="146.75"
          style="text-align:start;direction:ltr;text-anchor:start;stroke:none">Find the angle of the bottom side of the gap rectangle:</tspan><tspan
          sodipodi:role="line"
-         x="-133.46"
+         x="-135.46"
          y="153.42"
          style="text-align:start;direction:ltr;text-anchor:start;stroke:none"
          id="tspan1421">angle = endAngle + 90 // In degrees</tspan><tspan
          sodipodi:role="line"
-         x="-133.46"
+         x="-135.46"
          y="160.08"
          style="text-align:start;direction:ltr;text-anchor:start;stroke:none"
          id="tspan1423">angle = endAngle.toRadian() + PI / 2 // In radian</tspan></text>
     <circle
-       style="fill:#1daf00;fill-opacity:0.45794;stroke-linecap:round;stop-color:#000000"
+       style="fill:#c0d99f;fill-opacity:1;stroke-linecap:round;stop-color:#000000"
        id="circle1427"
        cx="32"
        cy="-36"
@@ -461,7 +518,7 @@
        cy="-36"
        r="1" />
     <path
-       style="fill:#1eabda;fill-opacity:0.45794;stroke-linecap:round;stop-color:#000000"
+       style="fill:#66f3de;fill-opacity:0.6285;stroke-linecap:round;stop-color:#000000"
        id="path1431"
        sodipodi:type="arc"
        sodipodi:cx="32"
@@ -487,53 +544,35 @@
          x="-89.154"
          y="-34.473">Goal: make the gap (the red rectangle)</tspan></text>
     <circle
-       style="fill:#1daf00;fill-opacity:0.45794;stroke-linecap:round;stop-color:#000000"
-       id="circle1407-9"
-       cx="91"
-       cy="151"
-       r="27" />
-    <circle
        style="fill:#000000;fill-opacity:1;stroke-linecap:round;stop-color:#000000"
        id="circle1409-2"
        cx="91"
        cy="151"
        r="1" />
     <path
-       style="fill:#1eabda;fill-opacity:0.45794;stroke-linecap:round;stop-color:#000000"
-       id="path1411-6"
-       sodipodi:type="arc"
-       sodipodi:cx="91"
-       sodipodi:cy="151"
-       sodipodi:rx="27"
-       sodipodi:ry="27"
-       sodipodi:start="4.7124"
-       sodipodi:end="6.0214"
-       sodipodi:arc-type="slice"
-       d="M 91,124 A 27,27 0 0 1 117.08,144.01 L 91,151 Z" />
-    <path
-       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
        d="M 91,151 L 98.004,177"
        id="path1415-8" />
     <path
-       style="fill:#000000;fill-opacity:1;stroke:#ed124f;stroke-width:1;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:1, 1;stroke-dashoffset:0;stroke-opacity:0.5;stop-color:#000000"
+       style="fill:#000000;fill-opacity:1;stroke:#ed124f;stroke-width:0.5;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:0.5,0.5;stroke-dashoffset:0;stroke-opacity:0.5;stop-color:#000000"
        d="M 91,151 H 139"
        id="path1493" />
     <path
-       style="fill:none;fill-opacity:1;stroke:#d212ed;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
+       style="fill:none;fill-opacity:1;stroke:#eb124e;stroke-width:0.5;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.50196;stop-color:#000000"
        id="path1495"
        sodipodi:type="arc"
        sodipodi:cx="91"
        sodipodi:cy="151"
-       sodipodi:rx="16.503"
-       sodipodi:ry="16.503"
+       sodipodi:rx="12"
+       sodipodi:ry="12"
        sodipodi:start="0"
        sodipodi:end="1.309"
        sodipodi:arc-type="arc"
-       d="M 107.5,151 A 16.503,16.503 0 0 1 95.271,166.94"
+       d="M 103,151 A 12,12 0 0 1 94.106,162.59"
        sodipodi:open="true" />
     <path
-       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker1265);stop-color:#000000"
-       d="M 106,162 C 117,162 109,167 124,167"
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker1265);stop-color:#000000"
+       d="M 103,159 C 113,161 109,167 124,167"
        id="path1497"
        sodipodi:nodetypes="cc" />
     <text
@@ -572,7 +611,7 @@
       </g>
     </g>
     <path
-       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker1561);stop-color:#000000"
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker1561);stop-color:#000000"
        d="M -37,16 C -58,13 -56,26 -65,26"
        id="path1551"
        sodipodi:nodetypes="cc" />
@@ -588,31 +627,13 @@
          y="26.88"
          style="fill:#000000;fill-opacity:1;stroke:none">gap</tspan></text>
     <circle
-       style="fill:#1daf00;fill-opacity:0.45794;stroke-linecap:round;stop-color:#000000"
-       id="circle1621"
-       cx="32"
-       cy="209"
-       r="27" />
-    <circle
        style="fill:#000000;fill-opacity:1;stroke-linecap:round;stop-color:#000000"
        id="circle1623"
        cx="32"
        cy="209"
        r="1" />
     <path
-       style="fill:#1eabda;fill-opacity:0.45794;stroke-linecap:round;stop-color:#000000"
-       id="path1625"
-       sodipodi:type="arc"
-       sodipodi:cx="32"
-       sodipodi:cy="209"
-       sodipodi:rx="27"
-       sodipodi:ry="27"
-       sodipodi:start="4.7124"
-       sodipodi:end="6.0214"
-       sodipodi:arc-type="slice"
-       d="M 32,182 A 27,27 0 0 1 58.08,202.01 L 32,209 Z" />
-    <path
-       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
        d="M 32,209 L 39.004,235"
        id="path1627" />
     <path
@@ -620,63 +641,57 @@
        d="M 32,209 L 58,202"
        id="path1435-6-7" />
     <circle
-       style="fill:#d212ed;fill-opacity:1;stroke-linecap:round;stop-color:#000000"
+       style="fill:#1225ed;fill-opacity:1;stroke-linecap:round;stop-color:#000000"
        id="circle1623-1"
        cx="33.301"
        cy="213.83"
        r="1" />
     <path
-       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker1641);stop-color:#000000"
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker1641);stop-color:#000000"
        d="M 30,214 C 13,214 10,201 -12,201"
        id="path1813"
        sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.33333px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;direction:ltr;text-anchor:start;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
-       x="-135.51"
+       x="-135.23"
        y="190.46"
        id="text1829"><tspan
          sodipodi:role="line"
          id="tspan1827"
-         x="-135.51"
+         x="-135.23"
          y="190.46"
          style="fill:#000000;fill-opacity:1;stroke:none">Find position of the bottom right corner of the gap:</tspan><tspan
          sodipodi:role="line"
-         x="-135.51"
+         x="-135.23"
          y="197.13"
          style="fill:#000000;fill-opacity:1;stroke:none"
-         id="tspan1833">x = rcos(θ) = gap * cos(angle)</tspan><tspan
+         id="tspan1833">x = rcos(θ) = gap / 2 * cos(angle)</tspan><tspan
          sodipodi:role="line"
-         x="-135.51"
+         x="-135.23"
          y="203.79"
          style="fill:#000000;fill-opacity:1;stroke:none"
-         id="tspan1837">y = rsin(θ) = gap * sin(angle)</tspan><tspan
+         id="tspan1837">y = rsin(θ) = gap / 2 * sin(angle)</tspan><tspan
          sodipodi:role="line"
-         x="-135.51"
+         x="-135.23"
          y="210.46"
          style="fill:#000000;fill-opacity:1;stroke:none"
          id="tspan1839">This is for when the origin is at (0,0) but we were in</tspan><tspan
          sodipodi:role="line"
-         x="-135.51"
+         x="-135.23"
          y="217.13"
          style="fill:#000000;fill-opacity:1;stroke:none"
          id="tspan1841">(centerX,centerY) so adjust the x and y:</tspan><tspan
          sodipodi:role="line"
-         x="-135.51"
+         x="-135.23"
          y="223.79"
          style="fill:#000000;fill-opacity:1;stroke:none"
          id="tspan1843">x = x + centerX</tspan><tspan
          sodipodi:role="line"
-         x="-135.51"
+         x="-135.23"
          y="230.46"
          style="fill:#000000;fill-opacity:1;stroke:none"
          id="tspan1845">y= y + centerY</tspan></text>
-    <circle
-       style="fill:#1daf00;fill-opacity:0.45794;stroke-linecap:round;stop-color:#000000"
-       id="circle1870"
-       cx="32"
-       cy="268"
-       r="27" />
     <circle
        style="fill:#000000;fill-opacity:1;stroke-linecap:round;stop-color:#000000"
        id="circle1872"
@@ -684,61 +699,49 @@
        cy="268"
        r="1" />
     <path
-       style="fill:#1eabda;fill-opacity:0.45794;stroke-linecap:round;stop-color:#000000"
-       id="path1874"
-       sodipodi:type="arc"
-       sodipodi:cx="32"
-       sodipodi:cy="268"
-       sodipodi:rx="27"
-       sodipodi:ry="27"
-       sodipodi:start="4.7124"
-       sodipodi:end="6.0214"
-       sodipodi:arc-type="slice"
-       d="M 32,241 A 27,27 0 0 1 58.08,261.01 L 32,268 Z" />
-    <path
-       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
        d="M 32,268 L 39.004,294"
        id="path1876" />
     <path
-       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
        d="M 32,268 L 58,261"
        id="path1884" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.33333px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;direction:ltr;text-anchor:start;fill:#000000;fill-opacity:0;stroke:#d014e7;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.98431;stop-color:#000000"
-       x="-137.91"
+       x="-135.46"
        y="263.75"
        id="text2224"><tspan
          sodipodi:role="line"
          id="tspan2222"
-         x="-137.91"
+         x="-135.46"
          y="263.75"
          style="fill:#000000;fill-opacity:1;stroke:none">Now, update the angle to the next side of the gap:</tspan><tspan
          sodipodi:role="line"
-         x="-137.91"
+         x="-135.46"
          y="270.42"
          id="tspan2226"
          style="fill:#000000;fill-opacity:1;stroke:none">angle = angle - 90 // In degrees</tspan><tspan
          sodipodi:role="line"
-         x="-137.91"
+         x="-135.46"
          y="277.08"
          id="tspan2228"
          style="fill:#000000;fill-opacity:1;stroke:none">angle = angle - (PI / 2)</tspan></text>
     <circle
-       style="fill:none;fill-opacity:0;stroke:#143be7;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.98431;marker-end:url(#EmptyTriangleOutS-8);stop-color:#000000"
+       style="fill:none;fill-opacity:0;stroke:#f36827;stroke-width:0.5;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker3851);stop-color:#000000"
        id="path1886"
        sodipodi:type="arc"
-       sodipodi:cx="32.412"
-       sodipodi:cy="150.34"
+       sodipodi:cx="33.341"
+       sodipodi:cy="149.59"
        sodipodi:rx="10"
        sodipodi:ry="10"
        sodipodi:start="6.0214"
        sodipodi:end="1.309"
        sodipodi:open="true"
        sodipodi:arc-type="arc"
-       d="M 42.071,147.75 A 10,10 0 0 1 35,160" />
+       d="M 43,147 A 10,10 0 0 1 35.929,159.25" />
     <circle
-       style="fill:none;fill-opacity:0;stroke:#143be7;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.98431;marker-start:url(#marker2336);stop-color:#000000"
+       style="fill:none;fill-opacity:0;stroke:#f36827;stroke-width:0.5;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#TriangleInM);stop-color:#000000"
        id="circle2332"
        sodipodi:type="arc"
        sodipodi:cx="32.412"
@@ -751,89 +754,71 @@
        sodipodi:arc-type="arc"
        d="M 42.071,266.75 A 10,10 0 0 1 35,279" />
     <circle
-       style="fill:#1daf00;fill-opacity:0.45794;stroke-linecap:round;stop-color:#000000"
-       id="circle3327"
-       cx="32"
-       cy="327"
-       r="27" />
-    <circle
        style="fill:#000000;fill-opacity:1;stroke-linecap:round;stop-color:#000000"
        id="circle3329"
        cx="32"
        cy="327"
        r="1" />
     <path
-       style="fill:#1eabda;fill-opacity:0.45794;stroke-linecap:round;stop-color:#000000"
-       id="path3331"
-       sodipodi:type="arc"
-       sodipodi:cx="32"
-       sodipodi:cy="327"
-       sodipodi:rx="27"
-       sodipodi:ry="27"
-       sodipodi:start="4.7124"
-       sodipodi:end="6.0214"
-       sodipodi:arc-type="slice"
-       d="M 32,300 A 27,27 0 0 1 58.08,320.01 L 32,327 Z" />
-    <path
        style="fill:#000000;fill-opacity:1;stroke:#ed124f;stroke-width:10;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.5;stop-color:#000000"
        d="M 32,327 L 58,320"
        id="path3335" />
     <circle
-       style="fill:#d212ed;fill-opacity:1;stroke-linecap:round;stop-color:#000000"
+       style="fill:#1225ed;fill-opacity:1;stroke-linecap:round;stop-color:#000000"
        id="circle3337"
        cx="59"
        cy="325"
        r="1" />
     <path
-       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker3359);stop-color:#000000"
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker3359);stop-color:#000000"
        d="M 57,328 C 29,363 18,319 -12,319"
        id="path3339"
        sodipodi:nodetypes="cc" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.33333px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;direction:ltr;text-anchor:start;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
-       x="-135.51"
+       x="-135.23"
        y="308.46"
        id="text3355"><tspan
          sodipodi:role="line"
          id="tspan3341"
-         x="-135.51"
+         x="-135.23"
          y="308.46"
          style="fill:#000000;fill-opacity:1;stroke:none">Find position of the top right corner of the gap:</tspan><tspan
          sodipodi:role="line"
-         x="-135.51"
+         x="-135.23"
          y="315.13"
          style="fill:#000000;fill-opacity:1;stroke:none"
          id="tspan3343">x = rcos(θ) = pieRadius * cos(angle) + x</tspan><tspan
          sodipodi:role="line"
-         x="-135.51"
+         x="-135.23"
          y="321.79"
          style="fill:#000000;fill-opacity:1;stroke:none"
          id="tspan3345">y = rsin(θ) = pieRadius * sin(angle) + y</tspan><tspan
          sodipodi:role="line"
-         x="-135.51"
+         x="-135.23"
          y="328.46"
          style="fill:#000000;fill-opacity:1;stroke:none"
          id="tspan3347">This is for when the origin is at (0,0) but we were in</tspan><tspan
          sodipodi:role="line"
-         x="-135.51"
+         x="-135.23"
          y="335.13"
          style="fill:#000000;fill-opacity:1;stroke:none"
          id="tspan3353">bottom right corner so adjusted the x and y with</tspan><tspan
          sodipodi:role="line"
-         x="-135.51"
+         x="-135.23"
          y="341.79"
          style="fill:#000000;fill-opacity:1;stroke:none"
          id="tspan3540">adding the corner coordinates (x,y).</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.33333px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;direction:ltr;text-anchor:start;fill:none;fill-opacity:1;stroke:#143be7;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.98431;stop-color:#000000"
-       x="-132.92"
+       x="-135.61"
        y="377.49"
        id="text3544"><tspan
          sodipodi:role="line"
          id="tspan3542"
-         x="-132.92"
+         x="-135.61"
          y="377.49"
          style="fill:#000000;fill-opacity:1;stroke:none">Repeat the prevous two steps for other sides</tspan></text>
     <text
@@ -847,7 +832,7 @@
          x="48"
          y="400"> </tspan></text>
     <path
-       style="fill:#000000;fill-opacity:1;stroke:#e7d714;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.98431;stop-color:#000000"
+       style="fill:#000000;fill-opacity:1;stroke:#420ca8;stroke-width:0.5;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.98431;stop-color:#000000"
        d="M 32,32 L 55,46"
        id="path3550" />
     <text
@@ -861,6 +846,91 @@
          x="58.305"
          y="49.458"
          style="stroke:none">pieRadius</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.33333px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;direction:ltr;text-anchor:start;fill:none;fill-opacity:1;stroke:#143be7;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.98431;stop-color:#000000"
+       x="-135"
+       y="415.46"
+       id="text3566"><tspan
+         sodipodi:role="line"
+         id="tspan3564"
+         x="-135"
+         y="415.46"
+         style="fill:#000000;fill-opacity:1;stroke:none">This places the gap on the middle of</tspan><tspan
+         sodipodi:role="line"
+         x="-135"
+         y="422.13"
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="tspan3568">the previous slice and next slice.</tspan><tspan
+         sodipodi:role="line"
+         x="-135"
+         y="428.79"
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="tspan3578">To place the whole gap on the next or previous slice,</tspan><tspan
+         sodipodi:role="line"
+         x="-135"
+         y="435.46"
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="tspan3594">just modify the first step that was for the</tspan><tspan
+         sodipodi:role="line"
+         x="-135"
+         y="442.13"
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="tspan3596">bottom right corner.</tspan><tspan
+         sodipodi:role="line"
+         x="-135"
+         y="448.79"
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="tspan3611" /><tspan
+         sodipodi:role="line"
+         x="-135"
+         y="455.46"
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="tspan3602">for placing on next slice:</tspan><tspan
+         sodipodi:role="line"
+         x="-135"
+         y="462.13"
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="tspan3584">x = gap * cos(angle) + centerX</tspan><tspan
+         sodipodi:role="line"
+         x="-135"
+         y="468.79"
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="tspan3586">y = gap * sin(angle) + centerY</tspan><tspan
+         sodipodi:role="line"
+         x="-135"
+         y="475.46"
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="tspan3600" /><tspan
+         sodipodi:role="line"
+         x="-135"
+         y="482.13"
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="tspan3609">for placing on previous slice:</tspan><tspan
+         sodipodi:role="line"
+         x="-135"
+         y="488.79"
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="tspan3590">x = centerX</tspan><tspan
+         sodipodi:role="line"
+         x="-135"
+         y="495.46"
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="tspan3592">y = centerY</tspan><tspan
+         sodipodi:role="line"
+         x="-135"
+         y="502.13"
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="tspan3582" /><tspan
+         sodipodi:role="line"
+         x="-135"
+         y="508.79"
+         style="fill:#000000;fill-opacity:1;stroke:none"
+         id="tspan3570" /></text>
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:#5772a4;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.98431;stop-color:#000000"
+       d="M -168,396 H 174"
+       id="path3613" />
   </g>
   <inkscape:templateinfo>
     <inkscape:name>alaki</inkscape:name>
