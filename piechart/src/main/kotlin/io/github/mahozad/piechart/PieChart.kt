@@ -117,8 +117,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         Slice(0.43f, ContextCompat.getColor(context, android.R.color.holo_green_dark)),
         Slice(0.21f, ContextCompat.getColor(context, android.R.color.holo_orange_dark)),
         Slice(0.19f, ContextCompat.getColor(context, android.R.color.holo_blue_dark)),
-        Slice(0.15f, ContextCompat.getColor(context, android.R.color.holo_red_light)),
-        Slice(0.02f, ContextCompat.getColor(context, android.R.color.holo_purple))
+        Slice(0.14f, ContextCompat.getColor(context, android.R.color.holo_red_light)),
+        Slice(0.03f, ContextCompat.getColor(context, android.R.color.holo_purple))
     )
     private val pie = Path()
     private val clip = Path()
