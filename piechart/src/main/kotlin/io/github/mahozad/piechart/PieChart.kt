@@ -259,8 +259,26 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
         var currentAngle = startAngle.toFloat()
         for (slice in slices) {
-            val gradient = RadialGradient(centerX, centerY, pieRadius, slice.color, slice.colorEnd, Shader.TileMode.MIRROR)
-            mainPaint.shader = gradient
+            val radialGradient = RadialGradient(centerX, centerY, pieRadius, slice.color, slice.colorEnd, Shader.TileMode.MIRROR)
+
+
+
+            val colors = slices.map { it.color }.plus(slices[0].color).toIntArray()
+            val positions = slices.map { it.fraction }.scan(0f) { acc, value -> acc + value }.toFloatArray()
+            val sweepGradient = SweepGradient(centerX, centerY, colors, positions)
+            // Fix the rotation start
+            val sweepGradientDefaultStartAngle = 0f
+            val rotate = startAngle - sweepGradientDefaultStartAngle
+            val gradientMatrix = Matrix()
+            gradientMatrix.preRotate(rotate, centerX, centerY)
+            sweepGradient.setLocalMatrix(gradientMatrix)
+
+
+
+            mainPaint.shader = sweepGradient
+
+
+
             val sliceSweep = slice.fraction * 360
             pie.reset()
             pie.moveTo(centerX, centerY)
