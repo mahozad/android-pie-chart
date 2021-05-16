@@ -339,7 +339,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             currentAngle += sliceSweep
         }
 
-        mainPaint.color = ContextCompat.getColor(context, android.R.color.black)
+        mainPaint.color = ContextCompat.getColor(context, android.R.color.black) // or better Color.BLACK
         mainPaint.alpha = (overlayAlpha * 255).toInt()
         canvas.drawPath(overlay, mainPaint)
     }
