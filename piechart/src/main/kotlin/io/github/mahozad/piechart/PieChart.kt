@@ -261,10 +261,12 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         for (slice in slices) {
             val radialGradient = RadialGradient(centerX, centerY, pieRadius, slice.color, slice.colorEnd, Shader.TileMode.MIRROR)
 
-
-
-            val colors = slices.map { it.color }.plus(slices[0].color).toIntArray()
-            val positions = slices.map { it.fraction }.scan(0f) { acc, value -> acc + value }.toFloatArray()
+            val colors = slices.map {  listOf(it.color, it.colorEnd) }.flatten().toIntArray()
+            val positions = slices.map { it.fraction }
+                .scan(listOf(0f)) { acc, value -> listOf(acc.first() + value, acc.first() + value) }
+                .flatten()
+                .dropLast(1)
+                .toFloatArray()
             val sweepGradient = SweepGradient(centerX, centerY, colors, positions)
             // Fix the rotation start
             val sweepGradientDefaultStartAngle = 0f
