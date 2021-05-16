@@ -10,6 +10,7 @@ import androidx.annotation.FloatRange
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.minus
 import io.github.mahozad.piechart.PieChart.Direction.CLOCKWISE
+import io.github.mahozad.piechart.PieChart.GradientType.RADIAL
 import java.text.NumberFormat
 import kotlin.math.PI
 import kotlin.math.cos
@@ -24,6 +25,7 @@ const val DEFAULT_OVERLAY_ALPHA = 0.25f
 const val DEFAULT_GAP = 8f /* px */
 const val DEFAULT_LABEL_SIZE = 24f /* sp */
 const val DEFAULT_LABEL_OFFSET = 0.75f
+val defaultGradientType = RADIAL
 val defaultDrawingDirection = CLOCKWISE
 
 /**
@@ -68,6 +70,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     )
 
     enum class Direction { CLOCKWISE, COUNTER_CLOCKWISE }
+    enum class GradientType { RADIAL, SWEEP }
 
     var startAngle = DEFAULT_START_ANGLE
         set(angle) {
@@ -104,6 +107,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             field = offset
             invalidate()
         }
+    var gradientType = defaultGradientType
     var drawingDirection = defaultDrawingDirection
     val slices = mutableListOf(
         Slice(0.43f, ContextCompat.getColor(context, android.R.color.holo_green_dark)),
@@ -139,6 +143,9 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 gap = getDimension(R.styleable.PieChart_gap, DEFAULT_GAP)
                 labelSize = getDimension(R.styleable.PieChart_labelSize, spToPx(DEFAULT_LABEL_SIZE))
                 labelOffset = getFloat(R.styleable.PieChart_labelOffset, DEFAULT_LABEL_OFFSET)
+                gradientType = GradientType.values()[
+                        getInt(R.styleable.PieChart_gradientType, defaultGradientType.ordinal)
+                ]
                 drawingDirection = Direction.values()[
                         getInt(R.styleable.PieChart_drawingDirection, defaultDrawingDirection.ordinal)
                 ]
@@ -259,28 +266,27 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
         var currentAngle = startAngle.toFloat()
         for (slice in slices) {
-            val radialGradient = RadialGradient(centerX, centerY, pieRadius, slice.color, slice.colorEnd, Shader.TileMode.MIRROR)
 
-            val colors = slices.map {  listOf(it.color, it.colorEnd) }.flatten().toIntArray()
-            val positions = slices.map { it.fraction }
-                .scan(listOf(0f)) { acc, value -> listOf(acc.first() + value, acc.first() + value) }
-                .flatten()
-                .dropLast(1)
-                .toFloatArray()
-            val sweepGradient = SweepGradient(centerX, centerY, colors, positions)
-            // Fix the rotation start
-            val sweepGradientDefaultStartAngle = 0f
-            val rotate = startAngle - sweepGradientDefaultStartAngle
-            val gradientMatrix = Matrix()
-            gradientMatrix.preRotate(rotate, centerX, centerY)
-            sweepGradient.setLocalMatrix(gradientMatrix)
+            val gradient = if (gradientType == RADIAL) {
+                RadialGradient(centerX, centerY, pieRadius, slice.color, slice.colorEnd, Shader.TileMode.MIRROR)
+            } else {
+                val colors = slices.map {  listOf(it.color, it.colorEnd) }.flatten().toIntArray()
+                val positions = slices.map { it.fraction }
+                    .scan(listOf(0f)) { acc, value -> listOf(acc.first() + value, acc.first() + value) }
+                    .flatten()
+                    .dropLast(1)
+                    .toFloatArray()
+                val sweepGradient = SweepGradient(centerX, centerY, colors, positions)
+                // Fix the rotation start
+                val sweepGradientDefaultStartAngle = 0f
+                val rotate = startAngle - sweepGradientDefaultStartAngle
+                val gradientMatrix = Matrix()
+                gradientMatrix.preRotate(rotate, centerX, centerY)
+                sweepGradient.setLocalMatrix(gradientMatrix)
+                sweepGradient
+            }
 
-
-
-            mainPaint.shader = sweepGradient
-
-
-
+            mainPaint.shader = gradient
             val sliceSweep = slice.fraction * 360
             pie.reset()
             pie.moveTo(centerX, centerY)

@@ -26,6 +26,10 @@
     <attr name="holeRatio" format="float"/>
     <attr name="overlayRatio" format="float"/>
     <attr name="overlayAlpha" format="float"/>
+    <attr name="gradientType" format="enum">
+      <enum name="radial" value="0"/>
+      <enum name="sweep" value="1"/>
+    </attr>
     <attr name="overlayColor" format="enum">
       <enum name="black" value="0"/>
       <enum name="white" value="1"/>
