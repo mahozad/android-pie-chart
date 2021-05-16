@@ -21,8 +21,8 @@ const val DEFAULT_START_ANGLE = -90
 const val DEFAULT_HOLE_RATIO = 0.25f
 const val DEFAULT_OVERLAY_RATIO = 0.55f
 const val DEFAULT_OVERLAY_ALPHA = 0.25f
-const val DEFAULT_GAP = 8f
-const val DEFAULT_LABEL_SIZE = 40f
+const val DEFAULT_GAP = 8f /* px */
+const val DEFAULT_LABEL_SIZE = 24f /* sp */
 const val DEFAULT_LABEL_OFFSET = 0.75f
 val defaultDrawingDirection = CLOCKWISE
 
@@ -93,8 +93,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             field = width
             invalidate()
         }
-    var labelSize = DEFAULT_LABEL_SIZE
-        set(size) {
+    var labelSize = spToPx(DEFAULT_LABEL_SIZE)
+        set(size /* px */) {
             field = size
             invalidate()
         }
@@ -136,7 +136,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 overlayRatio = getFloat(R.styleable.PieChart_overlayRatio, DEFAULT_OVERLAY_RATIO)
                 overlayAlpha = getFloat(R.styleable.PieChart_overlayAlpha, DEFAULT_OVERLAY_ALPHA)
                 gap = getDimension(R.styleable.PieChart_gap, DEFAULT_GAP)
-                labelSize = getDimension(R.styleable.PieChart_labelSize, DEFAULT_LABEL_SIZE)
+                labelSize = getDimension(R.styleable.PieChart_labelSize, spToPx(DEFAULT_LABEL_SIZE))
                 labelOffset = getFloat(R.styleable.PieChart_labelOffset, DEFAULT_LABEL_OFFSET)
                 drawingDirection = Direction.values()[
                         getInt(R.styleable.PieChart_drawingDirection, defaultDrawingDirection.ordinal)
@@ -215,6 +215,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         }
         return gaps
     }
+
+    private fun spToPx(sp: Float) = sp * resources.displayMetrics.scaledDensity
 
     private fun Float.toRadian() = (this / 180) * PI.toFloat()
 
