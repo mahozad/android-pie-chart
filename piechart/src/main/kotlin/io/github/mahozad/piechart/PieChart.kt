@@ -282,7 +282,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             val middleAngle = ((currentAngle + endAngle) / 2 % 360).toRadian()
             val x = centerX + cos(middleAngle) * pieRadius * labelOffset
             val y = centerY + sin((middleAngle)) * pieRadius * labelOffset
-            canvas.drawText(label, x, (y + y + textHeight) / 2, mainPaint)
+            canvas.drawText(label, x, y + (textHeight / 2), mainPaint)
 
             currentAngle += sliceSweep
         }
