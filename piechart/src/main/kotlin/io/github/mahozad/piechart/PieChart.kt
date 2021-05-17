@@ -195,46 +195,14 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     private fun makeGaps(): Path {
         val gaps = Path()
-        val gapLength = pieRadius
-        var sliceEndAngle = startAngle.toFloat()
+        var angle = startAngle.toFloat()
         for (slice in slices) {
-            sliceEndAngle += slice.fraction * 360
-
-            // Calculate bottom right corner of the gap rectangle
-            var angle = (sliceEndAngle + 90).toRadian()
-            var x: Float
-            var y: Float
-            if (gapPosition == PRECEDING_SLICE) {
-                x = centerX
-                y = centerY
-            } else if (gapPosition == SUCCEEDING_SLICE) {
-                x = centerX + gap * cos(angle)
-                y = centerY + gap * sin(angle)
-            } else /* if gapPosition == middle */ {
-                x = centerX + gap / 2 * cos(angle)
-                y = centerY + gap / 2 * sin(angle)
-            }
-            gaps.moveTo(x, y)
-
-            // Calculate top right corner of the gap rectangle
-            angle -= (PI / 2).toFloat()
-            x += gapLength * cos(angle)
-            y += gapLength * sin(angle)
-            gaps.lineTo(x, y)
-
-            // Calculate top left corner of the gap rectangle
-            angle -= (PI / 2).toFloat()
-            x += gap * cos(angle)
-            y += gap * sin(angle)
-            gaps.lineTo(x, y)
-
-            // Calculate bottom left corner of the gap rectangle
-            angle -= (PI / 2).toFloat()
-            x += gapLength * cos(angle)
-            y += gapLength * sin(angle)
-            gaps.lineTo(x, y)
-
-            // Join to the first point
+            angle += slice.fraction * 360
+            val (c1, c2, c3, c4) = calculateGapCoordinates(centerX, centerY, angle, gap, pieRadius, gapPosition)
+            gaps.moveTo(c1.x, c1.y)
+            gaps.lineTo(c2.x, c2.y)
+            gaps.lineTo(c3.x, c3.y)
+            gaps.lineTo(c4.x, c4.y)
             gaps.close()
         }
         return gaps

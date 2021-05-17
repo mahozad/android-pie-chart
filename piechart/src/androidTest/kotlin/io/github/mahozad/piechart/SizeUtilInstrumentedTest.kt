@@ -3,12 +3,22 @@ package io.github.mahozad.piechart
 import android.view.View
 import android.view.View.MeasureSpec.makeMeasureSpec
 import org.assertj.core.api.Assertions
+import org.assertj.core.util.FloatComparator
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
+import org.junit.jupiter.params.provider.Arguments.arguments
+import org.junit.jupiter.params.provider.MethodSource
 
 /**
  * Could not run these test as unit tests because they and the class under test
  * use android features (*View::MeasureSpec*)
+ *
+ * The *@TestInstance* annotation is used an an alternative to
+ * making the argument provider method for *@MethodSource* static.
  */
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SizeUtilInstrumentedTest {
 
     /**
@@ -811,5 +821,64 @@ class SizeUtilInstrumentedTest {
         Assertions.assertThat(left).isEqualTo(300f)
         Assertions.assertThat(right).isEqualTo(700f)
         Assertions.assertThat(bottom).isEqualTo(700f)
+    }
+
+    // -------------------------------------------------------------------------
+
+    @ParameterizedTest(name = "Angle: {0}, Position: {1}")
+    @MethodSource("argumentProvider")
+    internal fun calculateGapCoordinatesForOrigin500And500AndTheGivenAngleAndPosition(
+        angle: Float,
+        position: PieChart.GapPosition,
+        expectedCoordinates: List<Coordinates>
+    ) {
+        val originX = 500f
+        val originY = 500f
+        val gapWidth = 20f
+        val gapLength = 150f
+
+        val coordinates = calculateGapCoordinates(originX, originY, angle, gapWidth, gapLength, position)
+
+        for ((i, corner) in coordinates.withIndex()) {
+            Assertions.assertThat(corner)
+                .usingRecursiveComparison()
+                .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
+                .isEqualTo(expectedCoordinates[i])
+        }
+    }
+
+    @Suppress("unused")
+    private fun argumentProvider(): List<Arguments> {
+        val angles = arrayOf(0f, 30f, 120f, 210f, -30f)
+        val expectedCoordinatesByPosition = mapOf(
+            PieChart.GapPosition.MIDDLE to listOf(
+                listOf(Coordinates(500f, 510f), Coordinates(650f, 510f), Coordinates(650f, 490f), Coordinates(500f, 490f)),
+                listOf(Coordinates(495f, 508f), Coordinates(624f, 583f), Coordinates(634f, 566f), Coordinates(505f, 491f)),
+                listOf(Coordinates(491f, 495f), Coordinates(416f, 624f), Coordinates(433f, 634f), Coordinates(508f, 505f)),
+                listOf(Coordinates(505f, 491f), Coordinates(375f, 416f), Coordinates(365f, 433f), Coordinates(495f, 508f)),
+                listOf(Coordinates(505f, 508f), Coordinates(634f, 433f), Coordinates(624f, 416f), Coordinates(495f, 491f))
+            ),
+            PieChart.GapPosition.PRECEDING_SLICE to listOf(
+                listOf(Coordinates(500f, 500f), Coordinates(650f, 500f), Coordinates(650f, 480f), Coordinates(500f, 480f)),
+                listOf(Coordinates(500f, 500f), Coordinates(630f, 575f), Coordinates(640f, 558f), Coordinates(510f, 483f)),
+                listOf(Coordinates(500f, 500f), Coordinates(425f, 630f), Coordinates(442f, 640f), Coordinates(517f, 510f)),
+                listOf(Coordinates(500f, 500f), Coordinates(370f, 425f), Coordinates(360f, 442f), Coordinates(490f, 517f)),
+                listOf(Coordinates(500f, 500f), Coordinates(629f, 425f), Coordinates(620f, 408f), Coordinates(490f, 483f))
+            ),
+            PieChart.GapPosition.SUCCEEDING_SLICE to listOf(
+                listOf(Coordinates(500f, 520f), Coordinates(650f, 520f), Coordinates(650f, 500f), Coordinates(500f, 500f)),
+                listOf(Coordinates(490f, 517f), Coordinates(620f, 592f), Coordinates(630f, 575f), Coordinates(500f, 500f)),
+                listOf(Coordinates(483f, 490f), Coordinates(408f, 620f), Coordinates(425f, 630f), Coordinates(500f, 500f)),
+                listOf(Coordinates(510f, 483f), Coordinates(380f, 408f), Coordinates(370f, 425f), Coordinates(500f, 500f)),
+                listOf(Coordinates(510f, 517f), Coordinates(640f, 442f), Coordinates(630f, 425f), Coordinates(500f, 500f)),
+            )
+        )
+        val arguments = mutableListOf<Arguments>()
+        for (position in expectedCoordinatesByPosition) {
+            arguments += position.value.mapIndexed { i, list ->
+                arguments(angles[i], position.key, list)
+            }
+        }
+        return arguments
     }
 }
