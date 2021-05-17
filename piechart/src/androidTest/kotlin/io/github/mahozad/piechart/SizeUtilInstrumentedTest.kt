@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test
 class SizeUtilInstrumentedTest {
 
     /**
-     * UNSPECIFIED measure spec could indicate wrap_content among other things
+     * UNSPECIFIED measure spec could indicate, among oter things, wrap_content
      */
     @Test fun twoSameUNSPECIFIEDSpecShouldResultInMaximumGivenAvailableSize() {
         val availableSize = 1000
