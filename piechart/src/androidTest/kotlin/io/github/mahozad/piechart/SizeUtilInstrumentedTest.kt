@@ -237,7 +237,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 0
         val paddingBottom = 0
 
-        val (centerX, centerY) = calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenter(
             width,
             height,
             paddingLeft,
@@ -258,7 +258,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 0
         val paddingBottom = 0
 
-        val (centerX, centerY) = calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenter(
             width,
             height,
             paddingLeft,
@@ -279,7 +279,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 0
         val paddingBottom = 0
 
-        val (centerX, centerY) = calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenter(
             width,
             height,
             paddingLeft,
@@ -300,7 +300,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 0
         val paddingBottom = 0
 
-        val (centerX, centerY) = calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenter(
             width,
             height,
             paddingLeft,
@@ -321,7 +321,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 0
         val paddingBottom = 0
 
-        val (centerX, centerY) = calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenter(
             width,
             height,
             paddingLeft,
@@ -342,7 +342,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 0
         val paddingBottom = 0
 
-        val (centerX, centerY) = calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenter(
             width,
             height,
             paddingLeft,
@@ -363,7 +363,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 150
         val paddingBottom = 0
 
-        val (centerX, centerY) = calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenter(
             width,
             height,
             paddingLeft,
@@ -384,7 +384,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 0
         val paddingBottom = 150
 
-        val (centerX, centerY) = calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenter(
             width,
             height,
             paddingLeft,
@@ -405,7 +405,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 150
         val paddingBottom = 150
 
-        val (centerX, centerY) = calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenter(
             width,
             height,
             paddingLeft,
@@ -426,7 +426,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 250
         val paddingBottom = 150
 
-        val (centerX, centerY) = calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenter(
             width,
             height,
             paddingLeft,
@@ -447,7 +447,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 150
         val paddingBottom = 250
 
-        val (centerX, centerY) = calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenter(
             width,
             height,
             paddingLeft,
@@ -468,7 +468,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 250
         val paddingBottom = 0
 
-        val (centerX, centerY) = calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenter(
             width,
             height,
             paddingLeft,
@@ -489,7 +489,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 0
         val paddingBottom = 250
 
-        val (centerX, centerY) = calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenter(
             width,
             height,
             paddingLeft,
@@ -510,7 +510,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 250
         val paddingBottom = 0
 
-        val (centerX, centerY) = calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenter(
             width,
             height,
             paddingLeft,
@@ -531,7 +531,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 0
         val paddingBottom = 250
 
-        val (centerX, centerY) = calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenter(
             width,
             height,
             paddingLeft,
@@ -552,7 +552,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 250
         val paddingBottom = 0
 
-        val (centerX, centerY) = calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenter(
             width,
             height,
             paddingLeft,
@@ -573,7 +573,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 250
         val paddingBottom = 250
 
-        val (centerX, centerY) = calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenter(
             width,
             height,
             paddingLeft,

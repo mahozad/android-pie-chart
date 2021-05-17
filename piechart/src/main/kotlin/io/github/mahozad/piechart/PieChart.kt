@@ -176,7 +176,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
         pieRadius = calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
-        val (x, y) = calculateCenterCoordinate(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
+        val (x, y) = calculateCenter(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
         centerX = x
         centerY = y
         enclosingRect.set(

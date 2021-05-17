@@ -22,23 +22,23 @@ internal fun calculateWidthAndHeight(
     return Pair(min, min)
 }
 
-internal data class Coordinate(val x: Float, val y: Float)
+internal data class Coordinates(val x: Float, val y: Float)
 
 /**
  * Note that this function works with paddingLeft and PaddingRight
  *  not paddingStart and paddingEnd.
  */
-internal fun calculateCenterCoordinate(
+internal fun calculateCenter(
     width: Int,
     height: Int,
     paddingLeft: Int,
     paddingRight: Int,
     paddingTop: Int,
     paddingBottom: Int
-): Coordinate {
+): Coordinates {
     val centerX = (width + paddingLeft - paddingRight) / 2f
     val centerY = (height + paddingTop - paddingBottom) / 2f
-    return Coordinate(centerX, centerY)
+    return Coordinates(centerX, centerY)
 }
 
 internal fun calculateRadius(
