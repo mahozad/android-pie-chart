@@ -46,7 +46,7 @@
       <enum name="lightenedSliceColor" value="3"/>
       <enum name="customColors" value="4"/>
     </attr>
-    <attr name="drawingDirection" format="enum">
+    <attr name="drawDirection" format="enum">
       <enum name="clockwise" value="0"/>
       <enum name="counterClockwise" value="1"/>
     </attr>

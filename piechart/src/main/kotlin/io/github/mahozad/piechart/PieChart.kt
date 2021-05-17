@@ -9,7 +9,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.minus
-import io.github.mahozad.piechart.PieChart.Direction.CLOCKWISE
+import io.github.mahozad.piechart.PieChart.DrawDirection.CLOCKWISE
 import io.github.mahozad.piechart.PieChart.GapPosition.*
 import io.github.mahozad.piechart.PieChart.GradientType.RADIAL
 import java.text.NumberFormat
@@ -27,7 +27,7 @@ const val DEFAULT_LABEL_SIZE = 24f /* sp */
 const val DEFAULT_LABEL_OFFSET = 0.75f
 val defaultGapPosition = MIDDLE
 val defaultGradientType = RADIAL
-val defaultDrawingDirection = CLOCKWISE
+val defaultDrawDirection = CLOCKWISE
 
 /**
  * This is the order that these commonly used view methods are run:
@@ -70,7 +70,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         @FloatRange(from = 0.0, to = 1.0) val scale: Float = 1f
     )
 
-    enum class Direction { CLOCKWISE, COUNTER_CLOCKWISE }
+    enum class DrawDirection { CLOCKWISE, COUNTER_CLOCKWISE }
     enum class GradientType { RADIAL, SWEEP }
     enum class GapPosition { MIDDLE, PRECEDING_SLICE, SUCCEEDING_SLICE }
 
@@ -111,7 +111,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         }
     var gapPosition = MIDDLE
     var gradientType = defaultGradientType
-    var drawingDirection = defaultDrawingDirection
+    var drawDirection = defaultDrawDirection
     val slices = mutableListOf(
         Slice(0.43f, ContextCompat.getColor(context, android.R.color.holo_green_dark)),
         Slice(0.21f, ContextCompat.getColor(context, android.R.color.holo_orange_dark)),
@@ -152,8 +152,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 gradientType = GradientType.values()[
                         getInt(R.styleable.PieChart_gradientType, defaultGradientType.ordinal)
                 ]
-                drawingDirection = Direction.values()[
-                        getInt(R.styleable.PieChart_drawingDirection, defaultDrawingDirection.ordinal)
+                drawDirection = DrawDirection.values()[
+                        getInt(R.styleable.PieChart_drawDirection, defaultDrawDirection.ordinal)
                 ]
             } finally {
                 // TypedArray objects are a shared resource and must be recycled after use
