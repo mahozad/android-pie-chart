@@ -15,7 +15,6 @@ import io.github.mahozad.piechart.PieChart.GradientType.RADIAL
 import java.text.NumberFormat
 import kotlin.math.PI
 import kotlin.math.cos
-import kotlin.math.min
 import kotlin.math.sin
 
 const val DEFAULT_SIZE = 256 /* dp */
@@ -176,11 +175,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
      */
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
-        val paddingX = (paddingStart + paddingEnd).toFloat()
-        val paddingY = (paddingTop + paddingBottom).toFloat()
-        val availableWidth = width - paddingX
-        val availableHeight = height - paddingY
-        pieRadius = min(availableWidth, availableHeight) / 2f
+        pieRadius = calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
         val (x, y) = calculateCenterCoordinate(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
         centerX = x
         centerY = y

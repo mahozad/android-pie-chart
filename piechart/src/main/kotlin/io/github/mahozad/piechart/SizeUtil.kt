@@ -40,3 +40,16 @@ internal fun calculateCenterCoordinate(
     val centerY = (height + paddingTop - paddingBottom) / 2f
     return Coordinate(centerX, centerY)
 }
+
+internal fun calculateRadius(
+    width: Int,
+    height: Int,
+    paddingLeft: Int,
+    paddingRight: Int,
+    paddingTop: Int,
+    paddingBottom: Int
+): Float {
+    val availableWidth = width - (paddingLeft + paddingRight)
+    val availableHeight = height - (paddingTop + paddingBottom)
+    return min(availableWidth, availableHeight) / 2f
+}

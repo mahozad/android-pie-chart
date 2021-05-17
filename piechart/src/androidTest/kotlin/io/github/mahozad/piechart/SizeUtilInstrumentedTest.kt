@@ -585,4 +585,216 @@ class SizeUtilInstrumentedTest {
         Assertions.assertThat(centerX).isEqualTo(250f)
         Assertions.assertThat(centerY).isEqualTo(250f)
     }
+
+    // -------------------------------------------------------------------------
+
+    @Test fun withNoPaddingRadiusShouldBeHalfTheWidthAndHeight() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 0
+        val paddingRight = 0
+        val paddingTop = 0
+        val paddingBottom = 0
+
+        val radius =
+            calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
+
+        Assertions.assertThat(radius).isEqualTo(250f)
+    }
+
+    @Test fun withLeftPaddingRadiusShouldBeHalfTheWidthMinusLeftPadding() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 150
+        val paddingRight = 0
+        val paddingTop = 0
+        val paddingBottom = 0
+
+        val radius =
+            calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
+
+        Assertions.assertThat(radius).isEqualTo(175f)
+    }
+
+    @Test fun withRightPaddingRadiusShouldBeHalfTheWidthMinusRightPadding() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 0
+        val paddingRight = 150
+        val paddingTop = 0
+        val paddingBottom = 0
+
+        val radius =
+            calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
+
+        Assertions.assertThat(radius).isEqualTo(175f)
+    }
+
+    @Test fun withLeftAndRightPaddingRadiusShouldBeHalfTheWidthMinusThePaddings() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 150
+        val paddingRight = 150
+        val paddingTop = 0
+        val paddingBottom = 0
+
+        val radius =
+            calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
+
+        Assertions.assertThat(radius).isEqualTo(100f)
+    }
+
+    @Test fun withLargerLeftPaddingAndSmallerRightPaddingRadiusShouldBeHalfTheWidthMinusThePaddings() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 250
+        val paddingRight = 150
+        val paddingTop = 0
+        val paddingBottom = 0
+
+        val radius =
+            calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
+
+        Assertions.assertThat(radius).isEqualTo(50f)
+    }
+
+    @Test fun withSmallerLeftPaddingAndLargerRightPaddingRadiusShouldBeHalfTheWidthMinusThePaddings() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 150
+        val paddingRight = 250
+        val paddingTop = 0
+        val paddingBottom = 0
+
+        val radius =
+            calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
+
+        Assertions.assertThat(radius).isEqualTo(50f)
+    }
+
+    @Test fun withSameLeftPaddingAndTopPaddingRadiusShouldBeHalfTheWidthMinusLeftPadding() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 150
+        val paddingRight = 0
+        val paddingTop = 150
+        val paddingBottom = 0
+
+        val radius =
+            calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
+
+        Assertions.assertThat(radius).isEqualTo(175f)
+    }
+
+    @Test fun withLargerLeftPaddingAndSmallerTopPaddingRadiusShouldBeHalfTheWidthMinusLeftPadding() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 250
+        val paddingRight = 0
+        val paddingTop = 150
+        val paddingBottom = 0
+
+        val radius =
+            calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
+
+        Assertions.assertThat(radius).isEqualTo(125f)
+    }
+
+    @Test fun withSmallerLeftPaddingAndLargerTopPaddingRadiusShouldBeHalfTheHeightMinusTopPadding() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 150
+        val paddingRight = 0
+        val paddingTop = 250
+        val paddingBottom = 0
+
+        val radius =
+            calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
+
+        Assertions.assertThat(radius).isEqualTo(125f)
+    }
+
+    @Test fun withLargerHorizontalPaddingAndSmallerVerticalPaddingRadiusShouldBeHalfTheWidthMinusHorizontalPadding() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 150
+        val paddingRight = 200
+        val paddingTop = 250
+        val paddingBottom = 0
+
+        val radius =
+            calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
+
+        Assertions.assertThat(radius).isEqualTo(75f)
+    }
+
+    @Test fun withSmallerHorizontalPaddingAndLargerVerticalPaddingRadiusShouldBeHalfTheHeightMinusVerticalPadding() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 250
+        val paddingRight = 0
+        val paddingTop = 150
+        val paddingBottom = 200
+
+        val radius =
+            calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
+
+        Assertions.assertThat(radius).isEqualTo(75f)
+    }
+
+    @Test fun withSmallerWidthAndLargerHeightAndNoPaddingRadiusShouldBeHalfTheWidth() {
+        val width = 500
+        val height = 620
+        val paddingLeft = 0
+        val paddingRight = 0
+        val paddingTop = 0
+        val paddingBottom = 0
+
+        val radius =
+            calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
+
+        Assertions.assertThat(radius).isEqualTo(250f)
+    }
+
+    @Test fun withSmallerWidthAndLargerHeightAndLeftPaddingRadiusShouldBeHalfTheWidthMinusLeftPadding() {
+        val width = 500
+        val height = 620
+        val paddingLeft = 150
+        val paddingRight = 0
+        val paddingTop = 0
+        val paddingBottom = 0
+
+        val radius =
+            calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
+
+        Assertions.assertThat(radius).isEqualTo(175f)
+    }
+
+    @Test fun withSmallerWidthAndLargerHeightAndSmallerLeftPaddingAndTinyLargerTopPaddingRadiusShouldBeHalfTheWidthMinusLeftPadding() {
+        val width = 500
+        val height = 620
+        val paddingLeft = 150
+        val paddingRight = 0
+        val paddingTop = 10
+        val paddingBottom = 0
+
+        val radius =
+            calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
+
+        Assertions.assertThat(radius).isEqualTo(175f)
+    }
+
+    @Test fun withSmallerWidthAndLargerHeightAndSmallerLeftPaddingAndHugeLargerTopPaddingRadiusShouldBeHalfTheHeightMinusTopPadding() {
+        val width = 500
+        val height = 620
+        val paddingLeft = 150
+        val paddingRight = 0
+        val paddingTop = 300
+        val paddingBottom = 0
+
+        val radius =
+            calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
+
+        Assertions.assertThat(radius).isEqualTo(160f)
+    }
 }
