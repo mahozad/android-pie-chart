@@ -11,10 +11,6 @@ import org.junit.jupiter.api.Test
  */
 class SizeUtilInstrumentedTest {
 
-    // BUG (?): Using the following in a ConstraintLayout stretches the view vertically
-    //   android:layout_width="wrap_content"
-    //   android:layout_height="0dp"
-
     /**
      * UNSPECIFIED measure spec could indicate wrap_content among other things
      */

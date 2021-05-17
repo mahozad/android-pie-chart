@@ -176,16 +176,22 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
      */
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
-        centerX = width / 2f
-        centerY = height / 2f
-        // Account for the padding
-        val paddingX = (paddingLeft + paddingRight).toFloat()
+        val paddingX = (paddingStart + paddingEnd).toFloat()
         val paddingY = (paddingTop + paddingBottom).toFloat()
-        val effectiveWidth = width - paddingX
-        val effectiveHeight = height - paddingY
-        enclosingRect.set(RectF(0f, 0f, effectiveWidth, effectiveHeight))
+        val availableWidth = width - paddingX
+        val availableHeight = height - paddingY
+        pieRadius = min(availableWidth, availableHeight) / 2f
+        centerX = (paddingLeft + (width - paddingRight)) / 2f
+        centerY = (paddingTop + (height - paddingBottom)) / 2f
+        enclosingRect.set(
+            RectF(
+                centerX - pieRadius,
+                centerY - pieRadius,
+                centerX + pieRadius,
+                centerY + pieRadius
+            )
+        )
         pie.reset()
-        pieRadius = min(effectiveWidth, effectiveHeight) / 2f
         val holeRadius = holeRatio * pieRadius
         val overlayRadius = overlayRatio * pieRadius
         overlay.set(Path().apply { addCircle(centerX, centerY, overlayRadius, Path.Direction.CW) })
