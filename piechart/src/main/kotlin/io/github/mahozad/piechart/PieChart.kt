@@ -179,14 +179,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         val (x, y) = calculateCenter(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
         centerX = x
         centerY = y
-        enclosingRect.set(
-            RectF(
-                centerX - pieRadius,
-                centerY - pieRadius,
-                centerX + pieRadius,
-                centerY + pieRadius
-            )
-        )
+        val (top, left, right, bottom) = calculateBoundaries(centerX, centerY, pieRadius)
+        enclosingRect.set(RectF(left, top, right, bottom))
         pie.reset()
         val holeRadius = holeRatio * pieRadius
         val overlayRadius = overlayRatio * pieRadius

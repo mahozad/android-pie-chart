@@ -797,4 +797,19 @@ class SizeUtilInstrumentedTest {
 
         Assertions.assertThat(radius).isEqualTo(160f)
     }
+
+    // -------------------------------------------------------------------------
+
+    @Test fun withSmallRadiusBoundaryShouldBeCalculatedWithNoException() {
+        val centerX = 500f
+        val centerY = 500f
+        val radius = 200f
+
+        val (top, left, right, bottom) = calculateBoundaries(centerX, centerY, radius)
+
+        Assertions.assertThat(top).isEqualTo(300f)
+        Assertions.assertThat(left).isEqualTo(300f)
+        Assertions.assertThat(right).isEqualTo(700f)
+        Assertions.assertThat(bottom).isEqualTo(700f)
+    }
 }
