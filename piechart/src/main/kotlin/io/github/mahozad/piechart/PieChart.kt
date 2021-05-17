@@ -181,7 +181,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         val availableWidth = width - paddingX
         val availableHeight = height - paddingY
         pieRadius = min(availableWidth, availableHeight) / 2f
-        val (x, y) = SizeUtil().calculateCenterCoordinate(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
+        val (x, y) = calculateCenterCoordinate(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
         centerX = x
         centerY = y
         enclosingRect.set(
@@ -352,7 +352,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        val (width, height) = SizeUtil().calculateWidthAndHeight(widthMeasureSpec, heightMeasureSpec)
+        val (width, height) = calculateWidthAndHeight(widthMeasureSpec, heightMeasureSpec)
         // This MUST be called
         setMeasuredDimension(width, height)
     }

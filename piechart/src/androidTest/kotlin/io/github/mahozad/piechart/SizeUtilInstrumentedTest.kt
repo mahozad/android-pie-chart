@@ -19,7 +19,7 @@ class SizeUtilInstrumentedTest {
         val widthSpec = makeMeasureSpec(availableSize, View.MeasureSpec.UNSPECIFIED)
         val heightSpec = makeMeasureSpec(availableSize, View.MeasureSpec.UNSPECIFIED)
 
-        val (width, height) = SizeUtil().calculateWidthAndHeight(widthSpec, heightSpec)
+        val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
         Assertions.assertThat(width).isEqualTo(availableSize)
         Assertions.assertThat(height).isEqualTo(availableSize)
@@ -31,7 +31,7 @@ class SizeUtilInstrumentedTest {
         val widthSpec = makeMeasureSpec(smallerSize, View.MeasureSpec.UNSPECIFIED)
         val heightSpec = makeMeasureSpec(largerSize, View.MeasureSpec.UNSPECIFIED)
 
-        val (width, height) = SizeUtil().calculateWidthAndHeight(widthSpec, heightSpec)
+        val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
         Assertions.assertThat(width).isEqualTo(smallerSize)
         Assertions.assertThat(height).isEqualTo(smallerSize)
@@ -43,7 +43,7 @@ class SizeUtilInstrumentedTest {
         val widthSpec = makeMeasureSpec(largerSize, View.MeasureSpec.UNSPECIFIED)
         val heightSpec = makeMeasureSpec(smallerSize, View.MeasureSpec.UNSPECIFIED)
 
-        val (width, height) = SizeUtil().calculateWidthAndHeight(widthSpec, heightSpec)
+        val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
         Assertions.assertThat(width).isEqualTo(smallerSize)
         Assertions.assertThat(height).isEqualTo(smallerSize)
@@ -55,7 +55,7 @@ class SizeUtilInstrumentedTest {
         val widthSpec = makeMeasureSpec(smallerSize, View.MeasureSpec.UNSPECIFIED)
         val heightSpec = makeMeasureSpec(largerSize, View.MeasureSpec.AT_MOST)
 
-        val (width, height) = SizeUtil().calculateWidthAndHeight(widthSpec, heightSpec)
+        val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
         Assertions.assertThat(width).isEqualTo(smallerSize)
         Assertions.assertThat(height).isEqualTo(smallerSize)
@@ -67,7 +67,7 @@ class SizeUtilInstrumentedTest {
         val widthSpec = makeMeasureSpec(largerSize, View.MeasureSpec.UNSPECIFIED)
         val heightSpec = makeMeasureSpec(smallerSize, View.MeasureSpec.AT_MOST)
 
-        val (width, height) = SizeUtil().calculateWidthAndHeight(widthSpec, heightSpec)
+        val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
         Assertions.assertThat(width).isEqualTo(smallerSize)
         Assertions.assertThat(height).isEqualTo(smallerSize)
@@ -79,7 +79,7 @@ class SizeUtilInstrumentedTest {
         val widthSpec = makeMeasureSpec(smallerSize, View.MeasureSpec.AT_MOST)
         val heightSpec = makeMeasureSpec(largerSize, View.MeasureSpec.UNSPECIFIED)
 
-        val (width, height) = SizeUtil().calculateWidthAndHeight(widthSpec, heightSpec)
+        val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
         Assertions.assertThat(width).isEqualTo(smallerSize)
         Assertions.assertThat(height).isEqualTo(smallerSize)
@@ -91,7 +91,7 @@ class SizeUtilInstrumentedTest {
         val widthSpec = makeMeasureSpec(smallerSize, View.MeasureSpec.UNSPECIFIED)
         val heightSpec = makeMeasureSpec(largerSize, View.MeasureSpec.EXACTLY)
 
-        val (width, height) = SizeUtil().calculateWidthAndHeight(widthSpec, heightSpec)
+        val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
         Assertions.assertThat(width).isEqualTo(smallerSize)
         Assertions.assertThat(height).isEqualTo(smallerSize)
@@ -103,7 +103,7 @@ class SizeUtilInstrumentedTest {
         val widthSpec = makeMeasureSpec(smallerSize, View.MeasureSpec.EXACTLY)
         val heightSpec = makeMeasureSpec(largerSize, View.MeasureSpec.UNSPECIFIED)
 
-        val (width, height) = SizeUtil().calculateWidthAndHeight(widthSpec, heightSpec)
+        val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
         Assertions.assertThat(width).isEqualTo(smallerSize)
         Assertions.assertThat(height).isEqualTo(smallerSize)
@@ -115,7 +115,7 @@ class SizeUtilInstrumentedTest {
         val widthSpec = makeMeasureSpec(largerSize, View.MeasureSpec.UNSPECIFIED)
         val heightSpec = makeMeasureSpec(smallerSize, View.MeasureSpec.EXACTLY)
 
-        val (width, height) = SizeUtil().calculateWidthAndHeight(widthSpec, heightSpec)
+        val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
         Assertions.assertThat(width).isEqualTo(smallerSize)
         Assertions.assertThat(height).isEqualTo(smallerSize)
@@ -126,7 +126,7 @@ class SizeUtilInstrumentedTest {
         val widthSpec = makeMeasureSpec(size, View.MeasureSpec.EXACTLY)
         val heightSpec = makeMeasureSpec(size, View.MeasureSpec.EXACTLY)
 
-        val (width, height) = SizeUtil().calculateWidthAndHeight(widthSpec, heightSpec)
+        val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
         Assertions.assertThat(width).isEqualTo(size)
         Assertions.assertThat(height).isEqualTo(size)
@@ -138,7 +138,7 @@ class SizeUtilInstrumentedTest {
         val widthSpec = makeMeasureSpec(smallerSize, View.MeasureSpec.EXACTLY)
         val heightSpec = makeMeasureSpec(largerSize, View.MeasureSpec.EXACTLY)
 
-        val (width, height) = SizeUtil().calculateWidthAndHeight(widthSpec, heightSpec)
+        val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
         Assertions.assertThat(width).isEqualTo(smallerSize)
         Assertions.assertThat(height).isEqualTo(smallerSize)
@@ -150,7 +150,7 @@ class SizeUtilInstrumentedTest {
         val widthSpec = makeMeasureSpec(largerSize, View.MeasureSpec.EXACTLY)
         val heightSpec = makeMeasureSpec(smallerSize, View.MeasureSpec.EXACTLY)
 
-        val (width, height) = SizeUtil().calculateWidthAndHeight(widthSpec, heightSpec)
+        val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
         Assertions.assertThat(width).isEqualTo(smallerSize)
         Assertions.assertThat(height).isEqualTo(smallerSize)
@@ -162,7 +162,7 @@ class SizeUtilInstrumentedTest {
         val widthSpec = makeMeasureSpec(smallerSize, View.MeasureSpec.EXACTLY)
         val heightSpec = makeMeasureSpec(largerSize, View.MeasureSpec.AT_MOST)
 
-        val (width, height) = SizeUtil().calculateWidthAndHeight(widthSpec, heightSpec)
+        val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
         Assertions.assertThat(width).isEqualTo(smallerSize)
         Assertions.assertThat(height).isEqualTo(smallerSize)
@@ -174,7 +174,7 @@ class SizeUtilInstrumentedTest {
         val widthSpec = makeMeasureSpec(largerSize, View.MeasureSpec.EXACTLY)
         val heightSpec = makeMeasureSpec(smallerSize, View.MeasureSpec.AT_MOST)
 
-        val (width, height) = SizeUtil().calculateWidthAndHeight(widthSpec, heightSpec)
+        val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
         Assertions.assertThat(width).isEqualTo(smallerSize)
         Assertions.assertThat(height).isEqualTo(smallerSize)
@@ -186,7 +186,7 @@ class SizeUtilInstrumentedTest {
         val widthSpec = makeMeasureSpec(smallerSize, View.MeasureSpec.AT_MOST)
         val heightSpec = makeMeasureSpec(largerSize, View.MeasureSpec.EXACTLY)
 
-        val (width, height) = SizeUtil().calculateWidthAndHeight(widthSpec, heightSpec)
+        val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
         Assertions.assertThat(width).isEqualTo(smallerSize)
         Assertions.assertThat(height).isEqualTo(smallerSize)
@@ -197,7 +197,7 @@ class SizeUtilInstrumentedTest {
         val widthSpec = makeMeasureSpec(maxSize, View.MeasureSpec.AT_MOST)
         val heightSpec = makeMeasureSpec(maxSize, View.MeasureSpec.AT_MOST)
 
-        val (width, height) = SizeUtil().calculateWidthAndHeight(widthSpec, heightSpec)
+        val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
         Assertions.assertThat(width).isEqualTo(maxSize)
         Assertions.assertThat(height).isEqualTo(maxSize)
@@ -209,7 +209,7 @@ class SizeUtilInstrumentedTest {
         val widthSpec = makeMeasureSpec(smallerSize, View.MeasureSpec.AT_MOST)
         val heightSpec = makeMeasureSpec(largerSize, View.MeasureSpec.AT_MOST)
 
-        val (width, height) = SizeUtil().calculateWidthAndHeight(widthSpec, heightSpec)
+        val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
         Assertions.assertThat(width).isEqualTo(smallerSize)
         Assertions.assertThat(height).isEqualTo(smallerSize)
@@ -221,7 +221,7 @@ class SizeUtilInstrumentedTest {
         val widthSpec = makeMeasureSpec(largerSize, View.MeasureSpec.AT_MOST)
         val heightSpec = makeMeasureSpec(smallerSize, View.MeasureSpec.AT_MOST)
 
-        val (width, height) = SizeUtil().calculateWidthAndHeight(widthSpec, heightSpec)
+        val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
         Assertions.assertThat(width).isEqualTo(smallerSize)
         Assertions.assertThat(height).isEqualTo(smallerSize)
@@ -237,7 +237,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 0
         val paddingBottom = 0
 
-        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenterCoordinate(
             width,
             height,
             paddingLeft,
@@ -258,7 +258,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 0
         val paddingBottom = 0
 
-        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenterCoordinate(
             width,
             height,
             paddingLeft,
@@ -279,7 +279,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 0
         val paddingBottom = 0
 
-        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenterCoordinate(
             width,
             height,
             paddingLeft,
@@ -300,7 +300,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 0
         val paddingBottom = 0
 
-        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenterCoordinate(
             width,
             height,
             paddingLeft,
@@ -321,7 +321,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 0
         val paddingBottom = 0
 
-        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenterCoordinate(
             width,
             height,
             paddingLeft,
@@ -342,7 +342,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 0
         val paddingBottom = 0
 
-        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenterCoordinate(
             width,
             height,
             paddingLeft,
@@ -363,7 +363,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 150
         val paddingBottom = 0
 
-        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenterCoordinate(
             width,
             height,
             paddingLeft,
@@ -384,7 +384,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 0
         val paddingBottom = 150
 
-        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenterCoordinate(
             width,
             height,
             paddingLeft,
@@ -405,7 +405,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 150
         val paddingBottom = 150
 
-        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenterCoordinate(
             width,
             height,
             paddingLeft,
@@ -426,7 +426,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 250
         val paddingBottom = 150
 
-        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenterCoordinate(
             width,
             height,
             paddingLeft,
@@ -447,7 +447,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 150
         val paddingBottom = 250
 
-        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenterCoordinate(
             width,
             height,
             paddingLeft,
@@ -468,7 +468,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 250
         val paddingBottom = 0
 
-        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenterCoordinate(
             width,
             height,
             paddingLeft,
@@ -489,7 +489,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 0
         val paddingBottom = 250
 
-        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenterCoordinate(
             width,
             height,
             paddingLeft,
@@ -510,7 +510,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 250
         val paddingBottom = 0
 
-        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenterCoordinate(
             width,
             height,
             paddingLeft,
@@ -531,7 +531,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 0
         val paddingBottom = 250
 
-        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenterCoordinate(
             width,
             height,
             paddingLeft,
@@ -552,7 +552,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 250
         val paddingBottom = 0
 
-        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenterCoordinate(
             width,
             height,
             paddingLeft,
@@ -573,7 +573,7 @@ class SizeUtilInstrumentedTest {
         val paddingTop = 250
         val paddingBottom = 250
 
-        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+        val (centerX, centerY) = calculateCenterCoordinate(
             width,
             height,
             paddingLeft,
