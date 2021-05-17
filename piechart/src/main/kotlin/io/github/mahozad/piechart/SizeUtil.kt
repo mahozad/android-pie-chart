@@ -25,9 +25,8 @@ import kotlin.math.min
     internal data class Coordinate(val x: Float, val y: Float)
 
     /**
-     * Note that this function should get paddingLeft and PaddingRight
+     * Note that this function works with paddingLeft and PaddingRight
      *  not paddingStart and paddingEnd.
-     *
      */
     internal fun calculateCenterCoordinate(
         width: Int,
