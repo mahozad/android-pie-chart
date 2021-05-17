@@ -81,10 +81,10 @@ internal fun calculateGapCoordinates(
     placement: GapPosition
 ): Array<Coordinates> {
 
-    fun makeNextCorner(angleShift: Int, currentX: Float, currentY: Float, length: Float): Coordinates {
+    fun makeNextCorner(angleShift: Int, oldX: Float, oldY: Float, distance: Float): Coordinates {
         val newAngle = (angle + angleShift).toRadian()
-        val newX = currentX + length * cos(newAngle)
-        val newY = currentY + length * sin(newAngle)
+        val newX = oldX + distance * cos(newAngle)
+        val newY = oldY + distance * sin(newAngle)
         return Coordinates(newX, newY)
     }
 
