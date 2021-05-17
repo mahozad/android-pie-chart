@@ -10,7 +10,7 @@ import androidx.annotation.FloatRange
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.minus
 import io.github.mahozad.piechart.PieChart.DrawDirection.CLOCKWISE
-import io.github.mahozad.piechart.PieChart.GapPosition.*
+import io.github.mahozad.piechart.PieChart.GapPosition.MIDDLE
 import io.github.mahozad.piechart.PieChart.GradientType.RADIAL
 import java.text.NumberFormat
 import kotlin.math.PI
@@ -25,6 +25,7 @@ const val DEFAULT_OVERLAY_ALPHA = 0.25f
 const val DEFAULT_GAP = 8f /* px */
 const val DEFAULT_LABEL_SIZE = 24f /* sp */
 const val DEFAULT_LABEL_OFFSET = 0.75f
+const val DEFAULT_CENTER_LABEL = ""
 val defaultGapPosition = MIDDLE
 val defaultGradientType = RADIAL
 val defaultDrawDirection = CLOCKWISE
@@ -109,6 +110,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             field = offset
             invalidate()
         }
+    var centerLabel = DEFAULT_CENTER_LABEL
     var gapPosition = MIDDLE
     var gradientType = defaultGradientType
     var drawDirection = defaultDrawDirection
@@ -146,6 +148,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 gap = getDimension(R.styleable.PieChart_gap, DEFAULT_GAP)
                 labelSize = getDimension(R.styleable.PieChart_labelSize, spToPx(DEFAULT_LABEL_SIZE))
                 labelOffset = getFloat(R.styleable.PieChart_labelOffset, DEFAULT_LABEL_OFFSET)
+                centerLabel = getString(R.styleable.PieChart_centerLabel) ?: DEFAULT_CENTER_LABEL
                 gapPosition = GapPosition.values()[
                         getInt(R.styleable.PieChart_gapPosition, defaultGapPosition.ordinal)
                 ]
@@ -301,6 +304,15 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
             currentAngle += sliceSweep
         }
+
+        // The center label gets clipped by the clip path and is not shown
+        // mainPaint.color = ContextCompat.getColor(context, android.R.color.black)
+        // mainPaint.textSize = labelSize
+        // mainPaint.textAlign = Paint.Align.CENTER
+        // val bounds = Rect()
+        // mainPaint.getTextBounds(centerLabel, 0, centerLabel.length, bounds)
+        // val textHeight = bounds.height()
+        // canvas.drawText(centerLabel, centerX, centerY + (textHeight / 2), mainPaint)
 
         mainPaint.color = ContextCompat.getColor(context, android.R.color.black) // or better Color.BLACK
         mainPaint.alpha = (overlayAlpha * 255).toInt()

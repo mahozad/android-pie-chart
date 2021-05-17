@@ -12,6 +12,7 @@
 
   <declare-styleable name="PieChart">
     <attr name="gap" format="dimension"/>
+    <attr name="centerLabel" format="string"/>
     <!-- Indicated where the gap should be created;
          middle means that half the gap is overlapping the previous slice
          and the rest are overlapping the next slice
