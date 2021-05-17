@@ -226,4 +226,363 @@ class SizeUtilInstrumentedTest {
         Assertions.assertThat(width).isEqualTo(smallerSize)
         Assertions.assertThat(height).isEqualTo(smallerSize)
     }
+
+    // -------------------------------------------------------------------------
+
+    @Test fun withNotPaddingCenterShouldBeInCenter() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 0
+        val paddingRight = 0
+        val paddingTop = 0
+        val paddingBottom = 0
+
+        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+            width,
+            height,
+            paddingLeft,
+            paddingRight,
+            paddingTop,
+            paddingBottom
+        )
+
+        Assertions.assertThat(centerX).isEqualTo(250f)
+        Assertions.assertThat(centerY).isEqualTo(250f)
+    }
+
+    @Test fun withLeftPaddingCenterShouldBeShiftedToRight() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 150
+        val paddingRight = 0
+        val paddingTop = 0
+        val paddingBottom = 0
+
+        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+            width,
+            height,
+            paddingLeft,
+            paddingRight,
+            paddingTop,
+            paddingBottom
+        )
+
+        Assertions.assertThat(centerX).isEqualTo(325f)
+        Assertions.assertThat(centerY).isEqualTo(250f)
+    }
+
+    @Test fun withRightPaddingCenterShouldBeShiftedToLeft() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 0
+        val paddingRight = 150
+        val paddingTop = 0
+        val paddingBottom = 0
+
+        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+            width,
+            height,
+            paddingLeft,
+            paddingRight,
+            paddingTop,
+            paddingBottom
+        )
+
+        Assertions.assertThat(centerX).isEqualTo(175f)
+        Assertions.assertThat(centerY).isEqualTo(250f)
+    }
+
+    @Test fun withSameLeftAndRightPaddingCenterShouldBeInCenter() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 150
+        val paddingRight = 150
+        val paddingTop = 0
+        val paddingBottom = 0
+
+        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+            width,
+            height,
+            paddingLeft,
+            paddingRight,
+            paddingTop,
+            paddingBottom
+        )
+
+        Assertions.assertThat(centerX).isEqualTo(250f)
+        Assertions.assertThat(centerY).isEqualTo(250f)
+    }
+
+    @Test fun withLargerLeftPaddingAndSmallerRightPaddingCenterShouldBeShiftedToRight() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 250
+        val paddingRight = 150
+        val paddingTop = 0
+        val paddingBottom = 0
+
+        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+            width,
+            height,
+            paddingLeft,
+            paddingRight,
+            paddingTop,
+            paddingBottom
+        )
+
+        Assertions.assertThat(centerX).isEqualTo(300f)
+        Assertions.assertThat(centerY).isEqualTo(250f)
+    }
+
+    @Test fun withSmallerLeftPaddingAndLargerRightPaddingCenterShouldBeShiftedToLeft() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 150
+        val paddingRight = 250
+        val paddingTop = 0
+        val paddingBottom = 0
+
+        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+            width,
+            height,
+            paddingLeft,
+            paddingRight,
+            paddingTop,
+            paddingBottom
+        )
+
+        Assertions.assertThat(centerX).isEqualTo(200f)
+        Assertions.assertThat(centerY).isEqualTo(250f)
+    }
+
+    @Test fun withTopPaddingCenterShouldBeShiftedToBottom() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 0
+        val paddingRight = 0
+        val paddingTop = 150
+        val paddingBottom = 0
+
+        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+            width,
+            height,
+            paddingLeft,
+            paddingRight,
+            paddingTop,
+            paddingBottom
+        )
+
+        Assertions.assertThat(centerX).isEqualTo(250f)
+        Assertions.assertThat(centerY).isEqualTo(325f)
+    }
+
+    @Test fun withBottomPaddingCenterShouldBeShiftedToTop() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 0
+        val paddingRight = 0
+        val paddingTop = 0
+        val paddingBottom = 150
+
+        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+            width,
+            height,
+            paddingLeft,
+            paddingRight,
+            paddingTop,
+            paddingBottom
+        )
+
+        Assertions.assertThat(centerX).isEqualTo(250f)
+        Assertions.assertThat(centerY).isEqualTo(175f)
+    }
+
+    @Test fun withSameTopAndBottomPaddingCenterShouldBeInCenter() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 0
+        val paddingRight = 0
+        val paddingTop = 150
+        val paddingBottom = 150
+
+        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+            width,
+            height,
+            paddingLeft,
+            paddingRight,
+            paddingTop,
+            paddingBottom
+        )
+
+        Assertions.assertThat(centerX).isEqualTo(250f)
+        Assertions.assertThat(centerY).isEqualTo(250f)
+    }
+
+    @Test fun withLargerTopPaddingAndSmallerBottomPaddingCenterShouldBeShiftedToBottom() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 0
+        val paddingRight = 0
+        val paddingTop = 250
+        val paddingBottom = 150
+
+        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+            width,
+            height,
+            paddingLeft,
+            paddingRight,
+            paddingTop,
+            paddingBottom
+        )
+
+        Assertions.assertThat(centerX).isEqualTo(250f)
+        Assertions.assertThat(centerY).isEqualTo(300f)
+    }
+
+    @Test fun withSmallerTopPaddingAndLargerBottomPaddingCenterShouldBeShiftedToTop() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 0
+        val paddingRight = 0
+        val paddingTop = 150
+        val paddingBottom = 250
+
+        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+            width,
+            height,
+            paddingLeft,
+            paddingRight,
+            paddingTop,
+            paddingBottom
+        )
+
+        Assertions.assertThat(centerX).isEqualTo(250f)
+        Assertions.assertThat(centerY).isEqualTo(200f)
+    }
+
+    @Test fun withLeftAndTopPaddingCenterShouldBeShiftedToRightAndBottom() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 150
+        val paddingRight = 0
+        val paddingTop = 250
+        val paddingBottom = 0
+
+        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+            width,
+            height,
+            paddingLeft,
+            paddingRight,
+            paddingTop,
+            paddingBottom
+        )
+
+        Assertions.assertThat(centerX).isEqualTo(325f)
+        Assertions.assertThat(centerY).isEqualTo(375f)
+    }
+
+    @Test fun withLeftAndBottomPaddingCenterShouldBeShiftedToRightAndTop() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 150
+        val paddingRight = 0
+        val paddingTop = 0
+        val paddingBottom = 250
+
+        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+            width,
+            height,
+            paddingLeft,
+            paddingRight,
+            paddingTop,
+            paddingBottom
+        )
+
+        Assertions.assertThat(centerX).isEqualTo(325f)
+        Assertions.assertThat(centerY).isEqualTo(125f)
+    }
+
+    @Test fun withRightAndTopPaddingCenterShouldBeShiftedToLeftAndBottom() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 0
+        val paddingRight = 150
+        val paddingTop = 250
+        val paddingBottom = 0
+
+        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+            width,
+            height,
+            paddingLeft,
+            paddingRight,
+            paddingTop,
+            paddingBottom
+        )
+
+        Assertions.assertThat(centerX).isEqualTo(175f)
+        Assertions.assertThat(centerY).isEqualTo(375f)
+    }
+
+    @Test fun withRightAndBottomPaddingCenterShouldBeShiftedToLeftAndTop() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 0
+        val paddingRight = 150
+        val paddingTop = 0
+        val paddingBottom = 250
+
+        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+            width,
+            height,
+            paddingLeft,
+            paddingRight,
+            paddingTop,
+            paddingBottom
+        )
+
+        Assertions.assertThat(centerX).isEqualTo(175f)
+        Assertions.assertThat(centerY).isEqualTo(125f)
+    }
+
+    @Test fun withSameLeftAndRightPaddingAndTopPaddingCenterShouldBeShiftedToBottom() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 150
+        val paddingRight = 150
+        val paddingTop = 250
+        val paddingBottom = 0
+
+        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+            width,
+            height,
+            paddingLeft,
+            paddingRight,
+            paddingTop,
+            paddingBottom
+        )
+
+        Assertions.assertThat(centerX).isEqualTo(250f)
+        Assertions.assertThat(centerY).isEqualTo(375f)
+    }
+
+    @Test fun withSameLeftAndRightPaddingAndSameTopAndBottomPaddingCenterShouldBeInCenter() {
+        val width = 500
+        val height = 500
+        val paddingLeft = 150
+        val paddingRight = 150
+        val paddingTop = 250
+        val paddingBottom = 250
+
+        val (centerX, centerY) = SizeUtil().calculateCenterCoordinate(
+            width,
+            height,
+            paddingLeft,
+            paddingRight,
+            paddingTop,
+            paddingBottom
+        )
+
+        Assertions.assertThat(centerX).isEqualTo(250f)
+        Assertions.assertThat(centerY).isEqualTo(250f)
+    }
 }

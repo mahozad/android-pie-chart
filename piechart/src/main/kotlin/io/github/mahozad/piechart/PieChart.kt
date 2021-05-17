@@ -181,8 +181,9 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         val availableWidth = width - paddingX
         val availableHeight = height - paddingY
         pieRadius = min(availableWidth, availableHeight) / 2f
-        centerX = (paddingLeft + (width - paddingRight)) / 2f
-        centerY = (paddingTop + (height - paddingBottom)) / 2f
+        val (x, y) = SizeUtil().calculateCenterCoordinate(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
+        centerX = x
+        centerY = y
         enclosingRect.set(
             RectF(
                 centerX - pieRadius,

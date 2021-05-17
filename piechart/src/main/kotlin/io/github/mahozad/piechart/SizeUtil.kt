@@ -20,4 +20,24 @@ class SizeUtil {
         Log.d("SizeUtil", "min: $min")
         return Pair(min, min)
     }
+
+    internal data class Coordinate(val x: Float, val y: Float)
+
+    /**
+     * Note that this function should get paddingLeft and PaddingRight
+     *  not paddingStart and paddingEnd.
+     *
+     */
+    internal fun calculateCenterCoordinate(
+        width: Int,
+        height: Int,
+        paddingLeft: Int,
+        paddingRight: Int,
+        paddingTop: Int,
+        paddingBottom: Int
+    ): Coordinate {
+        val centerX = (width + paddingLeft - paddingRight) / 2f
+        val centerY = (height + paddingTop - paddingBottom) / 2f
+        return Coordinate(centerX, centerY)
+    }
 }
