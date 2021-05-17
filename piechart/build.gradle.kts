@@ -155,7 +155,7 @@ dependencies {
     debugImplementation("androidx.constraintlayout:constraintlayout:2.0.4")
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
     testImplementation("org.assertj:assertj-core:3.19.0")
-    androidTestImplementation("org.junit.jupiter:junit-jupiter-api:5.7.1")
+    androidTestImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
     androidTestImplementation("androidx.test.ext:junit-ktx:1.1.2")
     androidTestImplementation("androidx.test:runner:1.3.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
