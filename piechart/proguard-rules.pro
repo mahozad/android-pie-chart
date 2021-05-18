@@ -19,3 +19,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# The following are applied if isMinifyEnabled = true in the build script
+# There is no need to obfuscate an open source library
+-dontobfuscate
+-keep class ir.mahozad.android.*
