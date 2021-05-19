@@ -1,4 +1,4 @@
-package io.github.mahozad
+package ir.mahozad.android
 
 import android.app.Application
 

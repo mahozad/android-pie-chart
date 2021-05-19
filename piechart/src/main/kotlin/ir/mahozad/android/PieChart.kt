@@ -1,4 +1,4 @@
-package io.github.mahozad.piechart
+package ir.mahozad.android
 
 import android.content.Context
 import android.graphics.*
@@ -9,9 +9,9 @@ import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.minus
-import io.github.mahozad.piechart.PieChart.DrawDirection.CLOCKWISE
-import io.github.mahozad.piechart.PieChart.GapPosition.MIDDLE
-import io.github.mahozad.piechart.PieChart.GradientType.RADIAL
+import ir.mahozad.android.PieChart.DrawDirection.CLOCKWISE
+import ir.mahozad.android.PieChart.GapPosition.MIDDLE
+import ir.mahozad.android.PieChart.GradientType.RADIAL
 import java.text.NumberFormat
 import kotlin.math.PI
 import kotlin.math.cos

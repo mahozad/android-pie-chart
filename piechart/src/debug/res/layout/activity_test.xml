@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="io.github.mahozad.TestActivity">
+    tools:context=".TestActivity">
 
   <TextView
       android:id="@+id/hint"
@@ -19,7 +19,7 @@
       app:layout_constraintBottom_toTopOf="@id/pieChart"
       app:layout_constraintTop_toTopOf="parent"/>
 
-  <io.github.mahozad.piechart.PieChart
+  <ir.mahozad.android.PieChart
       android:id="@+id/pieChart"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -28,6 +28,6 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toBottomOf="@id/hint"
       app:layout_constraintBottom_toBottomOf="parent">
-  </io.github.mahozad.piechart.PieChart>
+  </ir.mahozad.android.PieChart>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

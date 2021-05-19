@@ -1,10 +1,10 @@
-package io.github.mahozad.piechart
+package ir.mahozad.android
 
 import android.util.Log
 import android.view.View
-import io.github.mahozad.piechart.PieChart.GapPosition
-import io.github.mahozad.piechart.PieChart.GapPosition.PRECEDING_SLICE
-import io.github.mahozad.piechart.PieChart.GapPosition.SUCCEEDING_SLICE
+import ir.mahozad.android.PieChart.GapPosition
+import ir.mahozad.android.PieChart.GapPosition.PRECEDING_SLICE
+import ir.mahozad.android.PieChart.GapPosition.SUCCEEDING_SLICE
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.min

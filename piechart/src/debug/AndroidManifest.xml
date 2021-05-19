@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
   <application
-      android:name="io.github.mahozad.TestApplication"
+      android:name="ir.mahozad.android.TestApplication"
       android:allowBackup="true"
       android:fullBackupContent="@xml/backup_descriptor"
       android:icon="@mipmap/image"
@@ -10,7 +10,7 @@
       android:theme="@style/TestAppTheme"
       android:supportsRtl="true">
     <activity
-        android:name="io.github.mahozad.TestActivity"
+        android:name="ir.mahozad.android.TestActivity"
         android:label="@string/title_activity_test">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
