@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="chart.test">
 
-  <application>
+  <application android:theme="@style/TestAppTheme">
     <activity android:name="chart.test.TesterActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>

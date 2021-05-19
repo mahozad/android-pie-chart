@@ -178,7 +178,6 @@ dependencies {
     implementation("androidx.core:core-ktx:1.3.2")
     implementation("androidx.appcompat:appcompat:1.2.0")
     implementation("com.google.android.material:material:1.3.0")
-    debugImplementation("androidx.constraintlayout:constraintlayout:2.0.4")
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
     testImplementation("org.assertj:assertj-core:3.19.0")
     androidTestImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
