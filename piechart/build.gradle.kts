@@ -133,27 +133,32 @@ afterEvaluate {
                 artifact(javadocArtifact)
                 pom {
                     val githubProjectName = "android-pie-chart"
+                    url.set("https://github.com/mahozad/$githubProjectName")
                     name.set(githubProjectName)
                     description.set("An Android library for creating pie charts and donut charts")
-                    url.set("https://github.com/mahozad/$githubProjectName")
+                    inceptionYear.set("2021")
+                    // icon: https://stackoverflow.com/q/40197177
                     licenses {
                         license {
                             name.set("Apache-2.0 License")
-                            url.set("https://github.com/mahozad/$githubProjectName/blob/main/LICENSE")
+                            url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
                         }
                     }
                     developers {
                         developer {
                             id.set("mahozad")
                             name.set("Mahdi Hosseinzadeh")
-                            email.set("")
+                            email.set("legacyazd@gmail.com")
+                            timezone.set("GMT+4:30")
                         }
-                        // Other developers...
+                    }
+                    contributors {
+                        // contributor {}
                     }
                     scm {
                         connection.set("scm:git:github.com/mahozad/$githubProjectName.git")
                         developerConnection.set("scm:git:ssh://github.com/mahozad/$githubProjectName.git")
-                        url.set("https://github.com/mahozad/$githubProjectName/tree/main")
+                        url.set("https://github.com/mahozad/$githubProjectName")
                     }
                 }
             }
