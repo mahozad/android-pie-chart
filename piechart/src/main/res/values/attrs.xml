@@ -8,11 +8,33 @@
        The only difference is that your custom attributes belong to a different namespace.
        Instead of belonging to the http://schemas.android.com/apk/res/android namespace,
        they belong to http://schemas.android.com/apk/res/[your package name]-->
+  <!-- For every custom attribute, it could only be declared once with the *format* attribute specified.
+       Hence, once it is declared in declare-styleable A, it can’t be declared again in declare-styleable B,
+       but just be reused (declared without *format* attribute). -->
+  <!-- enum vs flag: https://stackoverflow.com/a/22362100/ -->
   <eat-comment/>
 
   <declare-styleable name="PieChart">
     <attr name="gap" format="dimension"/>
     <attr name="centerLabel" format="string"/>
+    <attr name="legendsIcon" format="enum">
+      <enum name="square" value="0"/>
+      <enum name="squareHallow" value="1"/>
+      <enum name="circle" value="2"/>
+      <enum name="circleHallow" value="3"/>
+      <enum name="rectangle" value="4"/>
+      <enum name="rectangleHallow" value="5"/>
+      <enum name="rectangleTall" value="6"/>
+      <enum name="rectangleTallHallow" value="7"/>
+      <enum name="triangle" value="8"/>
+      <enum name="triangleHallow" value="9"/>
+      <enum name="triangleInward" value="10"/>
+      <enum name="triangleInwardHallow" value="11"/>
+      <enum name="triangleOutward" value="12"/>
+      <enum name="triangleOutwardHallow" value="13"/>
+      <enum name="triangleDownward" value="14"/>
+      <enum name="triangleDownwardHallow" value="15"/>
+    </attr>
     <!-- Indicated where the gap should be created;
          middle means that half the gap is overlapping the previous slice
          and the rest are overlapping the next slice
@@ -32,6 +54,8 @@
         <li><b>dip</b> Device independent pixels. See {@link android.util.DisplayMetrics} for more information.</li>
     </ul> -->
     <attr name="labelSize" format="dimension"/>
+    <attr name="labelIconsHeight" format="dimension"/>
+    <attr name="labelIconsMargin" format="dimension"/>
     <attr name="labelOffset" format="float"/>
     <attr name="labelsColor" format="color"/>
     <attr name="holeRatio" format="float"/>

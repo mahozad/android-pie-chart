@@ -1,15 +1,21 @@
 package ir.mahozad.android
 
+import android.graphics.*
 import android.view.View
 import android.view.View.MeasureSpec.makeMeasureSpec
+import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import ir.mahozad.android.PieChart.IconPlacement
+import ir.mahozad.android.PieChart.IconPlacement.*
 import org.assertj.core.api.Assertions
 import org.assertj.core.util.FloatComparator
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.Arguments.arguments
 import org.junit.jupiter.params.provider.MethodSource
+import java.util.*
 
 /**
  * Could not run these test as unit tests because they and the class under test
@@ -20,6 +26,11 @@ import org.junit.jupiter.params.provider.MethodSource
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SizeUtilInstrumentedTest {
+
+    @AfterEach fun tearDown() {
+        // Reset the locale if it was changed
+        setLocale(Locale.ENGLISH)
+    }
 
     /**
      * UNSPECIFIED measure spec could indicate, among oter things, wrap_content
@@ -811,11 +822,10 @@ class SizeUtilInstrumentedTest {
     // -------------------------------------------------------------------------
 
     @Test fun withSmallRadiusBoundaryShouldBeCalculatedWithNoException() {
-        val centerX = 500f
-        val centerY = 500f
+        val origin = Coordinates(500f, 500f)
         val radius = 200f
 
-        val (top, left, right, bottom) = calculateBoundaries(centerX, centerY, radius)
+        val (top, left, right, bottom) = calculateBoundaries(origin, radius)
 
         Assertions.assertThat(top).isEqualTo(300f)
         Assertions.assertThat(left).isEqualTo(300f)
@@ -832,12 +842,11 @@ class SizeUtilInstrumentedTest {
         position: PieChart.GapPosition,
         expectedCoordinates: List<Coordinates>
     ) {
-        val originX = 500f
-        val originY = 500f
+        val origin = Coordinates(500f, 500f)
         val gapWidth = 20f
         val gapLength = 150f
 
-        val coordinates = calculateGapCoordinates(originX, originY, angle, gapWidth, gapLength, position)
+        val coordinates = calculateGapCoordinates(origin, angle, gapWidth, gapLength, position)
 
         for ((i, corner) in coordinates.withIndex()) {
             Assertions.assertThat(corner)
@@ -878,6 +887,551 @@ class SizeUtilInstrumentedTest {
             arguments += position.value.mapIndexed { i, list ->
                 arguments(angles[i], position.key, list)
             }
+        }
+        return arguments
+    }
+
+    // -------------------------------------------------------------------------
+
+    /**
+     * Ensures that no new object is allocated in view::onDraw method
+     */
+    @Test fun updatedPaintForLabel_NoNewPaintObjectShouldBeCreated() {
+        val paint = Paint()
+        val labelSize = 10f
+        val labelColor = Color.CYAN
+
+        val newPaint = updatePaintForLabel(paint, labelSize, labelColor)
+
+        Assertions.assertThat(newPaint).isSameAs(paint)
+    }
+
+    @Test fun updatedPaintForLabel_TextSizeShouldBeUpdated() {
+        val paint = Paint()
+        val labelSize = 10f
+        val labelColor = Color.CYAN
+
+        updatePaintForLabel(paint, labelSize, labelColor)
+
+        Assertions.assertThat(paint.textSize).isEqualTo(labelSize)
+    }
+
+    @Test fun updatedPaintForLabel_AlignmentShouldBeCenter() {
+        val paint = Paint()
+        val labelSize = 10f
+        val labelColor = Color.CYAN
+
+        updatePaintForLabel(paint, labelSize, labelColor)
+
+        Assertions.assertThat(paint.textAlign).isEqualTo(Paint.Align.CENTER)
+    }
+
+    /**
+     * We don't want gradient for label.
+     * If any was set previously, remove it.
+     */
+    @Test fun updatedPaintForLabel_NoGradientShouldBeSet() {
+        val paint = Paint().apply {
+            shader = RadialGradient(0f, 0f, 1f, 0, 0, Shader.TileMode.CLAMP)
+        }
+        val labelSize = 10f
+        val labelColor = Color.CYAN
+
+        updatePaintForLabel(paint, labelSize, labelColor)
+
+        Assertions.assertThat(paint.shader).isEqualTo(null)
+    }
+
+    @Test fun updatedPaintForLabel_ColorShouldBeUpdated() {
+        val paint = Paint()
+        val labelSize = 10f
+        val labelColor = Color.CYAN
+
+        updatePaintForLabel(paint, labelSize, labelColor)
+
+        Assertions.assertThat(paint.color).isEqualTo(labelColor)
+    }
+
+    // -------------------------------------------------------------------------
+
+    @Test fun labelCoordinates_WithAngle0AndNoIconAndIconMargin0AndIconPlacementLEFT() {
+        val startAngle = -45f // In degrees
+        val sweepAmount = 90f // In degrees
+        val labelOffset = 0.75f
+        val label = "21%"
+        val iconWidth = 0f
+        val iconMargin = 0f
+        val iconPlacement = LEFT
+        val center = Coordinates(500f, 500f)
+        val radius = 400f
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+
+        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+
+        Assertions.assertThat(coordinates)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
+            .isEqualTo(Coordinates(800f, 522f))
+    }
+
+    /**
+     * If no icon is specified (i.e. icon width == 0) then ignore the icon margin
+     */
+    @Test fun labelCoordinates_WithAngle0AndNoIconAndArbitraryIconMarginAndIconPlacementLEFT() {
+        val startAngle = -45f // In degrees
+        val sweepAmount = 90f // In degrees
+        val labelOffset = 0.75f
+        val label = "21%"
+        val iconWidth = 0f
+        val iconMargin = 147f
+        val iconPlacement = LEFT
+        val center = Coordinates(500f, 500f)
+        val radius = 400f
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+
+        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+
+        Assertions.assertThat(coordinates)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
+            .isEqualTo(Coordinates(800f, 522f))
+    }
+
+    @Test fun labelCoordinates_WithAngle0AndAnIconAndIconMargin0AndIconPlacementLEFT() {
+        val startAngle = -45f // In degrees
+        val sweepAmount = 90f // In degrees
+        val labelOffset = 0.75f
+        val label = "21%"
+        val iconWidth = 100f
+        val iconMargin = 0f
+        val iconPlacement = LEFT
+        val center = Coordinates(500f, 500f)
+        val radius = 400f
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+
+        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+
+        Assertions.assertThat(coordinates)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
+            .isEqualTo(Coordinates(850f, 522f))
+    }
+
+    @Test fun labelCoordinates_WithAngle0AndAnIconAndArbitraryIconMarginAndIconPlacementLEFT() {
+        val startAngle = -45f // In degrees
+        val sweepAmount = 90f // In degrees
+        val labelOffset = 0.75f
+        val label = "21%"
+        val iconWidth = 100f
+        val iconMargin = 147f
+        val iconPlacement = LEFT
+        val center = Coordinates(500f, 500f)
+        val radius = 400f
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+
+        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+
+        Assertions.assertThat(coordinates)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
+            .isEqualTo(Coordinates(924f, 522f))
+    }
+
+    @Test fun labelCoordinates_WithAngle0AndNoIconAndIconMargin0AndIconPlacementRIGHT() {
+        val startAngle = -45f // In degrees
+        val sweepAmount = 90f // In degrees
+        val labelOffset = 0.75f
+        val label = "21%"
+        val iconWidth = 0f
+        val iconMargin = 0f
+        val iconPlacement = IconPlacement.RIGHT
+        val center = Coordinates(500f, 500f)
+        val radius = 400f
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+
+        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+
+        Assertions.assertThat(coordinates)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
+            .isEqualTo(Coordinates(800f, 522f))
+    }
+
+    /**
+     * If no icon is specified (i.e. icon width == 0) then ignore the icon margin
+     */
+    @Test fun labelCoordinates_WithAngle0AndNoIconAndArbitraryIconMarginAndIconPlacementRIGHT() {
+        val startAngle = -45f // In degrees
+        val sweepAmount = 90f // In degrees
+        val labelOffset = 0.75f
+        val label = "21%"
+        val iconWidth = 0f
+        val iconMargin = 147f
+        val iconPlacement = IconPlacement.RIGHT
+        val center = Coordinates(500f, 500f)
+        val radius = 400f
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+
+        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+
+        Assertions.assertThat(coordinates)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
+            .isEqualTo(Coordinates(800f, 522f))
+    }
+
+    @Test fun labelCoordinates_WithAngle0AndAnIconAndIconMargin0AndIconPlacementRIGHT() {
+        val startAngle = -45f // In degrees
+        val sweepAmount = 90f // In degrees
+        val labelOffset = 0.75f
+        val label = "21%"
+        val iconWidth = 100f
+        val iconMargin = 0f
+        val iconPlacement = IconPlacement.RIGHT
+        val center = Coordinates(500f, 500f)
+        val radius = 400f
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+
+        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+
+        Assertions.assertThat(coordinates)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
+            .isEqualTo(Coordinates(750f, 522f))
+    }
+
+    @Test fun labelCoordinates_WithAngle0AndAnIconAndArbitraryIconMarginAndIconPlacementRIGHT() {
+        val startAngle = -45f // In degrees
+        val sweepAmount = 90f // In degrees
+        val labelOffset = 0.75f
+        val label = "21%"
+        val iconWidth = 100f
+        val iconMargin = 147f
+        val iconPlacement = IconPlacement.RIGHT
+        val center = Coordinates(500f, 500f)
+        val radius = 400f
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+
+        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+
+        Assertions.assertThat(coordinates)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
+            .isEqualTo(Coordinates(676f, 522f))
+    }
+
+    private fun setLocale(locale: Locale) {
+        Locale.setDefault(locale)
+        val resources = getInstrumentation().targetContext.resources
+        val configuration = resources.configuration
+        configuration.setLocale(locale)
+        resources.updateConfiguration(configuration, resources.displayMetrics)
+    }
+
+    @Test fun labelCoordinates_WithAngle0AndNoIconAndIconMargin0AndIconPlacementSTARTAndLeftToRightLocale() {
+        val startAngle = -45f // In degrees
+        val sweepAmount = 90f // In degrees
+        val labelOffset = 0.75f
+        val label = "21%"
+        val iconWidth = 0f
+        val iconMargin = 0f
+        val iconPlacement = IconPlacement.START
+        val center = Coordinates(500f, 500f)
+        val radius = 400f
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+        setLocale(Locale.ENGLISH)
+
+        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+
+        Assertions.assertThat(coordinates)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
+            .isEqualTo(Coordinates(800f, 522f))
+    }
+
+    @Test fun labelCoordinates_WithAngle0AndAnIconAndIconMargin0AndIconPlacementSTARTAndLeftToRightLocale() {
+        val startAngle = -45f // In degrees
+        val sweepAmount = 90f // In degrees
+        val labelOffset = 0.75f
+        val label = "21%"
+        val iconWidth = 100f
+        val iconMargin = 0f
+        val iconPlacement = IconPlacement.START
+        val center = Coordinates(500f, 500f)
+        val radius = 400f
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+        setLocale(Locale.ENGLISH)
+
+        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+
+        Assertions.assertThat(coordinates)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
+            .isEqualTo(Coordinates(850f, 522f))
+    }
+
+    @Test fun labelCoordinates_WithAngle0AndAnIconAndIconMargin0AndIconPlacementSTARTAndRightToLeftLocale() {
+        val startAngle = -45f // In degrees
+        val sweepAmount = 90f // In degrees
+        val labelOffset = 0.75f
+        val label = "21%"
+        val iconWidth = 100f
+        val iconMargin = 0f
+        val iconPlacement = IconPlacement.START
+        val center = Coordinates(500f, 500f)
+        val radius = 400f
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+        setLocale(Locale.forLanguageTag("fa"))
+
+        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+
+        Assertions.assertThat(coordinates)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
+            .isEqualTo(Coordinates(750f, 522f))
+    }
+
+    @Test fun labelCoordinates_WithAngle0AndAnIconAndIconMargin0AndIconPlacementENDAndLeftToRightLocale() {
+        val startAngle = -45f // In degrees
+        val sweepAmount = 90f // In degrees
+        val labelOffset = 0.75f
+        val label = "21%"
+        val iconWidth = 100f
+        val iconMargin = 0f
+        val iconPlacement = IconPlacement.END
+        val center = Coordinates(500f, 500f)
+        val radius = 400f
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+        setLocale(Locale.ENGLISH)
+
+        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+
+        Assertions.assertThat(coordinates)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
+            .isEqualTo(Coordinates(750f, 522f))
+    }
+
+    @Test fun labelCoordinates_WithAngle0AndAnIconAndIconMargin0AndIconPlacementENDAndRightToLeftLocale() {
+        val startAngle = -45f // In degrees
+        val sweepAmount = 90f // In degrees
+        val labelOffset = 0.75f
+        val label = "21%"
+        val iconWidth = 100f
+        val iconMargin = 0f
+        val iconPlacement = IconPlacement.END
+        val center = Coordinates(500f, 500f)
+        val radius = 400f
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+        setLocale(Locale.forLanguageTag("fa"))
+
+        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+
+        Assertions.assertThat(coordinates)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
+            .isEqualTo(Coordinates(850f, 522f))
+    }
+
+    @Test fun labelCoordinates_WithAngle0AndNoIconAndIconMargin0_PersianLabel() {
+        val startAngle = -45f // In degrees
+        val sweepAmount = 90f // In degrees
+        val labelOffset = 0.75f
+        val label = "۲۱٪"
+        val iconWidth = 0f
+        val iconMargin = 0f
+        val iconPlacement = IconPlacement.START
+        val center = Coordinates(500f, 500f)
+        val radius = 400f
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+
+        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+
+        Assertions.assertThat(coordinates)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
+            .isEqualTo(Coordinates(800f, 519f))
+    }
+
+    @Test fun labelCoordinates_WithArbitraryStartAngleAndAngleSweepAndNoIconAndMargin0() {
+        val startAngle = 64.8f // In degrees
+        val sweepAmount = 75.6f // In degrees
+        val labelOffset = 0.75f
+        val label = "21%"
+        val iconWidth = 0f
+        val iconMargin = 0f
+        val iconPlacement = IconPlacement.START
+        val center = Coordinates(540f, 540f)
+        val radius = 540f
+        val labelPaint = updatePaintForLabel(Paint(), 63f, Color.WHITE)
+
+        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+
+        Assertions.assertThat(coordinates)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
+            .isEqualTo(Coordinates(452f, 958f))
+    }
+
+    @Test fun labelCoordinates_WithArbitraryStartAngleAndAngleSweepAndNoIconAndMargin0_PersianLabel() {
+        val startAngle = 64.8f // In degrees
+        val sweepAmount = 75.6f // In degrees
+        val labelOffset = 0.75f
+        val label = "۲۱٪"
+        val iconWidth = 0f
+        val iconMargin = 0f
+        val iconPlacement = IconPlacement.START
+        val center = Coordinates(540f, 540f)
+        val radius = 540f
+        val labelPaint = updatePaintForLabel(Paint(), 63f, Color.WHITE)
+
+        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+
+        Assertions.assertThat(coordinates)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
+            .isEqualTo(Coordinates(452f, 955f))
+    }
+
+    // -------------------------------------------------------------------------
+
+    @Test fun calculateLabelIconWidth_ForNullDrawable() {
+        val desiredIconHeight = 50f
+        val icon  = null
+
+        val width = calculateLabelIconWidth(icon, desiredIconHeight)
+
+        Assertions.assertThat(width).isEqualTo(0f)
+    }
+
+    /**
+     * Refer to [this post](https://stackoverflow.com/q/40715100) for how to
+     * access resource in *androidTest* source set.
+     */
+    @Test fun calculateLabelIconWidth_ForDrawableWith1To1AspectRatio() {
+        val desiredIconHeight = 50f
+        val resources = getInstrumentation().targetContext.resources
+        val icon = resources.getDrawable(ir.mahozad.android.test.R.drawable.ic_test_1to1_ratio, null)
+
+        val width = calculateLabelIconWidth(icon, desiredIconHeight)
+
+        Assertions.assertThat(width).isEqualTo(50f)
+    }
+
+    @Test fun calculateLabelIconWidth_ForDrawableWith1To2AspectRatio() {
+        val desiredIconHeight = 50f
+        val resources = getInstrumentation().targetContext.resources
+        val icon = resources.getDrawable(ir.mahozad.android.test.R.drawable.ic_test_1to2_ratio, null)
+
+        val width = calculateLabelIconWidth(icon, desiredIconHeight)
+
+        Assertions.assertThat(width).isEqualTo(25f)
+    }
+
+    @Test fun calculateLabelIconWidth_ForDrawableWith2To1AspectRatio() {
+        val desiredIconHeight = 50f
+        val resources = getInstrumentation().targetContext.resources
+        val icon = resources.getDrawable(ir.mahozad.android.test.R.drawable.ic_test_2to1_ratio, null)
+
+        val width = calculateLabelIconWidth(icon, desiredIconHeight)
+
+        Assertions.assertThat(width).isEqualTo(100f)
+    }
+
+    @Test fun calculateLabelIconWidth_ForDrawableWith3To4AspectRatio() {
+        val desiredIconHeight = 80f
+        val resources = getInstrumentation().targetContext.resources
+        val icon = resources.getDrawable(ir.mahozad.android.test.R.drawable.ic_test_3to4_ratio, null)
+
+        val width = calculateLabelIconWidth(icon, desiredIconHeight)
+
+        Assertions.assertThat(width).isEqualTo(60f)
+    }
+
+    @Test fun calculateLabelIconWidth_ForDrawableWith4To3AspectRatio() {
+        val desiredIconHeight = 60f
+        val resources = getInstrumentation().targetContext.resources
+        val icon = resources.getDrawable(ir.mahozad.android.test.R.drawable.ic_test_4to3_ratio, null)
+
+        val width = calculateLabelIconWidth(icon, desiredIconHeight)
+
+        Assertions.assertThat(width).isEqualTo(80f)
+    }
+
+    // -------------------------------------------------------------------------
+
+    @Test fun calculateLabelBounds_EmptyLabel() {
+        val label = ""
+        val labelPaint = Paint()
+        updatePaintForLabel(labelPaint, 60f, Color.WHITE)
+
+        val bounds = calculateLabelBounds(label, labelPaint)
+
+        Assertions.assertThat(bounds.width()).isEqualTo(0)
+        Assertions.assertThat(bounds.height()).isEqualTo(0)
+    }
+
+    @Test fun calculateLabelBounds_ArbitraryLabel() {
+        val label = "12%"
+        val labelPaint = Paint()
+        updatePaintForLabel(labelPaint, 60f, Color.WHITE)
+        setLocale(Locale.ENGLISH)
+
+        val bounds = calculateLabelBounds(label, labelPaint)
+
+        Assertions.assertThat(bounds.width()).isEqualTo(105)
+        Assertions.assertThat(bounds.height()).isEqualTo(45)
+    }
+
+    // -------------------------------------------------------------------------
+
+    @ParameterizedTest(name = "Icon margin: {0}, Icon placement: {1}, Label: {3}, Locale: {4}")
+    @MethodSource("argumentProvider2")
+    internal fun calculateLabelIconBounds_WithTheGivenIconMarginAndIconPlacementAndLabelAndLocale(
+        iconMargin: Float,
+        iconPlacement: IconPlacement,
+        label: String,
+        locale: Locale,
+        expectedBounds: Rect
+    ) {
+        val targetCoordinates = Coordinates(500f, 500f)
+        val iconWidth = 100f
+        val iconHeight = 100f
+        val labelPaint = Paint()
+        updatePaintForLabel(labelPaint, 60f, Color.WHITE)
+        val labelBounds = calculateLabelBounds(label, labelPaint)
+        setLocale(locale)
+
+        val bounds = calculateLabelIconBounds(targetCoordinates, labelBounds, iconWidth, iconHeight, iconMargin, iconPlacement)
+
+        Assertions.assertThat(bounds).isEqualTo(expectedBounds)
+    }
+
+    @Suppress("unused")
+    private fun argumentProvider2(): List<Arguments> {
+        val iconMargins = arrayOf(0f, 0f, 0f, 147f, 0f, 0f, 147f, 0f, 147f, 0f, 0f, 0f)
+        val iconPlacements = arrayOf(LEFT, LEFT, LEFT, LEFT, RIGHT, RIGHT, RIGHT, START, START, END, START, END)
+        val labels = arrayOf("", "23%", "23%", "23%", "23%", "23%", "23%", "23%", "23%", "23%", "23%", "23%")
+        val fa = Locale.forLanguageTag("fa")
+        val en = Locale.ENGLISH
+        val locales = arrayOf(en, en, fa, en, en, fa, en, en, en, en, fa, fa)
+        val expectedBounds = arrayOf(
+            Rect(400, 450, 500, 550),
+            Rect(346, 428, 446, 528),
+            Rect(346, 428, 446, 528),
+            Rect(199, 428, 299, 528),
+            Rect(554, 428, 654, 528),
+            Rect(554, 428, 654, 528),
+            Rect(701, 428, 801, 528),
+            Rect(346, 428, 446, 528),
+            Rect(199, 428, 299, 528),
+            Rect(554, 428, 654, 528),
+            Rect(554, 428, 654, 528),
+            Rect(346, 428, 446, 528)
+        )
+        val arguments = mutableListOf<Arguments>()
+        for ((i, iconMargin) in iconMargins.withIndex()) {
+            arguments+= arguments(iconMargin, iconPlacements[i], labels[i], locales[i], expectedBounds[i])
         }
         return arguments
     }
