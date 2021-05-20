@@ -33,6 +33,7 @@
     </ul> -->
     <attr name="labelSize" format="dimension"/>
     <attr name="labelOffset" format="float"/>
+    <attr name="labelsColor" format="color"/>
     <attr name="holeRatio" format="float"/>
     <attr name="overlayRatio" format="float"/>
     <attr name="overlayAlpha" format="float"/>

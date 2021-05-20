@@ -6,6 +6,7 @@ import android.graphics.Paint.ANTI_ALIAS_FLAG
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
+import androidx.annotation.Dimension
 import androidx.annotation.FloatRange
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.minus
@@ -26,6 +27,7 @@ const val DEFAULT_GAP = 8f /* px */
 const val DEFAULT_LABEL_SIZE = 24f /* sp */
 const val DEFAULT_LABEL_OFFSET = 0.75f
 const val DEFAULT_CENTER_LABEL = ""
+@ColorInt const val DEFAULT_LABELS_COLOR = Color.WHITE
 val defaultGapPosition = MIDDLE
 val defaultGradientType = RADIAL
 val defaultDrawDirection = CLOCKWISE
@@ -54,6 +56,10 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         @ColorInt val color: Int,
         @ColorInt val colorEnd: Int = color,
         val label: String = NumberFormat.getPercentInstance().format(fraction),
+        /**
+         * This color overrides the generic *labelsColor* if assigned a value other than *null*
+         */
+        @ColorInt val labelColor: Int? = null,
         /**
          * Can also set the default value to the slice fraction.
          *
@@ -110,6 +116,14 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             field = offset
             invalidate()
         }
+    /**
+     * Is overridden by color of the slice if it is assigned a value other than *null*
+     */
+    var labelsColor = DEFAULT_LABELS_COLOR
+        set(color) {
+            field = color
+            invalidate()
+        }
     var centerLabel = DEFAULT_CENTER_LABEL
     var gapPosition = MIDDLE
     var gradientType = defaultGradientType
@@ -148,6 +162,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 gap = getDimension(R.styleable.PieChart_gap, DEFAULT_GAP)
                 labelSize = getDimension(R.styleable.PieChart_labelSize, spToPx(DEFAULT_LABEL_SIZE))
                 labelOffset = getFloat(R.styleable.PieChart_labelOffset, DEFAULT_LABEL_OFFSET)
+                labelsColor = getColor(R.styleable.PieChart_labelsColor, DEFAULT_LABELS_COLOR)
                 centerLabel = getString(R.styleable.PieChart_centerLabel) ?: DEFAULT_CENTER_LABEL
                 gapPosition = GapPosition.values()[
                         getInt(R.styleable.PieChart_gapPosition, defaultGapPosition.ordinal)
@@ -286,7 +301,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             canvas.drawPath(pie, mainPaint)
 
             mainPaint.shader = null // Clear the gradient
-            mainPaint.color = ContextCompat.getColor(context, android.R.color.black)
+            mainPaint.color = slice.labelColor ?: labelsColor
             mainPaint.textSize = labelSize
             mainPaint.textAlign = Paint.Align.CENTER
             val label = slice.label
