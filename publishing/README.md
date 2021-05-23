@@ -5,7 +5,8 @@ The username and password are the same as the Sonatype Jira account.
 - *io.github.mahozad* repository [ticket](https://issues.sonatype.org/browse/OSSRH-69099)
 
 The Sonatype Jira account details and the gpg properties and its secret file
-(required here for publishing artifacts) are stored in a private Git repository.
+(required here for publishing artifacts) are stored in one of my private GitHub repositories
+and also in the *Secrets* section of the library GitHub repository.
 
 The required properties for publishing tasks can either be declared in an ignored
 *local.properties* file or specified as environment variables.  
