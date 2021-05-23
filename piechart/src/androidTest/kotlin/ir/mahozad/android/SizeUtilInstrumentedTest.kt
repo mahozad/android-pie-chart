@@ -6,7 +6,7 @@ import android.view.View.MeasureSpec.makeMeasureSpec
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import ir.mahozad.android.PieChart.IconPlacement
 import ir.mahozad.android.PieChart.IconPlacement.*
-import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.util.FloatComparator
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -42,8 +42,8 @@ class SizeUtilInstrumentedTest {
 
         val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
-        Assertions.assertThat(width).isEqualTo(availableSize)
-        Assertions.assertThat(height).isEqualTo(availableSize)
+        assertThat(width).isEqualTo(availableSize)
+        assertThat(height).isEqualTo(availableSize)
     }
 
     @Test fun twoDifferentUNSPECIFIEDSpecShouldResultInTheSmallerAvailableSize() {
@@ -54,8 +54,8 @@ class SizeUtilInstrumentedTest {
 
         val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
-        Assertions.assertThat(width).isEqualTo(smallerSize)
-        Assertions.assertThat(height).isEqualTo(smallerSize)
+        assertThat(width).isEqualTo(smallerSize)
+        assertThat(height).isEqualTo(smallerSize)
     }
 
     @Test fun twoDifferentUNSPECIFIEDSpecShouldResultInTheSmallerAvailableSize_WH_REVERSED() {
@@ -66,8 +66,8 @@ class SizeUtilInstrumentedTest {
 
         val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
-        Assertions.assertThat(width).isEqualTo(smallerSize)
-        Assertions.assertThat(height).isEqualTo(smallerSize)
+        assertThat(width).isEqualTo(smallerSize)
+        assertThat(height).isEqualTo(smallerSize)
     }
 
     @Test fun oneUNSPECIFIEDSpecAndOneAT_MOSTSpecShouldResultInTheirMinimumSize() {
@@ -78,8 +78,8 @@ class SizeUtilInstrumentedTest {
 
         val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
-        Assertions.assertThat(width).isEqualTo(smallerSize)
-        Assertions.assertThat(height).isEqualTo(smallerSize)
+        assertThat(width).isEqualTo(smallerSize)
+        assertThat(height).isEqualTo(smallerSize)
     }
 
     @Test fun oneUNSPECIFIEDSpecAndOneAT_MOSTSpecShouldResultInTheirMinimumSize_WH_REVERSED() {
@@ -90,8 +90,8 @@ class SizeUtilInstrumentedTest {
 
         val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
-        Assertions.assertThat(width).isEqualTo(smallerSize)
-        Assertions.assertThat(height).isEqualTo(smallerSize)
+        assertThat(width).isEqualTo(smallerSize)
+        assertThat(height).isEqualTo(smallerSize)
     }
 
     @Test fun oneUNSPECIFIEDSpecAndOneAT_MOSTSpecShouldResultInTheirMinimumSize_SPECS_SWAPPED() {
@@ -102,8 +102,8 @@ class SizeUtilInstrumentedTest {
 
         val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
-        Assertions.assertThat(width).isEqualTo(smallerSize)
-        Assertions.assertThat(height).isEqualTo(smallerSize)
+        assertThat(width).isEqualTo(smallerSize)
+        assertThat(height).isEqualTo(smallerSize)
     }
 
     @Test fun oneUNSPECIFIEDSpecAndOneEXACTLYSpecShouldResultInTheEXACTLYSize() {
@@ -114,8 +114,8 @@ class SizeUtilInstrumentedTest {
 
         val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
-        Assertions.assertThat(width).isEqualTo(smallerSize)
-        Assertions.assertThat(height).isEqualTo(smallerSize)
+        assertThat(width).isEqualTo(smallerSize)
+        assertThat(height).isEqualTo(smallerSize)
     }
 
     @Test fun oneUNSPECIFIEDSpecAndOneEXACTLYSpecShouldResultInTheEXACTLYSize_SPECS_SWAPPED() {
@@ -126,8 +126,8 @@ class SizeUtilInstrumentedTest {
 
         val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
-        Assertions.assertThat(width).isEqualTo(smallerSize)
-        Assertions.assertThat(height).isEqualTo(smallerSize)
+        assertThat(width).isEqualTo(smallerSize)
+        assertThat(height).isEqualTo(smallerSize)
     }
 
     @Test fun oneUNSPECIFIEDSpecAndOneEXACTLYSpecShouldResultInTheEXACTLYSize_WH_REVERSED() {
@@ -138,8 +138,8 @@ class SizeUtilInstrumentedTest {
 
         val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
-        Assertions.assertThat(width).isEqualTo(smallerSize)
-        Assertions.assertThat(height).isEqualTo(smallerSize)
+        assertThat(width).isEqualTo(smallerSize)
+        assertThat(height).isEqualTo(smallerSize)
     }
 
     @Test fun twoSameEXACTLYSpecShouldResultInTheEXACTLYSize() {
@@ -149,8 +149,8 @@ class SizeUtilInstrumentedTest {
 
         val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
-        Assertions.assertThat(width).isEqualTo(size)
-        Assertions.assertThat(height).isEqualTo(size)
+        assertThat(width).isEqualTo(size)
+        assertThat(height).isEqualTo(size)
     }
 
     @Test fun twoDifferentEXACTLYSpecShouldResultInTheirMinimumSize() {
@@ -161,8 +161,8 @@ class SizeUtilInstrumentedTest {
 
         val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
-        Assertions.assertThat(width).isEqualTo(smallerSize)
-        Assertions.assertThat(height).isEqualTo(smallerSize)
+        assertThat(width).isEqualTo(smallerSize)
+        assertThat(height).isEqualTo(smallerSize)
     }
 
     @Test fun twoDifferentEXACTLYSpecShouldResultInTheirMinimumSize_WH_REVERSED() {
@@ -173,8 +173,8 @@ class SizeUtilInstrumentedTest {
 
         val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
-        Assertions.assertThat(width).isEqualTo(smallerSize)
-        Assertions.assertThat(height).isEqualTo(smallerSize)
+        assertThat(width).isEqualTo(smallerSize)
+        assertThat(height).isEqualTo(smallerSize)
     }
 
     @Test fun oneEXACTLYAndOneAT_MOSTSpecShouldResultInTheirMinimumSize() {
@@ -185,8 +185,8 @@ class SizeUtilInstrumentedTest {
 
         val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
-        Assertions.assertThat(width).isEqualTo(smallerSize)
-        Assertions.assertThat(height).isEqualTo(smallerSize)
+        assertThat(width).isEqualTo(smallerSize)
+        assertThat(height).isEqualTo(smallerSize)
     }
 
     @Test fun oneEXACTLYAndOneAT_MOSTSpecShouldResultInTheirMinimumSize_WH_REVERSED() {
@@ -197,8 +197,8 @@ class SizeUtilInstrumentedTest {
 
         val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
-        Assertions.assertThat(width).isEqualTo(smallerSize)
-        Assertions.assertThat(height).isEqualTo(smallerSize)
+        assertThat(width).isEqualTo(smallerSize)
+        assertThat(height).isEqualTo(smallerSize)
     }
 
     @Test fun oneEXACTLYAndOneAT_MOSTSpecShouldResultInTheirMinimumSize_SPECS_SWAPPED() {
@@ -209,8 +209,8 @@ class SizeUtilInstrumentedTest {
 
         val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
-        Assertions.assertThat(width).isEqualTo(smallerSize)
-        Assertions.assertThat(height).isEqualTo(smallerSize)
+        assertThat(width).isEqualTo(smallerSize)
+        assertThat(height).isEqualTo(smallerSize)
     }
 
     @Test fun twoSameAT_MOSTSpecShouldResultInTheAT_MOSTSize() {
@@ -220,8 +220,8 @@ class SizeUtilInstrumentedTest {
 
         val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
-        Assertions.assertThat(width).isEqualTo(maxSize)
-        Assertions.assertThat(height).isEqualTo(maxSize)
+        assertThat(width).isEqualTo(maxSize)
+        assertThat(height).isEqualTo(maxSize)
     }
 
     @Test fun twoDifferentAT_MOSTSpecShouldResultInTheirMinimumSize() {
@@ -232,8 +232,8 @@ class SizeUtilInstrumentedTest {
 
         val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
-        Assertions.assertThat(width).isEqualTo(smallerSize)
-        Assertions.assertThat(height).isEqualTo(smallerSize)
+        assertThat(width).isEqualTo(smallerSize)
+        assertThat(height).isEqualTo(smallerSize)
     }
 
     @Test fun twoDifferentAT_MOSTSpecShouldResultInTheirMinimumSize_WH_REVERSED() {
@@ -244,8 +244,8 @@ class SizeUtilInstrumentedTest {
 
         val (width, height) = calculateWidthAndHeight(widthSpec, heightSpec)
 
-        Assertions.assertThat(width).isEqualTo(smallerSize)
-        Assertions.assertThat(height).isEqualTo(smallerSize)
+        assertThat(width).isEqualTo(smallerSize)
+        assertThat(height).isEqualTo(smallerSize)
     }
 
     // -------------------------------------------------------------------------
@@ -267,8 +267,8 @@ class SizeUtilInstrumentedTest {
             paddingBottom
         )
 
-        Assertions.assertThat(centerX).isEqualTo(250f)
-        Assertions.assertThat(centerY).isEqualTo(250f)
+        assertThat(centerX).isEqualTo(250f)
+        assertThat(centerY).isEqualTo(250f)
     }
 
     @Test fun withLeftPaddingCenterShouldBeShiftedToRight() {
@@ -288,8 +288,8 @@ class SizeUtilInstrumentedTest {
             paddingBottom
         )
 
-        Assertions.assertThat(centerX).isEqualTo(325f)
-        Assertions.assertThat(centerY).isEqualTo(250f)
+        assertThat(centerX).isEqualTo(325f)
+        assertThat(centerY).isEqualTo(250f)
     }
 
     @Test fun withRightPaddingCenterShouldBeShiftedToLeft() {
@@ -309,8 +309,8 @@ class SizeUtilInstrumentedTest {
             paddingBottom
         )
 
-        Assertions.assertThat(centerX).isEqualTo(175f)
-        Assertions.assertThat(centerY).isEqualTo(250f)
+        assertThat(centerX).isEqualTo(175f)
+        assertThat(centerY).isEqualTo(250f)
     }
 
     @Test fun withSameLeftAndRightPaddingCenterShouldBeInCenter() {
@@ -330,8 +330,8 @@ class SizeUtilInstrumentedTest {
             paddingBottom
         )
 
-        Assertions.assertThat(centerX).isEqualTo(250f)
-        Assertions.assertThat(centerY).isEqualTo(250f)
+        assertThat(centerX).isEqualTo(250f)
+        assertThat(centerY).isEqualTo(250f)
     }
 
     @Test fun withLargerLeftPaddingAndSmallerRightPaddingCenterShouldBeShiftedToRight() {
@@ -351,8 +351,8 @@ class SizeUtilInstrumentedTest {
             paddingBottom
         )
 
-        Assertions.assertThat(centerX).isEqualTo(300f)
-        Assertions.assertThat(centerY).isEqualTo(250f)
+        assertThat(centerX).isEqualTo(300f)
+        assertThat(centerY).isEqualTo(250f)
     }
 
     @Test fun withSmallerLeftPaddingAndLargerRightPaddingCenterShouldBeShiftedToLeft() {
@@ -372,8 +372,8 @@ class SizeUtilInstrumentedTest {
             paddingBottom
         )
 
-        Assertions.assertThat(centerX).isEqualTo(200f)
-        Assertions.assertThat(centerY).isEqualTo(250f)
+        assertThat(centerX).isEqualTo(200f)
+        assertThat(centerY).isEqualTo(250f)
     }
 
     @Test fun withTopPaddingCenterShouldBeShiftedToBottom() {
@@ -393,8 +393,8 @@ class SizeUtilInstrumentedTest {
             paddingBottom
         )
 
-        Assertions.assertThat(centerX).isEqualTo(250f)
-        Assertions.assertThat(centerY).isEqualTo(325f)
+        assertThat(centerX).isEqualTo(250f)
+        assertThat(centerY).isEqualTo(325f)
     }
 
     @Test fun withBottomPaddingCenterShouldBeShiftedToTop() {
@@ -414,8 +414,8 @@ class SizeUtilInstrumentedTest {
             paddingBottom
         )
 
-        Assertions.assertThat(centerX).isEqualTo(250f)
-        Assertions.assertThat(centerY).isEqualTo(175f)
+        assertThat(centerX).isEqualTo(250f)
+        assertThat(centerY).isEqualTo(175f)
     }
 
     @Test fun withSameTopAndBottomPaddingCenterShouldBeInCenter() {
@@ -435,8 +435,8 @@ class SizeUtilInstrumentedTest {
             paddingBottom
         )
 
-        Assertions.assertThat(centerX).isEqualTo(250f)
-        Assertions.assertThat(centerY).isEqualTo(250f)
+        assertThat(centerX).isEqualTo(250f)
+        assertThat(centerY).isEqualTo(250f)
     }
 
     @Test fun withLargerTopPaddingAndSmallerBottomPaddingCenterShouldBeShiftedToBottom() {
@@ -456,8 +456,8 @@ class SizeUtilInstrumentedTest {
             paddingBottom
         )
 
-        Assertions.assertThat(centerX).isEqualTo(250f)
-        Assertions.assertThat(centerY).isEqualTo(300f)
+        assertThat(centerX).isEqualTo(250f)
+        assertThat(centerY).isEqualTo(300f)
     }
 
     @Test fun withSmallerTopPaddingAndLargerBottomPaddingCenterShouldBeShiftedToTop() {
@@ -477,8 +477,8 @@ class SizeUtilInstrumentedTest {
             paddingBottom
         )
 
-        Assertions.assertThat(centerX).isEqualTo(250f)
-        Assertions.assertThat(centerY).isEqualTo(200f)
+        assertThat(centerX).isEqualTo(250f)
+        assertThat(centerY).isEqualTo(200f)
     }
 
     @Test fun withLeftAndTopPaddingCenterShouldBeShiftedToRightAndBottom() {
@@ -498,8 +498,8 @@ class SizeUtilInstrumentedTest {
             paddingBottom
         )
 
-        Assertions.assertThat(centerX).isEqualTo(325f)
-        Assertions.assertThat(centerY).isEqualTo(375f)
+        assertThat(centerX).isEqualTo(325f)
+        assertThat(centerY).isEqualTo(375f)
     }
 
     @Test fun withLeftAndBottomPaddingCenterShouldBeShiftedToRightAndTop() {
@@ -519,8 +519,8 @@ class SizeUtilInstrumentedTest {
             paddingBottom
         )
 
-        Assertions.assertThat(centerX).isEqualTo(325f)
-        Assertions.assertThat(centerY).isEqualTo(125f)
+        assertThat(centerX).isEqualTo(325f)
+        assertThat(centerY).isEqualTo(125f)
     }
 
     @Test fun withRightAndTopPaddingCenterShouldBeShiftedToLeftAndBottom() {
@@ -540,8 +540,8 @@ class SizeUtilInstrumentedTest {
             paddingBottom
         )
 
-        Assertions.assertThat(centerX).isEqualTo(175f)
-        Assertions.assertThat(centerY).isEqualTo(375f)
+        assertThat(centerX).isEqualTo(175f)
+        assertThat(centerY).isEqualTo(375f)
     }
 
     @Test fun withRightAndBottomPaddingCenterShouldBeShiftedToLeftAndTop() {
@@ -561,8 +561,8 @@ class SizeUtilInstrumentedTest {
             paddingBottom
         )
 
-        Assertions.assertThat(centerX).isEqualTo(175f)
-        Assertions.assertThat(centerY).isEqualTo(125f)
+        assertThat(centerX).isEqualTo(175f)
+        assertThat(centerY).isEqualTo(125f)
     }
 
     @Test fun withSameLeftAndRightPaddingAndTopPaddingCenterShouldBeShiftedToBottom() {
@@ -582,8 +582,8 @@ class SizeUtilInstrumentedTest {
             paddingBottom
         )
 
-        Assertions.assertThat(centerX).isEqualTo(250f)
-        Assertions.assertThat(centerY).isEqualTo(375f)
+        assertThat(centerX).isEqualTo(250f)
+        assertThat(centerY).isEqualTo(375f)
     }
 
     @Test fun withSameLeftAndRightPaddingAndSameTopAndBottomPaddingCenterShouldBeInCenter() {
@@ -603,8 +603,8 @@ class SizeUtilInstrumentedTest {
             paddingBottom
         )
 
-        Assertions.assertThat(centerX).isEqualTo(250f)
-        Assertions.assertThat(centerY).isEqualTo(250f)
+        assertThat(centerX).isEqualTo(250f)
+        assertThat(centerY).isEqualTo(250f)
     }
 
     // -------------------------------------------------------------------------
@@ -620,7 +620,7 @@ class SizeUtilInstrumentedTest {
         val radius =
             calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
 
-        Assertions.assertThat(radius).isEqualTo(250f)
+        assertThat(radius).isEqualTo(250f)
     }
 
     @Test fun withLeftPaddingRadiusShouldBeHalfTheWidthMinusLeftPadding() {
@@ -634,7 +634,7 @@ class SizeUtilInstrumentedTest {
         val radius =
             calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
 
-        Assertions.assertThat(radius).isEqualTo(175f)
+        assertThat(radius).isEqualTo(175f)
     }
 
     @Test fun withRightPaddingRadiusShouldBeHalfTheWidthMinusRightPadding() {
@@ -648,7 +648,7 @@ class SizeUtilInstrumentedTest {
         val radius =
             calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
 
-        Assertions.assertThat(radius).isEqualTo(175f)
+        assertThat(radius).isEqualTo(175f)
     }
 
     @Test fun withLeftAndRightPaddingRadiusShouldBeHalfTheWidthMinusThePaddings() {
@@ -662,7 +662,7 @@ class SizeUtilInstrumentedTest {
         val radius =
             calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
 
-        Assertions.assertThat(radius).isEqualTo(100f)
+        assertThat(radius).isEqualTo(100f)
     }
 
     @Test fun withLargerLeftPaddingAndSmallerRightPaddingRadiusShouldBeHalfTheWidthMinusThePaddings() {
@@ -676,7 +676,7 @@ class SizeUtilInstrumentedTest {
         val radius =
             calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
 
-        Assertions.assertThat(radius).isEqualTo(50f)
+        assertThat(radius).isEqualTo(50f)
     }
 
     @Test fun withSmallerLeftPaddingAndLargerRightPaddingRadiusShouldBeHalfTheWidthMinusThePaddings() {
@@ -690,7 +690,7 @@ class SizeUtilInstrumentedTest {
         val radius =
             calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
 
-        Assertions.assertThat(radius).isEqualTo(50f)
+        assertThat(radius).isEqualTo(50f)
     }
 
     @Test fun withSameLeftPaddingAndTopPaddingRadiusShouldBeHalfTheWidthMinusLeftPadding() {
@@ -704,7 +704,7 @@ class SizeUtilInstrumentedTest {
         val radius =
             calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
 
-        Assertions.assertThat(radius).isEqualTo(175f)
+        assertThat(radius).isEqualTo(175f)
     }
 
     @Test fun withLargerLeftPaddingAndSmallerTopPaddingRadiusShouldBeHalfTheWidthMinusLeftPadding() {
@@ -718,7 +718,7 @@ class SizeUtilInstrumentedTest {
         val radius =
             calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
 
-        Assertions.assertThat(radius).isEqualTo(125f)
+        assertThat(radius).isEqualTo(125f)
     }
 
     @Test fun withSmallerLeftPaddingAndLargerTopPaddingRadiusShouldBeHalfTheHeightMinusTopPadding() {
@@ -732,7 +732,7 @@ class SizeUtilInstrumentedTest {
         val radius =
             calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
 
-        Assertions.assertThat(radius).isEqualTo(125f)
+        assertThat(radius).isEqualTo(125f)
     }
 
     @Test fun withLargerHorizontalPaddingAndSmallerVerticalPaddingRadiusShouldBeHalfTheWidthMinusHorizontalPadding() {
@@ -746,7 +746,7 @@ class SizeUtilInstrumentedTest {
         val radius =
             calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
 
-        Assertions.assertThat(radius).isEqualTo(75f)
+        assertThat(radius).isEqualTo(75f)
     }
 
     @Test fun withSmallerHorizontalPaddingAndLargerVerticalPaddingRadiusShouldBeHalfTheHeightMinusVerticalPadding() {
@@ -760,7 +760,7 @@ class SizeUtilInstrumentedTest {
         val radius =
             calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
 
-        Assertions.assertThat(radius).isEqualTo(75f)
+        assertThat(radius).isEqualTo(75f)
     }
 
     @Test fun withSmallerWidthAndLargerHeightAndNoPaddingRadiusShouldBeHalfTheWidth() {
@@ -774,7 +774,7 @@ class SizeUtilInstrumentedTest {
         val radius =
             calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
 
-        Assertions.assertThat(radius).isEqualTo(250f)
+        assertThat(radius).isEqualTo(250f)
     }
 
     @Test fun withSmallerWidthAndLargerHeightAndLeftPaddingRadiusShouldBeHalfTheWidthMinusLeftPadding() {
@@ -788,7 +788,7 @@ class SizeUtilInstrumentedTest {
         val radius =
             calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
 
-        Assertions.assertThat(radius).isEqualTo(175f)
+        assertThat(radius).isEqualTo(175f)
     }
 
     @Test fun withSmallerWidthAndLargerHeightAndSmallerLeftPaddingAndTinyLargerTopPaddingRadiusShouldBeHalfTheWidthMinusLeftPadding() {
@@ -802,7 +802,7 @@ class SizeUtilInstrumentedTest {
         val radius =
             calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
 
-        Assertions.assertThat(radius).isEqualTo(175f)
+        assertThat(radius).isEqualTo(175f)
     }
 
     @Test fun withSmallerWidthAndLargerHeightAndSmallerLeftPaddingAndHugeLargerTopPaddingRadiusShouldBeHalfTheHeightMinusTopPadding() {
@@ -816,7 +816,7 @@ class SizeUtilInstrumentedTest {
         val radius =
             calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
 
-        Assertions.assertThat(radius).isEqualTo(160f)
+        assertThat(radius).isEqualTo(160f)
     }
 
     // -------------------------------------------------------------------------
@@ -827,10 +827,10 @@ class SizeUtilInstrumentedTest {
 
         val (top, left, right, bottom) = calculateBoundaries(origin, radius)
 
-        Assertions.assertThat(top).isEqualTo(300f)
-        Assertions.assertThat(left).isEqualTo(300f)
-        Assertions.assertThat(right).isEqualTo(700f)
-        Assertions.assertThat(bottom).isEqualTo(700f)
+        assertThat(top).isEqualTo(300f)
+        assertThat(left).isEqualTo(300f)
+        assertThat(right).isEqualTo(700f)
+        assertThat(bottom).isEqualTo(700f)
     }
 
     // -------------------------------------------------------------------------
@@ -849,7 +849,7 @@ class SizeUtilInstrumentedTest {
         val coordinates = calculateGapCoordinates(origin, angle, gapWidth, gapLength, position)
 
         for ((i, corner) in coordinates.withIndex()) {
-            Assertions.assertThat(corner)
+            assertThat(corner)
                 .usingRecursiveComparison()
                 .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
                 .isEqualTo(expectedCoordinates[i])
@@ -903,7 +903,7 @@ class SizeUtilInstrumentedTest {
 
         val newPaint = updatePaintForLabel(paint, labelSize, labelColor)
 
-        Assertions.assertThat(newPaint).isSameAs(paint)
+        assertThat(newPaint).isSameAs(paint)
     }
 
     @Test fun updatedPaintForLabel_TextSizeShouldBeUpdated() {
@@ -913,7 +913,7 @@ class SizeUtilInstrumentedTest {
 
         updatePaintForLabel(paint, labelSize, labelColor)
 
-        Assertions.assertThat(paint.textSize).isEqualTo(labelSize)
+        assertThat(paint.textSize).isEqualTo(labelSize)
     }
 
     @Test fun updatedPaintForLabel_AlignmentShouldBeCenter() {
@@ -923,7 +923,7 @@ class SizeUtilInstrumentedTest {
 
         updatePaintForLabel(paint, labelSize, labelColor)
 
-        Assertions.assertThat(paint.textAlign).isEqualTo(Paint.Align.CENTER)
+        assertThat(paint.textAlign).isEqualTo(Paint.Align.CENTER)
     }
 
     /**
@@ -939,7 +939,7 @@ class SizeUtilInstrumentedTest {
 
         updatePaintForLabel(paint, labelSize, labelColor)
 
-        Assertions.assertThat(paint.shader).isEqualTo(null)
+        assertThat(paint.shader).isEqualTo(null)
     }
 
     @Test fun updatedPaintForLabel_ColorShouldBeUpdated() {
@@ -949,7 +949,7 @@ class SizeUtilInstrumentedTest {
 
         updatePaintForLabel(paint, labelSize, labelColor)
 
-        Assertions.assertThat(paint.color).isEqualTo(labelColor)
+        assertThat(paint.color).isEqualTo(labelColor)
     }
 
     // -------------------------------------------------------------------------
@@ -968,7 +968,7 @@ class SizeUtilInstrumentedTest {
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
-        Assertions.assertThat(coordinates)
+        assertThat(coordinates)
             .usingRecursiveComparison()
             .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
             .isEqualTo(Coordinates(800f, 522f))
@@ -991,7 +991,7 @@ class SizeUtilInstrumentedTest {
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
-        Assertions.assertThat(coordinates)
+        assertThat(coordinates)
             .usingRecursiveComparison()
             .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
             .isEqualTo(Coordinates(800f, 522f))
@@ -1011,7 +1011,7 @@ class SizeUtilInstrumentedTest {
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
-        Assertions.assertThat(coordinates)
+        assertThat(coordinates)
             .usingRecursiveComparison()
             .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
             .isEqualTo(Coordinates(850f, 522f))
@@ -1031,7 +1031,7 @@ class SizeUtilInstrumentedTest {
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
-        Assertions.assertThat(coordinates)
+        assertThat(coordinates)
             .usingRecursiveComparison()
             .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
             .isEqualTo(Coordinates(924f, 522f))
@@ -1051,7 +1051,7 @@ class SizeUtilInstrumentedTest {
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
-        Assertions.assertThat(coordinates)
+        assertThat(coordinates)
             .usingRecursiveComparison()
             .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
             .isEqualTo(Coordinates(800f, 522f))
@@ -1074,7 +1074,7 @@ class SizeUtilInstrumentedTest {
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
-        Assertions.assertThat(coordinates)
+        assertThat(coordinates)
             .usingRecursiveComparison()
             .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
             .isEqualTo(Coordinates(800f, 522f))
@@ -1094,7 +1094,7 @@ class SizeUtilInstrumentedTest {
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
-        Assertions.assertThat(coordinates)
+        assertThat(coordinates)
             .usingRecursiveComparison()
             .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
             .isEqualTo(Coordinates(750f, 522f))
@@ -1114,7 +1114,7 @@ class SizeUtilInstrumentedTest {
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
-        Assertions.assertThat(coordinates)
+        assertThat(coordinates)
             .usingRecursiveComparison()
             .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
             .isEqualTo(Coordinates(676f, 522f))
@@ -1143,7 +1143,7 @@ class SizeUtilInstrumentedTest {
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
-        Assertions.assertThat(coordinates)
+        assertThat(coordinates)
             .usingRecursiveComparison()
             .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
             .isEqualTo(Coordinates(800f, 522f))
@@ -1164,7 +1164,7 @@ class SizeUtilInstrumentedTest {
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
-        Assertions.assertThat(coordinates)
+        assertThat(coordinates)
             .usingRecursiveComparison()
             .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
             .isEqualTo(Coordinates(850f, 522f))
@@ -1185,7 +1185,7 @@ class SizeUtilInstrumentedTest {
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
-        Assertions.assertThat(coordinates)
+        assertThat(coordinates)
             .usingRecursiveComparison()
             .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
             .isEqualTo(Coordinates(750f, 522f))
@@ -1206,7 +1206,7 @@ class SizeUtilInstrumentedTest {
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
-        Assertions.assertThat(coordinates)
+        assertThat(coordinates)
             .usingRecursiveComparison()
             .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
             .isEqualTo(Coordinates(750f, 522f))
@@ -1227,7 +1227,7 @@ class SizeUtilInstrumentedTest {
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
-        Assertions.assertThat(coordinates)
+        assertThat(coordinates)
             .usingRecursiveComparison()
             .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
             .isEqualTo(Coordinates(850f, 522f))
@@ -1247,7 +1247,7 @@ class SizeUtilInstrumentedTest {
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
-        Assertions.assertThat(coordinates)
+        assertThat(coordinates)
             .usingRecursiveComparison()
             .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
             .isEqualTo(Coordinates(800f, 519f))
@@ -1267,7 +1267,7 @@ class SizeUtilInstrumentedTest {
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
-        Assertions.assertThat(coordinates)
+        assertThat(coordinates)
             .usingRecursiveComparison()
             .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
             .isEqualTo(Coordinates(452f, 958f))
@@ -1287,7 +1287,7 @@ class SizeUtilInstrumentedTest {
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
-        Assertions.assertThat(coordinates)
+        assertThat(coordinates)
             .usingRecursiveComparison()
             .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
             .isEqualTo(Coordinates(452f, 955f))
@@ -1301,7 +1301,7 @@ class SizeUtilInstrumentedTest {
 
         val width = calculateLabelIconWidth(icon, desiredIconHeight)
 
-        Assertions.assertThat(width).isEqualTo(0f)
+        assertThat(width).isEqualTo(0f)
     }
 
     /**
@@ -1315,7 +1315,7 @@ class SizeUtilInstrumentedTest {
 
         val width = calculateLabelIconWidth(icon, desiredIconHeight)
 
-        Assertions.assertThat(width).isEqualTo(50f)
+        assertThat(width).isEqualTo(50f)
     }
 
     @Test fun calculateLabelIconWidth_ForDrawableWith1To2AspectRatio() {
@@ -1325,7 +1325,7 @@ class SizeUtilInstrumentedTest {
 
         val width = calculateLabelIconWidth(icon, desiredIconHeight)
 
-        Assertions.assertThat(width).isEqualTo(25f)
+        assertThat(width).isEqualTo(25f)
     }
 
     @Test fun calculateLabelIconWidth_ForDrawableWith2To1AspectRatio() {
@@ -1335,7 +1335,7 @@ class SizeUtilInstrumentedTest {
 
         val width = calculateLabelIconWidth(icon, desiredIconHeight)
 
-        Assertions.assertThat(width).isEqualTo(100f)
+        assertThat(width).isEqualTo(100f)
     }
 
     @Test fun calculateLabelIconWidth_ForDrawableWith3To4AspectRatio() {
@@ -1345,7 +1345,7 @@ class SizeUtilInstrumentedTest {
 
         val width = calculateLabelIconWidth(icon, desiredIconHeight)
 
-        Assertions.assertThat(width).isEqualTo(60f)
+        assertThat(width).isEqualTo(60f)
     }
 
     @Test fun calculateLabelIconWidth_ForDrawableWith4To3AspectRatio() {
@@ -1355,7 +1355,7 @@ class SizeUtilInstrumentedTest {
 
         val width = calculateLabelIconWidth(icon, desiredIconHeight)
 
-        Assertions.assertThat(width).isEqualTo(80f)
+        assertThat(width).isEqualTo(80f)
     }
 
     // -------------------------------------------------------------------------
@@ -1367,8 +1367,8 @@ class SizeUtilInstrumentedTest {
 
         val bounds = calculateLabelBounds(label, labelPaint)
 
-        Assertions.assertThat(bounds.width()).isEqualTo(0)
-        Assertions.assertThat(bounds.height()).isEqualTo(0)
+        assertThat(bounds.width()).isEqualTo(0)
+        assertThat(bounds.height()).isEqualTo(0)
     }
 
     @Test fun calculateLabelBounds_ArbitraryLabel() {
@@ -1379,8 +1379,8 @@ class SizeUtilInstrumentedTest {
 
         val bounds = calculateLabelBounds(label, labelPaint)
 
-        Assertions.assertThat(bounds.width()).isEqualTo(105)
-        Assertions.assertThat(bounds.height()).isEqualTo(45)
+        assertThat(bounds.width()).isEqualTo(105)
+        assertThat(bounds.height()).isEqualTo(45)
     }
 
     // -------------------------------------------------------------------------
@@ -1404,7 +1404,7 @@ class SizeUtilInstrumentedTest {
 
         val bounds = calculateLabelIconBounds(targetCoordinates, labelBounds, iconWidth, iconHeight, iconMargin, iconPlacement)
 
-        Assertions.assertThat(bounds).isEqualTo(expectedBounds)
+        assertThat(bounds).isEqualTo(expectedBounds)
     }
 
     @Suppress("unused")
