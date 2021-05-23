@@ -135,7 +135,13 @@ afterEvaluate {
                     val githubProjectName = "android-pie-chart"
                     url.set("https://github.com/mahozad/$githubProjectName")
                     name.set(githubProjectName)
-                    description.set("An Android library for creating pie charts and donut charts")
+                    description.set(
+                        """
+                        A library for creating pie charts and donut charts in Android.
+                        The aim of this library is to provide a full-featured chart view and to enable users to customize it to the most extent possible.
+                        Visit the project on GitHub to learn more.
+                        """
+                    )
                     inceptionYear.set("2021")
                     // icon: https://stackoverflow.com/q/40197177
                     licenses {
@@ -148,7 +154,8 @@ afterEvaluate {
                         developer {
                             id.set("mahozad")
                             name.set("Mahdi Hosseinzadeh")
-                            email.set("legacyazd@gmail.com")
+                            email.set("")
+                            roles.set(listOf("Lead Developer"))
                             timezone.set("GMT+4:30")
                         }
                     }
