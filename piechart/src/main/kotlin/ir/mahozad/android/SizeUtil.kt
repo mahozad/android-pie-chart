@@ -1,21 +1,21 @@
 package ir.mahozad.android
 
-import android.graphics.Paint
-import android.graphics.Rect
+import android.graphics.*
+import android.graphics.Paint.Align.CENTER
 import android.graphics.drawable.Drawable
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import androidx.annotation.ColorInt
-import ir.mahozad.android.PieChart.GapPosition
+import ir.mahozad.android.PieChart.*
+import ir.mahozad.android.PieChart.DrawDirection.CLOCKWISE
 import ir.mahozad.android.PieChart.GapPosition.PRECEDING_SLICE
 import ir.mahozad.android.PieChart.GapPosition.SUCCEEDING_SLICE
-import ir.mahozad.android.PieChart.IconPlacement
 import ir.mahozad.android.PieChart.IconPlacement.*
 import java.util.*
-import kotlin.math.cos
-import kotlin.math.min
-import kotlin.math.sin
+import kotlin.math.*
+
+internal data class Size(val width: Float, val height: Float)
 
 internal data class Coordinates(val x: Float, val y: Float)
 
@@ -23,6 +23,7 @@ internal data class Boundaries(val top: Float, val left: Float, val right: Float
 
 private val bounds = Rect()
 private val paint = Paint()
+private val path = Path()
 
 /**
  * Extracted the calculation logics to a separate class and function to be testable.
@@ -109,11 +110,12 @@ internal fun calculateGapCoordinates(
 }
 
 // TODO: Move to PaintUtil or another appropriate file
-internal fun updatePaintForLabel(paint: Paint, labelSize: Float, @ColorInt labelColor: Int): Paint {
-    paint.color = labelColor
+internal fun updatePaintForLabel(paint: Paint, size: Float, @ColorInt color: Int, font: Typeface): Paint {
+    paint.color = color
     paint.shader = null
-    paint.textSize = labelSize
-    paint.textAlign = Paint.Align.CENTER
+    paint.typeface = font
+    paint.textSize = size
+    paint.textAlign = CENTER
     return paint
 }
 
@@ -187,4 +189,228 @@ private fun getDirection(iconPlacement: IconPlacement): Int {
         iconPlacement == END && isRightToLeft -> 1
         else -> -1
     }
+}
+
+/**
+ * Assumes that the width and height of the currentBounds are equal.
+ *
+ * The label margin is calculated in angular mode (added to the radius).
+ */
+internal fun calculatePieNewBounds(
+    currentBounds: RectF,
+    slices: List<Slice>,
+    shouldOppositeMarginsBeSymmetric: Boolean,
+    labelMargin: Float,
+    drawDirection: DrawDirection,
+    startAngle: Int,
+    labelsSize: Float,
+    labelsFont: Typeface
+): RectF {
+    var maxTopExcess = 0f
+    var maxLeftExcess = 0f
+    var maxRightExcess = 0f
+    var maxBottomExcess = 0f
+    val currentCenter = Coordinates((currentBounds.right + currentBounds.left) / 2f, (currentBounds.bottom + currentBounds.top) / 2f)
+    val currentRadius = currentBounds.width() / 2f
+
+    var currentAngle = startAngle.toFloat()
+    for (slice in slices) {
+        updatePaintForLabel(paint, slice.labelSize ?: labelsSize, Color.WHITE, slice.labelFont ?: labelsFont)
+        val sweepAngle = slice.fraction * 360
+        val middleAngle = calculateMiddleAngle(currentAngle, slice.fraction, drawDirection)
+        val (textWidth, textHeight) = calculateTextSize(slice.label)
+        val (x, y) = calculateCoordinatesForOutsideLabel(slice.label, middleAngle, currentCenter, currentRadius, labelMargin)
+
+        if (middleAngle in -180f until 0f || middleAngle in 180f until 360f) {
+            var excess = currentBounds.top - (y + paint.ascent())
+            if (textHeight == 0f) excess = 0f
+            maxTopExcess = max(maxTopExcess, excess)
+        }
+        if (middleAngle in 90f until 270f || middleAngle in -270f until -90f) {
+            var excess = currentBounds.left - (x - textWidth / 2f)
+            if (textWidth == 0f) excess = 0f
+            maxLeftExcess = max(maxLeftExcess, excess)
+        }
+        if (middleAngle in -90f until 90f || (middleAngle >= 270f && middleAngle < 90f)) {
+            var excess = (x + textWidth / 2f) - currentBounds.right
+            if (textWidth == 0f) excess = 0f
+            maxRightExcess = max(maxRightExcess, excess)
+        }
+        if (middleAngle in 0f until 180f || middleAngle in -360f until -180f) {
+            var excess = (y + paint.descent()) - currentBounds.bottom
+            if (textHeight == 0f) excess = 0f
+            maxBottomExcess = max(maxBottomExcess, excess)
+        }
+
+        currentAngle += sweepAngle
+    }
+
+    if (shouldOppositeMarginsBeSymmetric) {
+        val maxHorizontalExcess = max(maxLeftExcess, maxRightExcess)
+        val maxVerticalExcess = max(maxTopExcess, maxBottomExcess)
+        maxTopExcess = maxVerticalExcess
+        maxLeftExcess = maxHorizontalExcess
+        maxRightExcess = maxHorizontalExcess
+        maxBottomExcess = maxVerticalExcess
+    }
+
+    val width = (currentBounds.right - maxRightExcess) - (currentBounds.left + maxLeftExcess)
+    val height = (currentBounds.bottom - maxBottomExcess) - (currentBounds.top + maxTopExcess)
+    if (height > width) {
+        val excess = height - width
+        maxTopExcess += excess / 2f
+        maxBottomExcess += excess / 2f
+    } else if (width > height) {
+        val excess = width - height
+        maxLeftExcess += excess / 2f
+        maxRightExcess += excess / 2f
+    }
+
+    return RectF(currentBounds.left + maxLeftExcess, currentBounds.top + maxTopExcess, currentBounds.right - maxRightExcess, currentBounds.bottom - maxBottomExcess)
+}
+
+private fun calculateTextSize(text: String): Size {
+    val textWidth = paint.measureText(text)
+    val textHeight = paint.descent() - paint.ascent()
+    val isAnyOneZero = (textWidth * textHeight) == 0f
+    return if (isAnyOneZero) Size(0f, 0f) else Size(textWidth, textHeight)
+}
+
+internal fun calculateMiddleAngle(
+    startAngle: Float,
+    fraction: Float,
+    drawDirection: DrawDirection
+): Float {
+    val endAngle = calculateSecondAngle(startAngle, fraction, drawDirection)
+    return (startAngle + endAngle) / 2f
+}
+
+private fun calculateSecondAngle(
+    startAngle: Float,
+    fraction: Float,
+    drawDirection: DrawDirection
+): Float {
+    return (startAngle + (if (drawDirection == CLOCKWISE) fraction else -fraction) * 360) % 360
+}
+
+private fun calculateCoordinatesOnCircumference(angle:Float, center: Coordinates, radius: Float) : Coordinates {
+    val x = center.x + radius * cos(angle.toRadian())
+    val y = center.y + radius * sin(angle.toRadian())
+    return Coordinates(x, y)
+}
+
+/**
+ * Converts the angle to its positive equivalent and
+ * will reduce the magnitude to less than a full circle;
+ * in other words, the returned angle will be in range [0º..360º).
+ *
+ * See [this web page](https://rosettacode.org/wiki/Angles_(geometric),_normalization_and_conversion).
+ */
+internal fun normalizeAngle(angle: Float): Float {
+    val result = (angle % 360)
+    return if (result<0) result + 360 else result
+}
+
+/**
+ * Note that `paint.getTextBounds` returns the exact height of the **specified text**
+ *  whereas `paint.descent - paint.ascent` returns the total height of the current font.
+ *  We work with the latter.
+ *
+ * See [this post](https://stackoverflow.com/q/11120392) and [this post](https://stackoverflow.com/q/4909367)
+ * and [this post](https://stackoverflow.com/q/3654321)
+ *
+ * For difference between `Paint::getTextBounds` and `Paint::measureText` see [this post](https://stackoverflow.com/a/7579469) and [this post](https://stackoverflow.com/q/3257293)
+ */
+internal fun calculateCoordinatesForOutsideLabel(
+    label: String,
+    angle: Float,
+    center: Coordinates,
+    pieRadius: Float,
+    labelMargin: Float
+): Coordinates {
+    val normalizedAngle = normalizeAngle(angle)
+    var θ = normalizedAngle.toRadian()
+    var (w, h) = calculateTextSize(label)
+    val r = pieRadius
+
+    // When drawing the text on Canvas, the y is used for text descent and not
+    // its bottom or vertical center. So, make the y the center of the whole box
+    val verticalShift = h / 2f - paint.descent()
+
+    // First, convert the theta to the first quadrant (i.e. in range 0..90)
+    // because our formula works on the first quadrant
+    when (normalizedAngle) {
+        in 90f..180f -> θ = PI.toFloat() - θ
+        in 180f..270f -> θ = θ - PI.toFloat()
+        in 270f..360f -> θ = (2 * PI.toFloat() - θ) % (2 * PI.toFloat())
+    }
+
+    when (θ) {
+        in 0f until asin(h / 2 / r) -> h = 2 * sin(θ)
+        in asin(h / 2 / r)..acos(w / 2 / r) -> { /* Do not modify anything */ }
+        else -> w = 2 * cos(θ)
+    }
+    var a = k(θ, w / r, h / r) * r * cos(θ)
+    var b = k(θ, w / r, h / r) * r * sin(θ)
+
+    // Convert the shifts back to the angle quadrant
+    when (normalizedAngle) {
+        in 90f..180f -> a = -a
+        in 270f..360f -> b = -b
+        in 180f..270f -> {
+            a = -a
+            b = -b
+        }
+    }
+
+    // Fix the bug when angle=90
+    if (angle == 90f) b = h / 2
+
+    val (x, y) = calculateCoordinatesOnCircumference(angle, center, pieRadius + labelMargin)
+    return Coordinates(x + a, y + verticalShift + b)
+}
+
+private fun k(θ: Float, w: Float, h: Float): Float {
+    return (1 / 2f) * (
+            -2 + h * sin(θ) + cos(θ) *
+                    (w + sqrt(4 - h.pow(2) + 2 * h * w * tan(θ) - (w.pow(2) - 4) * tan(θ).pow(2)))
+            )
+}
+
+internal fun makeSlice(
+    center: Coordinates,
+    pieEnclosingRect: RectF,
+    sliceStartAngle: Float,
+    sliceFraction: Float,
+    drawDirection: DrawDirection,
+    pointer: SlicePointer?
+): Path {
+    val sliceSweep = sliceFraction * 360
+    path.reset()
+    path.moveTo(center.x, center.y)
+    if (pointer == null) {
+        path.arcTo(pieEnclosingRect, sliceStartAngle, sliceSweep)
+    } else {
+        val radiusReduction = pointer.length
+        val newEnclosingRect = RectF(
+            pieEnclosingRect.left + radiusReduction,
+            pieEnclosingRect.top + radiusReduction,
+            pieEnclosingRect.right - radiusReduction,
+            pieEnclosingRect.bottom - radiusReduction
+        )
+        val sliceMiddleAngle = calculateMiddleAngle(sliceStartAngle, sliceFraction, drawDirection)
+        val newRadius = newEnclosingRect.width() / 2f
+        val totalPointerAngle = pointer.width / (2 * PI * newRadius).toFloat() * 360f
+        val stop1Angle = sliceMiddleAngle - (totalPointerAngle / 2f)
+        val stop2Angle = sliceMiddleAngle + (totalPointerAngle / 2f)
+        val stopsSweepAngle = stop1Angle - sliceStartAngle
+        val stop2Coordinates = calculateCoordinatesOnCircumference(stop2Angle, center, newRadius)
+        val (tipX, tipY) = calculateCoordinatesOnCircumference(sliceMiddleAngle, center, newRadius + pointer.length)
+        path.arcTo(newEnclosingRect, sliceStartAngle, stopsSweepAngle)
+        path.lineTo(tipX, tipY)
+        path.lineTo(stop2Coordinates.x, stop2Coordinates.y)
+        path.arcTo(newEnclosingRect, stop2Angle, stopsSweepAngle)
+    }
+    path.close()
+    return path
 }

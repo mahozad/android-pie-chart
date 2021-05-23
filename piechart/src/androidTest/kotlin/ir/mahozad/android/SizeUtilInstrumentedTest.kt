@@ -16,6 +16,7 @@ import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.Arguments.arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.util.*
+import kotlin.math.absoluteValue
 
 /**
  * Could not run these test as unit tests because they and the class under test
@@ -901,7 +902,7 @@ class SizeUtilInstrumentedTest {
         val labelSize = 10f
         val labelColor = Color.CYAN
 
-        val newPaint = updatePaintForLabel(paint, labelSize, labelColor)
+        val newPaint = updatePaintForLabel(paint, labelSize, labelColor, Typeface.DEFAULT)
 
         assertThat(newPaint).isSameAs(paint)
     }
@@ -911,7 +912,7 @@ class SizeUtilInstrumentedTest {
         val labelSize = 10f
         val labelColor = Color.CYAN
 
-        updatePaintForLabel(paint, labelSize, labelColor)
+        updatePaintForLabel(paint, labelSize, labelColor, Typeface.DEFAULT)
 
         assertThat(paint.textSize).isEqualTo(labelSize)
     }
@@ -921,7 +922,7 @@ class SizeUtilInstrumentedTest {
         val labelSize = 10f
         val labelColor = Color.CYAN
 
-        updatePaintForLabel(paint, labelSize, labelColor)
+        updatePaintForLabel(paint, labelSize, labelColor, Typeface.DEFAULT)
 
         assertThat(paint.textAlign).isEqualTo(Paint.Align.CENTER)
     }
@@ -937,7 +938,7 @@ class SizeUtilInstrumentedTest {
         val labelSize = 10f
         val labelColor = Color.CYAN
 
-        updatePaintForLabel(paint, labelSize, labelColor)
+        updatePaintForLabel(paint, labelSize, labelColor, Typeface.DEFAULT)
 
         assertThat(paint.shader).isEqualTo(null)
     }
@@ -947,7 +948,7 @@ class SizeUtilInstrumentedTest {
         val labelSize = 10f
         val labelColor = Color.CYAN
 
-        updatePaintForLabel(paint, labelSize, labelColor)
+        updatePaintForLabel(paint, labelSize, labelColor, Typeface.DEFAULT)
 
         assertThat(paint.color).isEqualTo(labelColor)
     }
@@ -964,7 +965,7 @@ class SizeUtilInstrumentedTest {
         val iconPlacement = LEFT
         val center = Coordinates(500f, 500f)
         val radius = 400f
-        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
@@ -987,7 +988,7 @@ class SizeUtilInstrumentedTest {
         val iconPlacement = LEFT
         val center = Coordinates(500f, 500f)
         val radius = 400f
-        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
@@ -1007,7 +1008,7 @@ class SizeUtilInstrumentedTest {
         val iconPlacement = LEFT
         val center = Coordinates(500f, 500f)
         val radius = 400f
-        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
@@ -1027,7 +1028,7 @@ class SizeUtilInstrumentedTest {
         val iconPlacement = LEFT
         val center = Coordinates(500f, 500f)
         val radius = 400f
-        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
@@ -1047,7 +1048,7 @@ class SizeUtilInstrumentedTest {
         val iconPlacement = IconPlacement.RIGHT
         val center = Coordinates(500f, 500f)
         val radius = 400f
-        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
@@ -1070,7 +1071,7 @@ class SizeUtilInstrumentedTest {
         val iconPlacement = IconPlacement.RIGHT
         val center = Coordinates(500f, 500f)
         val radius = 400f
-        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
@@ -1090,7 +1091,7 @@ class SizeUtilInstrumentedTest {
         val iconPlacement = IconPlacement.RIGHT
         val center = Coordinates(500f, 500f)
         val radius = 400f
-        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
@@ -1110,7 +1111,7 @@ class SizeUtilInstrumentedTest {
         val iconPlacement = IconPlacement.RIGHT
         val center = Coordinates(500f, 500f)
         val radius = 400f
-        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
@@ -1138,7 +1139,7 @@ class SizeUtilInstrumentedTest {
         val iconPlacement = IconPlacement.START
         val center = Coordinates(500f, 500f)
         val radius = 400f
-        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
         setLocale(Locale.ENGLISH)
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
@@ -1159,7 +1160,7 @@ class SizeUtilInstrumentedTest {
         val iconPlacement = IconPlacement.START
         val center = Coordinates(500f, 500f)
         val radius = 400f
-        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
         setLocale(Locale.ENGLISH)
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
@@ -1180,7 +1181,7 @@ class SizeUtilInstrumentedTest {
         val iconPlacement = IconPlacement.START
         val center = Coordinates(500f, 500f)
         val radius = 400f
-        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
         setLocale(Locale.forLanguageTag("fa"))
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
@@ -1201,7 +1202,7 @@ class SizeUtilInstrumentedTest {
         val iconPlacement = IconPlacement.END
         val center = Coordinates(500f, 500f)
         val radius = 400f
-        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
         setLocale(Locale.ENGLISH)
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
@@ -1222,7 +1223,7 @@ class SizeUtilInstrumentedTest {
         val iconPlacement = IconPlacement.END
         val center = Coordinates(500f, 500f)
         val radius = 400f
-        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
         setLocale(Locale.forLanguageTag("fa"))
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
@@ -1243,7 +1244,7 @@ class SizeUtilInstrumentedTest {
         val iconPlacement = IconPlacement.START
         val center = Coordinates(500f, 500f)
         val radius = 400f
-        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE)
+        val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
@@ -1263,7 +1264,7 @@ class SizeUtilInstrumentedTest {
         val iconPlacement = IconPlacement.START
         val center = Coordinates(540f, 540f)
         val radius = 540f
-        val labelPaint = updatePaintForLabel(Paint(), 63f, Color.WHITE)
+        val labelPaint = updatePaintForLabel(Paint(), 63f, Color.WHITE, Typeface.DEFAULT)
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
@@ -1283,7 +1284,7 @@ class SizeUtilInstrumentedTest {
         val iconPlacement = IconPlacement.START
         val center = Coordinates(540f, 540f)
         val radius = 540f
-        val labelPaint = updatePaintForLabel(Paint(), 63f, Color.WHITE)
+        val labelPaint = updatePaintForLabel(Paint(), 63f, Color.WHITE, Typeface.DEFAULT)
 
         val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
@@ -1363,7 +1364,7 @@ class SizeUtilInstrumentedTest {
     @Test fun calculateLabelBounds_EmptyLabel() {
         val label = ""
         val labelPaint = Paint()
-        updatePaintForLabel(labelPaint, 60f, Color.WHITE)
+        updatePaintForLabel(labelPaint, 60f, Color.WHITE, Typeface.DEFAULT)
 
         val bounds = calculateLabelBounds(label, labelPaint)
 
@@ -1374,7 +1375,7 @@ class SizeUtilInstrumentedTest {
     @Test fun calculateLabelBounds_ArbitraryLabel() {
         val label = "12%"
         val labelPaint = Paint()
-        updatePaintForLabel(labelPaint, 60f, Color.WHITE)
+        updatePaintForLabel(labelPaint, 60f, Color.WHITE, Typeface.DEFAULT)
         setLocale(Locale.ENGLISH)
 
         val bounds = calculateLabelBounds(label, labelPaint)
@@ -1398,7 +1399,7 @@ class SizeUtilInstrumentedTest {
         val iconWidth = 100f
         val iconHeight = 100f
         val labelPaint = Paint()
-        updatePaintForLabel(labelPaint, 60f, Color.WHITE)
+        updatePaintForLabel(labelPaint, 60f, Color.WHITE, Typeface.DEFAULT)
         val labelBounds = calculateLabelBounds(label, labelPaint)
         setLocale(locale)
 
@@ -1434,5 +1435,274 @@ class SizeUtilInstrumentedTest {
             arguments+= arguments(iconMargin, iconPlacements[i], labels[i], locales[i], expectedBounds[i])
         }
         return arguments
+    }
+
+    // -------------------------------------------------------------------------
+
+    @Test fun calculatePieNewBoundsForOutsideLabels_WithDrawingClockWiseAndNoMarginAndFalseShouldCenterPie() {
+        val slices = listOf(
+            PieChart.Slice(0.5f, Color.BLACK, label = "long label"),
+            PieChart.Slice(0.105f, Color.BLACK, label = ""),
+            PieChart.Slice(0.125f, Color.BLACK, label = ""),
+            PieChart.Slice(0.02f, Color.BLACK, label = ""),
+            PieChart.Slice(0.1f, Color.BLACK, label = ""),
+            PieChart.Slice(0.15f, Color.BLACK, label = "")
+        )
+        val labelMargin = 0f
+        val drawDirection = PieChart.DrawDirection.CLOCKWISE
+        val currentBounds = RectF(100f, 100f, 1000f, 1000f)
+        val shouldCenterPie = false
+        val labelsTypeface = Typeface.DEFAULT
+        val labelsSize = 63.15f
+        val startAngle = -90
+
+        val bounds = calculatePieNewBounds(currentBounds, slices, shouldCenterPie, labelMargin, drawDirection, startAngle, labelsSize, labelsTypeface)
+
+        assertThat(bounds).isEqualTo(RectF(100f, 234.5f, 731f, 865.5f))
+    }
+
+    @Test fun calculatePieNewBoundsForOutsideLabels_WithDrawingClockWiseAndNoMarginAndFalseShouldCenterPieAndLongLabelOnLeftSide() {
+        val slices = listOf(
+            PieChart.Slice(0.125f, Color.BLACK, label = ""),
+            PieChart.Slice(0.125f, Color.BLACK, label = ""),
+            PieChart.Slice(0.25f, Color.BLACK, label = ""),
+            PieChart.Slice(0.5f, Color.BLACK, label = "long label"),
+        )
+        val labelMargin = 0f
+        val drawDirection = PieChart.DrawDirection.CLOCKWISE
+        val currentBounds = RectF(100f, 100f, 1000f, 1000f)
+        val shouldCenterPie = false
+        val labelsTypeface = Typeface.DEFAULT
+        val labelsSize = 63.15f
+        val startAngle = -90
+
+        val bounds = calculatePieNewBounds(currentBounds, slices, shouldCenterPie, labelMargin, drawDirection, startAngle, labelsSize, labelsTypeface)
+
+        assertThat(bounds).isEqualTo(RectF(369f, 234.5f, 1000f, 865.5f))
+    }
+
+    @Test fun calculatePieNewBoundsForOutsideLabels_WithDrawingCounterClockWiseAndNoMarginAndShouldCenterPieFalse() {
+        val slices = listOf(
+            PieChart.Slice(0.5f, Color.BLACK, label = "long label"),
+            PieChart.Slice(0.105f, Color.BLACK, label = ""),
+            PieChart.Slice(0.125f, Color.BLACK, label = ""),
+            PieChart.Slice(0.02f, Color.BLACK, label = ""),
+            PieChart.Slice(0.1f, Color.BLACK, label = ""),
+            PieChart.Slice(0.15f, Color.BLACK, label = "")
+        )
+        val labelMargin = 0f
+        val drawDirection = PieChart.DrawDirection.COUNTER_CLOCKWISE
+        val currentBounds = RectF(100f, 100f, 1000f, 1000f)
+        val shouldCenterPie = false
+        val labelsTypeface = Typeface.DEFAULT
+        val labelsSize = 63.15f
+        val startAngle = -90
+
+        val bounds = calculatePieNewBounds(currentBounds, slices, shouldCenterPie, labelMargin, drawDirection, startAngle, labelsSize, labelsTypeface)
+
+        assertThat(bounds).isEqualTo(RectF(369f, 234.5f, 1000f, 865.5f))
+    }
+
+    @Test fun calculatePieNewBoundsForOutsideLabels_WithDrawingCounterClockWiseAndNoMarginAndFalseShouldCenterPieAndLongLabelOnLeftSide() {
+        val slices = listOf(
+            PieChart.Slice(0.125f, Color.BLACK, label = ""),
+            PieChart.Slice(0.125f, Color.BLACK, label = ""),
+            PieChart.Slice(0.25f, Color.BLACK, label = ""),
+            PieChart.Slice(0.5f, Color.BLACK, label = "long label"),
+        )
+        val labelMargin = 0f
+        val drawDirection = PieChart.DrawDirection.COUNTER_CLOCKWISE
+        val currentBounds = RectF(100f, 100f, 1000f, 1000f)
+        val shouldCenterPie = false
+        val labelsTypeface = Typeface.DEFAULT
+        val labelsSize = 63.15f
+        val startAngle = -90
+
+        val bounds = calculatePieNewBounds(currentBounds, slices, shouldCenterPie, labelMargin, drawDirection,startAngle, labelsSize,  labelsTypeface)
+
+        assertThat(bounds).isEqualTo(RectF(100f, 234.5f, 731f, 865.5f))
+    }
+
+    @Test fun calculatePieNewBoundsForOutsideLabels_WithDrawingClockWiseAndArbitraryMarginAndFalseShouldCenterPie() {
+        val slices = listOf(
+            PieChart.Slice(0.5f, Color.BLACK, label = "long label"),
+            PieChart.Slice(0.105f, Color.BLACK, label = ""),
+            PieChart.Slice(0.125f, Color.BLACK, label = ""),
+            PieChart.Slice(0.02f, Color.BLACK, label = ""),
+            PieChart.Slice(0.1f, Color.BLACK, label = ""),
+            PieChart.Slice(0.15f, Color.BLACK, label = "")
+        )
+        val labelMargin = 42f
+        val drawDirection = PieChart.DrawDirection.CLOCKWISE
+        val currentBounds = RectF(100f, 100f, 1000f, 1000f)
+        val shouldCenterPie = false
+        val labelsTypeface = Typeface.DEFAULT
+        val labelsSize = 63.15f
+        val startAngle = -90
+
+        val bounds = calculatePieNewBounds(currentBounds, slices, shouldCenterPie, labelMargin, drawDirection, startAngle, labelsSize, labelsTypeface)
+
+        assertThat(bounds).isEqualTo(RectF(100f, 255.5f, 689f, 844.5f))
+    }
+
+    @Test fun calculatePieNewBoundsForOutsideLabels_WithOnlyTopLabelAndNoMarginAndFalseShouldCenterPie() {
+        val slices = listOf(
+            PieChart.Slice(0.5f, Color.BLACK, label = "ABC"),
+            PieChart.Slice(0.105f, Color.BLACK, label = ""),
+            PieChart.Slice(0.125f, Color.BLACK, label = ""),
+            PieChart.Slice(0.02f, Color.BLACK, label = ""),
+            PieChart.Slice(0.1f, Color.BLACK, label = ""),
+            PieChart.Slice(0.15f, Color.BLACK, label = "")
+        )
+        val labelMargin = 0f
+        val drawDirection = PieChart.DrawDirection.CLOCKWISE
+        val currentBounds = RectF(100f, 100f, 1000f, 1000f)
+        val shouldCenterPie = false
+        val labelsTypeface = Typeface.DEFAULT
+        val labelsSize = 63.15f
+        val startAngle = -180
+
+        val bounds = calculatePieNewBounds(currentBounds, slices, shouldCenterPie, labelMargin, drawDirection, startAngle, labelsSize, labelsTypeface)
+
+        assertThat(bounds)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
+            .isEqualTo(RectF(137f, 174f, 963f, 1000f))
+    }
+
+    // -------------------------------------------------------------------------
+
+    @ParameterizedTest(name = "Angle: {0}")
+    @MethodSource("argumentProvider3")
+    fun normalizeAngle_WithTheGivenAngle(angle: Float, expectedAngle: Float) {
+        val normalizedAngle = normalizeAngle(angle)
+        assertThat(normalizedAngle)
+            .usingComparator { f1, f2 -> if ((f1 - f2).absoluteValue < 0.001) 0 else 1 }
+            .isEqualTo(expectedAngle)
+    }
+
+    @Suppress("unused")
+    private fun argumentProvider3(): List<Arguments> {
+        val angles = arrayOf(
+            -450f, -370f, -360f, -359.9f, -310f, -270.1f, -270f, -269.9f, -220f,
+            -180.1f, -180f, -179.9f, -130f, -90.1f, -90f, -89.9f, -40f,
+            -0.1f, 0f, 0.1f, 50f, 89.9f, 90f, 90.1f, 140f, 179.9f, 180f, 180.1f,
+            230f, 269.9f, 270f, 270.1f, 320f, 359.9f, 360f ,360.1f, 370f, 450f
+        )
+        val expectedAngles = arrayOf(
+            270f, 350f, 0f, 0.1f, 50f, 89.9f, 90f, 90.1f, 140f,
+            179.9f, 180f, 180.1f, 230f, 269.9f, 270f, 270.1f, 320f,
+            359.9f, 0f, 0.1f, 50f, 89.9f, 90f, 90.1f, 140f, 179.9f, 180f, 180.1f,
+            230f, 269.9f, 270f, 270.1f, 320f, 359.9f, 0f, 0.1f, 10f, 90f
+        )
+        return angles.mapIndexed { i, angle -> arguments(angle, expectedAngles[i]) }
+    }
+
+    // -------------------------------------------------------------------------
+
+    @ParameterizedTest(name = "Angle: {0}")
+    @MethodSource("argumentProvider4")
+    internal fun calculateCoordinatesForOutsideLabel_WithTheGivenAngleAndNoMargin(angle: Float, expectedCoordinates: Coordinates) {
+        val label = "43%"
+        val margin = 0f
+        val center = Coordinates(500f , 500f)
+        val pieRadius = 430f
+
+        val coordinates = calculateCoordinatesForOutsideLabel(label, angle, center, pieRadius, margin)
+
+        assertThat(coordinates)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
+            .isEqualTo(expectedCoordinates)
+    }
+
+    @Test fun calculateCoordinatesForOutsideLabel_WithArbitraryAngleAndMargin() {
+        val angle = 0f
+        val label = "43%"
+        val margin = 50f
+        val center = Coordinates(500f , 500f)
+        val pieRadius = 430f
+
+        val coordinates = calculateCoordinatesForOutsideLabel(label, angle, center, pieRadius, margin)
+
+        assertThat(coordinates)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
+            .isEqualTo(Coordinates(1038f, 522f))
+    }
+
+    @Suppress("unused")
+    private fun argumentProvider4(): List<Arguments> {
+        val angles = arrayOf(
+            -15f, 0f, 0.1f, 50f, 89.9f, 90f, 90.1f, 140f, 179.9f, 180f,
+            180.1f, 230f, 269.9f, 270f, 270.1f, 320f, 359.9f, 360f, 400f
+        )
+        val expectedCoordinates = arrayOf(
+            Coordinates(978f, 394f),
+            Coordinates(988f, 522f),
+            Coordinates(988f, 522f),
+            Coordinates(818f, 901f),
+            Coordinates(500f, 988f),
+            Coordinates(500f, 988f),
+            Coordinates(500f, 988f),
+            Coordinates(118f, 842f),
+            Coordinates(12f, 522f),
+            Coordinates(12f, 522f),
+            Coordinates(12f, 520f),
+            Coordinates(182f, 142f),
+            Coordinates(500f, 55f),
+            Coordinates(500f, 55f),
+            Coordinates(500f, 55f),
+            Coordinates(882f, 201f),
+            Coordinates(988f, 520f),
+            Coordinates(988f, 522f),
+            Coordinates(882f, 842f)
+        )
+        return angles.mapIndexed { i, angle -> arguments(angle, expectedCoordinates[i]) }
+    }
+
+    // -------------------------------------------------------------------------
+
+    @Test fun makeSlice_WithNoPointer() {
+        val center = Coordinates(500f, 500f)
+        val pieEnclosingRect = RectF(0f, 0f, 1000f, 1000f)
+        val sliceStartAngle = -90f
+        val sliceFraction = 0.5f
+        val pointer: PieChart.SlicePointer? = null
+        val drawDirection = PieChart.DrawDirection.CLOCKWISE
+
+        val slice = makeSlice(center, pieEnclosingRect, sliceStartAngle, sliceFraction, drawDirection, pointer)
+
+        assertThat(PathMeasure(slice, false).length).isEqualTo(2570.638f)
+    }
+
+    /**
+     * Path::reset should be called in the method to clear previous path object state.
+     */
+    @Test fun makeSlice_ThePathShouldBeResetBeforeEachCall() {
+        val center = Coordinates(500f, 500f)
+        val pieEnclosingRect = RectF(0f, 0f, 1000f, 1000f)
+        val sliceStartAngle = -90f
+        val sliceFraction = 0.5f
+        val pointer: PieChart.SlicePointer? = null
+        val drawDirection = PieChart.DrawDirection.CLOCKWISE
+
+        makeSlice(center, pieEnclosingRect, sliceStartAngle, sliceFraction + 100f, drawDirection, pointer)
+        val slice = makeSlice(center, pieEnclosingRect, sliceStartAngle, sliceFraction, drawDirection, pointer)
+
+        assertThat(PathMeasure(slice, false).length).isEqualTo(2570.638f)
+    }
+
+    @Test fun makeSlice_WithArbitraryPointer() {
+        val center = Coordinates(500f, 500f)
+        val pieEnclosingRect = RectF(0f, 0f, 1000f, 1000f)
+        val sliceStartAngle = -90f
+        val sliceFraction = 0.5f
+        val pointer = PieChart.SlicePointer(50f, 40f, 0)
+        val drawDirection = PieChart.DrawDirection.CLOCKWISE
+
+        val slice = makeSlice(center, pieEnclosingRect, sliceStartAngle, sliceFraction, drawDirection, pointer)
+
+        assertThat(PathMeasure(slice, false).length).isEqualTo(2381.9175f)
     }
 }

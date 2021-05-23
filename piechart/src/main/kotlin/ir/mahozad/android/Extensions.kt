@@ -15,3 +15,7 @@ internal fun View.pxToDp(px: Float) = px / resources.displayMetrics.density
  * Converts degree to radian.
  */
 internal fun Float.toRadian() = (this / 360) * 2 * PI.toFloat()
+
+internal fun Float.toDegrees() = (this * 360) / 2 * PI.toFloat()
+
+internal infix fun Float.until(that : Float) = this.rangeTo(that - 1E-3f)

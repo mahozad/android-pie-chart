@@ -16,6 +16,8 @@
 
   <declare-styleable name="PieChart">
     <attr name="gap" format="dimension"/>
+    <attr name="slicesPointerLength" format="dimension"/>
+    <attr name="slicesPointerWidth" format="dimension"/>
     <attr name="centerLabel" format="string"/>
     <attr name="legendsIcon" format="enum">
       <enum name="square" value="0"/>
@@ -53,11 +55,22 @@
         <li><b>pt</b> Points</li>
         <li><b>dip</b> Device independent pixels. See {@link android.util.DisplayMetrics} for more information.</li>
     </ul> -->
-    <attr name="labelSize" format="dimension"/>
+    <attr name="labelsSize" format="dimension"/>
+    <attr name="labelsFont" format="reference"/>
     <attr name="labelIconsHeight" format="dimension"/>
     <attr name="labelIconsMargin" format="dimension"/>
     <attr name="labelOffset" format="float"/>
     <attr name="labelsColor" format="color"/>
+    <attr name="outsideLabelsMargin" format="dimension"/>
+    <attr name="labelType" format="enum">
+      <enum name="none" value="0"/>
+      <enum name="inside" value="1"/>
+      <enum name="outside" value="2"/>
+      <enum name="insideCircular" value="3"/>
+      <enum name="outsideCircular" value="4"/>
+      <enum name="outsideWithPointer" value="5"/>
+      <enum name="outsideWithLinesOnSides" value="6"/>
+    </attr>
     <attr name="holeRatio" format="float"/>
     <attr name="overlayRatio" format="float"/>
     <attr name="overlayAlpha" format="float"/>
