@@ -13,7 +13,6 @@ import ir.mahozad.android.PieChart.GapPosition.SUCCEEDING_SLICE
 import ir.mahozad.android.PieChart.IconPlacement
 import ir.mahozad.android.PieChart.IconPlacement.*
 import java.util.*
-import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
@@ -80,8 +79,6 @@ internal fun calculateBoundaries(origin: Coordinates, radius: Float): Boundaries
     val bottom = origin.y + radius
     return Boundaries(top, left, right, bottom)
 }
-
-private fun Float.toRadian() = (this / 360) * 2 * PI.toFloat()
 
 internal fun calculateGapCoordinates(
     origin: Coordinates,

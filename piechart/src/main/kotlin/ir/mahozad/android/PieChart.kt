@@ -289,16 +289,6 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         return gaps
     }
 
-    private fun spToPx(sp: Float) = sp * resources.displayMetrics.scaledDensity
-
-    private fun pxToSp(px: Float) = px / resources.displayMetrics.scaledDensity
-
-    private fun dpToPx(dp: Float) = dp * resources.displayMetrics.density
-
-    private fun pxToDp(px: Float) = px / resources.displayMetrics.density
-
-    private fun Float.toRadian() = (this / 180) * PI.toFloat()
-
     /**
      * The clip path (and maybe some other features) do not work on
      * emulators with hardware acceleration enabled.
