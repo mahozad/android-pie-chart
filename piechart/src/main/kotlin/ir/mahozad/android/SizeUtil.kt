@@ -312,6 +312,8 @@ internal fun normalizeAngle(angle: Float): Float {
 }
 
 /**
+ * For formulae and calculation details refer to [this post](https://math.stackexchange.com/q/4152307).
+ *
  * Note that `paint.getTextBounds` returns the exact height of the **specified text**
  *  whereas `paint.descent - paint.ascent` returns the total height of the current font.
  *  We work with the latter.
