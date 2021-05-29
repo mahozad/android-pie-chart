@@ -184,7 +184,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         }
     var labelOffset = DEFAULT_LABEL_OFFSET
         set(offset) {
-            field = offset
+            field = offset.coerceIn(0f, 1f)
             invalidate()
         }
     var labelIconsHeight = spToPx(DEFAULT_LABEL_ICONS_HEIGHT)
