@@ -9,12 +9,12 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="341.41"
-   height="624.1"
-   viewBox="0 0 341.41 624.1"
+   height="700"
+   viewBox="0 0 341.41 700"
    version="1.1"
    id="svg8"
    inkscape:version="1.0.2-2 (e86c870879, 2021-01-15)"
-   sodipodi:docname="implementain-outside-label.svg.2021_05_28_19_44_13.0.svg">
+   sodipodi:docname="implementing-outside-label.svg">
   <defs
      id="defs2">
     <rect
@@ -84,15 +84,15 @@
     <marker
        style="overflow:visible"
        id="TriangleInM"
-       refX="0.0"
-       refY="0.0"
+       refX="0"
+       refY="0"
        orient="auto"
        inkscape:stockid="TriangleInM"
        inkscape:isstock="true">
       <path
          transform="scale(-0.4)"
-         style="fill-rule:evenodd;stroke:#f36827;stroke-width:1pt;stroke-opacity:1;fill:#f36827;fill-opacity:1"
-         d="M 5.77,0.0 L -2.88,5.0 L -2.88,-5.0 L 5.77,0.0 z "
+         style="fill:#f36827;fill-opacity:1;fill-rule:evenodd;stroke:#f36827;stroke-width:1pt;stroke-opacity:1"
+         d="M 5.77,0 L -2.88,5 V -5 Z"
          id="path2193" />
     </marker>
     <marker
@@ -244,9 +244,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.0079"
-     inkscape:cx="63.014"
-     inkscape:cy="156.78"
+     inkscape:zoom="0.70711"
+     inkscape:cx="-51.27"
+     inkscape:cy="351.37"
      inkscape:document-units="px"
      inkscape:current-layer="layer2"
      inkscape:document-rotation="0"
@@ -299,9 +299,15 @@
      id="layer2"
      inkscape:label="vector"
      transform="translate(167.68,95)">
+    <circle
+       style="fill:#b6b29c;fill-opacity:1;stroke-width:0.5;stroke-dasharray:0.5, 0.5;stop-color:#000000"
+       id="path1154"
+       cx="32.321"
+       cy="332"
+       r="32" />
     <path
        style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:0.5, 0.5;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
-       d="M 49.356,380.97 L 60.926,367.18"
+       d="M 49.677,452.97 L 61.247,439.18"
        id="path2549"
        inkscape:transform-center-x="-23.141"
        sodipodi:nodetypes="cc"
@@ -436,7 +442,7 @@
          y="53.017"
          style="stroke:none">pieRadius</tspan></text>
     <path
-       style="fill:#00eab9;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:0.5,0.5;stop-color:#000000;stroke-dashoffset:0"
+       style="fill:#00eab9;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:0.5, 0.5;stroke-dashoffset:0;stop-color:#000000"
        d="M 31.679,35.557 L 49.035,14.875"
        id="path6801"
        inkscape:transform-center-x="-8.676"
@@ -526,7 +532,7 @@
        id="path1174"
        sodipodi:nodetypes="ccc" />
     <path
-       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-opacity:1;stop-color:#000000;marker-end:url(#marker1346)"
+       style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-opacity:1;marker-end:url(#marker1346);stop-color:#000000"
        d="M -22,53 C -22,62 -28,62 -34,62"
        id="path1312"
        sodipodi:nodetypes="cc" />
@@ -570,7 +576,7 @@
          sodipodi:role="line"
          id="tspan1496"
          x="-11"
-         y="49"></tspan></text>
+         y="49" /></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.66667px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;direction:ltr;text-anchor:start;fill:none;fill-opacity:1;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
@@ -619,40 +625,40 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.33333px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;direction:ltr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:10;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.5;stop-color:#000000"
-       x="-130.76"
-       y="242.98"
+       x="-130.44"
+       y="239.67"
        id="text1443-2"><tspan
          sodipodi:role="line"
-         x="-130.76"
-         y="242.98"
+         x="-130.44"
+         y="239.67"
          id="tspan2273-3">Place the text (baseline) on the </tspan><tspan
          sodipodi:role="line"
-         x="-130.76"
-         y="249.65"
+         x="-130.44"
+         y="246.34"
          id="tspan1612">circumference of the disk:</tspan><tspan
          sodipodi:role="line"
-         x="-130.76"
-         y="256.31"
+         x="-130.44"
+         y="253"
          id="tspan1614">x = rcos(θ) = pieRadius * cos(middleAngle)</tspan><tspan
          sodipodi:role="line"
-         x="-130.76"
-         y="262.98"
+         x="-130.44"
+         y="259.67"
          id="tspan1616">y = rsin(θ) = pieRadius * sin(middleAngle)</tspan><tspan
          sodipodi:role="line"
-         x="-130.76"
-         y="269.65"
+         x="-130.44"
+         y="266.34"
          id="tspan1618">This is for when the origin is at (0,0) but we were in</tspan><tspan
          sodipodi:role="line"
-         x="-130.76"
-         y="276.31"
+         x="-130.44"
+         y="273"
          id="tspan1620">(centerX,centerY) so adjust the x and y:</tspan><tspan
          sodipodi:role="line"
-         x="-130.76"
-         y="282.98"
+         x="-130.44"
+         y="279.67"
          id="tspan1622">x = x + centerX</tspan><tspan
          sodipodi:role="line"
-         x="-130.76"
-         y="289.65"
+         x="-130.44"
+         y="286.34"
          id="tspan1624">y= y + centerY</tspan></text>
     <text
        xml:space="preserve"
@@ -677,7 +683,7 @@
        y="0"
        xlink:href="#circle1427"
        id="use1702"
-       transform="translate(-0.31945,299.31)"
+       transform="translate(0.00155,296)"
        width="100%"
        height="100%" />
     <use
@@ -685,32 +691,32 @@
        y="0"
        xlink:href="#path1431"
        id="use1704"
-       transform="translate(-0.31945,299.31)"
+       transform="translate(0.00155,296)"
        width="100%"
        height="100%" />
     <circle
        style="fill:#000000;fill-opacity:1;stroke-linecap:round;stop-color:#000000"
        id="circle1706"
-       cx="31.721"
-       cy="263.31"
+       cx="32.042"
+       cy="260"
        r="1" />
     <path
        style="fill:#000000;fill-opacity:1;stroke:#0a5a73;stroke-width:0.5;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
-       d="M 31.721,263.31 V 236.31"
+       d="M 32.042,260 V 233"
        id="path1708" />
     <path
        style="fill:#000000;fill-opacity:1;stroke:#0a5a73;stroke-width:0.5;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
-       d="M 31.721,263.31 L 57.721,256.31"
+       d="M 32.042,260 L 58.042,253"
        id="path1710" />
     <path
        style="fill:#00eab9;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:0.5, 0.5;stroke-dashoffset:0;stop-color:#000000"
-       d="M 31.679,263.31 L 49.035,242.62"
+       d="M 32,260 L 49.356,239.31"
        id="path1712"
        inkscape:transform-center-x="-8.676"
        inkscape:transform-center-y="-10.341" />
     <g
        id="g1720"
-       transform="translate(59.035,158.62)">
+       transform="translate(59.356,155.31)">
       <rect
          style="fill:#f37095;fill-opacity:0.50196;stroke:none;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
          id="rect1714"
@@ -739,35 +745,35 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.33333px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;direction:ltr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:10;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.5;stop-color:#000000"
-       x="-131.99"
-       y="319.41"
+       x="-131.67"
+       y="391.41"
        id="text2428"><tspan
          sodipodi:role="line"
-         x="-131.99"
-         y="319.41"
+         x="-131.67"
+         y="391.41"
          id="tspan2426">Shift the x and y so that it is the center of the text</tspan><tspan
          sodipodi:role="line"
-         x="-131.99"
-         y="326.08"
+         x="-131.67"
+         y="398.08"
          id="tspan2485">that is placed on the desired point (circumference)</tspan><tspan
          sodipodi:role="line"
-         x="-131.99"
-         y="332.74"
+         x="-131.67"
+         y="404.74"
          id="tspan2487">and not the baseline of the text.</tspan><tspan
          sodipodi:role="line"
-         x="-131.99"
-         y="339.41"
+         x="-131.67"
+         y="411.41"
          id="tspan2489">This also makes future calculations easier.</tspan><tspan
          sodipodi:role="line"
-         x="-131.99"
-         y="346.08"
+         x="-131.67"
+         y="418.08"
          id="tspan2491">y = y + (h/2) - descent</tspan></text>
     <use
        x="0"
        y="0"
        xlink:href="#circle1427"
        id="use2430"
-       transform="translate(-0.31945,368)"
+       transform="translate(0.0016,440)"
        width="100%"
        height="100%" />
     <use
@@ -775,32 +781,32 @@
        y="0"
        xlink:href="#path1431"
        id="use2432"
-       transform="translate(-0.31945,368)"
+       transform="translate(0.0016,440)"
        width="100%"
        height="100%" />
     <circle
        style="fill:#000000;fill-opacity:1;stroke-linecap:round;stop-color:#000000"
        id="circle2434"
-       cx="31.721"
-       cy="332"
+       cx="32.042"
+       cy="404"
        r="1" />
     <path
        style="fill:#000000;fill-opacity:1;stroke:#0a5a73;stroke-width:0.5;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
-       d="M 31.721,332 V 305"
+       d="M 32.042,404 V 377"
        id="path2436" />
     <path
        style="fill:#000000;fill-opacity:1;stroke:#0a5a73;stroke-width:0.5;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
-       d="M 31.721,332 L 57.721,325"
+       d="M 32.042,404 L 58.042,397"
        id="path2438" />
     <path
        style="fill:#00eab9;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:0.5, 0.5;stroke-dashoffset:0;stop-color:#000000"
-       d="M 31.679,332 L 49.035,311.3"
+       d="M 32,404 L 49.356,383.3"
        id="path2440"
        inkscape:transform-center-x="-8.676"
        inkscape:transform-center-y="-10.341" />
     <g
        id="g2448"
-       transform="translate(59.035,229.3)">
+       transform="translate(59.356,301.3)">
       <rect
          style="fill:#f37095;fill-opacity:0.50196;stroke:none;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
          id="rect2442"
@@ -824,44 +830,44 @@
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.33333px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;direction:ltr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:10;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.5;stop-color:#000000"
-       x="-142.92"
-       y="378.64"
+       x="-142.6"
+       y="450.64"
        id="text2503"><tspan
          sodipodi:role="line"
-         x="-142.92"
-         y="378.64"
+         x="-142.6"
+         y="450.64"
          id="tspan2501">Now, calculate the shift (a,b) to move the rectangle along</tspan><tspan
          sodipodi:role="line"
-         x="-142.92"
-         y="385.31"
+         x="-142.6"
+         y="457.31"
          id="tspan2545">the middleAngle just enough so that it does not overlap</tspan><tspan
          sodipodi:role="line"
-         x="-142.92"
-         y="391.97"
+         x="-142.6"
+         y="463.97"
          id="tspan2547">the disk anymore.</tspan><tspan
          sodipodi:role="line"
-         x="-142.92"
-         y="398.64"
+         x="-142.6"
+         y="470.64"
          id="tspan2553">The formula for this shiftring differes for different</tspan><tspan
          sodipodi:role="line"
-         x="-142.92"
-         y="405.31"
+         x="-142.6"
+         y="477.31"
          id="tspan2845">middleAngles:</tspan><tspan
          sodipodi:role="line"
-         x="-142.92"
-         y="412.12"
+         x="-142.6"
+         y="484.12"
          id="tspan2563">θ∈[0,arcsin(h/2))</tspan><tspan
          sodipodi:role="line"
-         x="-142.92"
-         y="418.94"
+         x="-142.6"
+         y="490.94"
          id="tspan2567">θ∈[arcsin(h/2),arccos(w/2)]</tspan><tspan
          sodipodi:role="line"
-         x="-142.92"
-         y="425.75"
+         x="-142.6"
+         y="497.75"
          id="tspan2847">θ∈(arccos(w/2),π/2]</tspan><tspan
          sodipodi:role="line"
-         x="-142.92"
-         y="432.42"
+         x="-142.6"
+         y="504.42"
          id="tspan2575">(a,b) = ... <tspan
    style="fill:#a1a1a1;fill-opacity:1"
    id="tspan3113">// calculate the shift</tspan></tspan></text>
@@ -870,7 +876,7 @@
        y="0"
        xlink:href="#circle1427"
        id="use2505"
-       transform="translate(-0.04045,437.65)"
+       transform="translate(0.2806,509.65)"
        width="100%"
        height="100%" />
     <use
@@ -878,32 +884,32 @@
        y="0"
        xlink:href="#path1431"
        id="use2507"
-       transform="translate(-0.04045,437.65)"
+       transform="translate(0.2806,509.65)"
        width="100%"
        height="100%" />
     <circle
        style="fill:#000000;fill-opacity:1;stroke-linecap:round;stop-color:#000000"
        id="circle2509"
-       cx="32"
-       cy="401.65"
+       cx="32.321"
+       cy="473.65"
        r="1" />
     <path
        style="fill:#000000;fill-opacity:1;stroke:#0a5a73;stroke-width:0.5;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
-       d="M 32,401.65 V 374.65"
+       d="M 32.321,473.65 V 446.65"
        id="path2511" />
     <path
        style="fill:#000000;fill-opacity:1;stroke:#0a5a73;stroke-width:0.5;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
-       d="M 32,401.65 L 58,394.65"
+       d="M 32.321,473.65 L 58.321,466.65"
        id="path2513" />
     <path
        style="fill:#00eab9;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:0.5, 0.5;stroke-dashoffset:0;stop-color:#000000"
-       d="M 31.958,401.65 L 49.314,380.95"
+       d="M 32.279,473.65 L 49.635,452.95"
        id="path2515"
        inkscape:transform-center-x="-8.676"
        inkscape:transform-center-y="-10.341" />
     <g
        id="g2523"
-       transform="translate(64.107,293.31)">
+       transform="translate(64.428,365.31)">
       <rect
          style="fill:#f37095;fill-opacity:0.50196;stroke:none;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
          id="rect2517"
@@ -927,7 +933,7 @@
     <text
        xml:space="preserve"
        id="text2525"
-       style="fill:none;stop-color:#000000;-inkscape-font-specification:Roboto;font-family:Roboto;line-height:1.25;text-decoration:none;text-decoration-color:#000000;font-size:2.66667px;stroke-width:0.5;fill-opacity:1;stroke:#000000;stroke-opacity:1;white-space:pre;shape-inside:url(#rect2527);" />
+       style="font-size:2.66667px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;white-space:pre;shape-inside:url(#rect2527);fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.5;stroke-opacity:1;stop-color:#000000;" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.33333px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;direction:ltr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:10;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.5;stop-color:#000000"
@@ -940,7 +946,7 @@
          id="tspan2752">First, convert the middleAngle to its first-quadrant (0≤θ≤90)</tspan><tspan
          sodipodi:role="line"
          x="-143.61"
-         y="162.11"
+         y="162.12"
          id="tspan2789">equivelant (if it is in a quadrant other than the first quadrant)</tspan><tspan
          sodipodi:role="line"
          x="-143.61"
@@ -952,7 +958,7 @@
          id="tspan2819">in the first quadrant.</tspan><tspan
          sodipodi:role="line"
          x="-143.61"
-         y="182.11"
+         y="182.12"
          id="tspan2801">Note that the quadrent shown here is the one generally</tspan><tspan
          sodipodi:role="line"
          x="-143.61"
@@ -964,7 +970,7 @@
          id="tspan2797">in Android it is the bottom right quadrant that is the</tspan><tspan
          sodipodi:role="line"
          x="-143.61"
-         y="202.11"
+         y="202.12"
          id="tspan2799">first quadrant. However, it does not make any</tspan><tspan
          sodipodi:role="line"
          x="-143.61"
@@ -985,7 +991,7 @@
        cy="180"
        r="1" />
     <path
-       style="fill:#18fa05;fill-opacity:0.5;stroke:none;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:0.5, 0.50000000000000000;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
+       style="fill:#18fa05;fill-opacity:0.5;stroke:none;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:0.5, 0.5;stroke-dashoffset:0;stroke-opacity:1;stop-color:#000000"
        id="path2778"
        sodipodi:type="arc"
        sodipodi:cx="32"
@@ -1017,32 +1023,32 @@
          sodipodi:role="line"
          id="tspan2849"
          x="-128"
-         y="476"></tspan></text>
+         y="476" /></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.33333px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;direction:ltr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:10;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.5;stop-color:#000000"
-       x="-144.48"
-       y="456.26"
+       x="-144.16"
+       y="528.26"
        id="text2873"><tspan
          sodipodi:role="line"
-         x="-144.48"
-         y="456.26"
+         x="-144.16"
+         y="528.26"
          id="tspan2871">Convert the shift (a,b) to the middleAngle</tspan><tspan
          sodipodi:role="line"
-         x="-144.48"
-         y="462.93"
+         x="-144.16"
+         y="534.93"
          id="tspan2929">original quadrant if necessary:</tspan><tspan
          sodipodi:role="line"
-         x="-144.48"
-         y="469.6"
+         x="-144.16"
+         y="541.59"
          id="tspan2931">for second quadrant: a = -a</tspan><tspan
          sodipodi:role="line"
-         x="-144.48"
-         y="476.26"
+         x="-144.16"
+         y="548.26"
          id="tspan2933">for third quadrant: a = -a, b = -b</tspan><tspan
          sodipodi:role="line"
-         x="-144.48"
-         y="482.93"
+         x="-144.16"
+         y="554.93"
          id="tspan2935">for fourth quadrant: b = -b</tspan></text>
     <text
        xml:space="preserve"
@@ -1053,25 +1059,150 @@
          sodipodi:role="line"
          id="tspan2941"
          x="-140"
-         y="508"></tspan></text>
+         y="508" /></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.33333px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;direction:ltr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:10;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.5;stop-color:#000000"
-       x="-144.48"
-       y="504.26"
+       x="-144.16"
+       y="576.26"
        id="text2955"><tspan
          sodipodi:role="line"
-         x="-144.48"
-         y="504.26"
+         x="-144.16"
+         y="576.26"
          id="tspan2953">Finally, shift the x and y:</tspan><tspan
          sodipodi:role="line"
-         x="-144.48"
-         y="510.93"
+         x="-144.16"
+         y="582.93"
          id="tspan2971">x = x + a</tspan><tspan
          sodipodi:role="line"
-         x="-144.48"
-         y="517.59"
+         x="-144.16"
+         y="589.59"
          id="tspan2973">y = y + b</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.33333px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;direction:ltr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:10;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.5;stop-color:#000000"
+       x="-131.8"
+       y="324.78"
+       id="text1115"><tspan
+         sodipodi:role="line"
+         x="-131.8"
+         y="324.78"
+         id="tspan1099">To place the text with a margin, imagine </tspan><tspan
+         sodipodi:role="line"
+         x="-131.8"
+         y="331.45"
+         id="tspan1117">a bigger disk that you want to put the rectangle</tspan><tspan
+         sodipodi:role="line"
+         x="-131.8"
+         y="338.11"
+         id="tspan1101">on it. So instead of pieRadius, use pieRadius + margin:</tspan><tspan
+         sodipodi:role="line"
+         x="-131.8"
+         y="344.78"
+         id="tspan1103">x = rcos(θ) = (pieRadius + margin) * cos(middleAngle)</tspan><tspan
+         sodipodi:role="line"
+         x="-131.8"
+         y="351.45"
+         id="tspan1105">y = rsin(θ) = (pieRadius + margin) * sin(middleAngle)</tspan><tspan
+         sodipodi:role="line"
+         x="-131.8"
+         y="358.11"
+         id="tspan1113">Again, don't forget to account for centerX and centerY.</tspan></text>
+    <use
+       x="0"
+       y="0"
+       xlink:href="#circle1427"
+       id="use1132"
+       transform="translate(0.00155,368)"
+       width="100%"
+       height="100%" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#path1431"
+       id="use1134"
+       transform="translate(0.00155,368)"
+       width="100%"
+       height="100%" />
+    <circle
+       style="fill:#000000;fill-opacity:1;stroke-linecap:round;stop-color:#000000"
+       id="circle1136"
+       cx="32.042"
+       cy="332"
+       r="1" />
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:#0a5a73;stroke-width:0.5;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       d="M 32.042,332 V 305"
+       id="path1138" />
+    <path
+       style="fill:#000000;fill-opacity:1;stroke:#0a5a73;stroke-width:0.5;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       d="M 32.042,332 L 58.042,325"
+       id="path1140" />
+    <path
+       style="fill:#00eab9;stroke:#000000;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:0.5, 0.5;stroke-dashoffset:0;stop-color:#000000"
+       d="M 32,332 L 49.356,311.31"
+       id="path1142"
+       inkscape:transform-center-x="-8.676"
+       inkscape:transform-center-y="-10.341" />
+    <path
+       style="fill:#a1a1a1;stroke:#20bbec;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       d="M 32,332 H 59"
+       id="path1156" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#1095bf;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       d="M 59,332 H 64.32"
+       id="path1158" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.66667px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;direction:ltr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:#e7d714;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.98431;stop-color:#000000"
+       x="38.959"
+       y="335.53"
+       id="text3554-9-7"><tspan
+         sodipodi:role="line"
+         id="tspan3552-9-5"
+         x="38.959"
+         y="335.53"
+         style="font-size:2.66667px;stroke:none">pieRadius</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.66667px;line-height:1.25;font-family:Roboto;-inkscape-font-specification:Roboto;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-color:#000000;direction:ltr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:#e7d714;stroke-width:1;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.98431;stop-color:#000000"
+       x="57.786"
+       y="335"
+       id="text1186"><tspan
+         sodipodi:role="line"
+         id="tspan1184"
+         x="57.786"
+         y="335"
+         style="font-size:2.66667px;stroke:none">margin</tspan></text>
+    <path
+       style="fill:none;fill-opacity:1;stroke:#1095bf;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stop-color:#000000"
+       d="M 49.356,311.32 L 52.776,307.25"
+       id="path1191"
+       inkscape:transform-center-x="-19.066"
+       inkscape:transform-center-y="-22.715" />
+    <g
+       id="g1150"
+       transform="translate(62.776,223.25)">
+      <rect
+         style="fill:#f37095;fill-opacity:0.50196;stroke:none;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stop-color:#000000"
+         id="rect1144"
+         width="14"
+         height="8"
+         x="-17"
+         y="78" />
+      <circle
+         style="fill:#1030bb;fill-opacity:1;stroke-width:0.5;stop-color:#000000"
+         id="circle1146"
+         cx="-10"
+         cy="82"
+         r="0.5" />
+      <circle
+         style="fill:#42bb10;fill-opacity:1;stroke-width:0.5;stop-color:#000000"
+         id="circle1148"
+         cx="-10"
+         cy="84"
+         r="0.5" />
+    </g>
   </g>
   <inkscape:templateinfo>
     <inkscape:name>alaki</inkscape:name>
