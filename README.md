@@ -8,7 +8,7 @@
 
 ### build.gradle[.kts]
 ```groovy
-implementation("ir.mahozad.android:pie-chart:0.1.0")
+implementation("ir.mahozad.android:pie-chart:0.2.0")
 ```
 
 ### layout.xml

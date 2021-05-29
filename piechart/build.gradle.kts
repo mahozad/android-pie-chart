@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "ir.mahozad.android"
-version = "0.1.0"
+version = "0.2.0"
 
 android {
     sourceSets {
@@ -39,8 +39,8 @@ android {
     defaultConfig {
         minSdkVersion(21)
         targetSdkVersion(30)
-        versionCode = 1
-        versionName = "0.1.0"
+        versionCode = 2
+        versionName = project.version.toString()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArgument("runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder")
         consumerProguardFiles("consumer-rules.pro")
@@ -128,7 +128,7 @@ afterEvaluate {
                 // You can then customize attributes of the publication as shown below
                 groupId = "ir.mahozad.android"
                 artifactId = "pie-chart"
-                version = "0.1.0"
+                version = project.version.toString()
                 artifact(sourcesArtifact)
                 artifact(javadocArtifact)
                 pom {
@@ -173,7 +173,7 @@ afterEvaluate {
                 from(components["debug"])
                 groupId = "ir.mahozad.android"
                 artifactId = "pie-chart-debug"
-                version = "0.1.0"
+                version = project.version.toString()
             }
         }
     }
