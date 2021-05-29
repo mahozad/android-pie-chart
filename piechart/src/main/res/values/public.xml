@@ -4,5 +4,21 @@
      Alternately, you can make all resources private by adding an empty <public /> element,
      which marks nothing as public, which makes everything else (all resources) private. -->
 <resources>
-  <public name="my_lib_name" type="string"/>
+  <public name="gap" format="dimension"/>
+  <public name="slicesPointerLength" format="dimension"/>
+  <public name="slicesPointerWidth" format="dimension"/>
+  <public name="gapPosition" format="enum"/>
+  <public name="startAngle" format="integer"/>
+  <public name="labelsSize" format="dimension"/>
+  <public name="labelsFont" format="reference"/>
+  <public name="labelIconsHeight" format="dimension"/>
+  <public name="labelIconsMargin" format="dimension"/>
+  <public name="labelOffset" format="float"/>
+  <public name="labelsColor" format="color"/>
+  <public name="outsideLabelsMargin" format="dimension"/>
+  <public name="labelType" format="enum"/>
+  <public name="holeRatio" format="float"/>
+  <public name="overlayRatio" format="float"/>
+  <public name="overlayAlpha" format="float"/>
+  <public name="gradientType" format="enum"/>
 </resources>

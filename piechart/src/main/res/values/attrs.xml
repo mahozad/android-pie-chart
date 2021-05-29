@@ -63,13 +63,13 @@
     <attr name="labelsColor" format="color"/>
     <attr name="outsideLabelsMargin" format="dimension"/>
     <attr name="labelType" format="enum">
-      <enum name="none" value="0"/>
+<!--      <enum name="none" value="0"/>-->
       <enum name="inside" value="1"/>
       <enum name="outside" value="2"/>
-      <enum name="insideCircular" value="3"/>
-      <enum name="outsideCircular" value="4"/>
-      <enum name="outsideWithPointer" value="5"/>
-      <enum name="outsideWithLinesOnSides" value="6"/>
+<!--      <enum name="insideCircular" value="3"/>-->
+<!--      <enum name="outsideCircular" value="4"/>-->
+<!--      <enum name="outsideWithPointer" value="5"/>-->
+<!--      <enum name="outsideWithLinesOnSides" value="6"/>-->
     </attr>
     <attr name="holeRatio" format="float"/>
     <attr name="overlayRatio" format="float"/>
