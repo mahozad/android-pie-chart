@@ -231,7 +231,7 @@ internal fun calculatePieNewBounds(
             if (textWidth == 0f) excess = 0f
             maxLeftExcess = max(maxLeftExcess, excess)
         }
-        if (middleAngle in -90f until 90f || (middleAngle >= 270f && middleAngle < 90f)) {
+        if (middleAngle in -90f until 90f || middleAngle in 270f until 450f) {
             var excess = (x + textWidth / 2f) - currentBounds.right
             if (textWidth == 0f) excess = 0f
             maxRightExcess = max(maxRightExcess, excess)

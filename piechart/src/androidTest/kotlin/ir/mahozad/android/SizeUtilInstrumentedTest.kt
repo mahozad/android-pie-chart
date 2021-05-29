@@ -1570,6 +1570,30 @@ class SizeUtilInstrumentedTest {
             .isEqualTo(RectF(137f, 174f, 963f, 1000f))
     }
 
+    @Test fun calculatePieNewBoundsForOutsideLabels_WithRightLabelHavingAngleGreaterThan270() {
+        val slices = listOf(
+            PieChart.Slice(0.43f, Color.BLACK, label = ""),
+            PieChart.Slice(0.21f, Color.BLACK, label = ""),
+            PieChart.Slice(0.19f, Color.BLACK, label = ""),
+            PieChart.Slice(0.14f, Color.BLACK, label = ""),
+            PieChart.Slice(0.03f, Color.BLACK, label = "3%"),
+        )
+        val labelMargin = 0f
+        val drawDirection = PieChart.DrawDirection.CLOCKWISE
+        val currentBounds = RectF(100f, 100f, 1000f, 1000f)
+        val shouldCenterPie = false
+        val labelsTypeface = Typeface.DEFAULT
+        val labelsSize = 63.15f
+        val startAngle = 0
+
+        val bounds = calculatePieNewBounds(currentBounds, slices, shouldCenterPie, labelMargin, drawDirection, startAngle, labelsSize, labelsTypeface)
+
+        assertThat(bounds)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
+            .isEqualTo( RectF(100f, 140f, 919f, 960f))
+    }
+
     // -------------------------------------------------------------------------
 
     @ParameterizedTest(name = "Angle: {0}")
