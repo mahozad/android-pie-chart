@@ -35,6 +35,8 @@ class SizeUtilInstrumentedTest {
         setLocale(Locale.ENGLISH)
     }
 
+    // region calculateHeightAndWidth
+
     /**
      * UNSPECIFIED measure spec could indicate, among oter things, wrap_content
      */
@@ -251,7 +253,9 @@ class SizeUtilInstrumentedTest {
         assertThat(height).isEqualTo(smallerSize)
     }
 
-    // -------------------------------------------------------------------------
+    // endregion
+
+    // region calculateCenter
 
     @Test fun withNotPaddingCenterShouldBeInCenter() {
         val width = 500
@@ -610,7 +614,9 @@ class SizeUtilInstrumentedTest {
         assertThat(centerY).isEqualTo(250f)
     }
 
-    // -------------------------------------------------------------------------
+    // endregion
+
+    // region calculateRadius
 
     @Test fun withNoPaddingRadiusShouldBeHalfTheWidthAndHeight() {
         val width = 500
@@ -822,7 +828,9 @@ class SizeUtilInstrumentedTest {
         assertThat(radius).isEqualTo(160f)
     }
 
-    // -------------------------------------------------------------------------
+    // endregion
+
+    // region calculateBoundaries
 
     @Test fun withSmallRadiusBoundaryShouldBeCalculatedWithNoException() {
         val origin = Coordinates(500f, 500f)
@@ -836,7 +844,9 @@ class SizeUtilInstrumentedTest {
         assertThat(bottom).isEqualTo(700f)
     }
 
-    // -------------------------------------------------------------------------
+    // endregion
+
+    // region calculateGapCoordinates
 
     @ParameterizedTest(name = "Angle: {0}, Position: {1}")
     @MethodSource("argumentProvider")
@@ -894,7 +904,9 @@ class SizeUtilInstrumentedTest {
         return arguments
     }
 
-    // -------------------------------------------------------------------------
+    // endregion
+
+    // region updatePaintForLabel
 
     /**
      * Ensures that no new object is allocated in view::onDraw method
@@ -955,7 +967,9 @@ class SizeUtilInstrumentedTest {
         assertThat(paint.color).isEqualTo(labelColor)
     }
 
-    // -------------------------------------------------------------------------
+    // endregion
+
+    // region calculateLabelCoordinates
 
     @Test fun labelCoordinates_WithAngle0AndNoIconAndIconMargin0AndIconPlacementLEFT() {
         val angle =0f // In degrees
@@ -1280,7 +1294,9 @@ class SizeUtilInstrumentedTest {
             .isEqualTo(Coordinates(452f, 955f))
     }
 
-    // -------------------------------------------------------------------------
+    // endregion
+
+    // region calculateLabelIconWidth
 
     @Test fun calculateLabelIconWidth_ForNullDrawable() {
         val desiredIconHeight = 50f
@@ -1345,7 +1361,9 @@ class SizeUtilInstrumentedTest {
         assertThat(width).isEqualTo(80f)
     }
 
-    // -------------------------------------------------------------------------
+    // endregion
+
+    // region calculateLabelBounds
 
     @Test fun calculateLabelBounds_EmptyLabel() {
         val label = ""
@@ -1370,7 +1388,9 @@ class SizeUtilInstrumentedTest {
         assertThat(bounds.height()).isEqualTo(45)
     }
 
-    // -------------------------------------------------------------------------
+    // endregion
+
+    // region calculateLabelIconBounds
 
     @ParameterizedTest(name = "Icon margin: {0}, Icon placement: {1}, Label: {3}, Locale: {4}")
     @MethodSource("argumentProvider2")
@@ -1423,7 +1443,9 @@ class SizeUtilInstrumentedTest {
         return arguments
     }
 
-    // -------------------------------------------------------------------------
+    // endregion
+
+    // region calculatePieNewBoundsForOutsideLabels
 
     @Test fun calculatePieNewBoundsForOutsideLabels_WithDrawingClockWiseAndNoMarginAndFalseShouldCenterPie() {
         val slices = listOf(
@@ -1580,7 +1602,9 @@ class SizeUtilInstrumentedTest {
             .isEqualTo( RectF(100f, 140f, 919f, 960f))
     }
 
-    // -------------------------------------------------------------------------
+    // endregion
+
+    // region normalizeAngle
 
     @ParameterizedTest(name = "Angle: {0}")
     @MethodSource("argumentProvider3")
@@ -1608,7 +1632,9 @@ class SizeUtilInstrumentedTest {
         return angles.mapIndexed { i, angle -> arguments(angle, expectedAngles[i]) }
     }
 
-    // -------------------------------------------------------------------------
+    // endregion
+
+    // region calculateEndAngle
 
     @ParameterizedTest(name = "Angle: {0}, Fraction: {1}, Direction: {2}")
     @MethodSource("argumentProvider5")
@@ -1652,7 +1678,9 @@ class SizeUtilInstrumentedTest {
         return arguments
     }
 
-    // -------------------------------------------------------------------------
+    // endregion
+
+    // region calculateAnglesDistance
 
     @ParameterizedTest(name = "Angle: {0}, Fraction: {1}, Direction: {2}")
     @MethodSource("argumentProvider6")
@@ -1681,7 +1709,9 @@ class SizeUtilInstrumentedTest {
         return arguments
     }
 
-    // -------------------------------------------------------------------------
+    // endregion
+
+    // region calculateCoordinatesForOutsideLabel
 
     @ParameterizedTest(name = "Angle: {0}")
     @MethodSource("argumentProvider4")
@@ -1744,7 +1774,9 @@ class SizeUtilInstrumentedTest {
         return angles.mapIndexed { i, angle -> arguments(angle, expectedCoordinates[i]) }
     }
 
-    // -------------------------------------------------------------------------
+    // endregion
+
+    // region makeSlice
 
     @Test fun makeSlice_WithNoPointer() {
         val center = Coordinates(500f, 500f)
@@ -1788,4 +1820,6 @@ class SizeUtilInstrumentedTest {
 
         assertThat(PathMeasure(slice, false).length).isEqualTo(2381.9175f)
     }
+
+    // endregion
 }
