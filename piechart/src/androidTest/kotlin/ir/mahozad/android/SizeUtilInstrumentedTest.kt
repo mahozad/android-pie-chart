@@ -4,6 +4,8 @@ import android.graphics.*
 import android.view.View
 import android.view.View.MeasureSpec.makeMeasureSpec
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
+import ir.mahozad.android.PieChart.DrawDirection.CLOCKWISE
+import ir.mahozad.android.PieChart.DrawDirection.COUNTER_CLOCKWISE
 import ir.mahozad.android.PieChart.IconPlacement
 import ir.mahozad.android.PieChart.IconPlacement.*
 import org.assertj.core.api.Assertions.assertThat
@@ -956,8 +958,7 @@ class SizeUtilInstrumentedTest {
     // -------------------------------------------------------------------------
 
     @Test fun labelCoordinates_WithAngle0AndNoIconAndIconMargin0AndIconPlacementLEFT() {
-        val startAngle = -45f // In degrees
-        val sweepAmount = 90f // In degrees
+        val angle =0f // In degrees
         val labelOffset = 0.75f
         val label = "21%"
         val iconWidth = 0f
@@ -967,7 +968,7 @@ class SizeUtilInstrumentedTest {
         val radius = 400f
         val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
 
-        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+        val coordinates = calculateLabelCoordinates(angle, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
         assertThat(coordinates)
             .usingRecursiveComparison()
@@ -979,8 +980,7 @@ class SizeUtilInstrumentedTest {
      * If no icon is specified (i.e. icon width == 0) then ignore the icon margin
      */
     @Test fun labelCoordinates_WithAngle0AndNoIconAndArbitraryIconMarginAndIconPlacementLEFT() {
-        val startAngle = -45f // In degrees
-        val sweepAmount = 90f // In degrees
+        val angle =0f // In degrees
         val labelOffset = 0.75f
         val label = "21%"
         val iconWidth = 0f
@@ -990,7 +990,7 @@ class SizeUtilInstrumentedTest {
         val radius = 400f
         val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
 
-        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+        val coordinates = calculateLabelCoordinates(angle, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
         assertThat(coordinates)
             .usingRecursiveComparison()
@@ -999,8 +999,7 @@ class SizeUtilInstrumentedTest {
     }
 
     @Test fun labelCoordinates_WithAngle0AndAnIconAndIconMargin0AndIconPlacementLEFT() {
-        val startAngle = -45f // In degrees
-        val sweepAmount = 90f // In degrees
+        val angle =0f // In degrees
         val labelOffset = 0.75f
         val label = "21%"
         val iconWidth = 100f
@@ -1010,7 +1009,7 @@ class SizeUtilInstrumentedTest {
         val radius = 400f
         val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
 
-        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+        val coordinates = calculateLabelCoordinates(angle, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
         assertThat(coordinates)
             .usingRecursiveComparison()
@@ -1019,8 +1018,7 @@ class SizeUtilInstrumentedTest {
     }
 
     @Test fun labelCoordinates_WithAngle0AndAnIconAndArbitraryIconMarginAndIconPlacementLEFT() {
-        val startAngle = -45f // In degrees
-        val sweepAmount = 90f // In degrees
+        val angle =0f // In degrees
         val labelOffset = 0.75f
         val label = "21%"
         val iconWidth = 100f
@@ -1030,7 +1028,7 @@ class SizeUtilInstrumentedTest {
         val radius = 400f
         val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
 
-        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+        val coordinates = calculateLabelCoordinates(angle, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
         assertThat(coordinates)
             .usingRecursiveComparison()
@@ -1039,8 +1037,7 @@ class SizeUtilInstrumentedTest {
     }
 
     @Test fun labelCoordinates_WithAngle0AndNoIconAndIconMargin0AndIconPlacementRIGHT() {
-        val startAngle = -45f // In degrees
-        val sweepAmount = 90f // In degrees
+        val angle =0f // In degrees
         val labelOffset = 0.75f
         val label = "21%"
         val iconWidth = 0f
@@ -1050,7 +1047,7 @@ class SizeUtilInstrumentedTest {
         val radius = 400f
         val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
 
-        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+        val coordinates = calculateLabelCoordinates(angle, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
         assertThat(coordinates)
             .usingRecursiveComparison()
@@ -1062,8 +1059,7 @@ class SizeUtilInstrumentedTest {
      * If no icon is specified (i.e. icon width == 0) then ignore the icon margin
      */
     @Test fun labelCoordinates_WithAngle0AndNoIconAndArbitraryIconMarginAndIconPlacementRIGHT() {
-        val startAngle = -45f // In degrees
-        val sweepAmount = 90f // In degrees
+        val angle =0f // In degrees
         val labelOffset = 0.75f
         val label = "21%"
         val iconWidth = 0f
@@ -1073,7 +1069,7 @@ class SizeUtilInstrumentedTest {
         val radius = 400f
         val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
 
-        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+        val coordinates = calculateLabelCoordinates(angle, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
         assertThat(coordinates)
             .usingRecursiveComparison()
@@ -1082,8 +1078,7 @@ class SizeUtilInstrumentedTest {
     }
 
     @Test fun labelCoordinates_WithAngle0AndAnIconAndIconMargin0AndIconPlacementRIGHT() {
-        val startAngle = -45f // In degrees
-        val sweepAmount = 90f // In degrees
+        val angle =0f // In degrees
         val labelOffset = 0.75f
         val label = "21%"
         val iconWidth = 100f
@@ -1093,7 +1088,7 @@ class SizeUtilInstrumentedTest {
         val radius = 400f
         val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
 
-        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+        val coordinates = calculateLabelCoordinates(angle, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
         assertThat(coordinates)
             .usingRecursiveComparison()
@@ -1102,8 +1097,7 @@ class SizeUtilInstrumentedTest {
     }
 
     @Test fun labelCoordinates_WithAngle0AndAnIconAndArbitraryIconMarginAndIconPlacementRIGHT() {
-        val startAngle = -45f // In degrees
-        val sweepAmount = 90f // In degrees
+        val angle =0f // In degrees
         val labelOffset = 0.75f
         val label = "21%"
         val iconWidth = 100f
@@ -1113,7 +1107,7 @@ class SizeUtilInstrumentedTest {
         val radius = 400f
         val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
 
-        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+        val coordinates = calculateLabelCoordinates(angle, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
         assertThat(coordinates)
             .usingRecursiveComparison()
@@ -1130,8 +1124,7 @@ class SizeUtilInstrumentedTest {
     }
 
     @Test fun labelCoordinates_WithAngle0AndNoIconAndIconMargin0AndIconPlacementSTARTAndLeftToRightLocale() {
-        val startAngle = -45f // In degrees
-        val sweepAmount = 90f // In degrees
+        val angle =0f // In degrees
         val labelOffset = 0.75f
         val label = "21%"
         val iconWidth = 0f
@@ -1142,7 +1135,7 @@ class SizeUtilInstrumentedTest {
         val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
         setLocale(Locale.ENGLISH)
 
-        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+        val coordinates = calculateLabelCoordinates(angle, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
         assertThat(coordinates)
             .usingRecursiveComparison()
@@ -1151,8 +1144,7 @@ class SizeUtilInstrumentedTest {
     }
 
     @Test fun labelCoordinates_WithAngle0AndAnIconAndIconMargin0AndIconPlacementSTARTAndLeftToRightLocale() {
-        val startAngle = -45f // In degrees
-        val sweepAmount = 90f // In degrees
+        val angle =0f // In degrees
         val labelOffset = 0.75f
         val label = "21%"
         val iconWidth = 100f
@@ -1163,7 +1155,7 @@ class SizeUtilInstrumentedTest {
         val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
         setLocale(Locale.ENGLISH)
 
-        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+        val coordinates = calculateLabelCoordinates(angle, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
         assertThat(coordinates)
             .usingRecursiveComparison()
@@ -1172,8 +1164,7 @@ class SizeUtilInstrumentedTest {
     }
 
     @Test fun labelCoordinates_WithAngle0AndAnIconAndIconMargin0AndIconPlacementSTARTAndRightToLeftLocale() {
-        val startAngle = -45f // In degrees
-        val sweepAmount = 90f // In degrees
+        val angle =0f // In degrees
         val labelOffset = 0.75f
         val label = "21%"
         val iconWidth = 100f
@@ -1184,7 +1175,7 @@ class SizeUtilInstrumentedTest {
         val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
         setLocale(Locale.forLanguageTag("fa"))
 
-        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+        val coordinates = calculateLabelCoordinates(angle, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
         assertThat(coordinates)
             .usingRecursiveComparison()
@@ -1193,8 +1184,7 @@ class SizeUtilInstrumentedTest {
     }
 
     @Test fun labelCoordinates_WithAngle0AndAnIconAndIconMargin0AndIconPlacementENDAndLeftToRightLocale() {
-        val startAngle = -45f // In degrees
-        val sweepAmount = 90f // In degrees
+        val angle =0f // In degrees
         val labelOffset = 0.75f
         val label = "21%"
         val iconWidth = 100f
@@ -1205,7 +1195,7 @@ class SizeUtilInstrumentedTest {
         val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
         setLocale(Locale.ENGLISH)
 
-        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+        val coordinates = calculateLabelCoordinates(angle, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
         assertThat(coordinates)
             .usingRecursiveComparison()
@@ -1214,8 +1204,7 @@ class SizeUtilInstrumentedTest {
     }
 
     @Test fun labelCoordinates_WithAngle0AndAnIconAndIconMargin0AndIconPlacementENDAndRightToLeftLocale() {
-        val startAngle = -45f // In degrees
-        val sweepAmount = 90f // In degrees
+        val angle =0f // In degrees
         val labelOffset = 0.75f
         val label = "21%"
         val iconWidth = 100f
@@ -1226,7 +1215,7 @@ class SizeUtilInstrumentedTest {
         val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
         setLocale(Locale.forLanguageTag("fa"))
 
-        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+        val coordinates = calculateLabelCoordinates(angle, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
         assertThat(coordinates)
             .usingRecursiveComparison()
@@ -1235,8 +1224,7 @@ class SizeUtilInstrumentedTest {
     }
 
     @Test fun labelCoordinates_WithAngle0AndNoIconAndIconMargin0_PersianLabel() {
-        val startAngle = -45f // In degrees
-        val sweepAmount = 90f // In degrees
+        val angle =0f // In degrees
         val labelOffset = 0.75f
         val label = "۲۱٪"
         val iconWidth = 0f
@@ -1246,7 +1234,7 @@ class SizeUtilInstrumentedTest {
         val radius = 400f
         val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
 
-        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+        val coordinates = calculateLabelCoordinates(angle, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
         assertThat(coordinates)
             .usingRecursiveComparison()
@@ -1255,8 +1243,7 @@ class SizeUtilInstrumentedTest {
     }
 
     @Test fun labelCoordinates_WithArbitraryStartAngleAndAngleSweepAndNoIconAndMargin0() {
-        val startAngle = 64.8f // In degrees
-        val sweepAmount = 75.6f // In degrees
+        val angle = 102.6f // In degrees
         val labelOffset = 0.75f
         val label = "21%"
         val iconWidth = 0f
@@ -1266,7 +1253,7 @@ class SizeUtilInstrumentedTest {
         val radius = 540f
         val labelPaint = updatePaintForLabel(Paint(), 63f, Color.WHITE, Typeface.DEFAULT)
 
-        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+        val coordinates = calculateLabelCoordinates(angle, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
         assertThat(coordinates)
             .usingRecursiveComparison()
@@ -1275,8 +1262,7 @@ class SizeUtilInstrumentedTest {
     }
 
     @Test fun labelCoordinates_WithArbitraryStartAngleAndAngleSweepAndNoIconAndMargin0_PersianLabel() {
-        val startAngle = 64.8f // In degrees
-        val sweepAmount = 75.6f // In degrees
+        val angle = 102.6f // In degrees
         val labelOffset = 0.75f
         val label = "۲۱٪"
         val iconWidth = 0f
@@ -1286,7 +1272,7 @@ class SizeUtilInstrumentedTest {
         val radius = 540f
         val labelPaint = updatePaintForLabel(Paint(), 63f, Color.WHITE, Typeface.DEFAULT)
 
-        val coordinates = calculateLabelCoordinates(startAngle, sweepAmount, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
+        val coordinates = calculateLabelCoordinates(angle, labelOffset, iconWidth, iconMargin, iconPlacement, label, labelPaint, center, radius)
 
         assertThat(coordinates)
             .usingRecursiveComparison()
@@ -1449,7 +1435,7 @@ class SizeUtilInstrumentedTest {
             PieChart.Slice(0.15f, Color.BLACK, label = "")
         )
         val labelMargin = 0f
-        val drawDirection = PieChart.DrawDirection.CLOCKWISE
+        val drawDirection = CLOCKWISE
         val currentBounds = RectF(100f, 100f, 1000f, 1000f)
         val shouldCenterPie = false
         val labelsTypeface = Typeface.DEFAULT
@@ -1469,7 +1455,7 @@ class SizeUtilInstrumentedTest {
             PieChart.Slice(0.5f, Color.BLACK, label = "long label"),
         )
         val labelMargin = 0f
-        val drawDirection = PieChart.DrawDirection.CLOCKWISE
+        val drawDirection = CLOCKWISE
         val currentBounds = RectF(100f, 100f, 1000f, 1000f)
         val shouldCenterPie = false
         val labelsTypeface = Typeface.DEFAULT
@@ -1533,7 +1519,7 @@ class SizeUtilInstrumentedTest {
             PieChart.Slice(0.15f, Color.BLACK, label = "")
         )
         val labelMargin = 42f
-        val drawDirection = PieChart.DrawDirection.CLOCKWISE
+        val drawDirection = CLOCKWISE
         val currentBounds = RectF(100f, 100f, 1000f, 1000f)
         val shouldCenterPie = false
         val labelsTypeface = Typeface.DEFAULT
@@ -1555,7 +1541,7 @@ class SizeUtilInstrumentedTest {
             PieChart.Slice(0.15f, Color.BLACK, label = "")
         )
         val labelMargin = 0f
-        val drawDirection = PieChart.DrawDirection.CLOCKWISE
+        val drawDirection = CLOCKWISE
         val currentBounds = RectF(100f, 100f, 1000f, 1000f)
         val shouldCenterPie = false
         val labelsTypeface = Typeface.DEFAULT
@@ -1579,7 +1565,7 @@ class SizeUtilInstrumentedTest {
             PieChart.Slice(0.03f, Color.BLACK, label = "3%"),
         )
         val labelMargin = 0f
-        val drawDirection = PieChart.DrawDirection.CLOCKWISE
+        val drawDirection = CLOCKWISE
         val currentBounds = RectF(100f, 100f, 1000f, 1000f)
         val shouldCenterPie = false
         val labelsTypeface = Typeface.DEFAULT
@@ -1620,6 +1606,50 @@ class SizeUtilInstrumentedTest {
             230f, 269.9f, 270f, 270.1f, 320f, 359.9f, 0f, 0.1f, 10f, 90f
         )
         return angles.mapIndexed { i, angle -> arguments(angle, expectedAngles[i]) }
+    }
+
+    // -------------------------------------------------------------------------
+
+    @ParameterizedTest(name = "Angle: {0}, Fraction: {1}, Direction: {2}")
+    @MethodSource("argumentProvider5")
+    fun calculateSecondAngle_FromTheGivenAngleAndFractionAndDirection(angle: Float, fraction: Float, direction: PieChart.DrawDirection, expectedAngle: Float) {
+        val secondAngle = calculateEndAngle(angle, fraction, direction)
+        assertThat(secondAngle)
+            .usingComparator { f1, f2 -> if ((f1 - f2).absoluteValue < 0.001) 0 else 1 }
+            .isEqualTo(expectedAngle)
+    }
+
+    @Suppress("unused")
+    private fun argumentProvider5(): List<Arguments> {
+        val directions = arrayOf(CLOCKWISE, COUNTER_CLOCKWISE)
+        val fractions = arrayOf(-0.1f, 0f, 0.1f)
+        val angles = arrayOf(-450f, -370f, -360f, -350f, -170f, -20f, 0f, 20f, 170f, 350f, 360f, 370f, 450f)
+        val expectedAngles = arrayOf(
+            /* -450: */ 234f, 306f, 270f, 270f, 306f, 234f,
+            /* -370: */ 314f, 26f, 350f, 350f, 26f, 314f,
+            /* -360: */ 324f, 36f, 0f, 0f, 36f, 324f,
+            /* -350: */ 334f, 46f, 10f, 10f, 46f, 334f,
+            /* -170: */ 154f, 226f, 190f, 190f, 226f, 154f,
+            /*  -20: */ 304f, 16f, 340f, 340f, 16f, 304f,
+            /*    0: */ 324f, 36f, 0f, 0f, 36f, 324f,
+            /*   20: */ 344f, 56f, 20f, 20f, 56f, 344f,
+            /*  170: */ 134f, 206f, 170f, 170f, 206f, 134f,
+            /*  350: */ 314f, 26f, 350f, 350f, 26f, 314f,
+            /*  360: */ 324f, 36f, 0f, 0f, 36f, 324f,
+            /*  370: */ 334f, 46f, 10f, 10f, 46f, 334f,
+            /*  450: */ 54f, 126f, 90f, 90f, 126f, 54f
+        )
+        var i = 0
+        val arguments = mutableListOf<Arguments>()
+        for (angle in angles) {
+            for (fraction in fractions) {
+                for (direction in directions) {
+                    val tuple = arguments(angle, fraction, direction, expectedAngles[i++])
+                    arguments.add(tuple)
+                }
+            }
+        }
+        return arguments
     }
 
     // -------------------------------------------------------------------------
@@ -1693,7 +1723,7 @@ class SizeUtilInstrumentedTest {
         val sliceStartAngle = -90f
         val sliceFraction = 0.5f
         val pointer: PieChart.SlicePointer? = null
-        val drawDirection = PieChart.DrawDirection.CLOCKWISE
+        val drawDirection = CLOCKWISE
 
         val slice = makeSlice(center, pieEnclosingRect, sliceStartAngle, sliceFraction, drawDirection, pointer)
 
@@ -1709,7 +1739,7 @@ class SizeUtilInstrumentedTest {
         val sliceStartAngle = -90f
         val sliceFraction = 0.5f
         val pointer: PieChart.SlicePointer? = null
-        val drawDirection = PieChart.DrawDirection.CLOCKWISE
+        val drawDirection = CLOCKWISE
 
         makeSlice(center, pieEnclosingRect, sliceStartAngle, sliceFraction + 100f, drawDirection, pointer)
         val slice = makeSlice(center, pieEnclosingRect, sliceStartAngle, sliceFraction, drawDirection, pointer)
@@ -1723,7 +1753,7 @@ class SizeUtilInstrumentedTest {
         val sliceStartAngle = -90f
         val sliceFraction = 0.5f
         val pointer = PieChart.SlicePointer(50f, 40f, 0)
-        val drawDirection = PieChart.DrawDirection.CLOCKWISE
+        val drawDirection = CLOCKWISE
 
         val slice = makeSlice(center, pieEnclosingRect, sliceStartAngle, sliceFraction, drawDirection, pointer)
 

@@ -149,7 +149,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     var startAngle = DEFAULT_START_ANGLE
         set(angle) {
-            field = angle.coerceIn(-360, 360)
+            field = normalizeAngle(angle)
             invalidate()
         }
     var holeRatio = DEFAULT_HOLE_RATIO
@@ -258,7 +258,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     init {
         context.theme.obtainStyledAttributes(attrs, R.styleable.PieChart, 0, 0).apply {
             try {
-                startAngle = getInt(R.styleable.PieChart_startAngle, DEFAULT_START_ANGLE)
+                startAngle = normalizeAngle(getInt(R.styleable.PieChart_startAngle, DEFAULT_START_ANGLE))
                 holeRatio = getFloat(R.styleable.PieChart_holeRatio, DEFAULT_HOLE_RATIO)
                 overlayRatio = getFloat(R.styleable.PieChart_overlayRatio, DEFAULT_OVERLAY_RATIO)
                 overlayAlpha = getFloat(R.styleable.PieChart_overlayAlpha, DEFAULT_OVERLAY_ALPHA)
@@ -338,7 +338,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         val gaps = Path()
         var angle = startAngle.toFloat()
         for (slice in slices) {
-            angle += slice.fraction * 360
+            angle = calculateEndAngle(angle, slice.fraction, drawDirection)
             val (c1, c2, c3, c4) = calculateGapCoordinates(center, angle, gap, pieRadius, gapPosition)
             gaps.moveTo(c1.x, c1.y)
             gaps.lineTo(c2.x, c2.y)
@@ -407,14 +407,13 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             }
 
             mainPaint.shader = gradient
-            val sliceSweep = slice.fraction * 360
             val slicePath = makeSlice(center, pieEnclosingRect, currentAngle, slice.fraction, drawDirection, slice.pointer ?: slicesPointer)
             canvas.drawPath(slicePath, mainPaint)
 
             updatePaintForLabel(mainPaint, slice.labelSize ?: labelsSize, slice.labelColor ?: labelsColor, slice.labelFont ?: labelsFont)
 
+            val middleAngle = calculateMiddleAngle(currentAngle, slice.fraction, drawDirection)
             if (labelType == OUTSIDE) {
-                val middleAngle = calculateMiddleAngle(currentAngle, slice.fraction, drawDirection)
                 val coordinates = calculateCoordinatesForOutsideLabel(slice.label, middleAngle, center, pieRadius, outsideLabelsMargin)
                 canvas.drawText(slice.label, coordinates.x , coordinates.y, mainPaint)
 
@@ -443,7 +442,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 val iconMargin = slice.labelIconMargin ?: labelIconsMargin
                 val iconHeight = slice.labelIconHeight ?: labelIconsHeight
                 val iconWidth = calculateLabelIconWidth(labelIcon, iconHeight)
-                val coordinate = calculateLabelCoordinates(currentAngle, sliceSweep, labelOffset, iconWidth, iconMargin, slice.labelIconPlacement, slice.label, mainPaint, center, pieRadius)
+                val coordinate = calculateLabelCoordinates(middleAngle, labelOffset, iconWidth, iconMargin, slice.labelIconPlacement, slice.label, mainPaint, center, pieRadius)
                 val labelBounds = calculateLabelBounds(slice.label, mainPaint)
                 val labelIconBounds = calculateLabelIconBounds(coordinate, labelBounds, iconWidth, iconHeight, iconMargin, slice.labelIconPlacement)
                 canvas.drawText(slice.label, coordinate.x, coordinate.y, mainPaint)
@@ -451,7 +450,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 labelIcon?.draw(canvas)
             }
 
-            currentAngle += sliceSweep
+            currentAngle = calculateEndAngle(currentAngle, slice.fraction, drawDirection)
         }
 
         // The center label gets clipped by the clip path and is not shown
