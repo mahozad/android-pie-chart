@@ -292,6 +292,15 @@ private fun calculateSweep(fraction: Float, direction: DrawDirection): Float {
  * Returns the distance between the two angles.
  *
  * The input angles should be [normalized][normalizeAngle] in range [0º..360º).
+ *
+ * To get the absolute distance between the angles, well, get the absolute value of the result:
+ * ```kotlin
+ * calculateAngleDistance(...).absoluteValue
+ * ```
+ * or
+ * ```kotlin
+ * abs(calculateAngleDistance(...))
+ * ```
  */
 internal fun calculateAnglesDistance(
     startAngle: Float,
@@ -303,23 +312,6 @@ internal fun calculateAnglesDistance(
         direction == CLOCKWISE && difference < 0 -> difference + 360
         direction == COUNTER_CLOCKWISE && difference >= 0 -> difference - 360
         else -> difference
-    }
-}
-
-/**
- * Returns the absolute distance between the two angles.
- */
-internal fun calculateAnglesAbsoluteDistance(
-    startAngle: Float,
-    endAngle: Float,
-    direction: DrawDirection
-): Float {
-    val difference = endAngle - startAngle
-    return when {
-        direction == COUNTER_CLOCKWISE && difference < 0 -> difference.absoluteValue
-        direction == CLOCKWISE && difference < 0 -> difference + 360
-        direction == CLOCKWISE -> difference
-        else -> 360 - difference
     }
 }
 
