@@ -274,7 +274,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 centerLabel = getString(R.styleable.PieChart_centerLabel) ?: DEFAULT_CENTER_LABEL
                 val slicesPointerLength = getDimension(R.styleable.PieChart_slicesPointerLength, -1f)
                 val slicesPointerWidth = getDimension(R.styleable.PieChart_slicesPointerWidth, -1f)
-                slicesPointer = if (slicesPointerLength * slicesPointerWidth < 0) defaultSlicesPointer else SlicePointer(slicesPointerLength, slicesPointerWidth, 0)
+                slicesPointer = if (slicesPointerLength <= 0 || slicesPointerWidth <= 0) defaultSlicesPointer else SlicePointer(slicesPointerLength, slicesPointerWidth, 0)
                 labelType = LabelType.values()[
                         getInt(R.styleable.PieChart_labelType, defaultLabelType.ordinal)
                 ]
