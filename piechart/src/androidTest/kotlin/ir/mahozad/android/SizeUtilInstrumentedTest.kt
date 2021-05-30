@@ -1654,6 +1654,35 @@ class SizeUtilInstrumentedTest {
 
     // -------------------------------------------------------------------------
 
+    @ParameterizedTest(name = "Angle: {0}, Fraction: {1}, Direction: {2}")
+    @MethodSource("argumentProvider6")
+    fun calculateAnglesDistance_FromTheGivenAngleAndFractionAndDirection(startAngle: Float, endAngle: Float, direction: PieChart.DrawDirection, expectedDistance: Float) {
+        val distance = calculateAnglesDistance(startAngle, endAngle, direction)
+        assertThat(distance)
+            .usingComparator { f1, f2 -> if ((f1 - f2).absoluteValue < 0.001) 0 else 1 }
+            .isEqualTo(expectedDistance)
+    }
+
+    @Suppress("unused")
+    private fun argumentProvider6(): List<Arguments> {
+        val directions = arrayOf(CLOCKWISE, COUNTER_CLOCKWISE)
+        val startAngles = arrayOf(330f, 20f, 50f, 110f)
+        val endAngles = arrayOf(20f, 330f, 110f, 50f)
+        val expectedDistances = arrayOf(50f, -310f, 310f, -50f, 60f, -300f, 300f, -60f)
+        var i = 0
+        val arguments = mutableListOf<Arguments>()
+        for ((j, startAngle) in startAngles.withIndex()) {
+            for (direction in directions) {
+                val tuple = arguments(startAngle, endAngles[j], direction, expectedDistances[i])
+                arguments.add(tuple)
+                i++
+            }
+        }
+        return arguments
+    }
+
+    // -------------------------------------------------------------------------
+
     @ParameterizedTest(name = "Angle: {0}")
     @MethodSource("argumentProvider4")
     internal fun calculateCoordinatesForOutsideLabel_WithTheGivenAngleAndNoMargin(angle: Float, expectedCoordinates: Coordinates) {

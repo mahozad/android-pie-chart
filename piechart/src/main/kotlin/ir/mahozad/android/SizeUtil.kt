@@ -290,8 +290,10 @@ private fun calculateSweep(fraction: Float, direction: DrawDirection): Float {
 
 /**
  * Returns the distance between the two angles.
+ *
+ * The input angles should be [normalized][normalizeAngle] in range [0º..360º).
  */
-private fun calculateAnglesDistance(
+internal fun calculateAnglesDistance(
     startAngle: Float,
     endAngle: Float,
     direction: DrawDirection
@@ -307,7 +309,7 @@ private fun calculateAnglesDistance(
 /**
  * Returns the absolute distance between the two angles.
  */
-private fun calculateAnglesAbsoluteDistance(
+internal fun calculateAnglesAbsoluteDistance(
     startAngle: Float,
     endAngle: Float,
     direction: DrawDirection
