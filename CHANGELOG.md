@@ -14,7 +14,7 @@ This is the first release of the library.
 
 
 # Template:
-## vx.y.z (yyyy-MM-dd)
+## vx.y.z (yyyy-mm-dd)
 #### New features
   - new feature 1
 #### Updates
