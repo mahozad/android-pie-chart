@@ -181,40 +181,33 @@ afterEvaluate {
     }
 }
 
-/**
- * Usage: gradlew incrementVersion [-P[mode=major|minor|patch]|[overrideVersion=x.y.z]]
- */
+// Usage: gradlew incrementVersion [-P[mode=major|minor|patch]|[overrideVersion=x]]
 tasks.create("incrementVersion") {
     group = "versioning"
-    description = "Increments the library version to make it ready for next release."
+    description = "Increments the library version everywhere it is used."
     doLast {
-        var (major, minor, patch) = project.version.toString().split(".")
-        val mode = project.properties["mode"]?.toString()?.toLowerCaseAsciiOnly()
-        if (mode == "major") {
-            major = (major.toInt() + 1).toString()
-            minor = "0"
-            patch = "0"
-        } else if (mode == "minor") {
-            minor = (minor.toInt() + 1).toString()
-            patch = "0"
-        } else {
-            patch = (patch.toInt() + 1).toString()
+        val (oldMajor, oldMinor, oldPatch) = version.toString().split(".")
+        var (newMajor, newMinor, newPatch) = arrayOf(oldMajor, oldMinor, "0")
+        when (properties["mode"]) {
+            "major" -> newMajor = (oldMajor.toInt() + 1).toString().also { newMinor = "0" }
+            "minor" -> newMinor = (oldMinor.toInt() + 1).toString()
+            else    -> newPatch = (oldPatch.toInt() + 1).toString()
         }
-        var newVersion = "$major.$minor.$patch"
-
-        val overrideVersion = project.properties["overrideVersion"]?.toString()?.toLowerCaseAsciiOnly()
-        overrideVersion?.let { newVersion = it }
-
-        val newReadme = file("../README.md")
-            .readText()
-            .replaceFirst(Regex(":\\d+.\\d+.+\""), ":$newVersion\"")
-        file("../README.md").writeText(newReadme)
-
-        val newBuild = buildFile
-            .readText()
-            .replaceFirst(Regex("version = .+"), "version = \"$newVersion\"")
-            .replaceFirst(Regex("versionCode = \\d+"), "versionCode = ${(android.defaultConfig.versionCode ?: 0) + 1}")
-        buildFile.writeText(newBuild)
+        var newVersion = "$newMajor.$newMinor.$newPatch"
+        val newVersionCode = (android.defaultConfig.versionCode ?: 0) + 1
+        properties["overrideVersion"]?.toString()?.let { newVersion = it }
+        with(file("../README.md")) {
+            writeText(
+                readText()
+                .replaceFirst(":$version", ":$newVersion"))
+        }
+        with(buildFile) {
+            writeText(
+                readText()
+                .replaceFirst(Regex("\"$version\""), "\"$newVersion\"")
+                .replaceFirst(Regex("versionCode = \\d+"), "versionCode = $newVersionCode")
+            )
+        }
     }
 }
 
