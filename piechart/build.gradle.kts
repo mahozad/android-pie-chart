@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.util.capitalizeDecapitalize.toLowerCaseAsciiOnly
+
 // Could also have used ${rootProject.extra["kotlinVersion"]}
 val kotlinVersion: String by rootProject.extra
 
@@ -176,6 +178,43 @@ afterEvaluate {
                 version = project.version.toString()
             }
         }
+    }
+}
+
+/**
+ * Usage: gradlew incrementVersion [-P[mode=major|minor|patch]|[overrideVersion=x.y.z]]
+ */
+tasks.create("incrementVersion") {
+    group = "versioning"
+    description = "Increments the library version to make it ready for next release."
+    doLast {
+        var (major, minor, patch) = project.version.toString().split(".")
+        val mode = project.properties["mode"]?.toString()?.toLowerCaseAsciiOnly()
+        if (mode == "major") {
+            major = (major.toInt() + 1).toString()
+            minor = "0"
+            patch = "0"
+        } else if (mode == "minor") {
+            minor = (minor.toInt() + 1).toString()
+            patch = "0"
+        } else {
+            patch = (patch.toInt() + 1).toString()
+        }
+        var newVersion = "$major.$minor.$patch"
+
+        val overrideVersion = project.properties["overrideVersion"]?.toString()?.toLowerCaseAsciiOnly()
+        overrideVersion?.let { newVersion = it }
+
+        val newReadme = file("../README.md")
+            .readText()
+            .replaceFirst(Regex(":\\d+.\\d+.+\""), ":$newVersion\"")
+        file("../README.md").writeText(newReadme)
+
+        val newBuild = buildFile
+            .readText()
+            .replaceFirst(Regex("version = .+"), "version = \"$newVersion\"")
+            .replaceFirst(Regex("versionCode = \\d+"), "versionCode = ${(android.defaultConfig.versionCode ?: 0) + 1}")
+        buildFile.writeText(newBuild)
     }
 }
 
