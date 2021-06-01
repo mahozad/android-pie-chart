@@ -1822,4 +1822,93 @@ class SizeUtilInstrumentedTest {
     }
 
     // endregion
+
+    // region calculateLabelAndIconCombinedBounds
+
+    @ParameterizedTest
+    @MethodSource("argumentProvider7")
+    fun calculateLabelAndIconCombinedBounds_WithAnArbitraryLabelAndTheGivenIconWidthAndIconHeightAndIconMargin(iconHeight: Float, iconMargin: Float, iconPlacement: IconPlacement, expectedBounds: RectF) {
+        val label = "14%"
+        val labelPaint = Paint()
+        updatePaintForLabel(labelPaint, 60f, Color.WHITE, Typeface.DEFAULT)
+        val resources = getInstrumentation().targetContext.resources
+        val icon = resources.getDrawable(ir.mahozad.android.test.R.drawable.ic_test_1to1_ratio, null)
+        val labelBounds = calculateLabelBounds(label, labelPaint)
+        val iconBounds = calculateIconBounds(icon, iconHeight)
+
+        val bounds = calculateLabelAndIconCombinedBounds(labelBounds, iconBounds, iconMargin, iconPlacement)
+
+        assertThat(bounds)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
+            .isEqualTo(expectedBounds)
+    }
+
+    @Suppress("unused")
+    private fun argumentProvider7(): List<Arguments> {
+        val iconPlacements = arrayOf(LEFT, RIGHT, TOP, BOTTOM)
+        val iconHeights = arrayOf(0f, 30f, 100f)
+        val iconMargins = arrayOf(-10f, 0f, 20f)
+        val arguments = mutableListOf<Arguments>()
+        val expectedBounds = arrayOf(
+            RectF(0f, 0f, 105f, 45f),
+            RectF(0f, 0f, 105f, 45f),
+            RectF(0f, 0f, 105f, 45f),
+            RectF(0f, 0f, 125f, 45f),
+            RectF(0f, 0f, 135f, 45f),
+            RectF(0f, 0f, 155f, 45f),
+            RectF(0f, 0f, 195f, 100f),
+            RectF(0f, 0f, 205f, 100f),
+            RectF(0f, 0f, 225f, 100f),
+
+            RectF(0f, 0f, 105f, 45f),
+            RectF(0f, 0f, 105f, 45f),
+            RectF(0f, 0f, 105f, 45f),
+            RectF(0f, 0f, 125f, 45f),
+            RectF(0f, 0f, 135f, 45f),
+            RectF(0f, 0f, 155f, 45f),
+            RectF(0f, 0f, 195f, 100f),
+            RectF(0f, 0f, 205f, 100f),
+            RectF(0f, 0f, 225f, 100f),
+
+            RectF(0f, 0f, 105f, 45f),
+            RectF(0f, 0f, 105f, 45f),
+            RectF(0f, 0f, 105f, 45f),
+            RectF(0f, 0f, 105f, 65f),
+            RectF(0f, 0f, 105f, 75f),
+            RectF(0f, 0f, 105f, 95f),
+            RectF(0f, 0f, 105f, 135f),
+            RectF(0f, 0f, 105f, 145f),
+            RectF(0f, 0f, 105f, 165f),
+
+            RectF(0f, 0f, 105f, 45f),
+            RectF(0f, 0f, 105f, 45f),
+            RectF(0f, 0f, 105f, 45f),
+            RectF(0f, 0f, 105f, 65f),
+            RectF(0f, 0f, 105f, 75f),
+            RectF(0f, 0f, 105f, 95f),
+            RectF(0f, 0f, 105f, 135f),
+            RectF(0f, 0f, 105f, 145f),
+            RectF(0f, 0f, 105f, 165f),
+        )
+        var i = 0
+        for (iconPlacement in iconPlacements) {
+            for (iconHeight in iconHeights) {
+                for (iconMargin in iconMargins) {
+                    arguments.add(
+                        arguments(
+                            iconHeight,
+                            iconMargin,
+                            iconPlacement,
+                            expectedBounds[i++]
+                        )
+                    )
+                }
+            }
+        }
+        arguments.add(arguments(120f, -30, TOP, RectF(0f, 0f, 120f, 135f)))
+        return arguments
+    }
+
+    // endregion
 }

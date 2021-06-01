@@ -108,7 +108,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     )
 
     enum class DrawDirection { CLOCKWISE, COUNTER_CLOCKWISE }
-    enum class IconPlacement { LEFT, RIGHT, START, END }
+    enum class IconPlacement { LEFT, RIGHT, START, END, TOP, BOTTOM }
     enum class GradientType { RADIAL, SWEEP }
     enum class GapPosition { MIDDLE, PRECEDING_SLICE, SUCCEEDING_SLICE }
     enum class LabelType { NONE, INSIDE, OUTSIDE, INSIDE_CIRCULAR, OUTSIDE_CIRCULAR, OUTSIDE_WITH_LINES_ON_SIDES }

@@ -22,6 +22,7 @@ internal data class Coordinates(val x: Float, val y: Float)
 
 internal data class Boundaries(val top: Float, val left: Float, val right: Float, val bottom: Float)
 
+private val boundsF = RectF()
 private val bounds = Rect()
 private val paint = Paint()
 private val path = Path()
@@ -145,6 +146,38 @@ internal fun calculateLabelIconWidth(icon: Drawable?, desiredHeight: Float): Flo
     if (icon == null) return 0f
     val aspectRatio = icon.intrinsicWidth.toFloat() / icon.intrinsicHeight
     return desiredHeight * aspectRatio
+}
+
+/**
+ * TODO: Needs unit tests
+ */
+internal fun calculateIconBounds(icon: Drawable, iconHeight: Float): RectF {
+    val iconWidth = calculateLabelIconWidth(icon, iconHeight)
+    boundsF.set(0f, 0f, iconWidth, iconHeight)
+    return boundsF
+}
+
+/**
+ * Margin can be negative too. When icon size is zero, margin will have no effect.
+ */
+internal fun calculateLabelAndIconCombinedBounds(
+    labelBounds: Rect,
+    iconBounds: RectF,
+    iconMargin: Float,
+    iconPlacement: IconPlacement
+): RectF {
+    val width: Float
+    val height: Float
+    val adjustedMargin =
+        if (iconBounds.width() == 0f || iconBounds.height() == 0f) 0f else iconMargin
+    if (iconPlacement == TOP || iconPlacement == BOTTOM) {
+        width = max(labelBounds.width().toFloat(), iconBounds.width())
+        height = labelBounds.height() + adjustedMargin + iconBounds.height()
+    } else {
+        width = labelBounds.width() + adjustedMargin + iconBounds.width()
+        height = max(labelBounds.height().toFloat(), iconBounds.height())
+    }
+    return RectF(0f, 0f, width, height)
 }
 
 internal fun calculateLabelBounds(label: String, labelPaint: Paint): Rect {
