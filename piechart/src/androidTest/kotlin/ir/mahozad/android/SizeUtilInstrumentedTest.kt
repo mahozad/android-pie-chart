@@ -1056,7 +1056,7 @@ class SizeUtilInstrumentedTest {
         val label = "21%"
         val iconWidth = 0f
         val iconMargin = 0f
-        val iconPlacement = IconPlacement.RIGHT
+        val iconPlacement = RIGHT
         val center = Coordinates(500f, 500f)
         val radius = 400f
         val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
@@ -1078,7 +1078,7 @@ class SizeUtilInstrumentedTest {
         val label = "21%"
         val iconWidth = 0f
         val iconMargin = 147f
-        val iconPlacement = IconPlacement.RIGHT
+        val iconPlacement = RIGHT
         val center = Coordinates(500f, 500f)
         val radius = 400f
         val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
@@ -1097,7 +1097,7 @@ class SizeUtilInstrumentedTest {
         val label = "21%"
         val iconWidth = 100f
         val iconMargin = 0f
-        val iconPlacement = IconPlacement.RIGHT
+        val iconPlacement = RIGHT
         val center = Coordinates(500f, 500f)
         val radius = 400f
         val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
@@ -1116,7 +1116,7 @@ class SizeUtilInstrumentedTest {
         val label = "21%"
         val iconWidth = 100f
         val iconMargin = 147f
-        val iconPlacement = IconPlacement.RIGHT
+        val iconPlacement = RIGHT
         val center = Coordinates(500f, 500f)
         val radius = 400f
         val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
@@ -1143,7 +1143,7 @@ class SizeUtilInstrumentedTest {
         val label = "21%"
         val iconWidth = 0f
         val iconMargin = 0f
-        val iconPlacement = IconPlacement.START
+        val iconPlacement = START
         val center = Coordinates(500f, 500f)
         val radius = 400f
         val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
@@ -1163,7 +1163,7 @@ class SizeUtilInstrumentedTest {
         val label = "21%"
         val iconWidth = 100f
         val iconMargin = 0f
-        val iconPlacement = IconPlacement.START
+        val iconPlacement = START
         val center = Coordinates(500f, 500f)
         val radius = 400f
         val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
@@ -1183,7 +1183,7 @@ class SizeUtilInstrumentedTest {
         val label = "21%"
         val iconWidth = 100f
         val iconMargin = 0f
-        val iconPlacement = IconPlacement.START
+        val iconPlacement = START
         val center = Coordinates(500f, 500f)
         val radius = 400f
         val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
@@ -1203,7 +1203,7 @@ class SizeUtilInstrumentedTest {
         val label = "21%"
         val iconWidth = 100f
         val iconMargin = 0f
-        val iconPlacement = IconPlacement.END
+        val iconPlacement = END
         val center = Coordinates(500f, 500f)
         val radius = 400f
         val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
@@ -1223,7 +1223,7 @@ class SizeUtilInstrumentedTest {
         val label = "21%"
         val iconWidth = 100f
         val iconMargin = 0f
-        val iconPlacement = IconPlacement.END
+        val iconPlacement = END
         val center = Coordinates(500f, 500f)
         val radius = 400f
         val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
@@ -1243,7 +1243,7 @@ class SizeUtilInstrumentedTest {
         val label = "۲۱٪"
         val iconWidth = 0f
         val iconMargin = 0f
-        val iconPlacement = IconPlacement.START
+        val iconPlacement = START
         val center = Coordinates(500f, 500f)
         val radius = 400f
         val labelPaint = updatePaintForLabel(Paint(), 60f, Color.WHITE, Typeface.DEFAULT)
@@ -1262,7 +1262,7 @@ class SizeUtilInstrumentedTest {
         val label = "21%"
         val iconWidth = 0f
         val iconMargin = 0f
-        val iconPlacement = IconPlacement.START
+        val iconPlacement = START
         val center = Coordinates(540f, 540f)
         val radius = 540f
         val labelPaint = updatePaintForLabel(Paint(), 63f, Color.WHITE, Typeface.DEFAULT)
@@ -1281,7 +1281,7 @@ class SizeUtilInstrumentedTest {
         val label = "۲۱٪"
         val iconWidth = 0f
         val iconMargin = 0f
-        val iconPlacement = IconPlacement.START
+        val iconPlacement = START
         val center = Coordinates(540f, 540f)
         val radius = 540f
         val labelPaint = updatePaintForLabel(Paint(), 63f, Color.WHITE, Typeface.DEFAULT)
@@ -1499,7 +1499,7 @@ class SizeUtilInstrumentedTest {
             PieChart.Slice(0.15f, Color.BLACK, label = "")
         )
         val labelMargin = 0f
-        val drawDirection = PieChart.DrawDirection.COUNTER_CLOCKWISE
+        val drawDirection = COUNTER_CLOCKWISE
         val currentBounds = RectF(100f, 100f, 1000f, 1000f)
         val shouldCenterPie = false
         val labelsTypeface = Typeface.DEFAULT
@@ -1519,7 +1519,7 @@ class SizeUtilInstrumentedTest {
             PieChart.Slice(0.5f, Color.BLACK, label = "long label"),
         )
         val labelMargin = 0f
-        val drawDirection = PieChart.DrawDirection.COUNTER_CLOCKWISE
+        val drawDirection = COUNTER_CLOCKWISE
         val currentBounds = RectF(100f, 100f, 1000f, 1000f)
         val shouldCenterPie = false
         val labelsTypeface = Typeface.DEFAULT
