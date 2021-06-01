@@ -1823,6 +1823,30 @@ class SizeUtilInstrumentedTest {
 
     // endregion
 
+    // region calculateIconBounds
+
+    @Test fun calculateIconBounds_WithAnArbitraryHeight() {
+        val iconHeight = 100f
+        val resources = getInstrumentation().targetContext.resources
+        val icon = resources.getDrawable(ir.mahozad.android.test.R.drawable.ic_test_1to2_ratio, null)
+
+        val bounds = calculateIconBounds(icon, iconHeight)
+
+        assertThat(bounds).isEqualTo(RectF(0f, 0f, 50f, 100f))
+    }
+
+    @Test fun calculateIconBounds_WithHeightOfZero() {
+        val iconHeight = 0f
+        val resources = getInstrumentation().targetContext.resources
+        val icon = resources.getDrawable(ir.mahozad.android.test.R.drawable.ic_test_1to2_ratio, null)
+
+        val bounds = calculateIconBounds(icon, iconHeight)
+
+        assertThat(bounds).isEqualTo(RectF(0f, 0f, 0f, 0f))
+    }
+
+    // endregion
+
     // region calculateLabelAndIconCombinedBounds
 
     @ParameterizedTest
