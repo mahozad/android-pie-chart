@@ -1845,6 +1845,14 @@ class SizeUtilInstrumentedTest {
         assertThat(bounds).isEqualTo(RectF(0f, 0f, 0f, 0f))
     }
 
+    @Test fun calculateIconBounds_WithNullDrawable() {
+        val iconHeight = 100f
+
+        val bounds = calculateIconBounds(null, iconHeight)
+
+        assertThat(bounds).isEqualTo(RectF(0f, 0f, 0f, 0f))
+    }
+
     // endregion
 
     // region calculateLabelAndIconCombinedBounds

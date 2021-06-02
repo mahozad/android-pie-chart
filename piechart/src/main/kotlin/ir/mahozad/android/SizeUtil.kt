@@ -148,9 +148,9 @@ internal fun calculateLabelIconWidth(icon: Drawable?, desiredHeight: Float): Flo
     return desiredHeight * aspectRatio
 }
 
-internal fun calculateIconBounds(icon: Drawable, iconHeight: Float): RectF {
+internal fun calculateIconBounds(icon: Drawable?, iconHeight: Float): RectF {
     val iconWidth = calculateLabelIconWidth(icon, iconHeight)
-    boundsF.set(0f, 0f, iconWidth, iconHeight)
+    boundsF.set(0f, 0f, iconWidth, if (iconWidth == 0f) 0f else iconHeight)
     return boundsF
 }
 
