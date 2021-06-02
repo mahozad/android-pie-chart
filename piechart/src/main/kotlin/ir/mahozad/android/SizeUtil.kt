@@ -1,5 +1,6 @@
 package ir.mahozad.android
 
+import android.content.Context
 import android.graphics.*
 import android.graphics.Paint.Align.CENTER
 import android.graphics.drawable.Drawable
@@ -21,6 +22,15 @@ internal data class Size(val width: Float, val height: Float)
 internal data class Coordinates(val x: Float, val y: Float)
 
 internal data class Boundaries(val top: Float, val left: Float, val right: Float, val bottom: Float)
+
+internal data class Defaults(
+    val outsideLabelsMargin: Float,
+    val labelsSize: Float,
+    val labelsFont: Typeface,
+    val labelIconsHeight: Float,
+    val labelIconsMargin: Float,
+    val labelIconsPlacement: IconPlacement
+)
 
 private val boundsF = RectF()
 private val bounds = Rect()
@@ -121,27 +131,6 @@ internal fun updatePaintForLabel(paint: Paint, size: Float, @ColorInt color: Int
     return paint
 }
 
-// For help on text dimensions see https://stackoverflow.com/a/42091739
-internal fun calculateLabelCoordinates(
-    angle: Float,
-    labelOffset: Float,
-    iconWidth: Float,
-    iconMargin: Float,
-    iconPlacement: IconPlacement,
-    label: String,
-    labelPaint: Paint,
-    origin: Coordinates,
-    radius: Float
-): Coordinates {
-    val shiftDirection = getDirection(iconPlacement)
-    labelPaint.getTextBounds(label, 0, label.length, bounds)
-    val textHeight = bounds.height()
-    val xShift = if (iconWidth == 0f) 0f else (iconWidth + iconMargin) / 2
-    val x = origin.x + cos(angle.toRadian()) * radius * labelOffset + xShift * shiftDirection
-    val y = (origin.y + sin((angle.toRadian())) * radius * labelOffset) + (textHeight / 2)
-    return Coordinates(x, y)
-}
-
 internal fun calculateLabelIconWidth(icon: Drawable?, desiredHeight: Float): Float {
     if (icon == null) return 0f
     val aspectRatio = icon.intrinsicWidth.toFloat() / icon.intrinsicHeight
@@ -155,84 +144,84 @@ internal fun calculateIconBounds(icon: Drawable?, iconHeight: Float): RectF {
 }
 
 /**
- * Margin can be negative too. When icon size is zero, margin will have no effect.
+ * Margin can be negative too. When label size or icon size or both are zero,
+ * the margin will be ignored (i.e. it will be treated as zero).
  */
 internal fun calculateLabelAndIconCombinedBounds(
-    labelBounds: Rect,
+    labelBounds: RectF,
     iconBounds: RectF,
     iconMargin: Float,
     iconPlacement: IconPlacement
 ): RectF {
     val width: Float
     val height: Float
-    val adjustedMargin =
-        if (iconBounds.width() == 0f || iconBounds.height() == 0f) 0f else iconMargin
+    val adjustedMargin = modulateMargin(iconMargin, labelBounds, iconBounds)
     if (iconPlacement == TOP || iconPlacement == BOTTOM) {
-        width = max(labelBounds.width().toFloat(), iconBounds.width())
+        width = max(labelBounds.width(), iconBounds.width())
         height = labelBounds.height() + adjustedMargin + iconBounds.height()
     } else {
         width = labelBounds.width() + adjustedMargin + iconBounds.width()
-        height = max(labelBounds.height().toFloat(), iconBounds.height())
+        height = max(labelBounds.height(), iconBounds.height())
     }
     return RectF(0f, 0f, width, height)
 }
 
-internal fun calculateLabelBounds(label: String, labelPaint: Paint): Rect {
-    labelPaint.getTextBounds(label, 0, label.length, bounds)
-    return bounds
-}
-
-internal fun calculateLabelIconBounds(
-    targetCoordinates: Coordinates,
-    labelBounds: Rect,
-    iconWidth: Float,
-    iconHeight: Float,
-    iconMargin: Float,
-    iconPlacement: IconPlacement
-): Rect {
-    val direction = getDirection(iconPlacement)
-    val labelWidth = labelBounds.width()
-    val labelHeight = labelBounds.height()
-    val start = (targetCoordinates.x - (labelWidth / 2 + iconMargin) * direction).toInt()
-    val end = (start - iconWidth * direction).toInt()
-    val iconLeft = if (start < end) start else end
-    val iconRight = if (start > end) start else end
-    val excess = iconHeight - labelHeight
-    val iconTop = (targetCoordinates.y + (labelBounds.top - excess / 2f)).toInt()
-    val iconBottom = (iconTop + iconHeight).toInt()
-    bounds.set(iconLeft, iconTop, iconRight, iconBottom)
-    return bounds
+private fun modulateMargin(margin: Float, labelBounds: RectF, iconBounds: RectF): Float {
+    val isAnyOneZero =
+        labelBounds.width() * labelBounds.height() * iconBounds.width() * iconBounds.height() == 0f
+    return if (isAnyOneZero) 0f else margin
 }
 
 /**
- * Returns *1* for left and *-1* for right.
+ * For help on text dimensions see [this post](https://stackoverflow.com/a/42091739)
  */
-private fun getDirection(iconPlacement: IconPlacement): Int {
+internal fun calculateLabelBounds(label: String, labelPaint: Paint): RectF {
+    // labelPaint.getTextBounds(label, 0, label.length, bounds)
+    // return RectF(bounds)
+
+    val (textWidth, textHeight) = calculateTextSize(label, labelPaint)
+    return RectF(0f, 0f, textWidth, textHeight) /* FIXME: Object creation */
+}
+
+private enum class AbsoluteDirection { LEFT, TOP, RIGHT, BOTTOM }
+
+private fun getDirection(iconPlacement: IconPlacement): AbsoluteDirection {
     val locale = Locale.getDefault()
     val isLeftToRight = TextUtils.getLayoutDirectionFromLocale(locale) == View.LAYOUT_DIRECTION_LTR
     val isRightToLeft = !isLeftToRight
     return when {
-        iconPlacement == LEFT -> 1
-        iconPlacement == START && isLeftToRight -> 1
-        iconPlacement == END && isRightToLeft -> 1
-        else -> -1
+        iconPlacement == TOP -> AbsoluteDirection.TOP
+        iconPlacement == BOTTOM -> AbsoluteDirection.BOTTOM
+        iconPlacement == LEFT -> AbsoluteDirection.LEFT
+        iconPlacement == START && isLeftToRight -> AbsoluteDirection.LEFT
+        iconPlacement == END && isRightToLeft -> AbsoluteDirection.LEFT
+        else -> AbsoluteDirection.RIGHT
     }
 }
 
 /**
  * Assumes that the width and height of the currentBounds are equal.
  *
- * The label margin is calculated in angular mode (added to the radius).
+ * The label margin is calculated by adding it to the pie radius.
+ *
+ * The calculation for resizing the pie is a little more complicated than what I initially thought.
+ * To resize the pie and to avoid outside labels from being cropped, we can either
+ *   - take the easy and safe way and calculate the offset like this (right bound in this example):
+ *     ```kotlin
+ *     newRight = currentBounds.right - if(labelIsInRightSideOfPie) labelCombinedWidth else 0
+ *     ```
+ *     This may waste space that could have been used for a bigger pie.
+ *   - or we can calculate an approximate offset which is dirty, inaccurate,
+ *     and still prone to be incorrect or to create redundant offset.
  */
-internal fun calculatePieNewBounds(
+internal fun calculatePieNewBoundsForOutsideLabel(
+    context: Context,
     currentBounds: RectF,
     slices: List<Slice>,
-    shouldOppositeMarginsBeSymmetric: Boolean,
-    labelMargin: Float,
     drawDirection: DrawDirection,
     startAngle: Int,
-    labelsSize: Float,
-    labelsFont: Typeface
+    defaults: Defaults,
+    shouldCenterPie: Boolean
 ): RectF {
     var maxTopExcess = 0f
     var maxLeftExcess = 0f
@@ -243,28 +232,40 @@ internal fun calculatePieNewBounds(
 
     var currentAngle = normalizeAngle(startAngle.toFloat())
     for (slice in slices) {
-        updatePaintForLabel(paint, slice.labelSize ?: labelsSize, Color.WHITE, slice.labelFont ?: labelsFont)
         val middleAngle = calculateMiddleAngle(currentAngle, slice.fraction, drawDirection)
-        val (textWidth, textHeight) = calculateTextSize(slice.label)
-        val (x, y) = calculateCoordinatesForOutsideLabel(slice.label, middleAngle, currentCenter, currentRadius, labelMargin)
+        updatePaintForLabel(paint, slice.labelSize ?: defaults.labelsSize, 0, slice.labelFont ?: defaults.labelsFont)
+        var labelIcon : Drawable? = null
+        slice.labelIcon?.let { labelIcon = context.resources.getDrawable(it, null) }
+        val outsideLabelMargin = slice.outsideLabelMargin ?: defaults.outsideLabelsMargin
+        val iconMargin = slice.labelIconMargin ?: defaults.labelIconsMargin
+        val iconHeight = slice.labelIconHeight ?: defaults.labelIconsHeight
+        val iconPlacement = slice.labelIconPlacement /* ?: TODO: add labelIconsPlacement property */
+        val iconBounds = calculateIconBounds(labelIcon, iconHeight)
+        val labelBounds = calculateLabelBounds(slice.label, paint)
+        val combinedBounds = calculateLabelAndIconCombinedBounds(labelBounds, iconBounds, iconMargin, iconPlacement)
+        val absoluteCombinedBounds = calculateAbsoluteBoundsForOutsideLabelAndIcon(combinedBounds, middleAngle, currentCenter, currentRadius, outsideLabelMargin)
 
-            var topExcess = currentBounds.top - (y + paint.ascent())
-            if (textHeight == 0f) topExcess = 0f
-            maxTopExcess = max(maxTopExcess, topExcess)
-            var leftExcess = currentBounds.left - (x - textWidth / 2f)
-            if (textWidth == 0f) leftExcess = 0f
-            maxLeftExcess = max(maxLeftExcess, leftExcess)
-            var rightExcess = (x + textWidth / 2f) - currentBounds.right
-            if (textWidth == 0f) rightExcess = 0f
-            maxRightExcess = max(maxRightExcess, rightExcess)
-            var bottomExcess = (y + paint.descent()) - currentBounds.bottom
-            if (textHeight == 0f) bottomExcess = 0f
-            maxBottomExcess = max(maxBottomExcess, bottomExcess)
+        val correctionFactor = 0.6f
+        val horizontalCorrection = (sin(middleAngle.toRadian()) * absoluteCombinedBounds.width() * correctionFactor).absoluteValue
+        val verticalCorrection = (cos(middleAngle.toRadian()) * absoluteCombinedBounds.height() * correctionFactor).absoluteValue
+
+        var leftExcess = currentBounds.left - (absoluteCombinedBounds.left - horizontalCorrection)
+        if (combinedBounds.width() == 0f) leftExcess = 0f
+        maxLeftExcess = max(maxLeftExcess, leftExcess)
+        var topExcess = currentBounds.top - (absoluteCombinedBounds.top - verticalCorrection)
+        if (combinedBounds.height() == 0f) topExcess = 0f
+        maxTopExcess = max(maxTopExcess, topExcess)
+        var rightExcess = (absoluteCombinedBounds.right + horizontalCorrection) - currentBounds.right
+        if (combinedBounds.width() == 0f) rightExcess = 0f
+        maxRightExcess = max(maxRightExcess, rightExcess)
+        var bottomExcess = (absoluteCombinedBounds.bottom + verticalCorrection) - currentBounds.bottom
+        if (combinedBounds.height() == 0f) bottomExcess = 0f
+        maxBottomExcess = max(maxBottomExcess, bottomExcess)
 
         currentAngle = calculateEndAngle(currentAngle, slice.fraction, drawDirection)
     }
 
-    if (shouldOppositeMarginsBeSymmetric) {
+    if (shouldCenterPie) {
         val maxHorizontalExcess = max(maxLeftExcess, maxRightExcess)
         val maxVerticalExcess = max(maxTopExcess, maxBottomExcess)
         maxTopExcess = maxVerticalExcess
@@ -273,8 +274,10 @@ internal fun calculatePieNewBounds(
         maxBottomExcess = maxVerticalExcess
     }
 
-    val width = (currentBounds.right - maxRightExcess) - (currentBounds.left + maxLeftExcess)
-    val height = (currentBounds.bottom - maxBottomExcess) - (currentBounds.top + maxTopExcess)
+    // EITHER THIS
+
+    val width = currentBounds.width() - (maxLeftExcess + maxRightExcess)
+    val height = currentBounds.height() - (maxTopExcess + maxBottomExcess)
     if (height > width) {
         val excess = height - width
         maxTopExcess += excess / 2f
@@ -284,11 +287,15 @@ internal fun calculatePieNewBounds(
         maxLeftExcess += excess / 2f
         maxRightExcess += excess / 2f
     }
-
     return RectF(currentBounds.left + maxLeftExcess, currentBounds.top + maxTopExcess, currentBounds.right - maxRightExcess, currentBounds.bottom - maxBottomExcess)
+
+    // OR THIS (creates a little different layout)
+
+    // val maxExcess = maxOf(maxLeftExcess, maxTopExcess, maxRightExcess, maxBottomExcess)
+    // return RectF(currentBounds.left + maxExcess, currentBounds.top + maxExcess, currentBounds.right - maxExcess, currentBounds.bottom - maxExcess)
 }
 
-private fun calculateTextSize(text: String): Size {
+private fun calculateTextSize(text: String, paint: Paint): Size {
     val textWidth = paint.measureText(text)
     val textHeight = paint.descent() - paint.ascent()
     val isAnyOneZero = (textWidth * textHeight) == 0f
@@ -365,33 +372,39 @@ internal fun normalizeAngle(angle: Float): Float {
 
 internal fun normalizeAngle(angle: Int) = normalizeAngle(angle.toFloat()).toInt()
 
+internal fun calculateAbsoluteBoundsForInsideLabelAndIcon(
+    labelAndIconCombinedBounds: RectF,
+    angle: Float,
+    origin: Coordinates,
+    pieRadius: Float,
+    labelOffset: Float
+): RectF {
+    val x = origin.x + pieRadius * labelOffset * cos(angle.toRadian())
+    val y = origin.y + pieRadius * labelOffset * sin(angle.toRadian())
+    val top = y - labelAndIconCombinedBounds.height() / 2f
+    val left = x - labelAndIconCombinedBounds.width() / 2f
+    val right = x + labelAndIconCombinedBounds.width() / 2f
+    val bottom = y + labelAndIconCombinedBounds.height() / 2f
+    return RectF(left, top, right, bottom)
+}
+
 /**
  * For formulae and calculation details refer to [this post](https://math.stackexchange.com/q/4152307).
  *
- * Note that `paint.getTextBounds` returns the exact height of the **specified text**
- *  whereas `paint.descent - paint.ascent` returns the total height of the current font.
- *  We work with the latter.
- *
- * See [this post](https://stackoverflow.com/q/11120392) and [this post](https://stackoverflow.com/q/4909367)
- * and [this post](https://stackoverflow.com/q/3654321)
- *
- * For difference between `Paint::getTextBounds` and `Paint::measureText` see [this post](https://stackoverflow.com/a/7579469) and [this post](https://stackoverflow.com/q/3257293)
+ * NOTE: If w² + h² > x² (x == diameter?) then this formula will not work.
  */
-internal fun calculateCoordinatesForOutsideLabel(
-    label: String,
+internal fun calculateAbsoluteBoundsForOutsideLabelAndIcon(
+    labelAndIconCombinedBounds: RectF,
     angle: Float,
-    center: Coordinates,
+    origin: Coordinates,
     pieRadius: Float,
     labelMargin: Float
-): Coordinates {
+): RectF {
     val normalizedAngle = normalizeAngle(angle)
     var θ = normalizedAngle.toRadian()
-    var (w, h) = calculateTextSize(label)
+    var w = labelAndIconCombinedBounds.width()
+    var h = labelAndIconCombinedBounds.height()
     val r = pieRadius
-
-    // When drawing the text on Canvas, the y is used for text descent and not
-    // its bottom or vertical center. So, make the y the center of the whole box
-    val verticalShift = h / 2f - paint.descent()
 
     // First, convert the theta to the first quadrant (i.e. in range 0..90)
     // because our formula works on the first quadrant
@@ -422,8 +435,83 @@ internal fun calculateCoordinatesForOutsideLabel(
     // Fix the bug when angle=90
     if (angle == 90f) b = h / 2
 
-    val (x, y) = calculateCoordinatesOnCircumference(angle, center, pieRadius + labelMargin)
-    return Coordinates(x + a, y + verticalShift + b)
+    val (x, y) = calculateCoordinatesOnCircumference(angle, origin, pieRadius + labelMargin)
+    return RectF(x + a - labelAndIconCombinedBounds.width() / 2, y + b - labelAndIconCombinedBounds.height() / 2, x + a + labelAndIconCombinedBounds.width() / 2, y + b + labelAndIconCombinedBounds.height() / 2)
+}
+
+/**
+ * When drawing the text on Canvas, the y is used for text descent and not
+ * its bottom or vertical center. So, take that into account in calculations
+ *
+ * Note that `paint.getTextBounds` returns the exact height of the **specified text**
+ *  whereas `paint.descent - paint.ascent` returns the total height of the current font.
+ *  We work with the latter.
+ *
+ * See [this post](https://stackoverflow.com/q/11120392) and [this post](https://stackoverflow.com/q/4909367)
+ * and [this post](https://stackoverflow.com/q/3654321)
+ *
+ * For difference between `Paint::getTextBounds` and `Paint::measureText` see [this post](https://stackoverflow.com/a/7579469) and [this post](https://stackoverflow.com/q/3257293)
+ */
+internal fun calculateCoordinatesForOutsideLabel(
+    labelAndIconCombinedBounds: RectF,
+    labelBounds: RectF,
+    labelPaint: Paint,
+    iconPlacement: IconPlacement,
+): Coordinates {
+    val absoluteDirection = getDirection(iconPlacement)
+    val x: Float
+    val y: Float
+    if (absoluteDirection == AbsoluteDirection.TOP) {
+        x = labelAndIconCombinedBounds.centerX()
+        y = labelAndIconCombinedBounds.bottom - labelPaint.descent()
+    } else if (absoluteDirection == AbsoluteDirection.BOTTOM) {
+        x = labelAndIconCombinedBounds.centerX()
+        y = labelAndIconCombinedBounds.top - labelPaint.ascent()
+    } else if (absoluteDirection == AbsoluteDirection.LEFT) {
+        x = labelAndIconCombinedBounds.right - labelBounds.width() / 2f
+        y = labelAndIconCombinedBounds.centerY() + labelBounds.height() / 2f - labelPaint.descent()
+    } else {
+        x = labelAndIconCombinedBounds.left + labelBounds.width() / 2f
+        y = labelAndIconCombinedBounds.centerY() + labelBounds.height() / 2f - labelPaint.descent()
+    }
+    return Coordinates(x, y)
+}
+
+internal fun calculateBoundsForOutsideLabelIcon(
+    labelAndIconCombinedBounds: RectF,
+    iconBounds: RectF,
+    iconPlacement: IconPlacement,
+): RectF {
+    val absoluteDirection = getDirection(iconPlacement)
+    val top: Float
+    val left: Float
+    val right: Float
+    val bottom: Float
+    if (absoluteDirection == AbsoluteDirection.TOP) {
+        top = labelAndIconCombinedBounds.top
+        left = labelAndIconCombinedBounds.centerX() - iconBounds.width() / 2f
+        right = left + iconBounds.width()
+        bottom = top + iconBounds.height()
+    }
+    else if (absoluteDirection == AbsoluteDirection.BOTTOM) {
+        bottom = labelAndIconCombinedBounds.bottom
+        left = labelAndIconCombinedBounds.centerX() - iconBounds.width() / 2f
+        right = left + iconBounds.width()
+        top = bottom - iconBounds.height()
+    }
+    else if (absoluteDirection == AbsoluteDirection.LEFT) {
+        top = labelAndIconCombinedBounds.centerY() - iconBounds.height() / 2f
+        left = labelAndIconCombinedBounds.left
+        right = left + iconBounds.width()
+        bottom = top + iconBounds.height()
+    }
+    else {
+        top = labelAndIconCombinedBounds.centerY() - iconBounds.height() / 2f
+        right = labelAndIconCombinedBounds.right
+        left = right - iconBounds.width()
+        bottom = top + iconBounds.height()
+    }
+    return RectF(left, top, right, bottom)
 }
 
 private fun k(θ: Float, w: Float, h: Float): Float {
