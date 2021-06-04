@@ -22,10 +22,10 @@
       android:layout_width="20dp"
       android:layout_height="20dp"
       app:srcCompat="@drawable/ic_target"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintStart_toStartOf="@id/pieChart"
+      app:layout_constraintEnd_toEndOf="@id/pieChart"
+      app:layout_constraintTop_toTopOf="@id/pieChart"
+      app:layout_constraintBottom_toBottomOf="@id/pieChart"
       android:contentDescription="center"
       tools:ignore="HardcodedText"/>
 

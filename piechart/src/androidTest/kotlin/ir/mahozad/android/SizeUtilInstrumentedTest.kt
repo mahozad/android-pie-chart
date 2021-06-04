@@ -1158,6 +1158,32 @@ class SizeUtilInstrumentedTest {
         assertThat(bounds).isEqualTo(RectF(100f, 234.5f, 731f, 865.5f))
     }
 
+    @Test fun calculatePieNewBoundsForOutsideLabels_WithOneSliceHavingIcon() {
+        val slices = listOf(
+            PieChart.Slice(0.43f, Color.BLACK, label = "43%", labelIcon = R.drawable.ic_circle),
+            PieChart.Slice(0.21f, Color.BLACK, label = "21%"),
+            PieChart.Slice(0.19f, Color.BLACK, label = "19%"),
+            PieChart.Slice(0.14f, Color.BLACK, label = "14%"),
+            PieChart.Slice(0.03f, Color.BLACK, label = "3%"),
+        )
+        val outsideLabelsMargin = 73.675f
+        val drawDirection = CLOCKWISE
+        val currentBounds = RectF(0f, 0f, 1080f, 1080f)
+        val shouldCenterPie = true
+        val labelsTypeface = Typeface.DEFAULT
+        val labelsSize = 42.1f
+        val startAngle = 250
+        val context = getInstrumentation().targetContext
+        val defaults = Defaults(outsideLabelsMargin, labelsSize, labelsTypeface, 42.1f, 73.675f, LEFT)
+
+        val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, slices, drawDirection, startAngle, defaults, shouldCenterPie)
+
+        assertThat(bounds)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
+            .isEqualTo(RectF(217f, 217f, 863f, 863f))
+    }
+
     @Test fun calculatePieNewBoundsForOutsideLabel_WithDrawingClockWiseAndNoMarginAndFalseShouldCenterPieAndLongLabelOnLeftSide() {
         val slices = listOf(
             PieChart.Slice(0.125f, Color.BLACK, label = ""),
@@ -1458,6 +1484,24 @@ class SizeUtilInstrumentedTest {
             .usingRecursiveComparison()
             .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
             .isEqualTo(RectF(980f, 465f, 1092f, 535f))
+    }
+
+    /**
+     * Fixes a bug with tight angles.
+     */
+    @Test fun calculateAbsoluteBoundsForOutsideLabelAndIcon_WithAngleCloseToZero() {
+        val angle = 2.5999756f
+        val margin = 50f
+        val center = Coordinates(540f , 540f)
+        val pieRadius = 540f
+        val combinedBounds = RectF(0f, 0f, 79f, 49.33594f)
+
+        val bounds = calculateAbsoluteBoundsForOutsideLabelAndIcon(combinedBounds, angle, center, pieRadius, margin)
+
+        assertThat(bounds)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
+            .isEqualTo(RectF(1129f, 544f, 1208f, 593f))
     }
 
     @Suppress("unused")
