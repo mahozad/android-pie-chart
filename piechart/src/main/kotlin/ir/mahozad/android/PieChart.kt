@@ -453,6 +453,20 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 mainPaint.style = Paint.Style.FILL
                 canvas.drawCircle(absoluteCombinedBounds.centerX(), absoluteCombinedBounds.centerY(), 4f, mainPaint)
 
+                mainPaint.style = Paint.Style.STROKE
+                mainPaint.color = Color.MAGENTA
+                val pieCenterMarker = Path()
+                pieCenterMarker.moveTo(center.x, center.y - 20)
+                pieCenterMarker.lineTo(center.x, center.y - 200)
+                pieCenterMarker.moveTo(center.x, center.y + 20)
+                pieCenterMarker.lineTo(center.x, center.y + 200)
+                pieCenterMarker.moveTo(center.x - 20, center.y)
+                pieCenterMarker.lineTo(center.x - 200, center.y)
+                pieCenterMarker.moveTo(center.x + 20, center.y)
+                pieCenterMarker.lineTo(center.x + 200, center.y)
+                canvas.drawPath(pieCenterMarker, mainPaint)
+                mainPaint.style = Paint.Style.FILL
+
 
 
 
