@@ -111,6 +111,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     enum class IconPlacement { LEFT, RIGHT, START, END, TOP, BOTTOM }
     enum class GradientType { RADIAL, SWEEP }
     enum class GapPosition { MIDDLE, PRECEDING_SLICE, SUCCEEDING_SLICE }
+    /* TODO: Rename inside to internal and outside to external (?) */
     enum class LabelType { NONE, INSIDE, OUTSIDE, INSIDE_CIRCULAR, OUTSIDE_CIRCULAR, OUTSIDE_WITH_LINES_ON_SIDES }
     data class SlicePointer(val length: Float, val width: Float, val color: Int)
     interface Icon { val resId: Int }
