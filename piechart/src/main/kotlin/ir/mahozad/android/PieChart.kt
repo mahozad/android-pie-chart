@@ -17,6 +17,7 @@ import androidx.core.graphics.minus
 import ir.mahozad.android.PieChart.DrawDirection.CLOCKWISE
 import ir.mahozad.android.PieChart.GapPosition.MIDDLE
 import ir.mahozad.android.PieChart.GradientType.RADIAL
+import ir.mahozad.android.PieChart.IconPlacement.START
 import ir.mahozad.android.PieChart.LabelType.*
 import ir.mahozad.android.PieChart.LegendIcons.SQUARE
 import ir.mahozad.android.PieChart.SlicePointer
@@ -39,6 +40,7 @@ const val DEFAULT_SHOULD_CENTER_PIE = true
 val defaultGapPosition = MIDDLE
 val defaultGradientType = RADIAL
 val defaultDrawDirection = CLOCKWISE
+val defaultLabelIconsPlacement = START
 val defaultLegendsIcon = SQUARE
 val defaultLabelType = INSIDE
 val defaultLabelsFont: Typeface = DEFAULT
@@ -79,7 +81,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         @Dimension val labelIconHeight: Float? = null,
         @Dimension val labelIconMargin: Float? = null,
         @ColorInt val labelIconTint: Int? = null,
-        val labelIconPlacement: IconPlacement = IconPlacement.START,
+        val labelIconPlacement: IconPlacement? = null,
 
         /**
          * Distance of the start of the outside label from the pie
@@ -88,7 +90,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         val pointer: SlicePointer? = null,
         @DrawableRes val legendIcon: Int? = null,
         @ColorInt val legendIconTint: Int? = null,
-        val legendIconPlacement: IconPlacement = IconPlacement.START,
+        val legendIconPlacement: IconPlacement = START,
 
         /**
          * Can also set the default value to the slice fraction.
@@ -108,7 +110,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     )
 
     enum class DrawDirection { CLOCKWISE, COUNTER_CLOCKWISE }
-    enum class IconPlacement { LEFT, RIGHT, START, END, TOP, BOTTOM }
+    enum class IconPlacement { START, END, LEFT, RIGHT, TOP, BOTTOM }
     enum class GradientType { RADIAL, SWEEP }
     enum class GapPosition { MIDDLE, PRECEDING_SLICE, SUCCEEDING_SLICE }
     /* TODO: Rename inside to internal and outside to external (?) */
@@ -222,7 +224,11 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             field = pointer
             invalidate()
         }
-
+    var labelIconsPlacement = defaultLabelIconsPlacement
+        set(placement) {
+            field = placement
+            invalidate()
+        }
     /**
      * When using outside labels, if this is set to true,
      * the pie will always be centered on its canvas which may sacrifice
@@ -288,6 +294,9 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 val slicesPointerLength = getDimension(R.styleable.PieChart_slicesPointerLength, -1f)
                 val slicesPointerWidth = getDimension(R.styleable.PieChart_slicesPointerWidth, -1f)
                 slicesPointer = if (slicesPointerLength <= 0 || slicesPointerWidth <= 0) defaultSlicesPointer else SlicePointer(slicesPointerLength, slicesPointerWidth, 0)
+                labelIconsPlacement = IconPlacement.values()[
+                        getInt(R.styleable.PieChart_labelIconsPlacement, defaultLabelIconsPlacement.ordinal)
+                ]
                 labelType = LabelType.values()[
                         getInt(R.styleable.PieChart_labelType, defaultLabelType.ordinal)
                 ]
@@ -437,9 +446,9 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
                     slice.labelIconTint?.let { tint -> labelIcon?.setTint(tint) }
                 }
                 val outsideLabelMargin = slice.outsideLabelMargin ?: outsideLabelsMargin
+                val iconPlacement = slice.labelIconPlacement  ?: labelIconsPlacement
                 val iconMargin = slice.labelIconMargin ?: labelIconsMargin
                 val iconHeight = slice.labelIconHeight ?: labelIconsHeight
-                val iconPlacement = slice.labelIconPlacement /* ?: TODO: add labelIconsPlacement property */
                 val labelBounds = calculateLabelBounds(slice.label, mainPaint)
                 val iconBounds = calculateIconBounds(labelIcon, iconHeight)
                 val labelAndIconCombinedBounds = calculateLabelAndIconCombinedBounds(labelBounds, iconBounds, iconMargin, iconPlacement)
@@ -491,10 +500,10 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
                     labelIcon = resources.getDrawable(iconId, null)
                     slice.labelIconTint?.let { tint -> labelIcon?.setTint(tint) }
                 }
+                val iconPlacement = slice.labelIconPlacement  ?: labelIconsPlacement
                 val iconMargin = slice.labelIconMargin ?: labelIconsMargin
                 val iconHeight = slice.labelIconHeight ?: labelIconsHeight
                 val labelOffset = /* TODO: add slice.LabelOffset ?:*/ labelOffset
-                val iconPlacement = slice.labelIconPlacement /* ?: TODO: add labelIconsPlacement property */
                 val labelBounds = calculateLabelBounds(slice.label, mainPaint)
                 val iconBounds = calculateIconBounds(labelIcon, iconHeight)
                 val labelAndIconCombinedBounds = calculateLabelAndIconCombinedBounds(labelBounds, iconBounds, iconMargin, iconPlacement)

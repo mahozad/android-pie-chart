@@ -237,9 +237,9 @@ internal fun calculatePieNewBoundsForOutsideLabel(
         var labelIcon : Drawable? = null
         slice.labelIcon?.let { labelIcon = context.resources.getDrawable(it, null) }
         val outsideLabelMargin = slice.outsideLabelMargin ?: defaults.outsideLabelsMargin
+        val iconPlacement = slice.labelIconPlacement ?: defaults.labelIconsPlacement
         val iconMargin = slice.labelIconMargin ?: defaults.labelIconsMargin
         val iconHeight = slice.labelIconHeight ?: defaults.labelIconsHeight
-        val iconPlacement = slice.labelIconPlacement /* ?: TODO: add labelIconsPlacement property */
         val iconBounds = calculateIconBounds(labelIcon, iconHeight)
         val labelBounds = calculateLabelBounds(slice.label, paint)
         val combinedBounds = calculateLabelAndIconCombinedBounds(labelBounds, iconBounds, iconMargin, iconPlacement)

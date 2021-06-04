@@ -12,6 +12,7 @@
   <public name="startAngle" format="integer"/>
   <public name="labelsSize" format="dimension"/>
   <public name="labelsFont" format="reference"/>
+  <public name="labelIconsPlacement" format="enum"/>
   <public name="labelIconsHeight" format="dimension"/>
   <public name="labelIconsMargin" format="dimension"/>
   <public name="labelOffset" format="float"/>
