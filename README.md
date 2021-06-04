@@ -20,3 +20,14 @@ implementation("ir.mahozad.android:pie-chart:0.2.0")
     app:holeRatio="0.3"
     app:gap="8dp" />
 ```
+
+### activity.kt
+```kotlin
+val pieChart = findViewById<PieChart>(R.id.pieChart)
+pieChart.slices = listOf(
+    PieChart.Slice(0.2f, Color.BLUE),
+    PieChart.Slice(0.4f, Color.MAGENTA),
+    PieChart.Slice(0.3f, Color.YELLOW),
+    PieChart.Slice(0.1f, Color.CYAN),
+)
+```
