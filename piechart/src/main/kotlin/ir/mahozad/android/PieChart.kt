@@ -454,8 +454,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 val labelAndIconCombinedBounds = calculateLabelAndIconCombinedBounds(labelBounds, iconBounds, iconMargin, iconPlacement)
                 val absoluteCombinedBounds = calculateAbsoluteBoundsForOutsideLabelAndIcon(labelAndIconCombinedBounds, middleAngle, center, pieRadius, outsideLabelMargin)
                 val iconAbsoluteBounds = calculateBoundsForOutsideLabelIcon(absoluteCombinedBounds, iconBounds, iconPlacement)
-                val coordinates = calculateCoordinatesForOutsideLabel(absoluteCombinedBounds, labelBounds, mainPaint, iconPlacement)
-                canvas.drawText(slice.label, coordinates.x , coordinates.y, mainPaint)
+                val labelCoordinates = calculateCoordinatesForOutsideLabel(absoluteCombinedBounds, labelBounds, mainPaint, iconPlacement)
+                canvas.drawText(slice.label, labelCoordinates.x, labelCoordinates.y, mainPaint)
                 labelIcon?.setBounds(iconAbsoluteBounds.left.toInt(), iconAbsoluteBounds.top.toInt(), iconAbsoluteBounds.right.toInt(), iconAbsoluteBounds.bottom.toInt())
                 labelIcon?.draw(canvas)
 
@@ -464,12 +464,12 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
 
                 // REMOVE this block of statements
-                val rect = RectF(coordinates.x - labelBounds.width() / 2f, coordinates.y + mainPaint.ascent(), coordinates.x + labelBounds.width() / 2f, coordinates.y + mainPaint.descent())
+                val rect = RectF(labelCoordinates.x - labelBounds.width() / 2f, labelCoordinates.y + mainPaint.ascent(), labelCoordinates.x + labelBounds.width() / 2f, labelCoordinates.y + mainPaint.descent())
                 mainPaint.style = Paint.Style.STROKE
                 mainPaint.color = Color.RED
                 canvas.drawRect(rect, mainPaint)
                 mainPaint.style = Paint.Style.FILL
-                canvas.drawCircle(coordinates.x, coordinates.y, 4f, mainPaint)
+                canvas.drawCircle(labelCoordinates.x, labelCoordinates.y, 4f, mainPaint)
 
                 mainPaint.style = Paint.Style.STROKE
                 mainPaint.color = Color.BLUE
@@ -509,8 +509,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 val labelAndIconCombinedBounds = calculateLabelAndIconCombinedBounds(labelBounds, iconBounds, iconMargin, iconPlacement)
                 val absoluteCombinedBounds = calculateAbsoluteBoundsForInsideLabelAndIcon(labelAndIconCombinedBounds, middleAngle, center, pieRadius, labelOffset)
                 val iconAbsoluteBounds = calculateBoundsForOutsideLabelIcon(absoluteCombinedBounds, iconBounds, iconPlacement)
-                val coordinates = calculateCoordinatesForOutsideLabel(absoluteCombinedBounds, labelBounds, mainPaint, iconPlacement)
-                canvas.drawText(slice.label, coordinates.x , coordinates.y, mainPaint)
+                val labelCoordinates = calculateCoordinatesForOutsideLabel(absoluteCombinedBounds, labelBounds, mainPaint, iconPlacement)
+                canvas.drawText(slice.label, labelCoordinates.x, labelCoordinates.y, mainPaint)
                 labelIcon?.setBounds(iconAbsoluteBounds.left.toInt(), iconAbsoluteBounds.top.toInt(), iconAbsoluteBounds.right.toInt(), iconAbsoluteBounds.bottom.toInt())
                 labelIcon?.draw(canvas)
             }
