@@ -244,7 +244,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     var gapPosition = defaultGapPosition
     var gradientType = defaultGradientType
     var drawDirection = defaultDrawDirection
-    val slices = mutableListOf(
+    var slices = listOf(
         // Slice(fraction = 0.125f, label = "qlyO([", color = ContextCompat.getColor(context, android.R.color.holo_green_dark)),
         // Slice(fraction = 0.25f, label = "qlyO([", color = ContextCompat.getColor(context, android.R.color.holo_orange_dark)),
         // Slice(fraction = 0.125f, label = "qlyO([", color = ContextCompat.getColor(context, android.R.color.holo_purple)),
