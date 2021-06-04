@@ -7,6 +7,7 @@
   <public name="gap" format="dimension"/>
   <public name="slicesPointerLength" format="dimension"/>
   <public name="slicesPointerWidth" format="dimension"/>
+  <public name="shouldCenterPie" format="boolean"/>
   <public name="gapPosition" format="enum"/>
   <public name="startAngle" format="integer"/>
   <public name="labelsSize" format="dimension"/>

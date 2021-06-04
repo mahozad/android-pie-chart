@@ -18,6 +18,7 @@
     <attr name="gap" format="dimension"/>
     <attr name="slicesPointerLength" format="dimension"/>
     <attr name="slicesPointerWidth" format="dimension"/>
+    <attr name="shouldCenterPie" format="boolean"/>
     <attr name="centerLabel" format="string"/>
     <attr name="legendsIcon" format="enum">
       <enum name="square" value="0"/>

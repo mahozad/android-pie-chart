@@ -35,6 +35,7 @@ const val DEFAULT_LABEL_ICONS_MARGIN = 28f /* dp */
 const val DEFAULT_LABEL_OFFSET = 0.75f
 const val DEFAULT_OUTSIDE_LABELS_MARGIN = 28f /* dp */
 const val DEFAULT_CENTER_LABEL = ""
+const val DEFAULT_SHOULD_CENTER_PIE = true
 @ColorInt const val DEFAULT_LABELS_COLOR = Color.WHITE
 val defaultGapPosition = MIDDLE
 val defaultGradientType = RADIAL
@@ -222,6 +223,17 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             field = pointer
             invalidate()
         }
+
+    /**
+     * When using outside labels, if this is set to true,
+     * the pie will always be centered on its canvas which may sacrifice
+     * some space that could have been used to make the pie bigger.
+     */
+    var shouldCenterPie = DEFAULT_SHOULD_CENTER_PIE
+        set(shouldCenter) {
+            field = shouldCenter
+            invalidate()
+        }
     var legendsIcon: Icon = defaultLegendsIcon
     var centerLabel = DEFAULT_CENTER_LABEL
     var gapPosition = defaultGapPosition
@@ -273,6 +285,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 labelIconsMargin = getDimension(R.styleable.PieChart_labelIconsMargin, dpToPx(DEFAULT_LABEL_ICONS_MARGIN))
                 outsideLabelsMargin = getDimension(R.styleable.PieChart_outsideLabelsMargin, dpToPx(DEFAULT_OUTSIDE_LABELS_MARGIN))
                 centerLabel = getString(R.styleable.PieChart_centerLabel) ?: DEFAULT_CENTER_LABEL
+                shouldCenterPie = getBoolean(R.styleable.PieChart_shouldCenterPie, DEFAULT_SHOULD_CENTER_PIE)
                 val slicesPointerLength = getDimension(R.styleable.PieChart_slicesPointerLength, -1f)
                 val slicesPointerWidth = getDimension(R.styleable.PieChart_slicesPointerWidth, -1f)
                 slicesPointer = if (slicesPointerLength <= 0 || slicesPointerWidth <= 0) defaultSlicesPointer else SlicePointer(slicesPointerLength, slicesPointerWidth, 0)
@@ -319,7 +332,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
         if (labelType == OUTSIDE) {
             val defaults = Defaults(outsideLabelsMargin, labelsSize, labelsFont, labelIconsHeight, labelIconsMargin, /* FIXME: create a property */ IconPlacement.LEFT)
-            pieEnclosingRect.set(calculatePieNewBounds(context, pieEnclosingRect, slices, drawDirection, startAngle, defaults, false))
+            pieEnclosingRect.set(calculatePieNewBoundsForOutsideLabel(context, pieEnclosingRect, slices, drawDirection, startAngle, defaults, shouldCenterPie))
             center = Coordinates((pieEnclosingRect.left + pieEnclosingRect.right) / 2f, (pieEnclosingRect.top + pieEnclosingRect.bottom) / 2f)
             pieRadius = pieEnclosingRect.width() / 2f
         }
