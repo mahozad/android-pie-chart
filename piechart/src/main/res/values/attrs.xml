@@ -64,7 +64,7 @@
     <attr name="labelsColor" format="color"/>
     <attr name="outsideLabelsMargin" format="dimension"/>
     <attr name="labelType" format="enum">
-<!--      <enum name="none" value="0"/>-->
+      <enum name="none" value="0"/>
       <enum name="inside" value="1"/>
       <enum name="outside" value="2"/>
 <!--      <enum name="insideCircular" value="3"/>-->

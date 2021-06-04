@@ -17,8 +17,7 @@ import androidx.core.graphics.minus
 import ir.mahozad.android.PieChart.DrawDirection.CLOCKWISE
 import ir.mahozad.android.PieChart.GapPosition.MIDDLE
 import ir.mahozad.android.PieChart.GradientType.RADIAL
-import ir.mahozad.android.PieChart.LabelType.INSIDE
-import ir.mahozad.android.PieChart.LabelType.OUTSIDE
+import ir.mahozad.android.PieChart.LabelType.*
 import ir.mahozad.android.PieChart.LegendIcons.SQUARE
 import ir.mahozad.android.PieChart.SlicePointer
 import java.text.NumberFormat
@@ -428,7 +427,10 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             updatePaintForLabel(mainPaint, slice.labelSize ?: labelsSize, slice.labelColor ?: labelsColor, slice.labelFont ?: labelsFont)
 
             val middleAngle = calculateMiddleAngle(currentAngle, slice.fraction, drawDirection)
-            if (labelType == OUTSIDE) {
+
+            if (labelType == NONE) {
+                // Do nothing
+            } else if (labelType == OUTSIDE) {
                 var labelIcon : Drawable? = null
                 slice.labelIcon?.let { iconId ->
                     labelIcon = resources.getDrawable(iconId, null)
