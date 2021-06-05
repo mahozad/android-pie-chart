@@ -4,11 +4,11 @@
 #### New features
   - Top and bottom placements for label icons
   - Icon for outside label
-  - New label type "NONE"
+  - New label type `NONE`
   - Attribute to change label icon placement for all slices
 #### Updates
   - Decrease default label font size
-  - Piechart::slices property is now immutable var instead of mutable val
+  - *PieChart::slices* property is now immutable `var` instead of mutable `val`
 
 ## v0.2.0 (2021-05-29)
 #### New features
