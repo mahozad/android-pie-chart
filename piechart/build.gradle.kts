@@ -12,7 +12,7 @@ plugins {
 }
 
 group = "ir.mahozad.android"
-version = "0.2.0"
+version = "0.3.0"
 
 android {
     sourceSets {
@@ -41,7 +41,7 @@ android {
     defaultConfig {
         minSdkVersion(21)
         targetSdkVersion(30)
-        versionCode = 2
+        versionCode = 3
         versionName = project.version.toString()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArgument("runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder")
