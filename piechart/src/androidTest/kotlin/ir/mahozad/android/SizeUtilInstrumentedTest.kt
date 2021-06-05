@@ -9,6 +9,7 @@ import ir.mahozad.android.PieChart.DrawDirection.COUNTER_CLOCKWISE
 import ir.mahozad.android.PieChart.IconPlacement
 import ir.mahozad.android.PieChart.IconPlacement.*
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.withPrecision
 import org.assertj.core.util.FloatComparator
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
@@ -1367,15 +1368,71 @@ class SizeUtilInstrumentedTest {
 
     // endregion
 
+    // region calculateMiddleAngle
+
+    /**
+     * There are a few ways to assert floating point values:
+     * ```kotlin
+     * assertThat(1.2f)
+     * .usingComparator { f1, f2 -> if ((f1 - f2).absoluteValue < 0.001) 0 else 1 }
+     * .isEqualTo(1.23f)
+     * ```
+     * ```kotlin
+     * assertThat(1.2f).isEqualTo(1.23f, withPrecision(2f))
+     * ```
+     * ```kotlin
+     * assertThat(1.2f).isCloseTo(1.23f, Offset.offset(0.1f))
+     * ```
+     */
+    @ParameterizedTest(name = "Angle: {0}, Fraction: {1}, Direction: {2}")
+    @MethodSource("argumentProvider8")
+    fun calculateMiddleAngle_WithTheGivenAngleAndFractionAndDirection(angle: Float, fraction: Float, direction: PieChart.DrawDirection, expectedAngle: Float) {
+        val middleAngle = calculateMiddleAngle(angle, fraction, direction)
+        assertThat(middleAngle).isEqualTo(expectedAngle, withPrecision(0.01f))
+    }
+
+    @Suppress("unused")
+    private fun argumentProvider8(): List<Arguments> {
+        val directions = arrayOf(CLOCKWISE, COUNTER_CLOCKWISE)
+        val fractions = arrayOf(-0.1f, 0f, 0.1f)
+        val angles = arrayOf(-450f, -370f, -360f, -350f, -170f, -20f, 0f, 20f, 170f, 350f, 360f, 370f, 450f)
+        val expectedAngles = arrayOf(
+            /* for -450: */ 252f, 288f, 270f, 270f, 288f, 252f,
+            /* for -370: */ 332f, 8f, 350f, 350f, 8f, 332f,
+            /* for -360: */ 342f, 18f, 0f, 0f, 18f, 342f,
+            /* for -350: */ 352f, 28f, 10f, 10f, 28f, 352f,
+            /* for -170: */ 172f, 208f, 190f, 190f, 208f, 172f,
+            /* for  -20: */ 322f, 358f, 340f, 340f, 358f, 322f,
+            /* for    0: */ 342f, 18f, 0f, 0f, 18f, 342f,
+            /* for   20: */ 2f, 38f, 20f, 20f, 38f, 2f,
+            /* for  170: */ 152f, 188f, 170f, 170f, 188f, 152f,
+            /* for  350: */ 332f, 8f, 350f, 350f, 8f, 332f,
+            /* for  360: */ 342f, 18f, 0f, 0f, 18f, 342f,
+            /* for  370: */ 352f, 28f, 10f, 10f, 28f, 352f,
+            /* for  450: */ 72f, 108f, 90f, 90f, 108f, 72f
+        )
+        var i = 0
+        val arguments = mutableListOf<Arguments>()
+        for (angle in angles) {
+            for (fraction in fractions) {
+                for (direction in directions) {
+                    val tuple = arguments(angle, fraction, direction, expectedAngles[i++])
+                    arguments.add(tuple)
+                }
+            }
+        }
+        return arguments
+    }
+
+    // endregion
+
     // region calculateEndAngle
 
     @ParameterizedTest(name = "Angle: {0}, Fraction: {1}, Direction: {2}")
     @MethodSource("argumentProvider5")
-    fun calculateSecondAngle_FromTheGivenAngleAndFractionAndDirection(angle: Float, fraction: Float, direction: PieChart.DrawDirection, expectedAngle: Float) {
-        val secondAngle = calculateEndAngle(angle, fraction, direction)
-        assertThat(secondAngle)
-            .usingComparator { f1, f2 -> if ((f1 - f2).absoluteValue < 0.001) 0 else 1 }
-            .isEqualTo(expectedAngle)
+    fun calculateEndAngle_WithTheGivenAngleAndFractionAndDirection(angle: Float, fraction: Float, direction: PieChart.DrawDirection, expectedAngle: Float) {
+        val endAngle = calculateEndAngle(angle, fraction, direction)
+        assertThat(endAngle).isEqualTo(expectedAngle, withPrecision(0.01f))
     }
 
     @Suppress("unused")
@@ -1384,19 +1441,19 @@ class SizeUtilInstrumentedTest {
         val fractions = arrayOf(-0.1f, 0f, 0.1f)
         val angles = arrayOf(-450f, -370f, -360f, -350f, -170f, -20f, 0f, 20f, 170f, 350f, 360f, 370f, 450f)
         val expectedAngles = arrayOf(
-            /* -450: */ 234f, 306f, 270f, 270f, 306f, 234f,
-            /* -370: */ 314f, 26f, 350f, 350f, 26f, 314f,
-            /* -360: */ 324f, 36f, 0f, 0f, 36f, 324f,
-            /* -350: */ 334f, 46f, 10f, 10f, 46f, 334f,
-            /* -170: */ 154f, 226f, 190f, 190f, 226f, 154f,
-            /*  -20: */ 304f, 16f, 340f, 340f, 16f, 304f,
-            /*    0: */ 324f, 36f, 0f, 0f, 36f, 324f,
-            /*   20: */ 344f, 56f, 20f, 20f, 56f, 344f,
-            /*  170: */ 134f, 206f, 170f, 170f, 206f, 134f,
-            /*  350: */ 314f, 26f, 350f, 350f, 26f, 314f,
-            /*  360: */ 324f, 36f, 0f, 0f, 36f, 324f,
-            /*  370: */ 334f, 46f, 10f, 10f, 46f, 334f,
-            /*  450: */ 54f, 126f, 90f, 90f, 126f, 54f
+            /* for -450: */ 234f, 306f, 270f, 270f, 306f, 234f,
+            /* for -370: */ 314f, 26f, 350f, 350f, 26f, 314f,
+            /* for -360: */ 324f, 36f, 0f, 0f, 36f, 324f,
+            /* for -350: */ 334f, 46f, 10f, 10f, 46f, 334f,
+            /* for -170: */ 154f, 226f, 190f, 190f, 226f, 154f,
+            /* for  -20: */ 304f, 16f, 340f, 340f, 16f, 304f,
+            /* for    0: */ 324f, 36f, 0f, 0f, 36f, 324f,
+            /* for   20: */ 344f, 56f, 20f, 20f, 56f, 344f,
+            /* for  170: */ 134f, 206f, 170f, 170f, 206f, 134f,
+            /* for  350: */ 314f, 26f, 350f, 350f, 26f, 314f,
+            /* for  360: */ 324f, 36f, 0f, 0f, 36f, 324f,
+            /* for  370: */ 334f, 46f, 10f, 10f, 46f, 334f,
+            /* for  450: */ 54f, 126f, 90f, 90f, 126f, 54f
         )
         var i = 0
         val arguments = mutableListOf<Arguments>()
