@@ -1078,60 +1078,64 @@ class SizeUtilInstrumentedTest {
 
     // endregion
 
-    // // region calculateLabelIconBounds
-    //
-    // @ParameterizedTest(name = "Icon margin: {0}, Icon placement: {1}, Label: {2}, Locale: {3}")
-    // @MethodSource("argumentProvider2")
-    // internal fun calculateLabelIconBounds_WithTheGivenIconMarginAndIconPlacementAndLabelAndLocale(
-    //     iconMargin: Float,
-    //     iconPlacement: IconPlacement,
-    //     label: String,
-    //     locale: Locale,
-    //     expectedBounds: Rect
-    // ) {
-    //     val targetCoordinates = Coordinates(500f, 500f)
-    //     val iconWidth = 100f
-    //     val iconHeight = 100f
-    //     val labelPaint = Paint()
-    //     updatePaintForLabel(labelPaint, 60f, Color.WHITE, Typeface.DEFAULT)
-    //     val labelBounds = calculateLabelBounds(label, labelPaint)
-    //     setLocale(locale)
-    //
-    //     val bounds = calculateLabelIconBounds(targetCoordinates, labelBounds.toRect(), iconWidth, iconHeight, iconMargin, iconPlacement)
-    //
-    //     assertThat(bounds).isEqualTo(expectedBounds)
-    // }
-    //
-    // @Suppress("unused")
-    // private fun argumentProvider2(): List<Arguments> {
-    //     val iconMargins = arrayOf(0f, 0f, 0f, 147f, 0f, 0f, 147f, 0f, 147f, 0f, 0f, 0f)
-    //     val iconPlacements = arrayOf(LEFT, LEFT, LEFT, LEFT, RIGHT, RIGHT, RIGHT, START, START, END, START, END)
-    //     val labels = arrayOf("", "23%", "23%", "23%", "23%", "23%", "23%", "23%", "23%", "23%", "23%", "23%")
-    //     val fa = Locale.forLanguageTag("fa")
-    //     val en = Locale.ENGLISH
-    //     val locales = arrayOf(en, en, fa, en, en, fa, en, en, en, en, fa, fa)
-    //     val expectedBounds = arrayOf(
-    //         Rect(400, 450, 500, 550),
-    //         Rect(346, 428, 446, 528),
-    //         Rect(346, 428, 446, 528),
-    //         Rect(199, 428, 299, 528),
-    //         Rect(554, 428, 654, 528),
-    //         Rect(554, 428, 654, 528),
-    //         Rect(701, 428, 801, 528),
-    //         Rect(346, 428, 446, 528),
-    //         Rect(199, 428, 299, 528),
-    //         Rect(554, 428, 654, 528),
-    //         Rect(554, 428, 654, 528),
-    //         Rect(346, 428, 446, 528)
-    //     )
-    //     val arguments = mutableListOf<Arguments>()
-    //     for ((i, iconMargin) in iconMargins.withIndex()) {
-    //         arguments+= arguments(iconMargin, iconPlacements[i], labels[i], locales[i], expectedBounds[i])
-    //     }
-    //     return arguments
-    // }
-    //
-    // // endregion
+    // region calculateAbsoluteBoundsForInsideLabelAndIcon
+
+    @ParameterizedTest(name = "Angle: {0}, Label offset: {1}")
+    @MethodSource("argumentProvider2")
+    internal fun calculateAbsoluteBoundsForInsideLabelAndIcon_WithTheGivenAngleAndLabelOffset(
+        angle: Float,
+        labelOffset: Float,
+        expectedBounds: RectF
+    ) {
+        val labelAndIconCombinedBounds = RectF(0f, 0f, 210f, 133f)
+        val origin = Coordinates(400f, 400f)
+        val pieRadius = 500f
+
+        val bounds = calculateAbsoluteBoundsForInsideLabelAndIcon(labelAndIconCombinedBounds, angle, origin, pieRadius, labelOffset)
+
+        assertThat(bounds)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
+            .isEqualTo(expectedBounds)
+    }
+
+    @Suppress("unused")
+    private fun argumentProvider2(): List<Arguments> {
+        val angles = arrayOf(0f, 10f, 45f, 90f, 91f)
+        val offsets = arrayOf(0f, 0.5f, 0.75f, 1f)
+        val expectedBounds = arrayOf(
+            RectF(295f, 334f, 505f, 467f),
+            RectF(545f, 334f, 755f, 467f),
+            RectF(670f, 334f, 880f, 467f),
+            RectF(795f, 334f, 1005f, 467f),
+            RectF(295f, 334f, 505f, 467f),
+            RectF(541f, 377f, 751f, 510f),
+            RectF(664f, 399f, 874f, 532f),
+            RectF(787f, 420f, 997f, 553f),
+            RectF(295f, 334f, 505f, 467f),
+            RectF(472f, 510f, 682f, 643f),
+            RectF(560f, 599f, 770f, 732f),
+            RectF(649f, 687f, 859f, 820f),
+            RectF(295f, 334f, 505f, 467f),
+            RectF(295f, 584f, 505f, 717f),
+            RectF(295f, 709f, 505f, 842f),
+            RectF(295f, 834f, 505f, 967f),
+            RectF(295f, 334f, 505f, 467f),
+            RectF(291f, 583f, 501f, 716f),
+            RectF(288f, 708f, 498f, 841f),
+            RectF(286f, 833f, 496f, 966f)
+        )
+        var i = 0
+        val arguments = mutableListOf<Arguments>()
+        for (angle in angles) {
+            for (offset in offsets) {
+                arguments += arguments(angle, offset, expectedBounds[i++])
+            }
+        }
+        return arguments
+    }
+
+    // endregion
 
     // region calculatePieNewBoundsForOutsideLabels
 
