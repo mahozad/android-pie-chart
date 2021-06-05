@@ -183,19 +183,17 @@ internal fun calculateLabelBounds(label: String, labelPaint: Paint): RectF {
     return RectF(0f, 0f, textWidth, textHeight) /* FIXME: Object creation */
 }
 
-private enum class AbsoluteDirection { LEFT, TOP, RIGHT, BOTTOM }
-
-private fun getDirection(iconPlacement: IconPlacement): AbsoluteDirection {
+private fun resolveAbsolutePosition(iconPlacement: IconPlacement): IconPlacement {
     val locale = Locale.getDefault()
     val isLeftToRight = TextUtils.getLayoutDirectionFromLocale(locale) == View.LAYOUT_DIRECTION_LTR
     val isRightToLeft = !isLeftToRight
     return when {
-        iconPlacement == TOP -> AbsoluteDirection.TOP
-        iconPlacement == BOTTOM -> AbsoluteDirection.BOTTOM
-        iconPlacement == LEFT -> AbsoluteDirection.LEFT
-        iconPlacement == START && isLeftToRight -> AbsoluteDirection.LEFT
-        iconPlacement == END && isRightToLeft -> AbsoluteDirection.LEFT
-        else -> AbsoluteDirection.RIGHT
+        iconPlacement == TOP -> TOP
+        iconPlacement == LEFT -> LEFT
+        iconPlacement == BOTTOM -> BOTTOM
+        iconPlacement == START && isLeftToRight -> LEFT
+        iconPlacement == END && isRightToLeft -> LEFT
+        else -> RIGHT
     }
 }
 
@@ -458,16 +456,16 @@ internal fun calculateCoordinatesForOutsideLabel(
     labelPaint: Paint,
     iconPlacement: IconPlacement,
 ): Coordinates {
-    val absoluteDirection = getDirection(iconPlacement)
+    val absolutePosition = resolveAbsolutePosition(iconPlacement)
     val x: Float
     val y: Float
-    if (absoluteDirection == AbsoluteDirection.TOP) {
+    if (absolutePosition == TOP) {
         x = labelAndIconCombinedBounds.centerX()
         y = labelAndIconCombinedBounds.bottom - labelPaint.descent()
-    } else if (absoluteDirection == AbsoluteDirection.BOTTOM) {
+    } else if (absolutePosition == BOTTOM) {
         x = labelAndIconCombinedBounds.centerX()
         y = labelAndIconCombinedBounds.top - labelPaint.ascent()
-    } else if (absoluteDirection == AbsoluteDirection.LEFT) {
+    } else if (absolutePosition == LEFT) {
         x = labelAndIconCombinedBounds.right - labelBounds.width() / 2f
         y = labelAndIconCombinedBounds.centerY() + labelBounds.height() / 2f - labelPaint.descent()
     } else {
@@ -482,24 +480,24 @@ internal fun calculateBoundsForOutsideLabelIcon(
     iconBounds: RectF,
     iconPlacement: IconPlacement,
 ): RectF {
-    val absoluteDirection = getDirection(iconPlacement)
+    val absolutePosition = resolveAbsolutePosition(iconPlacement)
     val top: Float
     val left: Float
     val right: Float
     val bottom: Float
-    if (absoluteDirection == AbsoluteDirection.TOP) {
+    if (absolutePosition == TOP) {
         top = labelAndIconCombinedBounds.top
         left = labelAndIconCombinedBounds.centerX() - iconBounds.width() / 2f
         right = left + iconBounds.width()
         bottom = top + iconBounds.height()
     }
-    else if (absoluteDirection == AbsoluteDirection.BOTTOM) {
+    else if (absolutePosition == BOTTOM) {
         bottom = labelAndIconCombinedBounds.bottom
         left = labelAndIconCombinedBounds.centerX() - iconBounds.width() / 2f
         right = left + iconBounds.width()
         top = bottom - iconBounds.height()
     }
-    else if (absoluteDirection == AbsoluteDirection.LEFT) {
+    else if (absolutePosition == LEFT) {
         top = labelAndIconCombinedBounds.centerY() - iconBounds.height() / 2f
         left = labelAndIconCombinedBounds.left
         right = left + iconBounds.width()
