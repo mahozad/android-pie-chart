@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.util.capitalizeDecapitalize.toLowerCaseAsciiOnly
 
 // Could also have used ${rootProject.extra["kotlinVersion"]}
 val kotlinVersion: String by rootProject.extra
@@ -13,6 +12,7 @@ plugins {
 
 group = "ir.mahozad.android"
 version = "0.3.0"
+val githubProjectName = "android-pie-chart"
 
 android {
     sourceSets {
@@ -122,9 +122,28 @@ tasks {
  */
 afterEvaluate {
     publishing {
+        repositories {
+            /* The Sonatype Maven Central repository is defined in the publish.gradle script */
+
+            // GitHub Packages repository
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/mahozad/$githubProjectName")
+                credentials {
+                    username = System.getenv("GITHUB_USER") ?: project.properties["github.username"] as String
+                    password = System.getenv("GITHUB_PERSONAL_ACCESS_TOKEN") ?: project.properties["github.token"] as String
+                }
+            }
+
+            // Local repository which can be published to first to check artifacts
+            maven {
+                name = "LocalTestRepo"
+                url = uri("file://${buildDir}/local-repository")
+            }
+        }
         publications {
             // Creates a Maven publication called "release".
-            create<MavenPublication>("PieChartReleaseForMaven") {
+            create<MavenPublication>("Release") {
                 // Applies the component for the release build variant (two artifacts: the aar and the sources)
                 from(components["release"])
                 // You can then customize attributes of the publication as shown below
@@ -134,7 +153,6 @@ afterEvaluate {
                 artifact(sourcesArtifact)
                 artifact(javadocArtifact)
                 pom {
-                    val githubProjectName = "android-pie-chart"
                     url.set("https://github.com/mahozad/$githubProjectName")
                     name.set(githubProjectName)
                     description.set(
@@ -142,7 +160,7 @@ afterEvaluate {
                         A library for creating pie charts and donut charts in Android.
                         The aim of this library is to provide a full-featured chart view and to enable users to customize it to the most extent possible.
                         Visit the project on GitHub to learn more.
-                        """
+                        """.trimIndent()
                     )
                     inceptionYear.set("2021")
                     // icon: https://stackoverflow.com/q/40197177
@@ -171,7 +189,7 @@ afterEvaluate {
                     }
                 }
             }
-            create<MavenPublication>("PieChartDebugForMaven") {
+            create<MavenPublication>("Debug") {
                 from(components["debug"])
                 groupId = "ir.mahozad.android"
                 artifactId = "pie-chart-debug"
