@@ -13,6 +13,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.FloatRange
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.content.res.use
 import androidx.core.graphics.minus
 import ir.mahozad.android.PieChart.DrawDirection.CLOCKWISE
 import ir.mahozad.android.PieChart.GapPosition.MIDDLE
@@ -274,48 +275,44 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
      * visible appearance or behavior of your custom view.
      */
     init {
-        context.theme.obtainStyledAttributes(attrs, R.styleable.PieChart, 0, 0).apply {
-            try {
-                startAngle = normalizeAngle(getInt(R.styleable.PieChart_startAngle, DEFAULT_START_ANGLE))
-                holeRatio = getFloat(R.styleable.PieChart_holeRatio, DEFAULT_HOLE_RATIO)
-                overlayRatio = getFloat(R.styleable.PieChart_overlayRatio, DEFAULT_OVERLAY_RATIO)
-                overlayAlpha = getFloat(R.styleable.PieChart_overlayAlpha, DEFAULT_OVERLAY_ALPHA)
-                gap = getDimension(R.styleable.PieChart_gap, DEFAULT_GAP)
-                labelsSize = getDimension(R.styleable.PieChart_labelsSize, spToPx(DEFAULT_LABELS_SIZE))
-                labelOffset = getFloat(R.styleable.PieChart_labelOffset, DEFAULT_LABEL_OFFSET)
-                labelsColor = getColor(R.styleable.PieChart_labelsColor, DEFAULT_LABELS_COLOR)
-                val fontId = getResourceId(R.styleable.PieChart_labelsFont, -1)
-                labelsFont = if (fontId == -1) defaultLabelsFont else ResourcesCompat.getFont(context, fontId)!!
-                labelIconsHeight = getDimension(R.styleable.PieChart_labelIconsHeight, spToPx(DEFAULT_LABEL_ICONS_HEIGHT))
-                labelIconsMargin = getDimension(R.styleable.PieChart_labelIconsMargin, dpToPx(DEFAULT_LABEL_ICONS_MARGIN))
-                outsideLabelsMargin = getDimension(R.styleable.PieChart_outsideLabelsMargin, dpToPx(DEFAULT_OUTSIDE_LABELS_MARGIN))
-                centerLabel = getString(R.styleable.PieChart_centerLabel) ?: DEFAULT_CENTER_LABEL
-                shouldCenterPie = getBoolean(R.styleable.PieChart_shouldCenterPie, DEFAULT_SHOULD_CENTER_PIE)
-                val slicesPointerLength = getDimension(R.styleable.PieChart_slicesPointerLength, -1f)
-                val slicesPointerWidth = getDimension(R.styleable.PieChart_slicesPointerWidth, -1f)
-                slicesPointer = if (slicesPointerLength <= 0 || slicesPointerWidth <= 0) defaultSlicesPointer else SlicePointer(slicesPointerLength, slicesPointerWidth, 0)
-                labelIconsPlacement = IconPlacement.values()[
-                        getInt(R.styleable.PieChart_labelIconsPlacement, defaultLabelIconsPlacement.ordinal)
-                ]
-                labelType = LabelType.values()[
-                        getInt(R.styleable.PieChart_labelType, defaultLabelType.ordinal)
-                ]
-                legendsIcon = LegendIcons.values()[
-                        getInt(R.styleable.PieChart_legendsIcon, defaultLegendsIcon.ordinal)
-                ]
-                gapPosition = GapPosition.values()[
-                        getInt(R.styleable.PieChart_gapPosition, defaultGapPosition.ordinal)
-                ]
-                gradientType = GradientType.values()[
-                        getInt(R.styleable.PieChart_gradientType, defaultGradientType.ordinal)
-                ]
-                drawDirection = DrawDirection.values()[
-                        getInt(R.styleable.PieChart_drawDirection, defaultDrawDirection.ordinal)
-                ]
-            } finally {
-                // TypedArray objects are a shared resource and must be recycled after use
-                recycle()
-            }
+        // TypedArray objects are a shared resource and must be recycled after use (thus the ::use function)
+        context.theme.obtainStyledAttributes(attrs, R.styleable.PieChart, 0, 0).use {
+            startAngle = normalizeAngle(it.getInt(R.styleable.PieChart_startAngle, DEFAULT_START_ANGLE))
+            holeRatio = it.getFloat(R.styleable.PieChart_holeRatio, DEFAULT_HOLE_RATIO)
+            overlayRatio = it.getFloat(R.styleable.PieChart_overlayRatio, DEFAULT_OVERLAY_RATIO)
+            overlayAlpha = it.getFloat(R.styleable.PieChart_overlayAlpha, DEFAULT_OVERLAY_ALPHA)
+            gap = it.getDimension(R.styleable.PieChart_gap, DEFAULT_GAP)
+            labelsSize = it.getDimension(R.styleable.PieChart_labelsSize, spToPx(DEFAULT_LABELS_SIZE))
+            labelOffset = it.getFloat(R.styleable.PieChart_labelOffset, DEFAULT_LABEL_OFFSET)
+            labelsColor = it.getColor(R.styleable.PieChart_labelsColor, DEFAULT_LABELS_COLOR)
+            val fontId = it.getResourceId(R.styleable.PieChart_labelsFont, -1)
+            labelsFont = if (fontId == -1) defaultLabelsFont else ResourcesCompat.getFont(context, fontId)!!
+            labelIconsHeight = it.getDimension(R.styleable.PieChart_labelIconsHeight, spToPx(DEFAULT_LABEL_ICONS_HEIGHT))
+            labelIconsMargin = it.getDimension(R.styleable.PieChart_labelIconsMargin, dpToPx(DEFAULT_LABEL_ICONS_MARGIN))
+            outsideLabelsMargin = it.getDimension(R.styleable.PieChart_outsideLabelsMargin, dpToPx(DEFAULT_OUTSIDE_LABELS_MARGIN))
+            centerLabel = it.getString(R.styleable.PieChart_centerLabel) ?: DEFAULT_CENTER_LABEL
+            shouldCenterPie = it.getBoolean(R.styleable.PieChart_shouldCenterPie, DEFAULT_SHOULD_CENTER_PIE)
+            val slicesPointerLength = it.getDimension(R.styleable.PieChart_slicesPointerLength, -1f)
+            val slicesPointerWidth = it.getDimension(R.styleable.PieChart_slicesPointerWidth, -1f)
+            slicesPointer = if (slicesPointerLength <= 0 || slicesPointerWidth <= 0) defaultSlicesPointer else SlicePointer(slicesPointerLength, slicesPointerWidth, 0)
+            labelIconsPlacement = IconPlacement.values()[
+                    it.getInt(R.styleable.PieChart_labelIconsPlacement, defaultLabelIconsPlacement.ordinal)
+            ]
+            labelType = LabelType.values()[
+                    it.getInt(R.styleable.PieChart_labelType, defaultLabelType.ordinal)
+            ]
+            legendsIcon = LegendIcons.values()[
+                    it.getInt(R.styleable.PieChart_legendsIcon, defaultLegendsIcon.ordinal)
+            ]
+            gapPosition = GapPosition.values()[
+                    it.getInt(R.styleable.PieChart_gapPosition, defaultGapPosition.ordinal)
+            ]
+            gradientType = GradientType.values()[
+                    it.getInt(R.styleable.PieChart_gradientType, defaultGradientType.ordinal)
+            ]
+            drawDirection = DrawDirection.values()[
+                    it.getInt(R.styleable.PieChart_drawDirection, defaultDrawDirection.ordinal)
+            ]
         }
     }
 
