@@ -1,0 +1,18 @@
+<svg width="512" height="256" version="1.1" viewBox="0 0 48 24" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="clip">
+      <path d="m11.736 3.002a9 9 0 0 0-4.019 1.0801l3.506 6.0719a2 2 0 0 1 0.525-0.14v-7.012a9 9 0 0 0-0.012 0zm0.512 0v7.012a2 2 0 0 1 1.75 1.984 2 2 0 0 1-0.156 0.775l6.072 3.506a9 9 0 0 0 1.084-4.281 9 9 0 0 0-8.75-8.996zm-4.965 1.3301a9 9 0 0 0-4.281 7.4159h7.012a2 2 0 0 1 0.775-1.342zm-4.281 7.9159a9 9 0 0 0 6.428 8.375l1.812-6.773a2 2 0 0 1-1.226-1.602zm10.59 0.959a2 2 0 0 1-1.594 0.791 2 2 0 0 1-0.271-0.02l-1.815 6.774a9 9 0 0 0 2.086 0.246 9 9 0 0 0 7.666-4.285z"/>
+    </clipPath>
+  </defs>
+  <g transform="translate(12)" clip-path="url(#clip)">
+    <path d="m12 3a9 9 0 0 1 7.794 4.5 9 9 0 0 1 0 9l-7.794-4.5z" fill="#690"/>
+    <path d="m19.794 16.5a9 9 0 0 1-10.123 4.193l2.329-8.693z" fill="#f80"/>
+    <path d="M 9.6706,20.693 A 9,9 0 0 1 3,12 H 12 Z" fill="#09c"/>
+    <path d="M 3,12 A 9,9 0 0 1 7.5001,4.2057 L 12,12 Z" fill="#f44"/>
+    <path d="M 7.5001,4.2057 A 9,9 0 0 1 12,3 V 12 Z" fill="#a6c"/>
+    <circle cx="12" cy="12" r="5" fill-opacity=".25"/>
+  </g>
+  <text fill="#000" x="2.7754" y="-3.0723" font-family="Roboto" font-size="2px" xml:space="preserve">
+    <tspan>Export the page as a PNG with size 1280 by 640</tspan>
+  </text>
+</svg>
