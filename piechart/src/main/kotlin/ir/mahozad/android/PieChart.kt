@@ -336,7 +336,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         totalDrawableRect.set(pieEnclosingRect)
 
         if (labelType == OUTSIDE) {
-            val defaults = Defaults(outsideLabelsMargin, labelsSize, labelsFont, labelIconsHeight, labelIconsMargin, labelIconsPlacement)
+            val defaults = Defaults(outsideLabelsMargin, labelsSize, labelsColor, labelsFont, labelIconsHeight, labelIconsMargin, labelIconsPlacement)
             pieEnclosingRect.set(calculatePieNewBoundsForOutsideLabel(context, pieEnclosingRect, slices, drawDirection, startAngle, defaults, shouldCenterPie))
             center = Coordinates((pieEnclosingRect.left + pieEnclosingRect.right) / 2f, (pieEnclosingRect.top + pieEnclosingRect.bottom) / 2f)
             pieRadius = pieEnclosingRect.width() / 2f

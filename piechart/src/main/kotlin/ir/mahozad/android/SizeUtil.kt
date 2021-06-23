@@ -26,6 +26,7 @@ internal data class Boundaries(val top: Float, val left: Float, val right: Float
 internal data class Defaults(
     val outsideLabelsMargin: Float,
     val labelsSize: Float,
+    val labelsColor: Int,
     val labelsFont: Typeface,
     val labelIconsHeight: Float,
     val labelIconsMargin: Float,
@@ -231,7 +232,7 @@ internal fun calculatePieNewBoundsForOutsideLabel(
     var currentAngle = normalizeAngle(startAngle.toFloat())
     for (slice in slices) {
         val middleAngle = calculateMiddleAngle(currentAngle, slice.fraction, drawDirection)
-        updatePaintForLabel(paint, slice.labelSize ?: defaults.labelsSize, 0, slice.labelFont ?: defaults.labelsFont)
+        updatePaintForLabel(paint, slice.labelSize ?: defaults.labelsSize, slice.labelColor ?: defaults.labelsColor, slice.labelFont ?: defaults.labelsFont)
         var labelIcon : Drawable? = null
         slice.labelIcon?.let { labelIcon = context.resources.getDrawable(it, null) }
         val outsideLabelMargin = slice.outsideLabelMargin ?: defaults.outsideLabelsMargin

@@ -1156,7 +1156,7 @@ class SizeUtilInstrumentedTest {
         val labelsSize = 63.15f
         val startAngle = -90
         val context = getInstrumentation().targetContext
-        val defaults = Defaults(outsideLabelsMargin, labelsSize, labelsTypeface, 0f, 0f, LEFT)
+        val defaults = Defaults(outsideLabelsMargin, labelsSize, 0, labelsTypeface, 0f, 0f, LEFT)
 
         val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, slices, drawDirection, startAngle, defaults, shouldCenterPie)
 
@@ -1179,7 +1179,7 @@ class SizeUtilInstrumentedTest {
         val labelsSize = 42.1f
         val startAngle = 250
         val context = getInstrumentation().targetContext
-        val defaults = Defaults(outsideLabelsMargin, labelsSize, labelsTypeface, 42.1f, 73.675f, LEFT)
+        val defaults = Defaults(outsideLabelsMargin, labelsSize, 0, labelsTypeface, 42.1f, 73.675f, LEFT)
 
         val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, slices, drawDirection, startAngle, defaults, shouldCenterPie)
 
@@ -1204,7 +1204,7 @@ class SizeUtilInstrumentedTest {
         val labelsSize = 63.15f
         val startAngle = -90
         val context = getInstrumentation().targetContext
-        val defaults = Defaults(outsideLabelsMargin, labelsSize, labelsTypeface, 0f, 0f, LEFT)
+        val defaults = Defaults(outsideLabelsMargin, labelsSize, 0, labelsTypeface, 0f, 0f, LEFT)
 
         val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, slices, drawDirection, startAngle, defaults, shouldCenterPie)
 
@@ -1231,7 +1231,7 @@ class SizeUtilInstrumentedTest {
         val labelsSize = 63.15f
         val startAngle = -90
         val context = getInstrumentation().targetContext
-        val defaults = Defaults(outsideLabelsMargin, labelsSize, labelsTypeface, 0f, 0f, LEFT)
+        val defaults = Defaults(outsideLabelsMargin, labelsSize, 0, labelsTypeface, 0f, 0f, LEFT)
 
         val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, slices, drawDirection, startAngle, defaults, shouldCenterPie)
 
@@ -1256,7 +1256,7 @@ class SizeUtilInstrumentedTest {
         val labelsSize = 63.15f
         val startAngle = -90
         val context = getInstrumentation().targetContext
-        val defaults = Defaults(outsideLabelsMargin, labelsSize, labelsTypeface, 0f, 0f, LEFT)
+        val defaults = Defaults(outsideLabelsMargin, labelsSize, 0, labelsTypeface, 0f, 0f, LEFT)
 
         val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, slices, drawDirection, startAngle, defaults, shouldCenterPie)
 
@@ -1280,7 +1280,7 @@ class SizeUtilInstrumentedTest {
         val labelsSize = 63.15f
         val startAngle = -90
         val context = getInstrumentation().targetContext
-        val defaults = Defaults(outsideLabelsMargin, labelsSize, labelsTypeface, 0f, 0f, LEFT)
+        val defaults = Defaults(outsideLabelsMargin, labelsSize, 0, labelsTypeface, 0f, 0f, LEFT)
 
         val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, slices, drawDirection, startAngle, defaults, shouldCenterPie)
 
@@ -1304,7 +1304,7 @@ class SizeUtilInstrumentedTest {
         val labelsSize = 63.15f
         val startAngle = -180
         val context = getInstrumentation().targetContext
-        val defaults = Defaults(outsideLabelsMargin, labelsSize, labelsTypeface, 0f, 0f, LEFT)
+        val defaults = Defaults(outsideLabelsMargin, labelsSize, 0, labelsTypeface, 0f, 0f, LEFT)
 
         val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, slices, drawDirection, startAngle, defaults, shouldCenterPie)
 
@@ -1330,7 +1330,7 @@ class SizeUtilInstrumentedTest {
         val labelsSize = 63.15f
         val startAngle = 0
         val context = getInstrumentation().targetContext
-        val defaults = Defaults(outsideLabelsMargin, labelsSize, labelsTypeface, 0f, 0f, LEFT)
+        val defaults = Defaults(outsideLabelsMargin, labelsSize, 0, labelsTypeface, 0f, 0f, LEFT)
 
         val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, slices, drawDirection, startAngle, defaults, shouldCenterPie)
 
