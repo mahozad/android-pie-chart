@@ -238,8 +238,6 @@ apply("${rootProject.projectDir}/scripts/publish-module.gradle")
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     implementation("androidx.core:core-ktx:1.3.2")
-    implementation("androidx.appcompat:appcompat:1.2.0")
-    implementation("com.google.android.material:material:1.3.0")
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
     testImplementation("org.assertj:assertj-core:3.19.0")
     androidTestImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
