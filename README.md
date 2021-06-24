@@ -6,6 +6,8 @@
 
 # NOTE: This library is still in initial phases of development
 
+A Pie/Donut/Ring chart for Android.
+
 ### build.gradle[.kts]
 ```groovy
 implementation("ir.mahozad.android:pie-chart:0.3.0")
