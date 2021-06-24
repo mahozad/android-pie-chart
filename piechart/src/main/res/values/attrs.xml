@@ -82,7 +82,8 @@
       <enum name="inside" value="1"/>
       <enum name="outside" value="2"/>
 <!--      <enum name="insideCircular" value="3"/>-->
-<!--      <enum name="outsideCircular" value="4"/>-->
+      <enum name="outsideCircularInward" value="4"/>
+      <enum name="outsideCircularOutward" value="5"/>
 <!--      <enum name="outsideWithPointer" value="5"/>-->
 <!--      <enum name="outsideWithLinesOnSides" value="6"/>-->
     </attr>

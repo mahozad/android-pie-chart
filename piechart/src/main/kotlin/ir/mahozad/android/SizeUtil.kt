@@ -198,6 +198,151 @@ private fun resolveAbsolutePosition(iconPlacement: IconPlacement): IconPlacement
     }
 }
 
+// TODO: Write unit tests for isOutward == true
+/**
+ * DrawDirection is unrelated to where we place the icon.
+ *
+ * The START and END placements are used to place the icon based on the
+ * layout direction, so do not complicate things by including draw direction in
+ * the calculation for position of the icon.
+ */
+internal fun makePathForOutsideCircularLabel(
+    middleAngle: Float,
+    pieCenter: Coordinates,
+    pieRadius: Float,
+    label: String,
+    labelPaint: Paint,
+    iconBounds: RectF,
+    iconMargin: Float,
+    iconPlacement: IconPlacement,
+    outsideLabelMargin: Float,
+    isOutward: Boolean
+): Path {
+    val labelBounds = calculateLabelBounds(label, labelPaint)
+    val labelAndIconCombinedBounds = calculateLabelAndIconCombinedBounds(labelBounds, iconBounds, iconMargin, iconPlacement)
+    val combinedWidth = labelAndIconCombinedBounds.width()
+    val adjustedMargin = modulateMargin(iconMargin, labelBounds, iconBounds)
+    val absolutePosition = resolveAbsolutePosition(iconPlacement)
+    val labelHeight = labelBounds.height()
+    val iconHeight = iconBounds.height()
+    val labelOffset = if (isOutward) labelHeight - labelPaint.descent() else labelPaint.descent()
+    val offset = when (absolutePosition) {
+        TOP -> labelOffset
+        BOTTOM -> iconHeight + adjustedMargin + labelOffset
+        else -> (max(iconHeight, labelHeight) / 2f) - (labelHeight / 2f) + labelOffset
+    }
+    val pathRadius = pieRadius + outsideLabelMargin + offset
+    val bounds = RectF(pieCenter.x - pathRadius, pieCenter.y - pathRadius, pieCenter.x + pathRadius, pieCenter.y + pathRadius)
+
+    // NOTE: Everything above this line is correct and verified
+
+    val labelSweepFraction = labelBounds.width() / (2 * PI.toFloat() * pathRadius)
+    // NOTE for LEFT and RIGHT: Because the icon is rotated, its bottom may overlap with the label
+    //  especially when the label and icon are very large.
+    //  To fix this, to calculate the start angle of the label, instead of using circumference
+    //  of the reference circle with *radius = to mid height of label and icon* as the denominator,
+    //  we use the circumference of a smaller circle with *radius = to bottom of the label* as
+    //  the denominator so the label and the icon won't overlap (and neither will have redundant margin).
+    //  So, this means that the label will be displaced a little to left (especially large label
+    //  which makes the difference between circumference of the reference circle and smaller circle more noticeable).
+    //  Could we somehow displace both the icon and the label in half the total displacement of the label?
+    val startAngle = if (absolutePosition == LEFT) {
+        val radiusToCenterOfCombined = pieRadius + outsideLabelMargin + max(iconHeight, labelHeight) / 2f
+        val labelSweepFraction = labelBounds.width() / (2 * PI.toFloat() * radiusToCenterOfCombined)
+        val sweepFractionFromMiddle = (combinedWidth / 2f) / (2 * PI.toFloat() * radiusToCenterOfCombined)
+        val endAngle = calculateEndAngle(middleAngle, sweepFractionFromMiddle, CLOCKWISE)
+        calculateEndAngle(endAngle, labelSweepFraction, COUNTER_CLOCKWISE)
+    } else if (absolutePosition == RIGHT) {
+        val sweepFractionFromMiddle = (combinedWidth / 2f) / (2 * PI.toFloat() * (pathRadius - labelPaint.descent()))
+        calculateEndAngle(middleAngle, sweepFractionFromMiddle, COUNTER_CLOCKWISE)
+    } else {
+        calculateEndAngle(middleAngle, labelSweepFraction / 2f, COUNTER_CLOCKWISE)
+    }
+    path.reset()
+    if (isOutward) {
+        val startAngle = calculateEndAngle(startAngle, labelSweepFraction, CLOCKWISE)
+        path.addArc(bounds, startAngle, -labelSweepFraction * 360)
+    } else {
+        path.addArc(bounds, startAngle, labelSweepFraction * 360)
+    }
+    return path
+}
+
+internal fun calculateIconAbsoluteBoundsForOutsideCircularLabel(
+    middleAngle: Float,
+    pieCenter: Coordinates,
+    pieRadius: Float,
+    label: String,
+    labelPaint: Paint,
+    iconBounds: RectF,
+    iconMargin: Float,
+    iconPlacement: IconPlacement,
+    outsideLabelMargin: Float
+): RectF {
+    val labelBounds = calculateLabelBounds(label, labelPaint)
+    val labelAndIconCombinedBounds = calculateLabelAndIconCombinedBounds(labelBounds, iconBounds, iconMargin, iconPlacement)
+    val combinedWidth = labelAndIconCombinedBounds.width()
+    val adjustedMargin = modulateMargin(iconMargin, labelBounds, iconBounds)
+    val absolutePosition = resolveAbsolutePosition(iconPlacement)
+    val iconHeight = iconBounds.height()
+    val iconWidth = iconBounds.width()
+    val labelHeight = labelBounds.height()
+    val offset = when (absolutePosition) {
+        TOP -> labelBounds.height() + adjustedMargin + iconHeight / 2f
+        BOTTOM -> iconHeight / 2f
+        else -> max(iconHeight, labelHeight) / 2f
+    }
+    val iconRadius = pieRadius + outsideLabelMargin + offset
+    val angle = calculateIconAngleForOutsideCircularLabel(iconPlacement, combinedWidth, iconBounds, iconRadius, middleAngle)
+    val iconBoundsCenter = Coordinates(pieCenter.x + (iconRadius * cos(angle.toRadian())), pieCenter.y + (iconRadius * sin(angle.toRadian())))
+    return RectF(iconBoundsCenter.x - iconWidth / 2f, iconBoundsCenter.y - iconHeight /2f, iconBoundsCenter.x + iconWidth / 2f, iconBoundsCenter.y + iconHeight /2f)
+}
+
+// TODO: Write unit tests for isOutward == true
+internal fun calculateIconRotationAngleForOutsideCircularLabel(
+    middleAngle: Float,
+    pieRadius: Float,
+    outsideLabelMargin: Float,
+    label: String,
+    labelPaint: Paint,
+    iconBounds: RectF,
+    iconMargin: Float,
+    iconPlacement: IconPlacement,
+    isOutward: Boolean
+): Float {
+    val labelBounds = calculateLabelBounds(label, labelPaint)
+    val labelAndIconCombinedBounds = calculateLabelAndIconCombinedBounds(labelBounds, iconBounds, iconMargin, iconPlacement)
+    val combinedWidth = labelAndIconCombinedBounds.width()
+    val absolutePosition = resolveAbsolutePosition(iconPlacement)
+    val iconHeight = iconBounds.height()
+    val labelHeight = labelBounds.height()
+    val offset = when (absolutePosition) {
+        TOP -> labelHeight + iconMargin + iconHeight / 2f
+        BOTTOM -> iconHeight / 2f
+        else -> max(iconHeight, labelHeight) / 2f
+    }
+    val iconRadius = pieRadius + outsideLabelMargin + offset
+    val angle = calculateIconAngleForOutsideCircularLabel(iconPlacement, combinedWidth, iconBounds, iconRadius, middleAngle)
+    val correction = if (isOutward) { 270f } else { 90f }
+    return angle + correction
+}
+
+private fun calculateIconAngleForOutsideCircularLabel(
+    iconPlacement: IconPlacement,
+    combinedWidth: Float,
+    iconBounds: RectF,
+    radius: Float,
+    middleAngle: Float
+): Float {
+    val absolutePosition = resolveAbsolutePosition(iconPlacement)
+    val fraction = ((combinedWidth / 2f) - (iconBounds.width() / 2f)) / (2 * PI.toFloat() * radius)
+    return when (absolutePosition) {
+        LEFT -> calculateEndAngle(middleAngle, fraction, COUNTER_CLOCKWISE)
+        RIGHT -> calculateEndAngle(middleAngle, fraction, CLOCKWISE)
+        else -> middleAngle
+    }
+}
+
 /**
  * Assumes that the width and height of the currentBounds are equal.
  *
@@ -292,6 +437,44 @@ internal fun calculatePieNewBoundsForOutsideLabel(
 
     // val maxExcess = maxOf(maxLeftExcess, maxTopExcess, maxRightExcess, maxBottomExcess)
     // return RectF(currentBounds.left + maxExcess, currentBounds.top + maxExcess, currentBounds.right - maxExcess, currentBounds.bottom - maxExcess)
+}
+
+/**
+* Assumes that the width and height of the currentBounds are equal.
+*/
+internal fun calculatePieNewBoundsForOutsideCircularLabel(
+    context: Context,
+    currentBounds: RectF,
+    slices: List<Slice>,
+    defaults: Defaults,
+    shouldCenterPie: Boolean
+): RectF {
+    var maxLabelAndIconHeight = 0f
+    for (slice in slices) {
+        updatePaintForLabel(paint, slice.labelSize ?: defaults.labelsSize, slice.labelColor ?: defaults.labelsColor, slice.labelFont ?: defaults.labelsFont)
+        var labelIcon : Drawable? = null
+        slice.labelIcon?.let { labelIcon = context.resources.getDrawable(it, null) }
+        val outsideLabelMargin = slice.outsideLabelMargin ?: defaults.outsideLabelsMargin
+        val iconPlacement = slice.labelIconPlacement ?: defaults.labelIconsPlacement
+        val iconMargin = slice.labelIconMargin ?: defaults.labelIconsMargin
+        val iconHeight = slice.labelIconHeight ?: defaults.labelIconsHeight
+        val iconBounds = calculateIconBounds(labelIcon, iconHeight)
+        val labelBounds = calculateLabelBounds(slice.label, paint)
+        val absolutePosition = resolveAbsolutePosition(iconPlacement)
+        val adjustedIconMargin = modulateMargin(iconMargin, labelBounds, iconBounds)
+        val sliceMax = if (absolutePosition == LEFT || absolutePosition == RIGHT) {
+            outsideLabelMargin + max(labelBounds.height(), iconBounds.height())
+        } else {
+            outsideLabelMargin + labelBounds.height() + adjustedIconMargin + iconBounds.height()
+        }
+        maxLabelAndIconHeight = max(maxLabelAndIconHeight, sliceMax)
+    }
+    if (shouldCenterPie) {
+        return RectF(currentBounds.left + maxLabelAndIconHeight, currentBounds.top + maxLabelAndIconHeight, currentBounds.right - maxLabelAndIconHeight, currentBounds.bottom - maxLabelAndIconHeight)
+    } else {
+        /* FIXME: Same as above branch; implement it */
+        return RectF(currentBounds.left + maxLabelAndIconHeight, currentBounds.top + maxLabelAndIconHeight, currentBounds.right - maxLabelAndIconHeight, currentBounds.bottom - maxLabelAndIconHeight)
+    }
 }
 
 private fun calculateTextSize(text: String, paint: Paint): Size {

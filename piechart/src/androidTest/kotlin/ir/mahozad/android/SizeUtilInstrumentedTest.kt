@@ -1817,4 +1817,328 @@ class SizeUtilInstrumentedTest {
     }
 
     // endregion
+
+    // region calculatePieNewBoundsForOutsideCircularLabel
+
+    @Test fun calculatePieNewBoundsForOutsideCircularLabel_WithLabelIconOnSideAndSmallerLabelHeight() {
+        val slices = listOf(
+            PieChart.Slice(0.5f, Color.BLACK, label = "14%", labelIcon = R.drawable.ic_rectangle_tall),
+            PieChart.Slice(0.105f, Color.BLACK, label = ""),
+            PieChart.Slice(0.125f, Color.BLACK, label = ""),
+            PieChart.Slice(0.02f, Color.BLACK, label = ""),
+            PieChart.Slice(0.1f, Color.BLACK, label = ""),
+            PieChart.Slice(0.15f, Color.BLACK, label = "")
+        )
+        val outsideLabelsMargin = 30f
+        val currentBounds = RectF(100f, 100f, 1000f, 1000f)
+        val shouldCenterPie = true
+        val labelsTypeface = Typeface.DEFAULT
+        val labelsSize = 60f
+        val context = getInstrumentation().targetContext
+        val defaults = Defaults(outsideLabelsMargin, labelsSize, 0, labelsTypeface, 100f, 55f, LEFT)
+
+        val bounds = calculatePieNewBoundsForOutsideCircularLabel(context, currentBounds, slices, defaults, shouldCenterPie)
+
+        assertThat(bounds).isEqualTo(RectF(230f, 230f, 870f, 870f))
+    }
+
+    @Test fun calculatePieNewBoundsForOutsideCircularLabel_WithMarginsButNoSideIcon() {
+        val slices = listOf(
+            PieChart.Slice(0.5f, Color.BLACK, label = "14%"),
+            PieChart.Slice(0.105f, Color.BLACK, label = ""),
+            PieChart.Slice(0.125f, Color.BLACK, label = ""),
+            PieChart.Slice(0.02f, Color.BLACK, label = ""),
+            PieChart.Slice(0.1f, Color.BLACK, label = ""),
+            PieChart.Slice(0.15f, Color.BLACK, label = "")
+        )
+        val outsideLabelsMargin = 30f
+        val currentBounds = RectF(100f, 100f, 1000f, 1000f)
+        val shouldCenterPie = true
+        val labelsTypeface = Typeface.DEFAULT
+        val labelsSize = 60f
+        val context = getInstrumentation().targetContext
+        val defaults = Defaults(outsideLabelsMargin, labelsSize, 0, labelsTypeface, 100f, 55f, LEFT)
+
+        val bounds = calculatePieNewBoundsForOutsideCircularLabel(context, currentBounds, slices, defaults, shouldCenterPie)
+
+        assertThat(bounds)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
+            .isEqualTo(RectF(200f, 200f, 900f, 900f))
+    }
+
+    @Test fun calculatePieNewBoundsForOutsideCircularLabel_WithMarginsButNoTopOrBottomIcon() {
+        val slices = listOf(
+            PieChart.Slice(0.5f, Color.BLACK, label = "14%"),
+            PieChart.Slice(0.105f, Color.BLACK, label = ""),
+            PieChart.Slice(0.125f, Color.BLACK, label = ""),
+            PieChart.Slice(0.02f, Color.BLACK, label = ""),
+            PieChart.Slice(0.1f, Color.BLACK, label = ""),
+            PieChart.Slice(0.15f, Color.BLACK, label = "")
+        )
+        val outsideLabelsMargin = 30f
+        val currentBounds = RectF(100f, 100f, 1000f, 1000f)
+        val shouldCenterPie = true
+        val labelsTypeface = Typeface.DEFAULT
+        val labelsSize = 60f
+        val context = getInstrumentation().targetContext
+        val defaults = Defaults(outsideLabelsMargin, labelsSize, 0, labelsTypeface, 100f, 55f, TOP)
+
+        val bounds = calculatePieNewBoundsForOutsideCircularLabel(context, currentBounds, slices, defaults, shouldCenterPie)
+
+        assertThat(bounds)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
+            .isEqualTo(RectF(200f, 200f, 900f, 900f))
+    }
+
+    @Test fun calculatePieNewBoundsForOutsideCircularLabel_WithLabelIconOnSideAndLargerLabelHeight() {
+        val slices = listOf(
+            PieChart.Slice(0.5f, Color.BLACK, label = "14%", labelIcon = R.drawable.ic_rectangle_tall),
+            PieChart.Slice(0.105f, Color.BLACK, label = ""),
+            PieChart.Slice(0.125f, Color.BLACK, label = ""),
+            PieChart.Slice(0.02f, Color.BLACK, label = ""),
+            PieChart.Slice(0.1f, Color.BLACK, label = ""),
+            PieChart.Slice(0.15f, Color.BLACK, label = "")
+        )
+        val outsideLabelsMargin = 30f
+        val currentBounds = RectF(100f, 100f, 1000f, 1000f)
+        val shouldCenterPie = true
+        val labelsTypeface = Typeface.DEFAULT
+        val labelsSize = 160f
+        val context = getInstrumentation().targetContext
+        val defaults = Defaults(outsideLabelsMargin, labelsSize, 0, labelsTypeface, 100f, 55f, LEFT)
+
+        val bounds = calculatePieNewBoundsForOutsideCircularLabel(context, currentBounds, slices, defaults, shouldCenterPie)
+
+        assertThat(bounds).isEqualTo(RectF(317.5f, 317.5f, 782.5f, 782.5f))
+    }
+
+    // endregion
+
+    // region calculateIconAngleForOutsideCircularLabel
+
+    @ParameterizedTest(name = "Label Size: {0}, Icon Bounds: {1}, Icon Margin: {2}, Icon Placement: {3}, Is Outward: {4}")
+    @MethodSource("argumentProvider9")
+    fun calculateIconRotationAngleForOutsideCircularLabel_WithTheGivenIconBoundsAndIconMarginAndIconPlacement(labelSize: Float, iconBounds: RectF, iconMargin: Float, iconPlacement: IconPlacement, isOutward: Boolean, expectedAngle: Float) {
+        // Assumptions.assumeThat(Locale.getDefault().language).isEqualTo("en")
+        val pieRadius = 520f
+        val sliceMiddleAngle = 330f
+        val outsideLabelMargin = 36f
+        val label = "14%"
+        val labelPaint = Paint()
+        updatePaintForLabel(labelPaint, labelSize, Color.WHITE, Typeface.DEFAULT)
+
+        val rotationAngle = calculateIconRotationAngleForOutsideCircularLabel(sliceMiddleAngle, pieRadius, outsideLabelMargin, label, labelPaint, iconBounds, iconMargin, iconPlacement, isOutward)
+
+        assertThat(rotationAngle)
+            .usingComparator(FloatComparator(1f))
+            .isEqualTo(expectedAngle)
+    }
+
+    @Suppress("unused")
+    private fun argumentProvider9() = listOf(
+        /* TOP narrower icon with icon margin 0 */
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, TOP, false, 420f),
+        /* TOP wider icon with icon margin 0 */
+        arguments(60f, RectF(0f, 0f, 100f, 10f), 0f, TOP, false, 420f),
+        /* TOP icon with an arbitrary icon margin */
+        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, TOP, false, 420f),
+        /* No TOP icon with an arbitrary icon margin */
+        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, TOP, false, 420f),
+        /* TOP icon with an arbitrary icon margin and label size 0 */
+        arguments(0f, RectF(0f, 0f, 70f, 50f), 44f, TOP, false, 420f),
+        /* BOTTOM narrower icon with icon margin 0 */
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, BOTTOM, false, 420f),
+        /* BOTTOM wider icon with icon margin 0 */
+        arguments(60f, RectF(0f, 0f, 100f, 10f), 0f, BOTTOM, false, 420f),
+        /* BOTTOM icon with an arbitrary icon margin */
+        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, BOTTOM, false, 420f),
+        /* No BOTTOM icon with an arbitrary icon margin */
+        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, BOTTOM, false, 420f),
+        /* BOTTOM icon with an arbitrary icon margin and label size 0 */
+        arguments(0f, RectF(0f, 0f, 70f, 50f), 44f, BOTTOM, false, 420f),
+        /* LEFT shorter icon with icon margin 0 */
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, LEFT, false, 415f),
+        /* LEFT taller icon with icon margin 0 */
+        arguments(60f, RectF(0f, 0f, 10f, 100f), 0f, LEFT, false, 415f),
+        /* LEFT icon with an arbitrary icon margin */
+        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, LEFT, false, 412f),
+        /* No LEFT icon with an arbitrary icon margin */
+        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, LEFT, false, 415f),
+        /* LEFT icon with an arbitrary icon margin and label size 0 */
+        arguments(0f, RectF(0f, 0f, 70f, 50f), 44f, LEFT, false, 420f),
+        /* RIGHT shorter icon with icon margin 0 */
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, RIGHT, false, 425f),
+        /* RIGHT taller icon with icon margin 0 */
+        arguments(60f, RectF(0f, 0f, 150f, 100f), 0f, RIGHT, false, 425f),
+        /* RIGHT icon with an arbitrary icon margin */
+        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, RIGHT, false, 428f),
+        /* No RIGHT icon with an arbitrary icon margin */
+        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, RIGHT, false, 425f),
+        /* RIGHT icon with an arbitrary icon margin and label size 0 */
+        arguments(0f, RectF(0f, 0f, 70f, 50f), 44f, RIGHT, false, 420f),
+        ////////////// OUTWARD //////////////
+        /* TOP icon */
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 20f, TOP, false, 420f),
+        /* BOTTOM icon */
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 20f, BOTTOM, false, 420f),
+        /* LEFT icon */
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 20f, LEFT, false, 414f),
+        /* RIGHT icon */
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 20f, RIGHT, false, 426f),
+    )
+
+    // endregion
+
+    // region calculateIconAbsoluteBoundsForOutsideCircularLabel
+
+    @ParameterizedTest(name = "Label Size: {0}, Icon Bounds: {1}, Icon Margin: {2}, Icon Placement: {3}")
+    @MethodSource("argumentProvider10")
+    fun calculateIconAbsoluteBoundsForOutsideCircularLabel_WithTheGivenIconBoundsAndIconMarginAndIconPlacement(labelSize: Float, iconBounds: RectF, iconMargin: Float, iconPlacement: IconPlacement, expectedBounds: RectF) {
+        // Assumptions.assumeThat(Locale.getDefault().language).isEqualTo("en")
+        val pieRadius = 520f
+        val pieCenter = Coordinates(410f, 410f)
+        val sliceMiddleAngle = 330f
+        val outsideLabelMargin = 36f
+        val label = "14%"
+        val labelPaint = Paint()
+        updatePaintForLabel(labelPaint, labelSize, Color.WHITE, Typeface.DEFAULT)
+
+        val bounds = calculateIconAbsoluteBoundsForOutsideCircularLabel(sliceMiddleAngle, pieCenter, pieRadius, label, labelPaint, iconBounds, iconMargin, iconPlacement, outsideLabelMargin)
+
+        assertThat(bounds)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
+            .isEqualTo(expectedBounds)
+    }
+
+    @Suppress("unused")
+    private fun argumentProvider10() = listOf(
+        /* TOP narrower icon with icon margin 0 */
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, TOP, RectF(954f, 89f, 959f, 99f)),
+        /* TOP wider icon with icon margin 0 */
+        arguments(60f, RectF(0f, 0f, 100f, 10f), 0f, TOP, RectF(907f, 89f, 1007f, 99f)),
+        /* TOP icon with an arbitrary icon margin */
+        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, TOP, RectF(977f, 37f, 1047f, 87f)),
+        /* No TOP icon with an arbitrary icon margin (can also accept RectF(0f, 0f, 0f, 0f)) */
+        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, TOP, RectF(952f, 97f, 952f, 97f)),
+        /* TOP icon with an arbitrary icon margin and label size 0 */
+        arguments(0f, RectF(0f, 0f, 70f, 50f), 44f, TOP, RectF(878f, 95f, 948f, 145f)),
+        /* BOTTOM narrower icon with icon margin 0 */
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, BOTTOM, RectF(893f, 125f, 898f, 135f)),
+        /* BOTTOM wider icon with icon margin 0 */
+        arguments(60f, RectF(0f, 0f, 100f, 10f), 0f, BOTTOM, RectF(846f, 125f, 946f, 135f)),
+        /* BOTTOM icon with an arbitrary icon margin */
+        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, BOTTOM, RectF(878f, 95f, 948f, 145f)),
+        /* No BOTTOM icon with an arbitrary icon margin (can also accept RectF(0f, 0f, 0f, 0f)) */
+        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, BOTTOM, RectF(892f, 132f, 892f, 132f)),
+        /* BOTTOM icon with an arbitrary icon margin and label size 0 */
+        arguments(0f, RectF(0f, 0f, 70f, 50f), 44f, BOTTOM, RectF(878f, 95f, 948f, 145f)),
+        /* LEFT shorter icon with icon margin 0 */
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, LEFT, RectF(889f, 62f, 894f, 72f)),
+        /* LEFT taller icon with icon margin 0 */
+        arguments(60f, RectF(0f, 0f, 10f, 100f), 0f, LEFT, RectF(900f, 10f, 910f, 110f)),
+        /* LEFT icon with an arbitrary icon margin */
+        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, LEFT, RectF(844f, 25f, 914f, 75f)),
+        /* No LEFT icon with an arbitrary icon margin (can also accept RectF(0f, 0f, 0f, 0f)) */
+        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, LEFT, RectF(892f, 67f, 892f, 67f)),
+        /* LEFT icon with an arbitrary icon margin and label size 0 */
+        arguments(0f, RectF(0f, 0f, 70f, 50f), 44f, LEFT, RectF(878f, 95f, 948f, 145f)),
+        /* RIGHT shorter icon with icon margin 0 */
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, RIGHT, RectF(945f, 159f, 950f, 169f)),
+        /* RIGHT taller icon with icon margin 0 */
+        arguments(60f, RectF(0f, 0f, 10f, 100f), 0f, RIGHT, RectF(956f, 107f, 966f, 207f)),
+        /* RIGHT icon with an arbitrary icon margin */
+        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, RIGHT, RectF(921f, 159f, 991f, 209f)),
+        /* No RIGHT icon with an arbitrary icon margin */
+        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, RIGHT, RectF(948f, 164f, 948f, 164f)),
+        /* RIGHT icon with an arbitrary icon margin and label size 0 */
+        arguments(0f, RectF(0f, 0f, 70f, 50f), 44f, RIGHT, RectF(878f, 95f, 948f, 145f)),
+    )
+
+    // endregion
+
+    // region makePathForOutsideCircularLabel
+
+    @ParameterizedTest(name = "Label Size: {0}, Icon Bounds: {1}, Icon Margin: {2}, Icon Placement: {3}, Is Outward: {4}")
+    @MethodSource("argumentProvider11")
+    fun makePathForOutsideCircularLabel_WithTheGivenIconBoundsAndIconMarginAndIconPlacement(labelSize: Float, iconBounds: RectF, iconMargin: Float, iconPlacement: IconPlacement, isOutward: Boolean, expectedPathLength: Float, expectedPathBounds: RectF) {
+        // Assumptions.assumeThat(Locale.getDefault().language).isEqualTo("en")
+        val pieRadius = 520f
+        val pieCenter = Coordinates(410f, 410f)
+        val sliceMiddleAngle = 330f
+        val outsideLabelMargin = 36f
+        val label = "14%"
+        val labelPaint = Paint()
+        updatePaintForLabel(labelPaint, labelSize, Color.WHITE, Typeface.DEFAULT)
+
+        val path = makePathForOutsideCircularLabel(sliceMiddleAngle, pieCenter, pieRadius, label, labelPaint, iconBounds, iconMargin, iconPlacement, outsideLabelMargin, isOutward)
+
+        val pathBounds = RectF()
+        path.computeBounds(pathBounds, true)
+        assertThat(pathBounds)
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
+            .isEqualTo(expectedPathBounds)
+
+        assertThat(PathMeasure(path, false).length)
+            .usingComparator(FloatComparator(1f))
+            .isEqualTo(expectedPathLength)
+    }
+
+    @Suppress("unused")
+    private fun argumentProvider11() = listOf(
+        /* TOP narrower icon with icon margin 0 */
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, TOP, false, 112f, RectF(874f, 78f, 930f, 174f)),
+        /* TOP wider icon with icon margin 0 */
+        arguments(60f, RectF(0f, 0f, 100f, 10f), 0f, TOP, false, 112f, RectF(874f, 78f, 930f, 174f)),
+        /* TOP icon with an arbitrary icon margin */
+        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, TOP, false, 112f, RectF(874f, 78f, 930f, 174f)),
+        /* No TOP icon with an arbitrary icon margin */
+        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, TOP, false, 112f, RectF(874f, 78f, 930f, 174f)),
+        /* TOP icon with an arbitrary icon margin and label size 0 */
+        arguments(0f, RectF(0f, 0f, 70f, 50f), 44f, TOP, false, 0f, RectF(0f, 0f, 0f, 0f)),
+        /* BOTTOM narrower icon with icon margin 0 */
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, BOTTOM, false, 112f, RectF(883f, 73f, 938f, 169f)),
+        /* BOTTOM wider icon with icon margin 0 */
+        arguments(60f, RectF(0f, 0f, 100f, 10f), 0f, BOTTOM, false, 112f, RectF(883f, 73f, 938f, 169f)),
+        /* BOTTOM icon with an arbitrary icon margin */
+        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, BOTTOM, false, 112f, RectF(956f, 30f, 1012f, 127f)),
+        /* No BOTTOM icon with an arbitrary icon margin */
+        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, BOTTOM, false, 112f, RectF(874f, 78f, 930f, 174f)),
+        /* BOTTOM icon with an arbitrary icon margin and label size 0 */
+        arguments(0f, RectF(0f, 0f, 70f, 50f), 44f, BOTTOM, false, 0f, RectF(0f, 0f, 0f, 0f)),
+        /* LEFT shorter icon with icon margin 0 */
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, LEFT, false, 112f, RectF(876f, 81f, 932f, 178f)),
+        /* LEFT taller icon with icon margin 0 */
+        arguments(60f, RectF(0f, 0f, 10f, 100f), 0f, LEFT, false, 112f, RectF(891f, 76f, 945f, 173f)),
+        /* LEFT icon with an arbitrary icon margin */
+        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, LEFT, false, 112f, RectF(905f, 126f, 951f, 227f)),
+        /* No LEFT icon with an arbitrary icon margin */
+        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, LEFT, false, 112f, RectF(875f, 79f, 931f, 176f)),
+        /* LEFT icon with an arbitrary icon margin and label size 0 */
+        arguments(0f, RectF(0f, 0f, 70f, 50f), 44f, LEFT, false, 0f, RectF(0f, 0f, 0f, 0f)),
+        /* RIGHT shorter icon with icon margin 0 */
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, RIGHT, false, 112f, RectF(872f, 74f, 928f, 171f)),
+        /* RIGHT taller icon with icon margin 0 */
+        arguments(60f, RectF(0f, 0f, 10f, 100f), 0f, RIGHT, false, 112f, RectF(883f, 65f, 940f, 161f)),
+        /* RIGHT icon with an arbitrary icon margin */
+        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, RIGHT, false, 112f, RectF(836f, 31f, 902f, 121f)),
+        /* No RIGHT icon with an arbitrary icon margin */
+        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, RIGHT, false, 112f, RectF(873f, 76f, 929f, 173f)),
+        /* RIGHT icon with an arbitrary icon margin and label size 0 */
+        arguments(0f, RectF(0f, 0f, 70f, 50f), 44f, RIGHT, false, 0f, RectF(0f, 0f, 0f, 0f)),
+        ////////////// OUTWARD //////////////
+        /* TOP icon */
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 20f, TOP, false, 112f, RectF(874f, 78f, 930f, 174f)),
+        /* BOTTOM icon */
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 20f, BOTTOM, false, 112f, RectF(900f, 63f, 956f, 159f)),
+        /* LEFT icon */
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 20f, LEFT, false, 112f, RectF(882f, 89f, 935f, 187f)),
+        /* RIGHT icon */
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 20f, RIGHT, false, 112f, RectF(865f, 66f, 924f, 162f)),
+    )
+
+    // endregion
 }

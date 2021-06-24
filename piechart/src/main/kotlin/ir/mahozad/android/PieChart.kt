@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.content.res.use
 import androidx.core.graphics.minus
+import androidx.core.graphics.withRotation
 import ir.mahozad.android.PieChart.DrawDirection.CLOCKWISE
 import ir.mahozad.android.PieChart.GapPosition.MIDDLE
 import ir.mahozad.android.PieChart.GradientType.RADIAL
@@ -31,6 +32,7 @@ const val DEFAULT_OVERLAY_RATIO = 0.55f
 const val DEFAULT_OVERLAY_ALPHA = 0.25f
 const val DEFAULT_GAP = 8f /* px */
 const val DEFAULT_LABELS_SIZE = 18f /* sp */
+/* sp so user can easily specify the same value for both label size and icon height to make them the same size */
 const val DEFAULT_LABEL_ICONS_HEIGHT = DEFAULT_LABELS_SIZE /* sp */
 const val DEFAULT_LABEL_ICONS_MARGIN = 28f /* dp */
 const val DEFAULT_LABEL_OFFSET = 0.75f
@@ -116,8 +118,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     enum class IconPlacement { START, END, LEFT, RIGHT, TOP, BOTTOM }
     enum class GradientType { RADIAL, SWEEP }
     enum class GapPosition { MIDDLE, PRECEDING_SLICE, SUCCEEDING_SLICE }
-    /* TODO: Rename inside to internal and outside to external (?) */
-    enum class LabelType { NONE, INSIDE, OUTSIDE, INSIDE_CIRCULAR, OUTSIDE_CIRCULAR, OUTSIDE_WITH_LINES_ON_SIDES }
+    /* TODO: Rename inside to inner or internal and outside to outer or external (?) */
+    enum class LabelType { NONE, INSIDE, OUTSIDE, INSIDE_CIRCULAR, OUTSIDE_CIRCULAR_INWARD, OUTSIDE_CIRCULAR_OUTWARD, OUTSIDE_WITH_LINES_ON_SIDES }
     data class SlicePointer(val length: Float, val width: Float, val color: Int)
     interface Icon { val resId: Int }
     class CustomIcon(@DrawableRes override val resId: Int) : Icon
@@ -261,7 +263,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         // Slice(fraction = 0.125f, label = "qlyO([", color = ContextCompat.getColor(context, android.R.color.holo_purple)),
         // Slice(fraction = 0.5f, label = "qlyO([", color = ContextCompat.getColor(context, android.R.color.holo_blue_dark)),
 
-        Slice(0.43f, ContextCompat.getColor(context, android.R.color.holo_green_dark), labelIcon = R.drawable.ic_circle /*pointer = SlicePointer(50f,100f,0)*/),
+        Slice(0.43f, ContextCompat.getColor(context, android.R.color.holo_green_dark), labelIcon = R.drawable.ic_square /*pointer = SlicePointer(50f,100f,0)*/),
         Slice(0.21f, ContextCompat.getColor(context, android.R.color.holo_orange_dark)),
         Slice(0.19f, ContextCompat.getColor(context, android.R.color.holo_blue_dark)),
         Slice(0.14f, ContextCompat.getColor(context, android.R.color.holo_red_light)),
@@ -351,6 +353,11 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         if (labelType == OUTSIDE) {
             val defaults = Defaults(outsideLabelsMargin, labelsSize, labelsColor, labelsFont, labelIconsHeight, labelIconsMargin, labelIconsPlacement)
             pieEnclosingRect.set(calculatePieNewBoundsForOutsideLabel(context, pieEnclosingRect, slices, drawDirection, startAngle, defaults, shouldCenterPie))
+            center = Coordinates((pieEnclosingRect.left + pieEnclosingRect.right) / 2f, (pieEnclosingRect.top + pieEnclosingRect.bottom) / 2f)
+            pieRadius = pieEnclosingRect.width() / 2f
+        } else if (labelType == OUTSIDE_CIRCULAR_INWARD || labelType == OUTSIDE_CIRCULAR_OUTWARD) {
+            val defaults = Defaults(outsideLabelsMargin, labelsSize, labelsColor, labelsFont, labelIconsHeight, labelIconsMargin, labelIconsPlacement)
+            pieEnclosingRect.set(calculatePieNewBoundsForOutsideCircularLabel(context, pieEnclosingRect, slices, defaults, shouldCenterPie))
             center = Coordinates((pieEnclosingRect.left + pieEnclosingRect.right) / 2f, (pieEnclosingRect.top + pieEnclosingRect.bottom) / 2f)
             pieRadius = pieEnclosingRect.width() / 2f
         }
@@ -473,8 +480,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
 
 
-                // REMOVE this block of statements
-                val rect = RectF(labelCoordinates.x - labelBounds.width() / 2f, labelCoordinates.y + mainPaint.ascent(), labelCoordinates.x + labelBounds.width() / 2f, labelCoordinates.y + mainPaint.descent())
+                // This block of code is for debugging
+                /*val rect = RectF(labelCoordinates.x - labelBounds.width() / 2f, labelCoordinates.y + mainPaint.ascent(), labelCoordinates.x + labelBounds.width() / 2f, labelCoordinates.y + mainPaint.descent())
                 mainPaint.style = Paint.Style.STROKE
                 mainPaint.color = Color.RED
                 canvas.drawRect(rect, mainPaint)
@@ -499,8 +506,46 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 pieCenterMarker.moveTo(center.x + 20, center.y)
                 pieCenterMarker.lineTo(center.x + 200, center.y)
                 canvas.drawPath(pieCenterMarker, mainPaint)
-                mainPaint.style = Paint.Style.FILL
+                mainPaint.style = Paint.Style.FILL*/
 
+
+
+
+            } else if (labelType == OUTSIDE_CIRCULAR_INWARD || labelType == OUTSIDE_CIRCULAR_OUTWARD) {
+                val isOutward = labelType == OUTSIDE_CIRCULAR_OUTWARD
+                var labelIcon : Drawable? = null
+                slice.labelIcon?.let { iconId ->
+                    labelIcon = resources.getDrawable(iconId, null)
+                    (slice.labelIconTint ?: labelIconsTint)?.let { labelIcon?.setTint(it) }
+                }
+                val outsideLabelMargin = slice.outsideLabelMargin ?: outsideLabelsMargin
+                val iconPlacement = slice.labelIconPlacement ?: labelIconsPlacement
+                val iconMargin = slice.labelIconMargin ?: labelIconsMargin
+                val iconHeight = slice.labelIconHeight ?: labelIconsHeight
+                val iconBounds = calculateIconBounds(labelIcon, iconHeight)
+                val pathForLabel = makePathForOutsideCircularLabel(middleAngle, center, pieRadius, slice.label, mainPaint, iconBounds, iconMargin, iconPlacement, outsideLabelMargin, isOutward)
+                val iconRotation = calculateIconRotationAngleForOutsideCircularLabel(middleAngle, pieRadius, outsideLabelMargin, slice.label, mainPaint, iconBounds, iconMargin, iconPlacement, isOutward)
+                val iconAbsoluteBounds = calculateIconAbsoluteBoundsForOutsideCircularLabel(middleAngle, center, pieRadius, slice.label, mainPaint, iconBounds, iconMargin, iconPlacement, outsideLabelMargin)
+                canvas.drawTextOnPath(slice.label, pathForLabel, 0f, 0f, mainPaint)
+                canvas.withRotation(iconRotation, iconAbsoluteBounds.centerX(), iconAbsoluteBounds.centerY()) {
+                    labelIcon?.setBounds(iconAbsoluteBounds.left.toInt(), iconAbsoluteBounds.top.toInt(), iconAbsoluteBounds.right.toInt(), iconAbsoluteBounds.bottom.toInt())
+                    labelIcon?.draw(canvas)
+                }
+
+
+
+
+                // This block of code is for debugging
+                /*mainPaint.style = Paint.Style.STROKE
+                val radius = pieRadius + outsideLabelMargin + max(iconBounds.height(), calculateLabelBounds(slice.label, mainPaint).height()) / 2f
+                val totalFraction = (iconBounds.width() + iconMargin + calculateLabelBounds(slice.label, mainPaint).width()) / (2 * PI.toFloat() * radius)
+                val startAngle = calculateEndAngle(middleAngle, totalFraction / 2f, DrawDirection.COUNTER_CLOCKWISE)
+                val sweepAngle = totalFraction * 360f
+                val bounds = RectF(center.x - radius, center.y - radius, center.x + radius, center.y + radius)
+                canvas.drawArc(bounds, startAngle, sweepAngle, true, mainPaint)
+                mainPaint.style = Paint.Style.STROKE
+                mainPaint.color = Color.RED
+                canvas.drawPath(pathForLabel, mainPaint)*/
 
 
 
