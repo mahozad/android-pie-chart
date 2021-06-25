@@ -38,6 +38,8 @@ const val DEFAULT_OUTSIDE_LABELS_MARGIN = 28f /* dp */
 const val DEFAULT_CENTER_LABEL = ""
 const val DEFAULT_SHOULD_CENTER_PIE = true
 @ColorInt const val DEFAULT_LABELS_COLOR = Color.WHITE
+// If null, the colors of the icon itself is used
+@ColorInt val defaultLabelIconsTint: Int? = null
 val defaultGapPosition = MIDDLE
 val defaultGradientType = RADIAL
 val defaultDrawDirection = CLOCKWISE
@@ -220,6 +222,14 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             field = color
             invalidate()
         }
+    /**
+     * Is overridden by color of the slice if it is assigned a value other than *null*
+     */
+    var labelIconsTint = defaultLabelIconsTint
+        set(color) {
+            field = color
+            invalidate()
+        }
     var slicesPointer = defaultSlicesPointer
         set(pointer) {
             field = pointer
@@ -285,6 +295,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             labelsSize = it.getDimension(R.styleable.PieChart_labelsSize, spToPx(DEFAULT_LABELS_SIZE))
             labelOffset = it.getFloat(R.styleable.PieChart_labelOffset, DEFAULT_LABEL_OFFSET)
             labelsColor = it.getColor(R.styleable.PieChart_labelsColor, DEFAULT_LABELS_COLOR)
+            val iconTint = it.getColor(R.styleable.PieChart_labelIconsTint, /* no value or @null */-1)
+            if (iconTint == -1) labelIconsTint = null
             val fontId = it.getResourceId(R.styleable.PieChart_labelsFont, -1)
             labelsFont = if (fontId == -1) defaultLabelsFont else ResourcesCompat.getFont(context, fontId)!!
             labelIconsHeight = it.getDimension(R.styleable.PieChart_labelIconsHeight, spToPx(DEFAULT_LABEL_ICONS_HEIGHT))

@@ -62,6 +62,8 @@
     <attr name="labelIconsMargin" format="dimension"/>
     <attr name="labelOffset" format="float"/>
     <attr name="labelsColor" format="color"/>
+    <!-- The value can be @null too -->
+    <attr name="labelIconsTint" format="color"/>
     <attr name="outsideLabelsMargin" format="dimension"/>
     <attr name="labelIconsPlacement" format="enum">
       <!-- Positions the icon at the start.
