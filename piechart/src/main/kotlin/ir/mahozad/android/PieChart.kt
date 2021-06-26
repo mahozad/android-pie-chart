@@ -295,6 +295,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             labelsSize = it.getDimension(R.styleable.PieChart_labelsSize, spToPx(DEFAULT_LABELS_SIZE))
             labelOffset = it.getFloat(R.styleable.PieChart_labelOffset, DEFAULT_LABEL_OFFSET)
             labelsColor = it.getColor(R.styleable.PieChart_labelsColor, DEFAULT_LABELS_COLOR)
+            // FIXME: This always returns the default value (-1)
             val iconTint = it.getColor(R.styleable.PieChart_labelIconsTint, /* no value or @null */-1)
             if (iconTint == -1) labelIconsTint = null
             val fontId = it.getResourceId(R.styleable.PieChart_labelsFont, -1)
