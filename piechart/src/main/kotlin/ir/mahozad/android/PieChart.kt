@@ -34,7 +34,7 @@ const val DEFAULT_GAP = 8f /* px */
 const val DEFAULT_LABELS_SIZE = 18f /* sp */
 /* sp so user can easily specify the same value for both label size and icon height to make them the same size */
 const val DEFAULT_LABEL_ICONS_HEIGHT = DEFAULT_LABELS_SIZE /* sp */
-const val DEFAULT_LABEL_ICONS_MARGIN = 28f /* dp */
+const val DEFAULT_LABEL_ICONS_MARGIN = 8f /* dp */
 const val DEFAULT_LABEL_OFFSET = 0.75f
 const val DEFAULT_OUTSIDE_LABELS_MARGIN = 28f /* dp */
 const val DEFAULT_CENTER_LABEL = ""
