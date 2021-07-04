@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "ir.mahozad.android"
-version = "0.3.0"
+version = "0.4.0"
 val githubProjectName = "android-pie-chart"
 
 android {
@@ -41,7 +41,7 @@ android {
     defaultConfig {
         minSdkVersion(21)
         targetSdkVersion(30)
-        versionCode = 3
+        versionCode = 4
         versionName = project.version.toString()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArgument("runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder")

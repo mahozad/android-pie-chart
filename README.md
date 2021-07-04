@@ -10,7 +10,7 @@ A Pie/Donut/Ring chart for Android.
 
 ### build.gradle[.kts]
 ```groovy
-implementation("ir.mahozad.android:pie-chart:0.3.0")
+implementation("ir.mahozad.android:pie-chart:0.4.0")
 ```
 
 ### layout.xml
