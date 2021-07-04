@@ -14,14 +14,16 @@ The required properties for publishing tasks can either be declared in an ignore
 Refer to [this script](../scripts/publish.gradle) for required values.
 
 To publish a new version:
-  1. Publish on Maven Central
+  1. Run the *incrementVersion* task  
+     Usage: ```gradlew incrementVersion [-P[mode=major|minor|patch]|[overrideVersion=x]]```
+  2. Publish on Maven Central
      1. Run the Gradle task
      *publish<NAME_OF_THE_PUBLISH_DEFINED_IN_BUILD_SCRIPT>PublicationToSonatypeRepository*
       on the desired project (module) to stage it on Sonatype
      2. Run the Gradle task
         *closeAndReleaseSonatypeStagingRepository* on the root project
         or visit the sonatype Web app as described in the PDF to release it
-  2. Run the Gradle task
+  3. Run the Gradle task
      *publish<NAME_OF_THE_PUBLISH_DEFINED_IN_BUILD_SCRIPT>PublicationToGitHubPackagesRepository*
      on the desired project (module) to publish it on GitHub
 
