@@ -2,14 +2,14 @@
 
 ## v0.4.0 (2021-07-04)
 #### New features
-- Outside inward circular label
-- Outside outward circular label
-- Attribute to change label icon tint for all slices
+  - Outside inward circular label
+  - Outside outward circular label
+  - Attribute to change label icon tint for all slices
 #### Updates
-- Update *androidx.core* dependency
-- Decrease default icon margin
+  - Update *androidx.core* dependency
+  - Decrease default icon margin
 #### Removals
-- Remove unneeded library dependencies
+  - Remove unneeded library dependencies
 
 ## v0.3.0 (2021-06-05)
 #### New features
