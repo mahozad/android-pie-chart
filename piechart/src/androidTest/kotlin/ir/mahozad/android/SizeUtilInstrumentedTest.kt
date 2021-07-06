@@ -873,7 +873,7 @@ class SizeUtilInstrumentedTest {
         for ((i, corner) in coordinates.withIndex()) {
             assertThat(corner)
                 .usingRecursiveComparison()
-                .withComparatorForFields(FloatComparator(1f), Coordinates::x.name, Coordinates::y.name)
+                .withComparatorForFields(FloatComparator(0.01f), Coordinates::x.name, Coordinates::y.name)
                 .isEqualTo(expectedCoordinates[i])
         }
     }
@@ -884,24 +884,24 @@ class SizeUtilInstrumentedTest {
         val expectedCoordinatesByPosition = mapOf(
             PieChart.GapPosition.MIDDLE to listOf(
                 listOf(Coordinates(500f, 510f), Coordinates(650f, 510f), Coordinates(650f, 490f), Coordinates(500f, 490f)),
-                listOf(Coordinates(495f, 508f), Coordinates(624f, 583f), Coordinates(634f, 566f), Coordinates(505f, 491f)),
-                listOf(Coordinates(491f, 495f), Coordinates(416f, 624f), Coordinates(433f, 634f), Coordinates(508f, 505f)),
-                listOf(Coordinates(505f, 491f), Coordinates(375f, 416f), Coordinates(365f, 433f), Coordinates(495f, 508f)),
-                listOf(Coordinates(505f, 508f), Coordinates(634f, 433f), Coordinates(624f, 416f), Coordinates(495f, 491f))
+                listOf(Coordinates(495f, 508.66f), Coordinates(624.90f, 583.66f), Coordinates(634.90f, 566.34f), Coordinates(505f, 491.34f)),
+                listOf(Coordinates(491.34f, 495f), Coordinates(416.34f, 624.90f), Coordinates(433.66f, 634.90f), Coordinates(508.66f, 505f)),
+                listOf(Coordinates(505f, 491.34f), Coordinates(375.10f, 416.34f), Coordinates(365.10f, 433.66f), Coordinates(495f, 508.66f)),
+                listOf(Coordinates(505f, 508.66f), Coordinates(634.90f, 433.66f), Coordinates(624.90f, 416.34f), Coordinates(495f, 491.34f))
             ),
             PieChart.GapPosition.PRECEDING_SLICE to listOf(
                 listOf(Coordinates(500f, 500f), Coordinates(650f, 500f), Coordinates(650f, 480f), Coordinates(500f, 480f)),
-                listOf(Coordinates(500f, 500f), Coordinates(630f, 575f), Coordinates(640f, 558f), Coordinates(510f, 483f)),
-                listOf(Coordinates(500f, 500f), Coordinates(425f, 630f), Coordinates(442f, 640f), Coordinates(517f, 510f)),
-                listOf(Coordinates(500f, 500f), Coordinates(370f, 425f), Coordinates(360f, 442f), Coordinates(490f, 517f)),
-                listOf(Coordinates(500f, 500f), Coordinates(629f, 425f), Coordinates(620f, 408f), Coordinates(490f, 483f))
+                listOf(Coordinates(500f, 500f), Coordinates(629.90f, 575f), Coordinates(639.90f, 557.68f), Coordinates(510f, 482.68f)),
+                listOf(Coordinates(500f, 500f), Coordinates(425f, 629.90f), Coordinates(442.32f, 639.90f), Coordinates(517.32f, 510f)),
+                listOf(Coordinates(500f, 500f), Coordinates(370.10f, 425f), Coordinates(360.10f, 442.32f), Coordinates(490f, 517.32f)),
+                listOf(Coordinates(500f, 500f), Coordinates(629.90f, 425f), Coordinates(619.90f, 407.67f), Coordinates(490f, 482.68f))
             ),
             PieChart.GapPosition.SUCCEEDING_SLICE to listOf(
                 listOf(Coordinates(500f, 520f), Coordinates(650f, 520f), Coordinates(650f, 500f), Coordinates(500f, 500f)),
-                listOf(Coordinates(490f, 517f), Coordinates(620f, 592f), Coordinates(630f, 575f), Coordinates(500f, 500f)),
-                listOf(Coordinates(483f, 490f), Coordinates(408f, 620f), Coordinates(425f, 630f), Coordinates(500f, 500f)),
-                listOf(Coordinates(510f, 483f), Coordinates(380f, 408f), Coordinates(370f, 425f), Coordinates(500f, 500f)),
-                listOf(Coordinates(510f, 517f), Coordinates(640f, 442f), Coordinates(630f, 425f), Coordinates(500f, 500f)),
+                listOf(Coordinates(490f, 517.32f), Coordinates(619.90f, 592.32f), Coordinates(629.90f, 575f), Coordinates(500f, 500f)),
+                listOf(Coordinates(482.68f, 490f), Coordinates(407.68f, 619.90f), Coordinates(425f, 629.90f), Coordinates(500f, 500f)),
+                listOf(Coordinates(510f, 482.68f), Coordinates(380.10f, 407.68f), Coordinates(370.10f, 425f), Coordinates(500f, 500f)),
+                listOf(Coordinates(510f, 517.32f), Coordinates(639.90f, 442.32f), Coordinates(629.90f, 425f), Coordinates(500f, 500f)),
             )
         )
         val arguments = mutableListOf<Arguments>()
@@ -1095,7 +1095,7 @@ class SizeUtilInstrumentedTest {
 
         assertThat(bounds)
             .usingRecursiveComparison()
-            .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
+            .withComparatorForFields(FloatComparator(0.01f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
             .isEqualTo(expectedBounds)
     }
 
@@ -1104,26 +1104,26 @@ class SizeUtilInstrumentedTest {
         val angles = arrayOf(0f, 10f, 45f, 90f, 91f)
         val offsets = arrayOf(0f, 0.5f, 0.75f, 1f)
         val expectedBounds = arrayOf(
-            RectF(295f, 334f, 505f, 467f),
-            RectF(545f, 334f, 755f, 467f),
-            RectF(670f, 334f, 880f, 467f),
-            RectF(795f, 334f, 1005f, 467f),
-            RectF(295f, 334f, 505f, 467f),
-            RectF(541f, 377f, 751f, 510f),
-            RectF(664f, 399f, 874f, 532f),
-            RectF(787f, 420f, 997f, 553f),
-            RectF(295f, 334f, 505f, 467f),
-            RectF(472f, 510f, 682f, 643f),
-            RectF(560f, 599f, 770f, 732f),
-            RectF(649f, 687f, 859f, 820f),
-            RectF(295f, 334f, 505f, 467f),
-            RectF(295f, 584f, 505f, 717f),
-            RectF(295f, 709f, 505f, 842f),
-            RectF(295f, 834f, 505f, 967f),
-            RectF(295f, 334f, 505f, 467f),
-            RectF(291f, 583f, 501f, 716f),
-            RectF(288f, 708f, 498f, 841f),
-            RectF(286f, 833f, 496f, 966f)
+            RectF(295f, 333.5f, 505f, 466.5f),
+            RectF(545f, 333.5f, 755f, 466.5f),
+            RectF(670f, 333.5f, 880f, 466.5f),
+            RectF(795f, 333.5f, 1005f, 466.5f),
+            RectF(295f, 333.5f, 505f, 466.5f),
+            RectF(541.20f, 376.91f, 751.20f, 509.91f),
+            RectF(664.30f, 398.62f, 874.30f, 531.62f),
+            RectF(787.40f, 420.32f, 997.40f, 553.32f),
+            RectF(295f, 333.5f, 505f, 466.5f),
+            RectF(471.78f, 510.28f, 681.78f, 643.28f),
+            RectF(560.17f, 598.67f, 770.17f, 731.67f),
+            RectF(648.55f, 687.05f, 858.55f, 820.05f),
+            RectF(295f, 333.5f, 505f, 466.5f),
+            RectF(295f, 583.5f, 505f, 716.5f),
+            RectF(295f, 708.5f, 505f, 841.5f),
+            RectF(295f, 833.5f, 505f, 966.5f),
+            RectF(295f, 333.5f, 505f, 466.5f),
+            RectF(290.64f, 583.46f, 500.64f, 716.46f),
+            RectF(288.46f, 708.44f, 498.46f, 841.44f),
+            RectF(286.27f, 833.42f, 496.27f, 966.42f)
         )
         var i = 0
         val arguments = mutableListOf<Arguments>()
@@ -1185,8 +1185,8 @@ class SizeUtilInstrumentedTest {
 
         assertThat(bounds)
             .usingRecursiveComparison()
-            .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
-            .isEqualTo(RectF(217f, 217f, 863f, 863f))
+            .withComparatorForFields(FloatComparator(0.01f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
+            .isEqualTo(RectF(216.87f, 216.87f, 863.13f, 863.13f))
     }
 
     @Test fun calculatePieNewBoundsForOutsideLabel_WithDrawingClockWiseAndNoMarginAndFalseShouldCenterPieAndLongLabelOnLeftSide() {
@@ -1210,8 +1210,8 @@ class SizeUtilInstrumentedTest {
 
         assertThat(bounds)
             .usingRecursiveComparison()
-            .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
-            .isEqualTo(RectF(369f, 235f, 1000f, 866f))
+            .withComparatorForFields(FloatComparator(0.01f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
+            .isEqualTo(RectF(369f, 234.5f, 1000f, 865.5f))
     }
 
     @Test fun calculatePieNewBoundsForOutsideLabel_WithDrawingCounterClockWiseAndNoMarginAndShouldCenterPieFalse() {
@@ -1237,7 +1237,7 @@ class SizeUtilInstrumentedTest {
 
         assertThat(bounds)
             .usingRecursiveComparison()
-            .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
+            .withComparatorForFields(FloatComparator(0.01f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
             .isEqualTo(RectF(369f, 234.5f, 1000f, 865.5f))
     }
 
@@ -1310,7 +1310,7 @@ class SizeUtilInstrumentedTest {
 
         assertThat(bounds)
             .usingRecursiveComparison()
-            .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
+            .withComparatorForFields(FloatComparator(0.01f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
             .isEqualTo(RectF(137f, 174f, 963f, 1000f))
     }
 
@@ -1336,8 +1336,8 @@ class SizeUtilInstrumentedTest {
 
         assertThat(bounds)
             .usingRecursiveComparison()
-            .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
-            .isEqualTo( RectF(100f, 143f, 915f, 957f))
+            .withComparatorForFields(FloatComparator(0.01f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
+            .isEqualTo(RectF(100f, 142.74f, 914.52f, 957.26f))
     }
 
     // endregion
@@ -1524,7 +1524,7 @@ class SizeUtilInstrumentedTest {
 
         assertThat(bounds)
             .usingRecursiveComparison()
-            .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
+            .withComparatorForFields(FloatComparator(0.01f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
             .isEqualTo(expectedBounds)
     }
 
@@ -1543,8 +1543,8 @@ class SizeUtilInstrumentedTest {
 
         assertThat(bounds)
             .usingRecursiveComparison()
-            .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
-            .isEqualTo(RectF(980f, 465f, 1092f, 535f))
+            .withComparatorForFields(FloatComparator(0.01f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
+            .isEqualTo(RectF(980f, 464.84f, 1092f, 535.16f))
     }
 
     /**
@@ -1561,8 +1561,8 @@ class SizeUtilInstrumentedTest {
 
         assertThat(bounds)
             .usingRecursiveComparison()
-            .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
-            .isEqualTo(RectF(1129f, 544f, 1208f, 593f))
+            .withComparatorForFields(FloatComparator(0.01f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
+            .isEqualTo(RectF(1129.31f, 543.89f, 1208.31f, 593.22f))
     }
 
     @Suppress("unused")
@@ -1572,25 +1572,25 @@ class SizeUtilInstrumentedTest {
             180.1f, 230f, 269.9f, 270f, 270.1f, 320f, 359.9f, 360f, 400f
         )
         val expectedCoordinates = arrayOf(
-            RectF(921f, 316f, 1084f, 416f),
+            RectF(921.58f, 315.33f, 1083.58f, 415.33f),
             RectF(930f, 450f, 1092f, 550f),
-            RectF(929f, 450f, 1092f, 550f),
-            RectF(753f, 848f, 915f, 948f),
-            RectF(420f, 930f, 582f, 1030f),
+            RectF(930f, 450.89f, 1092f, 550.89f),
+            RectF(752.82f, 847.83f, 914.82f, 947.83f),
+            RectF(419.84f, 930f, 581.84f, 1030f),
             RectF(419f, 930f, 581f, 1030f),
-            RectF(418f, 930f, 580f, 1030f),
-            RectF(18f, 787f, 180f, 887f),
-            RectF(-92f, 451f, 70f, 551f),
+            RectF(418.16f, 930f, 580.16f, 1030f),
+            RectF(17.62f, 786.80f, 179.62f, 886.80f),
+            RectF(-92f, 450.89f, 70f, 550.90f),
             RectF(-92f, 450f, 70f, 550f),
-            RectF(-92f, 449f, 70f, 549f),
-            RectF(85f, 52f, 247f, 152f),
-            RectF(418f, -30f, 580f, 70f),
+            RectF(-92f, 449.11f, 70f, 549.11f),
+            RectF(85.18f, 52.17f, 247.18f, 152.17f),
+            RectF(418.16f, -30f, 580.16f, 70f),
             RectF(419f, -30f, 581f, 70f),
-            RectF(420f, -30f, 582f, 70f),
-            RectF(820f, 113f, 982f, 213f),
-            RectF(930f, 449f, 1092f, 549f),
+            RectF(419.84f, -30f, 581.84f, 70f),
+            RectF(820.38f, 113.20f, 982.38f, 213.20f),
+            RectF(930f, 449.11f, 1092f, 549.11f),
             RectF(930f, 450f, 1092f, 550f),
-            RectF(820f, 787f, 982f, 887f)
+            RectF(820.38f, 786.80f, 982.38f, 886.80f)
         )
         return angles.mapIndexed { i, angle -> arguments(angle, expectedCoordinates[i]) }
     }
@@ -1693,7 +1693,7 @@ class SizeUtilInstrumentedTest {
 
         assertThat(bounds)
             .usingRecursiveComparison()
-            .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
+            .withComparatorForFields(FloatComparator(0.01f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
             .isEqualTo(expectedBounds)
     }
 
@@ -1710,7 +1710,7 @@ class SizeUtilInstrumentedTest {
 
         assertThat(bounds)
             .usingRecursiveComparison()
-            .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
+            .withComparatorForFields(FloatComparator(0.01f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
             .isEqualTo(RectF(0f, 0f, 0f, 0f))
     }
 
@@ -1728,7 +1728,7 @@ class SizeUtilInstrumentedTest {
 
         assertThat(bounds)
             .usingRecursiveComparison()
-            .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
+            .withComparatorForFields(FloatComparator(0.01f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
             .isEqualTo(RectF(0f, 0f, 100f, 100f))
     }
 
@@ -1746,7 +1746,7 @@ class SizeUtilInstrumentedTest {
 
         assertThat(bounds)
             .usingRecursiveComparison()
-            .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
+            .withComparatorForFields(FloatComparator(0.01f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
             .isEqualTo(RectF(0f, 0f, 100f, 100f))
     }
 
@@ -1757,45 +1757,45 @@ class SizeUtilInstrumentedTest {
         val iconMargins = arrayOf(-10f, 0f, 20f)
         val arguments = mutableListOf<Arguments>()
         val expectedBounds = arrayOf(
-            RectF(0f, 0f, 112f, 70f),
-            RectF(0f, 0f, 112f, 70f),
-            RectF(0f, 0f, 112f, 70f),
-            RectF(0f, 0f, 132f, 70f),
-            RectF(0f, 0f, 142f, 70f),
-            RectF(0f, 0f, 162f, 70f),
+            RectF(0f, 0f, 112f, 70.31f),
+            RectF(0f, 0f, 112f, 70.31f),
+            RectF(0f, 0f, 112f, 70.31f),
+            RectF(0f, 0f, 132f, 70.31f),
+            RectF(0f, 0f, 142f, 70.31f),
+            RectF(0f, 0f, 162f, 70.31f),
             RectF(0f, 0f, 202f, 100f),
             RectF(0f, 0f, 212f, 100f),
             RectF(0f, 0f, 232f, 100f),
 
-            RectF(0f, 0f, 112f, 70f),
-            RectF(0f, 0f, 112f, 70f),
-            RectF(0f, 0f, 112f, 70f),
-            RectF(0f, 0f, 132f, 70f),
-            RectF(0f, 0f, 142f, 70f),
-            RectF(0f, 0f, 162f, 70f),
+            RectF(0f, 0f, 112f, 70.31f),
+            RectF(0f, 0f, 112f, 70.31f),
+            RectF(0f, 0f, 112f, 70.31f),
+            RectF(0f, 0f, 132f, 70.31f),
+            RectF(0f, 0f, 142f, 70.31f),
+            RectF(0f, 0f, 162f, 70.31f),
             RectF(0f, 0f, 202f, 100f),
             RectF(0f, 0f, 212f, 100f),
             RectF(0f, 0f, 232f, 100f),
 
-            RectF(0f, 0f, 112f, 70f),
-            RectF(0f, 0f, 112f, 70f),
-            RectF(0f, 0f, 112f, 70f),
-            RectF(0f, 0f, 112f, 90f),
-            RectF(0f, 0f, 112f, 100f),
-            RectF(0f, 0f, 112f, 120f),
-            RectF(0f, 0f, 112f, 160f),
-            RectF(0f, 0f, 112f, 170f),
-            RectF(0f, 0f, 112f, 190f),
+            RectF(0f, 0f, 112f, 70.31f),
+            RectF(0f, 0f, 112f, 70.31f),
+            RectF(0f, 0f, 112f, 70.31f),
+            RectF(0f, 0f, 112f, 90.31f),
+            RectF(0f, 0f, 112f, 100.31f),
+            RectF(0f, 0f, 112f, 120.31f),
+            RectF(0f, 0f, 112f, 160.31f),
+            RectF(0f, 0f, 112f, 170.31f),
+            RectF(0f, 0f, 112f, 190.31f),
 
-            RectF(0f, 0f, 112f, 70f),
-            RectF(0f, 0f, 112f, 70f),
-            RectF(0f, 0f, 112f, 70f),
-            RectF(0f, 0f, 112f, 90f),
-            RectF(0f, 0f, 112f, 100f),
-            RectF(0f, 0f, 112f, 120f),
-            RectF(0f, 0f, 112f, 160f),
-            RectF(0f, 0f, 112f, 170f),
-            RectF(0f, 0f, 112f, 190f),
+            RectF(0f, 0f, 112f, 70.31f),
+            RectF(0f, 0f, 112f, 70.31f),
+            RectF(0f, 0f, 112f, 70.31f),
+            RectF(0f, 0f, 112f, 90.31f),
+            RectF(0f, 0f, 112f, 100.31f),
+            RectF(0f, 0f, 112f, 120.31f),
+            RectF(0f, 0f, 112f, 160.31f),
+            RectF(0f, 0f, 112f, 170.31f),
+            RectF(0f, 0f, 112f, 190.31f),
         )
         var i = 0
         for (iconPlacement in iconPlacements) {
@@ -1812,7 +1812,7 @@ class SizeUtilInstrumentedTest {
                 }
             }
         }
-        arguments.add(arguments(120f, -30, TOP, RectF(0f, 0f, 120f, 160f)))
+        arguments.add(arguments(120f, -30, TOP, RectF(0f, 0f, 120f, 160.31f)))
         return arguments
     }
 
@@ -1863,8 +1863,8 @@ class SizeUtilInstrumentedTest {
 
         assertThat(bounds)
             .usingRecursiveComparison()
-            .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
-            .isEqualTo(RectF(200f, 200f, 900f, 900f))
+            .withComparatorForFields(FloatComparator(0.01f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
+            .isEqualTo(RectF(200.31f, 200.31f, 899.69f, 899.69f))
     }
 
     @Test fun calculatePieNewBoundsForOutsideCircularLabel_WithMarginsButNoTopOrBottomIcon() {
@@ -1888,8 +1888,8 @@ class SizeUtilInstrumentedTest {
 
         assertThat(bounds)
             .usingRecursiveComparison()
-            .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
-            .isEqualTo(RectF(200f, 200f, 900f, 900f))
+            .withComparatorForFields(FloatComparator(0.01f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
+            .isEqualTo(RectF(200.31f, 200.31f, 899.69f, 899.69f))
     }
 
     @Test fun calculatePieNewBoundsForOutsideCircularLabel_WithLabelIconOnSideAndLargerLabelHeight() {
@@ -1932,7 +1932,7 @@ class SizeUtilInstrumentedTest {
         val rotationAngle = calculateIconRotationAngleForOutsideCircularLabel(sliceMiddleAngle, pieRadius, outsideLabelMargin, label, labelPaint, iconBounds, iconMargin, iconPlacement, isOutward)
 
         assertThat(rotationAngle)
-            .usingComparator(FloatComparator(1f))
+            .usingComparator(FloatComparator(0.01f))
             .isEqualTo(expectedAngle)
     }
 
@@ -1959,23 +1959,23 @@ class SizeUtilInstrumentedTest {
         /* BOTTOM icon with an arbitrary icon margin and label size 0 */
         arguments(0f, RectF(0f, 0f, 70f, 50f), 44f, BOTTOM, false, 420f),
         /* LEFT shorter icon with icon margin 0 */
-        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, LEFT, false, 415f),
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, LEFT, false, 414.57f),
         /* LEFT taller icon with icon margin 0 */
-        arguments(60f, RectF(0f, 0f, 10f, 100f), 0f, LEFT, false, 415f),
+        arguments(60f, RectF(0f, 0f, 10f, 100f), 0f, LEFT, false, 414.71f),
         /* LEFT icon with an arbitrary icon margin */
-        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, LEFT, false, 412f),
+        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, LEFT, false, 412.44f),
         /* No LEFT icon with an arbitrary icon margin */
-        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, LEFT, false, 415f),
+        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, LEFT, false, 414.57f),
         /* LEFT icon with an arbitrary icon margin and label size 0 */
         arguments(0f, RectF(0f, 0f, 70f, 50f), 44f, LEFT, false, 420f),
         /* RIGHT shorter icon with icon margin 0 */
-        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, RIGHT, false, 425f),
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, RIGHT, false, 425.43f),
         /* RIGHT taller icon with icon margin 0 */
-        arguments(60f, RectF(0f, 0f, 150f, 100f), 0f, RIGHT, false, 425f),
+        arguments(60f, RectF(0f, 0f, 150f, 100f), 0f, RIGHT, false, 425.29f),
         /* RIGHT icon with an arbitrary icon margin */
-        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, RIGHT, false, 428f),
+        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, RIGHT, false, 427.56f),
         /* No RIGHT icon with an arbitrary icon margin */
-        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, RIGHT, false, 425f),
+        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, RIGHT, false, 425.43f),
         /* RIGHT icon with an arbitrary icon margin and label size 0 */
         arguments(0f, RectF(0f, 0f, 70f, 50f), 44f, RIGHT, false, 420f),
         ////////////// OUTWARD //////////////
@@ -1984,9 +1984,9 @@ class SizeUtilInstrumentedTest {
         /* BOTTOM icon */
         arguments(60f, RectF(0f, 0f, 5f, 10f), 20f, BOTTOM, false, 420f),
         /* LEFT icon */
-        arguments(60f, RectF(0f, 0f, 5f, 10f), 20f, LEFT, false, 414f),
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 20f, LEFT, false, 413.60f),
         /* RIGHT icon */
-        arguments(60f, RectF(0f, 0f, 5f, 10f), 20f, RIGHT, false, 426f),
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 20f, RIGHT, false, 426.40f),
     )
 
     // endregion
@@ -2009,52 +2009,52 @@ class SizeUtilInstrumentedTest {
 
         assertThat(bounds)
             .usingRecursiveComparison()
-            .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
+            .withComparatorForFields(FloatComparator(0.01f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
             .isEqualTo(expectedBounds)
     }
 
     @Suppress("unused")
     private fun argumentProvider10() = listOf(
         /* TOP narrower icon with icon margin 0 */
-        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, TOP, RectF(954f, 89f, 959f, 99f)),
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, TOP, RectF(954.23f, 89.34f, 959.23f, 99.34f)),
         /* TOP wider icon with icon margin 0 */
-        arguments(60f, RectF(0f, 0f, 100f, 10f), 0f, TOP, RectF(907f, 89f, 1007f, 99f)),
+        arguments(60f, RectF(0f, 0f, 100f, 10f), 0f, TOP, RectF(906.73f, 89.34f, 1006.73f, 99.34f)),
         /* TOP icon with an arbitrary icon margin */
-        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, TOP, RectF(977f, 37f, 1047f, 87f)),
+        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, TOP, RectF(977.16f, 37.34f, 1047.16f, 87.34f)),
         /* No TOP icon with an arbitrary icon margin (can also accept RectF(0f, 0f, 0f, 0f)) */
-        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, TOP, RectF(952f, 97f, 952f, 97f)),
+        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, TOP, RectF(952.40f, 96.84f, 952.40f, 96.84f)),
         /* TOP icon with an arbitrary icon margin and label size 0 */
-        arguments(0f, RectF(0f, 0f, 70f, 50f), 44f, TOP, RectF(878f, 95f, 948f, 145f)),
+        arguments(0f, RectF(0f, 0f, 70f, 50f), 44f, TOP, RectF(878.16f, 94.50f, 948.16f, 144.50f)),
         /* BOTTOM narrower icon with icon margin 0 */
-        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, BOTTOM, RectF(893f, 125f, 898f, 135f)),
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, BOTTOM, RectF(893.34f, 124.50f, 898.34f, 134.50f)),
         /* BOTTOM wider icon with icon margin 0 */
-        arguments(60f, RectF(0f, 0f, 100f, 10f), 0f, BOTTOM, RectF(846f, 125f, 946f, 135f)),
+        arguments(60f, RectF(0f, 0f, 100f, 10f), 0f, BOTTOM, RectF(845.84f, 124.50f, 945.84f, 134.50f)),
         /* BOTTOM icon with an arbitrary icon margin */
-        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, BOTTOM, RectF(878f, 95f, 948f, 145f)),
+        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, BOTTOM, RectF(878.16f, 94.50f, 948.16f, 144.50f)),
         /* No BOTTOM icon with an arbitrary icon margin (can also accept RectF(0f, 0f, 0f, 0f)) */
-        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, BOTTOM, RectF(892f, 132f, 892f, 132f)),
+        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, BOTTOM, RectF(891.51f, 132.00f, 891.51f, 132.00f)),
         /* BOTTOM icon with an arbitrary icon margin and label size 0 */
-        arguments(0f, RectF(0f, 0f, 70f, 50f), 44f, BOTTOM, RectF(878f, 95f, 948f, 145f)),
+        arguments(0f, RectF(0f, 0f, 70f, 50f), 44f, BOTTOM, RectF(878.16f, 94.50f, 948.16f, 144.50f)),
         /* LEFT shorter icon with icon margin 0 */
-        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, LEFT, RectF(889f, 62f, 894f, 72f)),
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, LEFT, RectF(889.20f, 62.32f, 894.20f, 72.32f)),
         /* LEFT taller icon with icon margin 0 */
-        arguments(60f, RectF(0f, 0f, 10f, 100f), 0f, LEFT, RectF(900f, 10f, 910f, 110f)),
+        arguments(60f, RectF(0f, 0f, 10f, 100f), 0f, LEFT, RectF(899.61f, 9.86f, 909.61f, 109.86f)),
         /* LEFT icon with an arbitrary icon margin */
-        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, LEFT, RectF(844f, 25f, 914f, 75f)),
+        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, LEFT, RectF(843.62f, 24.64f, 913.62f, 74.64f)),
         /* No LEFT icon with an arbitrary icon margin (can also accept RectF(0f, 0f, 0f, 0f)) */
-        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, LEFT, RectF(892f, 67f, 892f, 67f)),
+        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, LEFT, RectF(891.70f, 67.32f, 891.70f, 67.32f)),
         /* LEFT icon with an arbitrary icon margin and label size 0 */
-        arguments(0f, RectF(0f, 0f, 70f, 50f), 44f, LEFT, RectF(878f, 95f, 948f, 145f)),
+        arguments(0f, RectF(0f, 0f, 70f, 50f), 44f, LEFT, RectF(878.16f, 94.50f, 948.16f, 144.50f)),
         /* RIGHT shorter icon with icon margin 0 */
-        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, RIGHT, RectF(945f, 159f, 950f, 169f)),
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, RIGHT, RectF(945.12f, 159.17f, 950.12f, 169.17f)),
         /* RIGHT taller icon with icon margin 0 */
-        arguments(60f, RectF(0f, 0f, 10f, 100f), 0f, RIGHT, RectF(956f, 107f, 966f, 207f)),
+        arguments(60f, RectF(0f, 0f, 10f, 100f), 0f, RIGHT, RectF(955.53f, 106.72f, 965.53f, 206.72f)),
         /* RIGHT icon with an arbitrary icon margin */
-        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, RIGHT, RectF(921f, 159f, 991f, 209f)),
+        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, RIGHT, RectF(921.39f, 159.35f, 991.39f, 209.35f)),
         /* No RIGHT icon with an arbitrary icon margin */
-        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, RIGHT, RectF(948f, 164f, 948f, 164f)),
+        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, RIGHT, RectF(947.62f, 164.17f, 947.62f, 164.17f)),
         /* RIGHT icon with an arbitrary icon margin and label size 0 */
-        arguments(0f, RectF(0f, 0f, 70f, 50f), 44f, RIGHT, RectF(878f, 95f, 948f, 145f)),
+        arguments(0f, RectF(0f, 0f, 70f, 50f), 44f, RIGHT, RectF(878.16f, 94.50f, 948.16f, 144.50f)),
     )
 
     // endregion
@@ -2079,65 +2079,65 @@ class SizeUtilInstrumentedTest {
         path.computeBounds(pathBounds, true)
         assertThat(pathBounds)
             .usingRecursiveComparison()
-            .withComparatorForFields(FloatComparator(1f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
+            .withComparatorForFields(FloatComparator(0.01f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
             .isEqualTo(expectedPathBounds)
 
         assertThat(PathMeasure(path, false).length)
-            .usingComparator(FloatComparator(1f))
+            .usingComparator(FloatComparator(0.01f))
             .isEqualTo(expectedPathLength)
     }
 
     @Suppress("unused")
     private fun argumentProvider11() = listOf(
         /* TOP narrower icon with icon margin 0 */
-        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, TOP, false, 112f, RectF(874f, 78f, 930f, 174f)),
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, TOP, false, 111.99f, RectF(873.86f, 77.63f, 929.77f, 174.47f)),
         /* TOP wider icon with icon margin 0 */
-        arguments(60f, RectF(0f, 0f, 100f, 10f), 0f, TOP, false, 112f, RectF(874f, 78f, 930f, 174f)),
+        arguments(60f, RectF(0f, 0f, 100f, 10f), 0f, TOP, false, 111.99f, RectF(873.86f, 77.63f, 929.77f, 174.47f)),
         /* TOP icon with an arbitrary icon margin */
-        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, TOP, false, 112f, RectF(874f, 78f, 930f, 174f)),
+        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, TOP, false, 111.99f, RectF(873.86f, 77.63f, 929.77f, 174.47f)),
         /* No TOP icon with an arbitrary icon margin */
-        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, TOP, false, 112f, RectF(874f, 78f, 930f, 174f)),
+        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, TOP, false, 111.99f, RectF(873.86f, 77.63f, 929.77f, 174.47f)),
         /* TOP icon with an arbitrary icon margin and label size 0 */
         arguments(0f, RectF(0f, 0f, 70f, 50f), 44f, TOP, false, 0f, RectF(0f, 0f, 0f, 0f)),
         /* BOTTOM narrower icon with icon margin 0 */
-        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, BOTTOM, false, 112f, RectF(883f, 73f, 938f, 169f)),
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, BOTTOM, false, 111.99f, RectF(882.56f, 72.60f, 938.48f, 169.45f)),
         /* BOTTOM wider icon with icon margin 0 */
-        arguments(60f, RectF(0f, 0f, 100f, 10f), 0f, BOTTOM, false, 112f, RectF(883f, 73f, 938f, 169f)),
+        arguments(60f, RectF(0f, 0f, 100f, 10f), 0f, BOTTOM, false, 111.99f, RectF(882.56f, 72.60f, 938.48f, 169.45f)),
         /* BOTTOM icon with an arbitrary icon margin */
-        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, BOTTOM, false, 112f, RectF(956f, 30f, 1012f, 127f)),
+        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, BOTTOM, false, 111.98f, RectF(955.59f, 30.41f, 1011.53f, 127.29f)),
         /* No BOTTOM icon with an arbitrary icon margin */
-        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, BOTTOM, false, 112f, RectF(874f, 78f, 930f, 174f)),
+        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, BOTTOM, false, 111.99f, RectF(873.86f, 77.63f, 929.77f, 174.47f)),
         /* BOTTOM icon with an arbitrary icon margin and label size 0 */
         arguments(0f, RectF(0f, 0f, 70f, 50f), 44f, BOTTOM, false, 0f, RectF(0f, 0f, 0f, 0f)),
         /* LEFT shorter icon with icon margin 0 */
-        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, LEFT, false, 112f, RectF(876f, 81f, 932f, 178f)),
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, LEFT, false, 111.99f, RectF(876.39f, 81.18f, 931.56f, 178.44f)),
         /* LEFT taller icon with icon margin 0 */
-        arguments(60f, RectF(0f, 0f, 10f, 100f), 0f, LEFT, false, 112f, RectF(891f, 76f, 945f, 173f)),
+        arguments(60f, RectF(0f, 0f, 10f, 100f), 0f, LEFT, false, 111.99f,  RectF(890.65f, 75.67f, 945.44f, 173.15f)),
         /* LEFT icon with an arbitrary icon margin */
-        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, LEFT, false, 112f, RectF(905f, 126f, 951f, 227f)),
+        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, LEFT, false, 111.99f, RectF(904.68f, 125.51f, 950.66f, 227.44f)),
         /* No LEFT icon with an arbitrary icon margin */
-        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, LEFT, false, 112f, RectF(875f, 79f, 931f, 176f)),
+        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, LEFT, false, 111.99f, RectF(874.99f, 79.21f, 930.57f, 176.24f)),
         /* LEFT icon with an arbitrary icon margin and label size 0 */
         arguments(0f, RectF(0f, 0f, 70f, 50f), 44f, LEFT, false, 0f, RectF(0f, 0f, 0f, 0f)),
         /* RIGHT shorter icon with icon margin 0 */
-        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, RIGHT, false, 112f, RectF(872f, 74f, 928f, 171f)),
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 0f, RIGHT, false, 111.99f, RectF(871.50f, 74.35f, 928.09f, 170.79f)),
         /* RIGHT taller icon with icon margin 0 */
-        arguments(60f, RectF(0f, 0f, 10f, 100f), 0f, RIGHT, false, 112f, RectF(883f, 65f, 940f, 161f)),
+        arguments(60f, RectF(0f, 0f, 10f, 100f), 0f, RIGHT, false, 111.99f, RectF(882.94f, 64.84f, 939.93f, 161.06f)),
         /* RIGHT icon with an arbitrary icon margin */
-        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, RIGHT, false, 112f, RectF(836f, 31f, 902f, 121f)),
+        arguments(60f, RectF(0f, 0f, 70f, 50f), 44f, RIGHT, false, 111.99f, RectF(836.43f, 30.80f, 902.20f, 121.24f)),
         /* No RIGHT icon with an arbitrary icon margin */
-        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, RIGHT, false, 112f, RectF(873f, 76f, 929f, 173f)),
+        arguments(60f, RectF(0f, 0f, 0f, 0f), 44f, RIGHT, false, 111.99f, RectF(873.00f, 76.43f, 929.16f, 173.13f)),
         /* RIGHT icon with an arbitrary icon margin and label size 0 */
         arguments(0f, RectF(0f, 0f, 70f, 50f), 44f, RIGHT, false, 0f, RectF(0f, 0f, 0f, 0f)),
         ////////////// OUTWARD //////////////
         /* TOP icon */
-        arguments(60f, RectF(0f, 0f, 5f, 10f), 20f, TOP, false, 112f, RectF(874f, 78f, 930f, 174f)),
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 20f, TOP, false, 111.99f, RectF(873.86f, 77.63f, 929.77f, 174.47f)),
         /* BOTTOM icon */
-        arguments(60f, RectF(0f, 0f, 5f, 10f), 20f, BOTTOM, false, 112f, RectF(900f, 63f, 956f, 159f)),
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 20f, BOTTOM, false, 111.99f, RectF(899.96f, 62.55f, 955.88f, 159.41f)),
         /* LEFT icon */
-        arguments(60f, RectF(0f, 0f, 5f, 10f), 20f, LEFT, false, 112f, RectF(882f, 89f, 935f, 187f)),
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 20f, LEFT, false, 111.99f, RectF(881.88f, 89.12f, 935.40f, 187.30f)),
         /* RIGHT icon */
-        arguments(60f, RectF(0f, 0f, 5f, 10f), 20f, RIGHT, false, 112f, RectF(865f, 66f, 924f, 162f)),
+        arguments(60f, RectF(0f, 0f, 5f, 10f), 20f, RIGHT, false, 111.99f, RectF(865.39f, 66.11f, 923.71f, 161.51f)),
     )
 
     // endregion
