@@ -4,3 +4,5 @@ A good book for 2D and 3D mathematics used in computer graphics (thanks to a com
 See *Nice Numbers for Graph Labels (657)* for how to generate axis labels for charts.
 
 Graphics Gems V. A Collection of Practical Techniques for the Computer Graphics Programmer
+
+[This video](https://youtu.be/jlKrTTdTCUE) explains the Android canvas in detail
