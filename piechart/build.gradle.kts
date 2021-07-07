@@ -5,6 +5,7 @@ val kotlinVersion: String by rootProject.extra
 plugins {
     id("com.android.library")
     id("kotlin-android")
+    id("org.jetbrains.dokka") version "1.4.32"
     id("maven-publish")
     // To generate signature and checksum files for each artifact
     id("signing")
@@ -93,17 +94,12 @@ tasks {
         from(android.sourceSets["main"].java.srcDirs)
     }
 
-    val javadoc by creating(Javadoc::class) {
-        isFailOnError = false
-        source = android.sourceSets["main"].java.getSourceFiles()
-        classpath += project.files(android.bootClasspath.plus(File.pathSeparator))
-        classpath += configurations.compile
-    }
+    val dokkaHtml by getting(org.jetbrains.dokka.gradle.DokkaTask::class)
 
     val javadocJar by creating(Jar::class) {
-        dependsOn.add(javadoc)
+        dependsOn(dokkaHtml)
         archiveClassifier.set("javadoc")
-        from(javadoc.destinationDir)
+        from(dokkaHtml.outputDirectory)
     }
 
     artifacts {
