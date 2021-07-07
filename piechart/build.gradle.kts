@@ -163,7 +163,6 @@ afterEvaluate {
                         """.trimIndent()
                     )
                     inceptionYear.set("2021")
-                    // icon: https://stackoverflow.com/q/40197177
                     licenses {
                         license {
                             name.set("Apache-2.0 License")
@@ -174,6 +173,7 @@ afterEvaluate {
                         developer {
                             id.set("mahozad")
                             name.set("Mahdi Hosseinzadeh")
+                            url.set("https://mahozad.ir/")
                             email.set("")
                             roles.set(listOf("Lead Developer"))
                             timezone.set("GMT+4:30")
@@ -183,9 +183,18 @@ afterEvaluate {
                         // contributor {}
                     }
                     scm {
+                        tag.set("HEAD")
+                        url.set("https://github.com/mahozad/$githubProjectName")
                         connection.set("scm:git:github.com/mahozad/$githubProjectName.git")
                         developerConnection.set("scm:git:ssh://github.com/mahozad/$githubProjectName.git")
-                        url.set("https://github.com/mahozad/$githubProjectName")
+                    }
+                    issueManagement {
+                        system.set("GitHub")
+                        url.set("https://github.com/mahozad/$githubProjectName/issues")
+                    }
+                    ciManagement {
+                        system.set("Travis CI")
+                        url.set("https://www.travis-ci.com/github/mahozad/$githubProjectName")
                     }
                 }
             }
