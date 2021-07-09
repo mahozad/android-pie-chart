@@ -1,0 +1,9 @@
+# Refer to https://docs.codecov.com/docs/fixing-paths
+# and this https://dev.to/marcellothearcane/get-code-coverage-reports-with-github-actions-and-codecov-1n74
+# and this https://about.codecov.io/blog/code-coverage-for-android-development-using-kotlin-jacoco-github-actions-and-codecov/
+
+fixes:
+  - "/home/runner/work/android-pie-chart/android-pie-chart/::"
+
+#codecov:
+#    disable_default_path_fixes: true

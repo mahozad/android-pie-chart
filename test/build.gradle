@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'jacoco'
 }
 
 android {
@@ -9,6 +10,11 @@ android {
         debug.java.srcDirs += 'src/debug/kotlin'
         test.java.srcDirs += 'src/test/kotlin'
         androidTest.java.srcDirs += 'src/androidTest/kotlin'
+    }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE*'
+        exclude 'META-INF/*.kotlin_module'
     }
 
     compileSdkVersion 30
@@ -23,9 +29,27 @@ android {
         consumerProguardFiles 'consumer-rules.pro'
     }
 
-    buildTypes {
+    signingConfigs {
         release {
-            minifyEnabled false
+            storeFile file(project.findProperty('release.storeFilePath') ?: "$rootProject.projectDir/${System.getenv('RELEASE_STORE_FILE_PATH')}")
+            keyAlias project.findProperty('release.keyAlias') ?: System.getenv('RELEASE_KEY_ALIAS')
+            keyPassword project.findProperty('release.keyPassword') ?: System.getenv('RELEASE_KEY_PASSWORD')
+            storePassword project.findProperty('release.sotrePassword') ?: System.getenv('RELEASE_STORE_PASSWORD')
+
+            // Optional, specify signing versions used
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
+
+    buildTypes {
+        debug {
+            testCoverageEnabled true
+        }
+        release {
+            signingConfig signingConfigs.release
+            testCoverageEnabled true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -37,6 +61,18 @@ android {
         jvmTarget = '1.8'
     }
 }
+
+jacoco {
+    toolVersion = jacocoVersion
+}
+
+apply from: "${rootProject.projectDir}/scripts/configure-jacoco.gradle.kts"
+
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+    jacoco.excludes = ['jdk.internal.*']
+}
+
 
 dependencies {
     implementation project(':piechart')

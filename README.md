@@ -13,7 +13,9 @@
 [comment]: <> (![Closed Issues]&#40;https://img.shields.io/github/issues-closed/mahozad/android-pie-chart?color=green&#41;)
 
 [comment]: <> (![Commits Since Last Release]&#40;https://img.shields.io/github/commits-since/mahozad/android-pie-chart/latest&#41;)
-
+[![codecov](https://codecov.io/gh/mahozad/android-pie-chart/branch/prod/graph/badge.svg?token=ptnbmXaozw)](https://codecov.io/gh/mahozad/android-pie-chart)
+![Release workflow](https://github.com/mahozad/android-pie-chart/actions/workflows/publish-new-release.yml/badge.svg)
+![Release workflow](https://img.shields.io/github/workflow/status/mahozad/android-pie-chart/Publish%20a%20new%20release%20of%20the%20library?label=CI%2FCD)
 ![Milestone Progress](https://img.shields.io/github/milestones/progress-percent/mahozad/android-pie-chart/1)
 
 <div align="center">

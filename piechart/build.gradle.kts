@@ -1,11 +1,13 @@
 
 // Could also have used ${rootProject.extra["kotlinVersion"]}
 val kotlinVersion: String by rootProject.extra
+val jacocoVersion: String by rootProject.extra
 
 plugins {
     id("com.android.library")
     id("kotlin-android")
     id("org.jetbrains.dokka") version "1.4.32"
+    id("jacoco")
     id("maven-publish")
     // To generate signature and checksum files for each artifact
     id("signing")
@@ -26,6 +28,7 @@ android {
 
     packagingOptions {
         exclude("META-INF/LICENSE*")
+        exclude("META-INF/*.kotlin_module")
     }
 
     testOptions {
@@ -50,7 +53,11 @@ android {
     }
 
     buildTypes {
+        getByName("debug") {
+            isTestCoverageEnabled = true
+        }
         getByName("release") {
+            isTestCoverageEnabled = true
             // There is no need to obfuscate an open source library
             // nor is it necessary to shrink the code because the user can do it
             isMinifyEnabled = false
@@ -75,9 +82,20 @@ android {
     }
 }
 
+jacoco {
+    toolVersion = jacocoVersion
+}
+
+apply(from = "${rootProject.projectDir}/scripts/configure-jacoco.gradle.kts")
+
 tasks.withType(Test::class) {
     useJUnitPlatform {
         excludeEngines("junit-vintage")
+    }
+    configure<JacocoTaskExtension> {
+        isIncludeNoLocationClasses = true
+        // https://github.com/gradle/gradle/issues/5184#issuecomment-457865951
+        excludes = listOf("jdk.internal.*")
     }
 }
 
@@ -126,8 +144,8 @@ afterEvaluate {
                 name = "GitHubPackages"
                 url = uri("https://maven.pkg.github.com/mahozad/$githubProjectName")
                 credentials {
-                    username = System.getenv("GITHUB_USER") ?: project.properties["github.username"] as String
-                    password = System.getenv("GITHUB_PERSONAL_ACCESS_TOKEN") ?: project.properties["github.token"] as String
+                    username = project.properties["github.username"] as String? ?: System.getenv("GITHUB_ACTOR") ?: ""
+                    password = project.properties["github.token"] as String? ?: System.getenv("GITHUB_TOKEN") ?: ""
                 }
             }
 
@@ -238,7 +256,7 @@ tasks.create("incrementVersion") {
 // val PUBLISH_ARTIFACT_ID by extra("pie-chart")
 // val PUBLISH_VERSION by extra("0.1.0")
 
-apply("${rootProject.projectDir}/scripts/publish-module.gradle")
+apply(from = "${rootProject.projectDir}/scripts/publish-module.gradle")
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")

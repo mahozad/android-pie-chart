@@ -9,8 +9,8 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import de.mannodermaus.junit5.ActivityScenarioExtension
-import org.junit.Test
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
 
 /**
@@ -32,7 +32,7 @@ class PieChartInstrumentedTest {
         scenario.moveToState(Lifecycle.State.RESUMED)
     }
 
-    @Test fun theChartShouldBeDisplayed() {
+    @Test fun theChartShouldBeDisplayed(scenario: ActivityScenario<TesterActivity>) {
         onView(withId(R.id.pieChart))
             .check(matches(isDisplayed()))
     }

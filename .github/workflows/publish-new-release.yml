@@ -1,0 +1,218 @@
+# By default, GitHub stores build logs and artifacts of the workflow itself for 90 days, which can be customized.
+# GitHub automatically creates a GITHUB_TOKEN secret to use in your workflow.
+#  We can use the it to authenticate in a workflow run like this: ${{ secrets.GITHUB_TOKEN }}.
+#  refer to https://docs.github.com/en/actions/reference/authentication-in-a-workflow
+
+name: Publish a new release of the library
+on: push
+# FIXME: setting environment variables here makes them available for all the jobs and actions
+env:
+  RELEASE_STORE_FILE_PATH: ${{ secrets.RELEASE_STORE_FILE_PATH }}
+  RELEASE_STORE_FILE_CONTENT_BASE_64: ${{ secrets.RELEASE_STORE_FILE_CONTENT_BASE_64 }}
+  RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+  RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
+  RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
+#on:
+#  push:
+#    tags:
+#      # https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#filter-pattern-cheat-sheet
+#      - v*
+jobs:
+  run-unit-tests:
+    name: Run all unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+      - name: Run the tests
+        # Note that we are executing the task on the top-level project (instead of e.g. :piechart:test)
+        run: ./gradlew test --stacktrace
+      - name: Upload the test report
+        uses: actions/upload-artifact@v2
+        with:
+          name: unit-test-report
+          path: |
+            piechart/build/reports/tests/testReleaseUnitTest/
+            test/build/reports/tests/testReleaseUnitTest/
+
+  run-instrumentation-tests:
+    name: Run all instrumentation tests
+    # Should be macos (https://github.com/marketplace/actions/android-emulator-runner)
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # JUnit 5 tests are skipped on API 25 or lower (https://github.com/mannodermaus/android-junit5)
+        api-level: [ 21, 30 ]
+        target: [ default, google_apis ]
+        arch: [ x86_64 ]
+        exclude:
+          # {API 30, default} failed, so exclude this combination
+          - api-level: 30
+            target: default
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+      - name: Run the tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          target: ${{ matrix.target }}
+          arch: ${{ matrix.arch }}
+          profile: Nexus 6
+          # Note that executing the task on the top-level project may fail in some environments
+          script: ./gradlew :piechart:connectedCheck --stacktrace
+          disable-animations: false
+      - name: Upload the test report
+        uses: actions/upload-artifact@v2
+        with:
+          name: instrumentation-test-report
+          path: |
+            piechart/build/reports/androidTests/connected/
+            test/build/reports/androidTests/connected/
+
+  generate-code-coverage:
+    name: Create test coverage report
+    runs-on: macos-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+      - name: Run the tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          target: google_apis
+          arch: x86_64
+          profile: Nexus 6
+          script: ./gradlew :piechart:connectedCheck :piechart:test --stacktrace
+          disable-animations: false
+      # - name: Generate code coverage
+      #   run: ./gradlew :piechart:jacocoAndroidTestReport --stacktrace
+      # - name: Make sure coverage is adequate
+      #   run: ./gradlew :piechart:jacocoAndroidCoverageVerification --stacktrace
+      - name: Upload the report
+        uses: actions/upload-artifact@v2
+        with:
+          name: code-coverage-report
+          path: piechart/build/reports/coverage/debug/
+      # Alternative way to send the report; the official Codecov action; comment the code after it
+      # - uses: codecov/codecov-action@v1
+      #   with:
+      #     name: Release coverage report # optional
+      #     directory: ./piechart/build/reports/coverage/debug/
+      #     files: ./*.xml
+      #     verbose: false # optional
+      #     fail_ci_if_error: true # optional (default = false)
+      - name: Download the report
+        uses: actions/download-artifact@v2
+        with:
+          name: code-coverage-report
+          path: piechart/build/reports/coverage/debug/
+      - name: Send the report to Codecov
+        run: bash <(curl -s https://codecov.io/bash) -f "piechart/build/reports/coverage/debug/report.xml"
+
+  generate-lint:
+    name: Create lint report
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+      - name: Run lint
+        run: ./gradlew lintRelease --stacktrace
+      - name: Upload the html report
+        uses: actions/upload-artifact@v2
+        with:
+          name: lint-report
+          path: piechart/build/reports/lint-results-release.html
+
+  merge-into-prod:
+    needs: [ run-unit-tests, run-instrumentation-tests ]
+    name: Rebase (fast forward) the prod branch onto the master
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: emiliopedrollo/auto-merge@v1.2.0
+        with:
+          target_branch: 'prod'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-to-repositories:
+    needs: [ run-unit-tests, run-instrumentation-tests ]
+    env:
+      OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+      OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+      SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
+      SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
+      SONATYPE_STAGING_PROFILE_ID: ${{ secrets.SONATYPE_STAGING_PROFILE_ID }}
+      SIGNING_SECRET_KEY_RING_FILE_PATH: ${{ secrets.SIGNING_SECRET_KEY_RING_FILE_PATH }}
+      GPG_KEY_CONTENTS: ${{ secrets.GPG_KEY_CONTENTS }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # GITHUB_ACTOR: automatically set by GitHub (https://docs.github.com/en/actions/reference/environment-variables#default-environment-variables)
+    name: Publish the artifacts to GitHub Packages and Maven Central
+    runs-on: ubuntu-latest
+    # https://docs.github.com/en/actions/reference/authentication-in-a-workflow
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: "11"
+          distribution: "adopt"
+      - name: Decode the private GPG key file stored in GitHub
+        run: echo $GPG_KEY_CONTENTS | base64 -di > $SIGNING_SECRET_KEY_RING_FILE_PATH
+      - name: Publish the package
+        run: ./gradlew :piechart:publishReleasePublicationToSonatypeRepository :piechart:publishReleasePublicationToGitHubPackagesRepository
+        # FIXME: use this instead to release on sonatype automatically run: ./gradlew :piechart:publishReleasePublicationToSonatypeRepository --max-workers 1 closeAndReleaseSonatypeStagingRepository
+
+  create-showcase:
+    name: Generate the showcase APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: "11"
+          distribution: "adopt"
+      - name: Decode the keystore file stored in GitHub
+        run: echo $RELEASE_STORE_FILE_CONTENT_BASE_64 | base64 -di > $RELEASE_STORE_FILE_PATH
+      - name: Build the APK
+        run: ./gradlew :test:assembleRelease --stacktrace
+      - name: Upload the APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: showcase-app
+          path: test/build/outputs/apk/release/*.apk
+
+  create-github-release:
+    needs: [ publish-to-repositories, create-showcase ]
+    name: Create a new release in the GitHub repository
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: fwilhe2/setup-kotlin@main
+        with:
+          version: 1.5.0
+      - name: Generate the changelog
+        run: kotlin scripts/generate-github-changelog.main.kts
+      - name: Download the APK uploaded by previous job
+        uses: actions/download-artifact@v2
+        with:
+          name: showcase-app
+      - name: Rename the apk to something better
+        run: mv *.apk showcase.apk
+      - name: Create the release
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: changelog.txt
+          files: showcase.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
