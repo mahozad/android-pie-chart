@@ -170,8 +170,7 @@ jobs:
       - name: Decode the private GPG key file stored in GitHub
         run: echo $GPG_KEY_CONTENTS | base64 -di > $SIGNING_SECRET_KEY_RING_FILE_PATH
       - name: Publish the package
-        run: ./gradlew :piechart:publishReleasePublicationToSonatypeRepository :piechart:publishReleasePublicationToGitHubPackagesRepository
-        # FIXME: use this instead to release on sonatype automatically run: ./gradlew :piechart:publishReleasePublicationToSonatypeRepository --max-workers 1 closeAndReleaseSonatypeStagingRepository
+        run: ./gradlew :piechart:publishReleasePublicationToSonatypeRepository --max-workers 1 closeAndReleaseSonatypeStagingRepository :piechart:publishReleasePublicationToGitHubPackagesRepository
 
   create-showcase:
     name: Generate the showcase APK
