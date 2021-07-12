@@ -101,7 +101,8 @@ jobs:
         with:
           name: code-coverage-report
           path: piechart/build/reports/coverage/debug/
-      # Alternative way to send the report; the official Codecov action; comment the code after it
+      # NOTE: No need to send coverage report to Codcov because we just send coverage report of the master branch and it is sent by the test workflow
+      # Either this way...
       # - uses: codecov/codecov-action@v1
       #   with:
       #     name: Release coverage report # optional
@@ -109,13 +110,14 @@ jobs:
       #     files: ./*.xml
       #     verbose: false # optional
       #     fail_ci_if_error: true # optional (default = false)
-      - name: Download the report
-        uses: actions/download-artifact@v2
-        with:
-          name: code-coverage-report
-          path: piechart/build/reports/coverage/debug/
-      - name: Send the report to Codecov
-        run: bash <(curl -s https://codecov.io/bash) -f "piechart/build/reports/coverage/debug/report.xml"
+      # Or this way...
+      # - name: Download the report
+      #   uses: actions/download-artifact@v2
+      #   with:
+      #     name: code-coverage-report
+      #     path: piechart/build/reports/coverage/debug/
+      # - name: Send the report to Codecov
+      #   run: bash <(curl -s https://codecov.io/bash) -f "piechart/build/reports/coverage/debug/report.xml"
 
   generate-lint:
     name: Create lint report
