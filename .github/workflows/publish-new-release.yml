@@ -4,7 +4,13 @@
 #  refer to https://docs.github.com/en/actions/reference/authentication-in-a-workflow
 
 name: Publish a new release of the library
-on: push
+
+# https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#filter-pattern-cheat-sheet
+on:
+  push:
+    tags:
+      - v*
+
 # FIXME: setting environment variables here makes them available for all the jobs and actions
 env:
   RELEASE_STORE_FILE_PATH: ${{ secrets.RELEASE_STORE_FILE_PATH }}
@@ -12,11 +18,7 @@ env:
   RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
   RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
   RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
-#on:
-#  push:
-#    tags:
-#      # https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#filter-pattern-cheat-sheet
-#      - v*
+
 jobs:
   run-unit-tests:
     name: Run all unit tests
