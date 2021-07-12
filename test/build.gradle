@@ -73,7 +73,6 @@ tasks.withType(Test) {
     jacoco.excludes = ['jdk.internal.*']
 }
 
-
 dependencies {
     implementation project(':piechart')
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
