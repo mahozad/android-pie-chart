@@ -1,4 +1,4 @@
-name: Ensure all tests pass and minimum coverage is met
+name: Check pull request (ensure all tests pass and minimum coverage is met)
 
 on:
   pull_request:

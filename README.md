@@ -10,7 +10,7 @@
 [comment]: <> (![Tests]&#40;https://img.shields.io/github/checks-status/mahozad/android-pie-chart/master&#41;)
 [comment]: <> (![Milestone Progress]&#40;https://img.shields.io/github/milestones/progress-percent/mahozad/android-pie-chart/1&#41;)
 
-[![Release workflow](https://github.com/mahozad/android-pie-chart/actions/workflows/test.yml/badge.svg)](https://github.com/mahozad/android-pie-chart/actions/workflows/test.yml)
+[![Release workflow](https://github.com/mahozad/android-pie-chart/actions/workflows/ci.yml/badge.svg)](https://github.com/mahozad/android-pie-chart/actions/workflows/test.yml)
 [![Codecov](https://codecov.io/gh/mahozad/android-pie-chart/branch/master/graph/badge.svg?token=ptnbmXaozw)](https://codecov.io/gh/mahozad/android-pie-chart)
 [![Latest release](https://img.shields.io/github/v/release/mahozad/android-pie-chart)](https://github.com/mahozad/android-pie-chart/releases/latest)
 
