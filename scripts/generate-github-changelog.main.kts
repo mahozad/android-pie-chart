@@ -14,9 +14,10 @@ val result = buildString {
     val releaseType = determineTypeOfThisRelease()
     val header = "This is a $releaseType release."
     val body = createReleaseBody()
+    val cleanedBody = cleanTheBody(body)
     appendLine(header)
     appendLine()
-    append(body)
+    append(cleanedBody)
 }
 
 Files.writeString(outputPath, result)
@@ -48,3 +49,19 @@ fun createReleaseBody() = Files
     .takeWhile { !it.matches(versionLineRegex) }
     .collect(Collectors.toList())
     .joinToString(separator = "\n")
+
+/**
+ * Remove links for commit SHAs and issues and pull requests as GitHub
+ * automatically converts them to links.
+ * Note that the GitHub links are different in appearance and also in that,
+ * when hovering over them with mouse, a popup shows the commit information.
+ *
+ * Also, re-insert the links to version diffs.
+ */
+fun cleanTheBody(body: String) = body
+    .replace(Regex("""\[[\da-f]{8}]""")) { it.value.removeSurrounding("[", "]") }
+    .replace(Regex("""\[#\d+]""")) { it.value.removeSurrounding("[", "]") }
+    .replace(Regex("""\[.*]""")) {
+        val (new, old) = getLastTwoVersionTags()
+        "${it.value}(https://github.com/mahozad/android-pie-chart/compare/v$old...v$new)"
+    }

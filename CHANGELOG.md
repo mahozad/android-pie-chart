@@ -2,37 +2,64 @@
 
 ## v0.4.0 (2021-07-04)
 #### New features
-  - Outside inward circular label
-  - Outside outward circular label
-  - Attribute to change label icon tint for all slices
+  - Outside inward circular label ([3bad21df])
+  - Outside outward circular label ([3bad21df])
+  - Attribute to change label icon tint for all slices ([891f77be])
 #### Updates
-  - Update *androidx.core* dependency
-  - Decrease default icon margin
+  - Update *androidx.core* dependency ([173eb33b])
+  - Decrease default icon margin ([e0724cb7])
 #### Removals
-  - Remove unneeded library dependencies
+  - Remove unneeded library dependencies ([820810fd])
+
+[All commits since version 0.3.0]
 
 ## v0.3.0 (2021-06-05)
 #### New features
-  - Top and bottom placements for label icons
-  - Icon for outside label
-  - New label type `NONE`
-  - Attribute to change label icon placement for all slices
+  - Top and bottom placements for label icons ([065b44aa])
+  - Icon for outside label ([065b44aa])
+  - New label type `NONE` ([cdbb69e6])
+  - Attribute to change label icon placement for all slices ([f2cd0152])
 #### Updates
-  - Decrease default label font size
-  - *PieChart::slices* property is now immutable `var` instead of mutable `val`
+  - Decrease default label font size ([7c42e475])
+  - *PieChart::slices* property is now immutable `var` instead of mutable `val` ([53a3381c])
+
+[All commits since version 0.2.0]
 
 ## v0.2.0 (2021-05-29)
 #### New features
-  - Outside label (currently not supporting icon)
-  - Outward Pointer for slices
-  - Label icon for inside labels
-  - Properties for changing label colors
+- Outside label (currently not supporting icon) ([d5269dd9])
+- Outward Pointer for slices ([d5269dd9])
+- Label icon for inside labels ([7dffb164])
+- Properties for changing label colors ([7c374cec])
 #### Updates
-  - Attributes are now public to use in layouts
+- Attributes are now public to use in layouts ([64a1f18d])
+
+[All commits since version 0.1.0]
 
 ## v0.1.0 (2021-05-19)
 This is the first release of the library.
 
+
+[All commits since version 0.1.0]: https://github.com/mahozad/android-pie-chart/compare/v0.1.0...v0.2.0
+[All commits since version 0.2.0]: https://github.com/mahozad/android-pie-chart/compare/v0.2.0...v0.3.0
+[All commits since version 0.3.0]: https://github.com/mahozad/android-pie-chart/compare/v0.3.0...v0.4.0
+
+[64a1f18d]: https://github.com/mahozad/android-pie-chart/commit/64a1f18d
+[7c374cec]: https://github.com/mahozad/android-pie-chart/commit/7c374cec
+[7dffb164]: https://github.com/mahozad/android-pie-chart/commit/7dffb164
+[d5269dd9]: https://github.com/mahozad/android-pie-chart/commit/d5269dd9
+[53a3381c]: https://github.com/mahozad/android-pie-chart/commit/53a3381c
+[7c42e475]: https://github.com/mahozad/android-pie-chart/commit/7c42e475
+[f2cd0152]: https://github.com/mahozad/android-pie-chart/commit/f2cd0152
+[cdbb69e6]: https://github.com/mahozad/android-pie-chart/commit/cdbb69e6
+[065b44aa]: https://github.com/mahozad/android-pie-chart/commit/065b44aa
+[820810fd]: https://github.com/mahozad/android-pie-chart/commit/820810fd
+[173eb33b]: https://github.com/mahozad/android-pie-chart/commit/173eb33b
+[3bad21df]: https://github.com/mahozad/android-pie-chart/commit/3bad21df
+[e0724cb7]: https://github.com/mahozad/android-pie-chart/commit/e0724cb7
+[891f77be]: https://github.com/mahozad/android-pie-chart/commit/891f77be
+
+[comment]: <> (NOTE: Be aware that modifying the format of this file might impact the script that makes body for GitHub release)
 
 # Template:
 ## vx.y.z (yyyy-mm-dd)
