@@ -8,6 +8,7 @@ on:
 jobs:
   test:
     name: Test the project
+    # Should be macos (https://github.com/marketplace/actions/android-emulator-runner)
     runs-on: macos-latest
     steps:
       - name: Checkout the code
