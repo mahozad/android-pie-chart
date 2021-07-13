@@ -167,7 +167,7 @@ afterEvaluate {
                 artifact(sourcesArtifact)
                 artifact(javadocArtifact)
                 pom {
-                    url.set("https://github.com/mahozad/$githubProjectName")
+                    url.set("https://mahozad.ir/$githubProjectName")
                     name.set(githubProjectName)
                     description.set(
                         """
