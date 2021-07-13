@@ -1,0 +1,58 @@
+name: Ensure all tests pass and minimum coverage is met
+
+on:
+  pull_request:
+
+jobs:
+  test:
+    name: Test the project
+    runs-on: macos-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+      - name: Run all unit tests
+        run: ./gradlew :piechart:test --stacktrace
+      - name: Run all instrumentation tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          target: google_apis
+          arch: x86_64
+          profile: Nexus 6
+          script: ./gradlew :piechart:connectedAndroidTest --stacktrace
+          disable-animations: false
+      - name: Upload test reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: tests-report
+          path: |
+            piechart/build/reports/tests/
+            piechart/build/reports/androidTests/connected/
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage-report
+          path: piechart/build/reports/coverage/debug
+      - name: Make sure coverage is adequate
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          target: google_apis
+          arch: x86_64
+          profile: Nexus 6
+          script: ./gradlew :piechart:jacocoAndroidCoverageVerification --stacktrace
+          disable-animations: false
+
+  generate-lint:
+    name: Create lint report
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+      - name: Run lint
+        run: ./gradlew :piechart:lintDebug --stacktrace
+      - name: Upload the html report
+        uses: actions/upload-artifact@v2
+        with:
+          name: lint-report
+          path: piechart/build/reports/lint-results-debug.html
