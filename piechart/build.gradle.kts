@@ -207,8 +207,8 @@ afterEvaluate {
                         url.set("https://github.com/mahozad/$githubProjectName/issues")
                     }
                     ciManagement {
-                        system.set("Travis CI")
-                        url.set("https://www.travis-ci.com/github/mahozad/$githubProjectName")
+                        system.set("GitHub Actions")
+                        url.set("https://github.com/mahozad/$githubProjectName/actions")
                     }
                 }
             }
