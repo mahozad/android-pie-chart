@@ -1,0 +1,3 @@
+https://mathematica.stackexchange.com/questions/9045/preventing-label-crowding-in-piechart-radialcallout-and-radialcenter
+https://math.stackexchange.com/questions/2652448/find-width-of-the-biggest-rectangle-in-a-sector
+https://math.stackexchange.com/questions/936244/prevent-similar-consecutive-colours-for-a-pie-chart

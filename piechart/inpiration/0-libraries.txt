@@ -1,3 +1,5 @@
+https://www.amcharts.com/demos/#pie
+https://echarts.apache.org/en/index.html
 https://observablehq.com/@d3/gallery
 https://github.com/PhilJay/MPAndroidChart
 https://github.com/AnyChart/AnyChart-Android
