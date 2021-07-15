@@ -1,4 +1,5 @@
 https://www.amcharts.com/demos/#pie
+https://github.com/antvis/F2
 https://echarts.apache.org/en/index.html
 https://observablehq.com/@d3/gallery
 https://github.com/PhilJay/MPAndroidChart
@@ -7,3 +8,4 @@ https://github.com/chartjs/Chart.js
 https://github.com/gionkunz/chartist-js
 https://github.com/apexcharts/apexcharts.js
 https://github.com/HackPlan/AndroidCharts
+https://github.com/AppPear/ChartView
