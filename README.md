@@ -22,7 +22,7 @@
 
 # NOTE: This library is still in initial phases of development
 
-A Pie/Donut/Ring chart for Android.
+A Pie/Donut<sup id="num-1">[1](#footnote-1)</sup>/Ring chart for Android.
 
 ### build.gradle[.kts]
 ```groovy
@@ -53,3 +53,7 @@ pieChart.slices = listOf(
 ## Contributing
 
 Please help improve the library by fixing [the issues that I couldn't tackle myself](https://github.com/mahozad/android-pie-chart/issues?q=is%3Aissue+is%3Aopen+label%3Acontribution-needed). 
+
+---
+
+<b id="footnote-1">1.</b> Or *Doughnut* [↩](#num-1)
