@@ -62,6 +62,7 @@ fun cleanTheBody(body: String) = body
     .replace(Regex("""\[[\da-f]{8}]""")) { it.value.removeSurrounding("[", "]") }
     .replace(Regex("""\[#\d+]""")) { it.value.removeSurrounding("[", "]") }
     .replace(Regex("""\[.*]""")) {
+        val (owner, repo) = System.getenv("GITHUB_REPOSITORY").split("/")
         val (new, old) = getLastTwoVersionTags()
-        "${it.value}(https://github.com/mahozad/android-pie-chart/compare/v$old...v$new)"
+        "${it.value}(https://github.com/$owner/$repo/compare/v$old...v$new)"
     }
