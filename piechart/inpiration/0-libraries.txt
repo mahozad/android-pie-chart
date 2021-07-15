@@ -9,3 +9,4 @@ https://github.com/gionkunz/chartist-js
 https://github.com/apexcharts/apexcharts.js
 https://github.com/HackPlan/AndroidCharts
 https://github.com/AppPear/ChartView
+https://github.com/imaNNeoFighT/fl_chart
