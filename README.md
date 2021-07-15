@@ -54,6 +54,6 @@ pieChart.slices = listOf(
 
 Please help improve the library by fixing [the issues that I couldn't tackle myself](https://github.com/mahozad/android-pie-chart/issues?q=is%3Aissue+is%3Aopen+label%3Acontribution-needed). 
 
----
+<br>
 
-<b id="footnote-1">1.</b> Or *Doughnut* [↩](#num-1)
+<sub><b id="footnote-1">1.</b> Or *Doughnut* [↩](#num-1)</sub>
