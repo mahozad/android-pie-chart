@@ -22,7 +22,7 @@
 
 # NOTE: This library is still in initial phases of development
 
-A Pie/Donut<sup id="num-1">[1](#footnote-1)</sup>/Ring chart for Android.
+A Pie/Donut<sup id="ref-1">[1](#footnote-1)</sup>/Ring chart for Android.
 
 ### build.gradle[.kts]
 ```groovy
@@ -56,4 +56,4 @@ Please help improve the library by fixing [the issues that I couldn't tackle mys
 
 <br>
 
-<sub><b id="footnote-1">1.</b> Or *Doughnut* [↩](#num-1)</sub>
+<sub><b id="footnote-1">1.</b> Or *Doughnut* [↵](#ref-1)</sub>
