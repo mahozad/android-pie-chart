@@ -52,7 +52,8 @@ pieChart.slices = listOf(
 
 ## Contributing
 
-Please help improve the library by fixing [the issues that I couldn't tackle myself](https://github.com/mahozad/android-pie-chart/issues?q=is%3Aissue+is%3Aopen+label%3Acontribution-needed). 
+Please help improve the library by fixing [the issues that I couldn't tackle myself](https://github.com/mahozad/android-pie-chart/issues?q=is%3Aissue+is%3Aopen+label%3Acontribution-needed).  
+Any other contributions are welcome too.
 
 <br>
 
