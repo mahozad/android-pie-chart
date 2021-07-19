@@ -277,6 +277,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private val totalDrawableRect = RectF()
     private var pieRadius = 0f
     private var center = Coordinates(0f, 0f)
+    private lateinit var legendsBox: Component
 
     /**
      * Attributes are a powerful way of controlling the behavior and appearance of views,
@@ -349,6 +350,20 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         val (top, left, right, bottom) = calculateBoundaries(center, pieRadius)
         pieEnclosingRect.set(RectF(left, top, right, bottom))
         totalDrawableRect.set(pieEnclosingRect)
+
+
+
+
+        val legendsTitle = Text("Title", 50f, Color.BLACK, DEFAULT)
+        val drawable1 = resources.getDrawable(R.drawable.ic_circle, null)
+        val icon1 = Icon(drawable1, 100f)
+        val label1 = Text("legend1", 50f, Color.BLACK, DEFAULT)
+        val legend1 = Container(parentMaxWidth = width.toFloat(), parentMaxHeight = height.toFloat(),children = listOf(icon1, label1), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
+        legendsBox = Root(Coordinates(100f, 100f), width.toFloat(), height.toFloat(), hasBackground = true, backgroundColor = Color.argb(200, 150, 100, 10), children = listOf(legendsTitle, legend1), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.VERTICAL)
+        legendsBox.layOut(0f, 600f)
+
+
+
 
         if (labelType == OUTSIDE) {
             val defaults = Defaults(outsideLabelsMargin, labelsSize, labelsColor, labelsFont, labelIconsHeight, labelIconsMargin, labelIconsPlacement)
@@ -585,6 +600,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         mainPaint.color = ContextCompat.getColor(context, android.R.color.black) // or better Color.BLACK
         mainPaint.alpha = (overlayAlpha * 255).toInt()
         canvas.drawPath(overlay, mainPaint)
+
+        legendsBox.draw(canvas)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
