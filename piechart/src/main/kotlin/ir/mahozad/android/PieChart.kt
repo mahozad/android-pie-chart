@@ -23,6 +23,12 @@ import ir.mahozad.android.PieChart.IconPlacement.START
 import ir.mahozad.android.PieChart.LabelType.*
 import ir.mahozad.android.PieChart.LegendIcons.SQUARE
 import ir.mahozad.android.PieChart.SlicePointer
+import ir.mahozad.android.component.Alignment
+import ir.mahozad.android.component.Container
+import ir.mahozad.android.component.Box
+import ir.mahozad.android.component.Icon
+import ir.mahozad.android.component.LayoutDirection
+import ir.mahozad.android.component.Text
 import java.text.NumberFormat
 
 const val DEFAULT_SIZE = 256 /* dp */
@@ -277,7 +283,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private val totalDrawableRect = RectF()
     private var pieRadius = 0f
     private var center = Coordinates(0f, 0f)
-    private lateinit var legendsBox: Component
+    private lateinit var legendsBox: Box
 
     /**
      * Attributes are a powerful way of controlling the behavior and appearance of views,
@@ -358,8 +364,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         val drawable1 = resources.getDrawable(R.drawable.ic_circle, null)
         val icon1 = Icon(drawable1, 100f)
         val label1 = Text("legend1", size = 50f, color = Color.BLACK, font = DEFAULT)
-        val legend1 = Box(width.toFloat(), height.toFloat(), children = listOf(icon1, label1), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
-        legendsBox = Box(width.toFloat(), height.toFloat(), hasBackground = true, backgroundColor = Color.argb(200, 150, 100, 10), children = listOf(legendsTitle, legend1), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.VERTICAL)
+        val legend1 = Container(width.toFloat(), height.toFloat(), children = listOf(icon1, label1), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
+        legendsBox = Container(width.toFloat(), height.toFloat(), hasBackground = true, backgroundColor = Color.argb(200, 150, 100, 10), children = listOf(legendsTitle, legend1), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.VERTICAL)
         legendsBox.layOut(0f, 600f)
 
 
