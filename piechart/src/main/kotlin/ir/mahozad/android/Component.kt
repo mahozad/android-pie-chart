@@ -8,17 +8,34 @@ import androidx.annotation.FloatRange
 import kotlin.math.min
 
 /**
- * Using the *composite* pattern.
+ * We arrange the components using a box model and implement it with the
+ * [*composite* pattern](https://en.wikipedia.org/wiki/Composite_pattern).
+ *
+ * The margins are treated in [collapsing](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing) mode.
  */
 internal interface Component {
     val width: Float
     val height: Float
+    val margin: Margin
+    val padding: Padding
     fun layOut(top: Float, left: Float)
     fun draw(canvas: Canvas)
 }
 
+internal enum class Alignment { START, CENTER, END }
+internal enum class LayoutDirection { HORIZONTAL, VERTICAL }
+internal data class Padding(val top: Float, val bottom: Float, val start: Float, val end: Float)
+internal data class Margin(val top: Float, val bottom: Float, val start: Float, val end: Float)
+internal sealed class Clipping {
+    object Scrollable : Clipping()
+    object NextLine : Clipping()
+    object Clipped : Clipping()
+}
+
 internal class Text(
     private val string: String,
+    override val padding: Padding = Padding(0f, 0f, 0f, 0f),
+    override val margin: Margin = Margin(0f, 0f, 0f, 0f),
     @Dimension size: Float,
     @ColorInt color: Int,
     font: Typeface
@@ -49,6 +66,8 @@ internal class Text(
 internal class Icon(
     private val drawable: Drawable,
     override val height: Float,
+    override val padding: Padding = Padding(0f, 0f, 0f, 0f),
+    override val margin: Margin = Margin(0f, 0f, 0f, 0f),
     @ColorInt private val tint: Int? = null
 ) : Component {
 
@@ -66,30 +85,15 @@ internal class Icon(
     }
 }
 
-/**
- * Either a row or a column.
- */
-internal data class Line(val components: List<Component>, val width: Float, val height: Float)
-
-enum class Alignment { START, CENTER, END }
-enum class LayoutDirection { HORIZONTAL, VERTICAL }
-data class Padding(
-    val top: Float,
-    val end: Float,
-    val start: Float,
-    val bottom: Float,
-)
-
-internal class Root(
-    private val startCoordinates: Coordinates? = null,
+internal class Box(
     private val parentMaxWidth: Float,
     private val parentMaxHeight: Float,
-    private val padding: Padding = Padding(0f, 0f, 0f, 0f),
+    override val padding: Padding = Padding(0f, 0f, 0f, 0f),
+    override val margin: Margin = Margin(0f, 0f, 0f, 0f),
     private val children: List<Component>,
     private val layoutDirection: LayoutDirection,
     private val childrenAlignment: Alignment,
-    private val maxRows: Int = 1,
-    private val maxColumns: Int = 1,
+    private val clipping: Clipping = Clipping.NextLine,
     private val hasBorder: Boolean = false,
     private val hasBackground: Boolean = false,
     private val borderDashIntervals: FloatArray? = null,
@@ -106,14 +110,6 @@ internal class Root(
 
     private val bounds = RectF(0f, 0f, 0f, 0f)
     private val paint = Paint()
-    private val rows: List<Line> by lazy {
-        val rows = mutableListOf<Line>()
-        val rowWidth = padding.start + padding.end
-        for (child in children) {
-            val row = listOf(child)
-        }
-        emptyList()
-    }
 
     override val width by lazy {
         if (layoutDirection == LayoutDirection.HORIZONTAL) {
@@ -135,112 +131,14 @@ internal class Root(
     }
 
     override fun layOut(top: Float, left: Float) {
-        // if (layoutDirection == LayoutDirection.HORIZONTAL) {
-        //     for (row in rows) {
-        //         for (component in row.components) {
-        //             val startCoordinates = 0f /* TODO */
-        //             component.layOut(startCoordinates, row.height)
-        //         }
-        //     }
-        // }
-        var newTop = top
-        var newLeft = left
+        var childTop = top
+        var childLeft = left
         for (child in children) {
-            child.layOut(newTop, newLeft)
+            child.layOut(childTop, childLeft)
             if (layoutDirection == LayoutDirection.HORIZONTAL) {
-                newLeft += child.width /* + margin */
+                childLeft += child.width /* + margin */
             } else {
-                newTop += child.height
-            }
-        }
-    }
-
-    override fun draw(canvas: Canvas) {
-        if (hasBorder) {
-            paint.style = Paint.Style.STROKE
-            paint.color = borderColor
-            paint.alpha = (borderOpacity * 255).toInt()
-            paint.strokeWidth = borderThickness
-            paint.pathEffect = DashPathEffect(borderDashIntervals, 0f)
-            canvas.drawRoundRect(bounds, cornerRadius, cornerRadius, paint)
-        }
-        if (hasBackground) {
-            paint.style = Paint.Style.FILL
-            paint.color = backgroundColor
-            paint.alpha = (backgroundOpacity * 255).toInt()
-            canvas.drawRoundRect(bounds, cornerRadius, cornerRadius, paint)
-        }
-        for (child in children) {
-            child.draw(canvas)
-        }
-    }
-}
-
-internal class Container(
-    private val padding: Padding = Padding(0f, 0f, 0f, 0f),
-    private val parentMaxWidth: Float,
-    private val parentMaxHeight: Float,
-    private val children: List<Component>,
-    private val layoutDirection: LayoutDirection,
-    private val childrenAlignment: Alignment,
-    private val maxRows: Int = 1,
-    private val maxColumns: Int = 1,
-    private val hasBorder: Boolean = false,
-    private val hasBackground: Boolean = false,
-    private val borderDashIntervals: FloatArray? = null,
-    @ColorInt private val borderColor: Int = Color.BLACK,
-    @ColorInt private val backgroundColor: Int = Color.TRANSPARENT,
-    /**
-     * Note that these two are convenience properties because the alpha can be specified in the color itself as well.
-     */
-    @FloatRange(from = 0.0, to = 1.0) private val backgroundOpacity: Float = 1f,
-    @FloatRange(from = 0.0, to = 1.0) private val borderOpacity: Float = 1f,
-
-    @Dimension private val cornerRadius: Float = 0f,
-    @Dimension private val borderThickness: Float = 0f
-) : Component {
-
-    private val bounds = RectF(0f, 0f, 0f, 0f)
-    private val paint = Paint()
-    private val dashedBorder = Path()
-
-    private val rows: List<Line> by lazy {
-        val rows = mutableListOf<Line>()
-        val rowWidth = padding.start + padding.end
-        for (child in children) {
-            val row = listOf(child)
-        }
-        emptyList()
-    }
-
-    override val width by lazy {
-        if (layoutDirection == LayoutDirection.HORIZONTAL) {
-            val totalChildrenWidth = children.sumOf { it.width.toDouble() }.toFloat()
-            min(parentMaxWidth, totalChildrenWidth)
-        } else {
-            val childrenMaxWidth = children.maxOf { it.width }
-            min(parentMaxWidth, childrenMaxWidth)
-        }
-    }
-    override val height by lazy {
-        if (layoutDirection == LayoutDirection.HORIZONTAL) {
-            val childrenMaxHeight = children.maxOf { it.height }
-            min(parentMaxHeight, childrenMaxHeight)
-        } else {
-            val totalChildrenHeight = children.sumOf { it.height.toDouble() }.toFloat()
-            min(parentMaxHeight, totalChildrenHeight)
-        }
-    }
-
-    override fun layOut(top: Float, left: Float) {
-        var newTop = top
-        var newLeft = left
-        for (child in children) {
-            child.layOut(newTop, newLeft)
-            if (layoutDirection == LayoutDirection.HORIZONTAL) {
-                newLeft += child.width /* + margin */
-            } else {
-                newTop += child.height
+                childTop += child.height
             }
         }
     }

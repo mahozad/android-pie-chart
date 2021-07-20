@@ -354,12 +354,12 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
 
 
-        val legendsTitle = Text("Title", 50f, Color.BLACK, DEFAULT)
+        val legendsTitle = Text("Title", size = 50f, color = Color.BLACK, font = DEFAULT)
         val drawable1 = resources.getDrawable(R.drawable.ic_circle, null)
         val icon1 = Icon(drawable1, 100f)
-        val label1 = Text("legend1", 50f, Color.BLACK, DEFAULT)
-        val legend1 = Container(parentMaxWidth = width.toFloat(), parentMaxHeight = height.toFloat(),children = listOf(icon1, label1), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
-        legendsBox = Root(Coordinates(100f, 100f), width.toFloat(), height.toFloat(), hasBackground = true, backgroundColor = Color.argb(200, 150, 100, 10), children = listOf(legendsTitle, legend1), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.VERTICAL)
+        val label1 = Text("legend1", size = 50f, color = Color.BLACK, font = DEFAULT)
+        val legend1 = Box(width.toFloat(), height.toFloat(), children = listOf(icon1, label1), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
+        legendsBox = Box(width.toFloat(), height.toFloat(), hasBackground = true, backgroundColor = Color.argb(200, 150, 100, 10), children = listOf(legendsTitle, legend1), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.VERTICAL)
         legendsBox.layOut(0f, 600f)
 
 
