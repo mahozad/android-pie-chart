@@ -11,8 +11,8 @@ import ir.mahozad.android.updatePaintForLabel
 
 internal class Text(
     private val string: String,
-    override val padding: Padding = Padding(0f, 0f, 0f, 0f),
-    override val margin: Margin = Margin(0f, 0f, 0f, 0f),
+    override val margins: Margins? = null,
+    override val paddings: Paddings? = null,
     @Dimension size: Float,
     @ColorInt color: Int,
     font: Typeface
@@ -25,11 +25,12 @@ internal class Text(
     override val width = dimensions.width()
     override val height = dimensions.height()
 
-    override fun layOut(top: Float, left: Float) {
+    override fun layOut(top: Float, start: Float, drawDirection: DrawDirection) {
+        // TODO: Take into account the drawDirection parameter
         val size = calculateLabelBounds(string, paint)
         val width = size.width()
         val height = size.height()
-        bounds.set(left, top, left + width, top + height)
+        bounds.set(start, top, start + width, top + height)
     }
 
     override fun draw(canvas: Canvas) {

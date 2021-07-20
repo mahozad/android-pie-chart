@@ -1,83 +1,108 @@
 package ir.mahozad.android.component
 
-import android.graphics.*
-import androidx.annotation.ColorInt
-import androidx.annotation.Dimension
-import androidx.annotation.FloatRange
-import kotlin.math.min
+import android.graphics.Canvas
+import android.graphics.DashPathEffect
+import android.graphics.Paint
+import android.graphics.RectF
+import ir.mahozad.android.component.Wrapping.Wrap
+import kotlin.math.max
 
 internal class Container(
-    private val parentMaxWidth: Float,
-    private val parentMaxHeight: Float,
-    override val padding: Padding = Padding(0f, 0f, 0f, 0f),
-    override val margin: Margin = Margin(0f, 0f, 0f, 0f),
     private val children: List<Box>,
-    private val layoutDirection: LayoutDirection,
+    private var layoutDirection: LayoutDirection,
     private val childrenAlignment: Alignment,
-    private val clipping: Clipping = Clipping.NextLine,
-    private val hasBorder: Boolean = false,
-    private val hasBackground: Boolean = false,
-    private val borderDashIntervals: FloatArray? = null,
-    @ColorInt private val borderColor: Int = Color.BLACK,
-    @ColorInt private val backgroundColor: Int = Color.TRANSPARENT,
-    /**
-     * Note that these two are convenience properties because the alpha can be specified in the color itself as well.
-     */
-    @FloatRange(from = 0.0, to = 1.0) private val backgroundOpacity: Float = 1f,
-    @FloatRange(from = 0.0, to = 1.0) private val borderOpacity: Float = 1f,
-    @Dimension private val borderThickness: Float = 0f,
-    @Dimension private val cornerRadius: Float = 0f
+    private val wrapping: Wrapping = Wrap,
+    override val margins: Margins? = null,
+    override val paddings: Paddings? = null,
+    private val background: Background? = null,
+    private val border: Border? = null
 ) : Box {
 
     private val bounds = RectF(0f, 0f, 0f, 0f)
     private val paint = Paint()
 
+    // init {
+    //     if (wrapping == Wrap) {
+    //         if (layoutDirection == LayoutDirection.HORIZONTAL) {
+    //             val childrenWidth = children.sumOf { it.width.toDouble() }.toFloat()
+    //             // Convert me to vertical container of two or more rows
+    //             if (childrenWidth > maxAvailableWidth) {
+    //                 layoutDirection = LayoutDirection.VERTICAL
+    //                 // TODO: children = calculate rows
+    //             }
+    //         } else {
+    //             val childrenHeight = children.sumOf { it.height.toDouble() }.toFloat()
+    //             // Convert me to horizontal container of two or more columns
+    //             if (childrenHeight > maxAvailableHeight) {
+    //                 layoutDirection = LayoutDirection.HORIZONTAL
+    //                 // TODO: children = calculate rows
+    //             }
+    //         }
+    //     }
+    // }
+
     override val width by lazy {
         if (layoutDirection == LayoutDirection.HORIZONTAL) {
-            val totalChildrenWidth = children.sumOf { it.width.toDouble() }.toFloat()
-            min(parentMaxWidth, totalChildrenWidth)
+            children.sumOf { it.width.toDouble() }.toFloat()
         } else {
-            val childrenMaxWidth = children.maxOf { it.width }
-            min(parentMaxWidth, childrenMaxWidth)
+            children.maxOf { it.width }
         }
     }
     override val height by lazy {
         if (layoutDirection == LayoutDirection.HORIZONTAL) {
-            val childrenMaxHeight = children.maxOf { it.height }
-            min(parentMaxHeight, childrenMaxHeight)
+            children.maxOf { it.height }
         } else {
-            val totalChildrenHeight = children.sumOf { it.height.toDouble() }.toFloat()
-            min(parentMaxHeight, totalChildrenHeight)
+            children.sumOf { it.height.toDouble() }.toFloat()
         }
     }
 
-    override fun layOut(top: Float, left: Float) {
+    override fun layOut(top: Float, start: Float, drawDirection: DrawDirection) {
+        bounds.set(start, top, start + width, top + height) // Used to draw the background
+
+        val maxWidth = children.maxOf { it.width }
+        val maxHeight = children.maxOf { it.height }
         var childTop = top
-        var childLeft = left
+        var childStart = start
         for (child in children) {
-            child.layOut(childTop, childLeft)
-            if (layoutDirection == LayoutDirection.HORIZONTAL) {
-                childLeft += child.width /* + margin */
-            } else {
-                childTop += child.height
+            if (childrenAlignment == Alignment.START && layoutDirection == LayoutDirection.HORIZONTAL) {
+                // all child tops should be parent top
+            } else if (childrenAlignment == Alignment.START && layoutDirection == LayoutDirection.VERTICAL && drawDirection == DrawDirection.RTL) {
+                // all child rights should be parent right
+            } else if (childrenAlignment == Alignment.START && layoutDirection == LayoutDirection.VERTICAL && drawDirection == DrawDirection.LTR) {
+                // all child lefts should be parent left
+            } else if (childrenAlignment == Alignment.END && layoutDirection == LayoutDirection.HORIZONTAL) {
+                // all child bottoms should be parent bottom
+            } else if (childrenAlignment == Alignment.END && layoutDirection == LayoutDirection.VERTICAL && drawDirection == DrawDirection.RTL) {
+                // all child lefts should be parent left
+            } else if (childrenAlignment == Alignment.END && layoutDirection == LayoutDirection.VERTICAL && drawDirection == DrawDirection.LTR) {
+                // all child rights should be parent right
+            } else if (childrenAlignment == Alignment.CENTER && layoutDirection == LayoutDirection.HORIZONTAL) {
+                childTop = top + max(0f, (maxHeight - child.height) / 2f)
+                child.layOut(childTop, childStart, drawDirection)
+                childStart += child.width /* + margin, padding, etc. */
+            } else /* if CENTER && VERTICAL */ {
+                childStart = start + max(0f, (maxWidth - child.width) / 2f)
+                child.layOut(childTop, childStart, drawDirection)
+                childTop += child.height /* + margin, padding, etc. */
             }
         }
     }
 
     override fun draw(canvas: Canvas) {
-        if (hasBorder) {
+        border?.let { border ->
             paint.style = Paint.Style.STROKE
-            paint.color = borderColor
-            paint.alpha = (borderOpacity * 255).toInt()
-            paint.strokeWidth = borderThickness
-            paint.pathEffect = DashPathEffect(borderDashIntervals, 0f)
-            canvas.drawRoundRect(bounds, cornerRadius, cornerRadius, paint)
+            paint.color = border.color
+            paint.alpha = (border.alpha * 255).toInt()
+            paint.strokeWidth = border.thickness
+            border.dashArray?.let { paint.pathEffect = DashPathEffect(it.toFloatArray(), 0f) }
+            // FIXME: Reduce the bounds so much so that the borders are accommodated
+            canvas.drawRoundRect(bounds, border.cornerRadius, border.cornerRadius, paint)
         }
-        if (hasBackground) {
+        background?.let { background ->
             paint.style = Paint.Style.FILL
-            paint.color = backgroundColor
-            paint.alpha = (backgroundOpacity * 255).toInt()
-            canvas.drawRoundRect(bounds, cornerRadius, cornerRadius, paint)
+            paint.color = background.color
+            paint.alpha = (background.alpha * 255).toInt()
+            canvas.drawRoundRect(bounds, background.cornerRadius, background.cornerRadius, paint)
         }
         for (child in children) {
             child.draw(canvas)

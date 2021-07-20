@@ -1,32 +1,72 @@
 package ir.mahozad.android.component
 
 import android.graphics.Canvas
+import android.graphics.Color
+import androidx.annotation.ColorInt
+import androidx.annotation.Dimension
+import androidx.annotation.FloatRange
 
 /**
- * We arrange the components using a box model and implement it with the
+ * We arrange the components using a
+ * [box model](https://limpet.net/mbrubeck/2014/09/08/toy-layout-engine-5-boxes.html)
+ * and implement it with the
  * [*composite* pattern](https://en.wikipedia.org/wiki/Composite_pattern).
  *
- * The margins are treated in [collapsing](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing) mode.
+ * Refer here for how [*Flexbox* algorithm](https://www.w3.org/TR/css-flexbox-1/#layout-algorithm) works.
+ * [Here](https://github.com/facebook/yoga) is an example library implementing Flexbox.
+ *
+ * https://www.html5rocks.com/en/tutorials/internals/howbrowserswork/
+ * https://medium.com/jspoint/how-the-browser-renders-a-web-page-dom-cssom-and-rendering-df10531c9969
  */
 internal interface Box {
+
+    // TODO: Convert this to an abstract class and use Template pattern for layOut and draw methods
+
     val width: Float
     val height: Float
-    val margin: Margin
-    val padding: Padding
-    fun layOut(top: Float, left: Float)
+    val margins: Margins?
+    val paddings: Paddings?
+    // Start is left or right corner depending on the draw direction
+    fun layOut(top: Float, start: Float, drawDirection: DrawDirection)
     fun draw(canvas: Canvas)
 }
 
 internal enum class Alignment { START, CENTER, END }
 
-internal enum class LayoutDirection { HORIZONTAL, VERTICAL }
+/**
+ * Refer [here](https://developer.mozilla.org/en-US/docs/Web/CSS/flex-direction)
+ * for how the flexbox implements its direction.
+ */
+internal enum class LayoutDirection { VERTICAL, HORIZONTAL }
 
-internal data class Padding(val top: Float, val bottom: Float, val start: Float, val end: Float)
+internal enum class DrawDirection { RTL, LTR }
 
-internal data class Margin(val top: Float, val bottom: Float, val start: Float, val end: Float)
+internal data class Paddings(val top: Float, val bottom: Float, val start: Float, val end: Float)
 
-internal sealed class Clipping {
-    object Scrollable : Clipping()
-    object NextLine : Clipping()
-    object Clipped : Clipping()
+internal data class Margins(val top: Float, val bottom: Float, val start: Float, val end: Float)
+
+internal data class Border(
+    @Dimension val thickness: Float,
+    @ColorInt val color: Int = Color.BLACK,
+    @Dimension val cornerRadius: Float = 0f,
+    val dashArray: List<Float>? = null,
+    /**
+     * NOTE: this is a convenience property because the alpha can be specified in the color itself as well.
+     */
+    @FloatRange(from = 0.0, to = 1.0) val alpha: Float = 1f
+)
+
+internal data class Background(
+    @ColorInt val color: Int = Color.TRANSPARENT,
+    @Dimension val cornerRadius: Float = 0f,
+    /**
+     * NOTE: this is a convenience property because the alpha can be specified in the color itself as well.
+     */
+    @FloatRange(from = 0.0, to = 1.0) val alpha: Float = 1f
+)
+
+internal sealed class Wrapping {
+    object Scroll : Wrapping()
+    object Wrap : Wrapping()
+    object Clip : Wrapping()
 }

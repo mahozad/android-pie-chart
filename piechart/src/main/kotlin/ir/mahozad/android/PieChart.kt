@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.content.res.use
 import androidx.core.graphics.minus
+import androidx.core.graphics.withClip
 import androidx.core.graphics.withRotation
 import ir.mahozad.android.PieChart.DrawDirection.CLOCKWISE
 import ir.mahozad.android.PieChart.GapPosition.MIDDLE
@@ -23,13 +24,11 @@ import ir.mahozad.android.PieChart.IconPlacement.START
 import ir.mahozad.android.PieChart.LabelType.*
 import ir.mahozad.android.PieChart.LegendIcons.SQUARE
 import ir.mahozad.android.PieChart.SlicePointer
-import ir.mahozad.android.component.Alignment
-import ir.mahozad.android.component.Container
-import ir.mahozad.android.component.Box
+import ir.mahozad.android.component.*
 import ir.mahozad.android.component.Icon
-import ir.mahozad.android.component.LayoutDirection
-import ir.mahozad.android.component.Text
 import java.text.NumberFormat
+import kotlin.math.max
+import kotlin.math.min
 
 const val DEFAULT_SIZE = 256 /* dp */
 const val DEFAULT_START_ANGLE = -90
@@ -160,6 +159,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         END_VERTICAL,
         END_HORIZONTAL
     }
+
+    private lateinit var legendsRect : RectF
 
     var startAngle = DEFAULT_START_ANGLE
         set(angle) {
@@ -351,24 +352,48 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
      */
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
-        pieRadius = calculateRadius(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
-        center = calculateCenter(width, height, paddingLeft, paddingRight, paddingTop, paddingBottom)
-        val (top, left, right, bottom) = calculateBoundaries(center, pieRadius)
-        pieEnclosingRect.set(RectF(left, top, right, bottom))
-        totalDrawableRect.set(pieEnclosingRect)
-
-
 
 
         val legendsTitle = Text("Title", size = 50f, color = Color.BLACK, font = DEFAULT)
         val drawable1 = resources.getDrawable(R.drawable.ic_circle, null)
+        val drawable2 = resources.getDrawable(R.drawable.ic_circle, null)
+        val drawable3 = resources.getDrawable(R.drawable.ic_circle, null)
         val icon1 = Icon(drawable1, 100f)
-        val label1 = Text("legend1", size = 50f, color = Color.BLACK, font = DEFAULT)
-        val legend1 = Container(width.toFloat(), height.toFloat(), children = listOf(icon1, label1), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
-        legendsBox = Container(width.toFloat(), height.toFloat(), hasBackground = true, backgroundColor = Color.argb(200, 150, 100, 10), children = listOf(legendsTitle, legend1), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.VERTICAL)
-        legendsBox.layOut(0f, 600f)
+        val icon2 = Icon(drawable2, 100f)
+        val icon3 = Icon(drawable3, 100f)
+        val label1 = Text("Legend 1", size = 50f, color = Color.BLACK, font = DEFAULT)
+        val label2 = Text("Second legend", size = 50f, color = Color.BLACK, font = DEFAULT)
+        val label3 = Text("Leg3", size = 50f, color = Color.BLACK, font = DEFAULT)
+        val legend1 = Container(children = listOf(icon1, label1), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
+        val legend2 = Container(children = listOf(icon2, label2), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
+        val legend3 = Container(children = listOf(icon3, label3), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
+        val legends = Container(children = listOf(legend1, legend2, legend3), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
+        legendsBox = Container(children = listOf(legendsTitle, legends), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.VERTICAL, background = Background(Color.argb(170, 93, 100, 10)), border = Border(10f))
+        /* if (legendType == TOP | BOTTOM) */
+        val maxAvailableWidth = (width - paddingLeft - paddingRight).toFloat()
+        val maxAvailableHeight = (height - paddingTop - paddingBottom) / 2f // Arbitrary
+        val legendsRectHeight = min(maxAvailableHeight, legendsBox.height)
+        val legendsRectWidth = min(maxAvailableWidth, legendsBox.width)
+        val legendsRectLeft = max(0f, (maxAvailableWidth - legendsRectWidth) / 2f)
+        val legendsRectTop = height - paddingBottom - legendsRectHeight
+        legendsRect = RectF(legendsRectLeft, legendsRectTop, legendsRectLeft + legendsRectWidth, legendsRectTop + legendsRectHeight)
+        val heightForPie = (height - legendsRectHeight).toInt()
+        val widthForPie = width
+        /* end if */
+        legendsBox.layOut(legendsRectTop, legendsRectLeft, ir.mahozad.android.component.DrawDirection.LTR)
 
+        // FIXME: modify the following methods in this way:
+        //  val drawableArea = calculateDrawableArea(paddings)
+        //  val legendsBoxHeight = max(legendsBoxHeight, view.height/2)
+        //  drawableArea = drawableArea - legendsBox.height // if legends box on top or bottom
+        //  val pieRadius = calculateRadius(drawableArea, ...)
+        //  val pieCenter = calculateRadius(drawableArea, ...)
 
+        totalDrawableRect.set(0f+paddingLeft, 0f + paddingTop, width - paddingRight.toFloat(), height - paddingBottom.toFloat())
+        pieRadius = calculateRadius(widthForPie, heightForPie, paddingLeft, paddingRight, paddingTop, paddingBottom)
+        center = calculateCenter(width, heightForPie, paddingLeft, paddingRight, paddingTop, paddingBottom)
+        val (top, left, right, bottom) = calculateBoundaries(center, pieRadius)
+        pieEnclosingRect.set(RectF(left, top, right, bottom))
 
 
         if (labelType == OUTSIDE) {
@@ -607,7 +632,9 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         mainPaint.alpha = (overlayAlpha * 255).toInt()
         canvas.drawPath(overlay, mainPaint)
 
-        legendsBox.draw(canvas)
+        canvas.withClip(legendsRect) {
+            legendsBox.draw(canvas)
+        }
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
