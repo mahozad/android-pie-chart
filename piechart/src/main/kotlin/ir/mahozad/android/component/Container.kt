@@ -4,8 +4,8 @@ import android.graphics.Canvas
 import android.graphics.DashPathEffect
 import android.graphics.Paint
 import android.graphics.RectF
+import ir.mahozad.android.Coordinates
 import ir.mahozad.android.component.Wrapping.Wrap
-import kotlin.math.max
 
 internal class Container(
     private val children: List<Box>,
@@ -19,6 +19,7 @@ internal class Container(
 ) : Box {
 
     private val bounds = RectF(0f, 0f, 0f, 0f)
+    private val borderBounds = RectF(0f, 0f, 0f, 0f)
     private val paint = Paint()
 
     // init {
@@ -43,66 +44,44 @@ internal class Container(
 
     override val width by lazy {
         if (layoutDirection == LayoutDirection.HORIZONTAL) {
-            children.sumOf { it.width.toDouble() }.toFloat()
+            children.sumOf { it.width.toDouble() }.toFloat() + ((border?.thickness ?: 0f) * 2 + (paddings?.start ?: 0f) + (paddings?.end ?: 0f))
         } else {
-            children.maxOf { it.width }
+            children.maxOf { it.width } + ((border?.thickness ?: 0f) * 2 + (paddings?.start ?: 0f) + (paddings?.end ?: 0f))
         }
     }
     override val height by lazy {
         if (layoutDirection == LayoutDirection.HORIZONTAL) {
-            children.maxOf { it.height }
+            children.maxOf { it.height } + ((border?.thickness ?: 0f) * 2 + (paddings?.top ?: 0f) + (paddings?.bottom ?: 0f))
         } else {
-            children.sumOf { it.height.toDouble() }.toFloat()
+            children.sumOf { it.height.toDouble() }.toFloat() + ((border?.thickness ?: 0f) * 2 + (paddings?.top ?: 0f) + (paddings?.bottom ?: 0f))
         }
     }
 
     override fun layOut(top: Float, start: Float, drawDirection: DrawDirection) {
         bounds.set(start, top, start + width, top + height) // Used to draw the background
-
-        val maxWidth = children.maxOf { it.width }
-        val maxHeight = children.maxOf { it.height }
-        var childTop = top
-        var childStart = start
-        for (child in children) {
-            if (childrenAlignment == Alignment.START && layoutDirection == LayoutDirection.HORIZONTAL) {
-                // all child tops should be parent top
-            } else if (childrenAlignment == Alignment.START && layoutDirection == LayoutDirection.VERTICAL && drawDirection == DrawDirection.RTL) {
-                // all child rights should be parent right
-            } else if (childrenAlignment == Alignment.START && layoutDirection == LayoutDirection.VERTICAL && drawDirection == DrawDirection.LTR) {
-                // all child lefts should be parent left
-            } else if (childrenAlignment == Alignment.END && layoutDirection == LayoutDirection.HORIZONTAL) {
-                // all child bottoms should be parent bottom
-            } else if (childrenAlignment == Alignment.END && layoutDirection == LayoutDirection.VERTICAL && drawDirection == DrawDirection.RTL) {
-                // all child lefts should be parent left
-            } else if (childrenAlignment == Alignment.END && layoutDirection == LayoutDirection.VERTICAL && drawDirection == DrawDirection.LTR) {
-                // all child rights should be parent right
-            } else if (childrenAlignment == Alignment.CENTER && layoutDirection == LayoutDirection.HORIZONTAL) {
-                childTop = top + max(0f, (maxHeight - child.height) / 2f)
-                child.layOut(childTop, childStart, drawDirection)
-                childStart += child.width /* + margin, padding, etc. */
-            } else /* if CENTER && VERTICAL */ {
-                childStart = start + max(0f, (maxWidth - child.width) / 2f)
-                child.layOut(childTop, childStart, drawDirection)
-                childTop += child.height /* + margin, padding, etc. */
-            }
+        val borderOffset = (border?.thickness?: 0f) / 2f
+        borderBounds.set(bounds.left + borderOffset, bounds.top + borderOffset, bounds.right - borderOffset, bounds.bottom - borderOffset)
+        val positions = calculateStartPositions(children, layoutDirection, drawDirection, childrenAlignment, Coordinates(start, top), wrapping, paddings, border, 10000000f, 10000000f,)
+        for ((i, child) in children.withIndex()) {
+            child.layOut(positions[i].y, positions[i].x, drawDirection)
         }
     }
 
     override fun draw(canvas: Canvas) {
+        background?.let { background ->
+            paint.style = Paint.Style.FILL
+            paint.color = background.color
+            paint.alpha = (background.alpha * 255).toInt()
+            canvas.drawRoundRect(bounds, background.cornerRadius, background.cornerRadius, paint)
+        }
+        // NOTE: Border is drawn on top of the background so draw it AFTER drawing the background
         border?.let { border ->
             paint.style = Paint.Style.STROKE
             paint.color = border.color
             paint.alpha = (border.alpha * 255).toInt()
             paint.strokeWidth = border.thickness
             border.dashArray?.let { paint.pathEffect = DashPathEffect(it.toFloatArray(), 0f) }
-            // FIXME: Reduce the bounds so much so that the borders are accommodated
-            canvas.drawRoundRect(bounds, border.cornerRadius, border.cornerRadius, paint)
-        }
-        background?.let { background ->
-            paint.style = Paint.Style.FILL
-            paint.color = background.color
-            paint.alpha = (background.alpha * 255).toInt()
-            canvas.drawRoundRect(bounds, background.cornerRadius, background.cornerRadius, paint)
+            canvas.drawRoundRect(borderBounds, border.cornerRadius, border.cornerRadius, paint)
         }
         for (child in children) {
             child.draw(canvas)

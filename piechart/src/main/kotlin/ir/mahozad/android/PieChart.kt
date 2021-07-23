@@ -368,7 +368,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         val legend2 = Container(children = listOf(icon2, label2), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
         val legend3 = Container(children = listOf(icon3, label3), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
         val legends = Container(children = listOf(legend1, legend2, legend3), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
-        legendsBox = Container(children = listOf(legendsTitle, legends), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.VERTICAL, background = Background(Color.argb(170, 93, 100, 10)), border = Border(10f))
+        legendsBox = Container(children = listOf(legendsTitle, legends), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.VERTICAL, background = Background(Color.argb(170, 93, 100, 10)), border = Border(10f, color= Color.RED, alpha = 0.3f))
         /* if (legendType == TOP | BOTTOM) */
         val maxAvailableWidth = (width - paddingLeft - paddingRight).toFloat()
         val maxAvailableHeight = (height - paddingTop - paddingBottom) / 2f // Arbitrary
