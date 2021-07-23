@@ -6,6 +6,7 @@ import android.graphics.Paint
 import android.graphics.RectF
 import ir.mahozad.android.Coordinates
 import ir.mahozad.android.component.Wrapping.Wrap
+import kotlin.math.max
 
 internal class Container(
     private val children: List<Box>,
@@ -44,16 +45,28 @@ internal class Container(
 
     override val width by lazy {
         if (layoutDirection == LayoutDirection.HORIZONTAL) {
-            children.sumOf { it.width.toDouble() }.toFloat() + ((border?.thickness ?: 0f) * 2 + (paddings?.start ?: 0f) + (paddings?.end ?: 0f))
+            children.sumOf { it.width.toDouble() }.toFloat() +
+                    (border?.thickness ?: 0f) * 2 +
+                    max(paddings?.start ?: 0f, children.first().margins?.start ?: 0f) +
+                    max(paddings?.end ?: 0f, children.last().margins?.end ?: 0f)
         } else {
-            children.maxOf { it.width } + ((border?.thickness ?: 0f) * 2 + (paddings?.start ?: 0f) + (paddings?.end ?: 0f))
+            children.maxOf { it.width } +
+                    (border?.thickness ?: 0f) * 2 +
+                    max(paddings?.start ?: 0f, children.first().margins?.start ?: 0f) +
+                    max(paddings?.end ?: 0f, children.last().margins?.end ?: 0f)
         }
     }
     override val height by lazy {
         if (layoutDirection == LayoutDirection.HORIZONTAL) {
-            children.maxOf { it.height } + ((border?.thickness ?: 0f) * 2 + (paddings?.top ?: 0f) + (paddings?.bottom ?: 0f))
+            children.maxOf { it.height } +
+                    (border?.thickness ?: 0f) * 2 +
+                    max(paddings?.top ?: 0f, children.first().margins?.top ?: 0f) +
+                    max(paddings?.bottom ?: 0f, children.last().margins?.bottom ?: 0f)
         } else {
-            children.sumOf { it.height.toDouble() }.toFloat() + ((border?.thickness ?: 0f) * 2 + (paddings?.top ?: 0f) + (paddings?.bottom ?: 0f))
+            children.sumOf { it.height.toDouble() }.toFloat() +
+                    (border?.thickness ?: 0f) * 2 +
+                    max(paddings?.top ?: 0f, children.first().margins?.top ?: 0f) +
+                    max(paddings?.bottom ?: 0f, children.last().margins?.bottom ?: 0f)
         }
     }
 
