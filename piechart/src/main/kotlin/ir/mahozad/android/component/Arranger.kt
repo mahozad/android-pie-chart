@@ -8,8 +8,15 @@ import kotlin.math.max
  *
  * Start coordinate is top-left corner for LTR and top-right corner for RTL.
  *
- * Treats **sibling margins** and **parent padding and child margin** in
- * [*collapsing*](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing) manner.
+ * NOTE 1: With [LayoutDirection.HORIZONTAL], if the children **top** margins are different,
+ *  we do not align the children tops by, for example, their maximum top margin.
+ *  The same is true for children **start** margins when using [LayoutDirection.VERTICAL].
+ *  This is intentional, because, why the user specified different start or top margins
+ *  for each child? They could have specified the same margin for all the children
+ *  if they wanted to align all their start or top side.
+ *
+ * NOTE 2: We treat **sibling margins** and **parent padding and first child margins** in
+ *  [*collapsing*](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing) manner.
  */
 internal fun calculateStartPositions(
     children: List<Box>,
