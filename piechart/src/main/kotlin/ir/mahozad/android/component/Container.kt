@@ -80,14 +80,18 @@ internal class Container(
         }
     }
 
+    /**
+     * Border is drawn on top of the background. So call [drawBorder] after [drawBackground].
+     */
     override fun draw(canvas: Canvas) {
-        background?.let { background ->
-            paint.style = Paint.Style.FILL
-            paint.color = background.color
-            paint.alpha = (background.alpha * 255).toInt()
-            canvas.drawRoundRect(bounds, background.cornerRadius, background.cornerRadius, paint)
+        drawBackground(canvas)
+        drawBorder(canvas)
+        for (child in children) {
+            child.draw(canvas)
         }
-        // NOTE: Border is drawn on top of the background so draw it AFTER drawing the background
+    }
+
+    private fun drawBorder(canvas: Canvas) {
         border?.let { border ->
             paint.style = Paint.Style.STROKE
             paint.color = border.color
@@ -96,8 +100,14 @@ internal class Container(
             border.dashArray?.let { paint.pathEffect = DashPathEffect(it.toFloatArray(), 0f) }
             canvas.drawRoundRect(borderBounds, border.cornerRadius, border.cornerRadius, paint)
         }
-        for (child in children) {
-            child.draw(canvas)
+    }
+
+    private fun drawBackground(canvas: Canvas) {
+        background?.let { background ->
+            paint.style = Paint.Style.FILL
+            paint.color = background.color
+            paint.alpha = (background.alpha * 255).toInt()
+            canvas.drawRoundRect(bounds, background.cornerRadius, background.cornerRadius, paint)
         }
     }
 }

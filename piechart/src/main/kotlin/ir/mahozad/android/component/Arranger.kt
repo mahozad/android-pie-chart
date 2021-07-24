@@ -1,6 +1,8 @@
 package ir.mahozad.android.component
 
 import ir.mahozad.android.Coordinates
+import ir.mahozad.android.component.Alignment.*
+import ir.mahozad.android.component.DrawDirection.LTR
 import kotlin.math.max
 
 /**
@@ -34,7 +36,7 @@ internal fun calculateStartPositions(
     if (children.isEmpty()) {
         return emptyList()
     }
-    val factor = if (drawDirection == DrawDirection.LTR) 1 else -1
+    val factor = if (drawDirection == LTR) 1 else -1
     var start = startCoordinates.x + (border?.thickness ?: 0f) * factor
     var top = startCoordinates.y + (border?.thickness ?: 0f)
     val result = mutableListOf<Coordinates>()
@@ -43,17 +45,17 @@ internal fun calculateStartPositions(
     val maxSiblingHeight = children.maxOf { it.height }
 
     if (layoutDirection == LayoutDirection.HORIZONTAL) {
-        var lastHorizontalMargin = factor * (paddings?.start ?: 0f)
+        var lastHorizontalMargin = (paddings?.start ?: 0f) * factor
         var verticalOffset = 0f
         for (child in children) {
-            val childTop = top + max(child.margins?.top ?: 0f, paddings?.top ?: 0f)
-            start += max(lastHorizontalMargin, child.margins?.start ?: 0f) * factor
-            if (childrenAlignment == Alignment.CENTER) {
+            if (childrenAlignment == CENTER) {
                 verticalOffset = max(0f, (maxSiblingHeight - child.height) / 2f)
             } else if (childrenAlignment == Alignment.END) {
                 verticalOffset = max(0f, maxSiblingHeight - child.height)
             }
-            val coordinates = Coordinates(start, childTop + verticalOffset)
+            val childTop = top + max(child.margins?.top ?: 0f, paddings?.top ?: 0f) + verticalOffset
+            start += max(lastHorizontalMargin, child.margins?.start ?: 0f) * factor
+            val coordinates = Coordinates(start, childTop)
             result.add(coordinates)
             start += child.width * factor
             lastHorizontalMargin = child.margins?.end ?: 0f
@@ -62,7 +64,7 @@ internal fun calculateStartPositions(
         var lastVerticalMargin = paddings?.top ?: 0f
         var horizontalOffset = 0f
         for (child in children) {
-            if (childrenAlignment == Alignment.CENTER) {
+            if (childrenAlignment == CENTER) {
                 horizontalOffset = max(0f, (maxSiblingWidth - child.width) / 2f)
             } else if (childrenAlignment == Alignment.END) {
                 horizontalOffset = max(0f, maxSiblingWidth - child.width)
