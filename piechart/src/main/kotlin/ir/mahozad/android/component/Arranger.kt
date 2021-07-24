@@ -3,6 +3,7 @@ package ir.mahozad.android.component
 import ir.mahozad.android.Coordinates
 import ir.mahozad.android.component.Alignment.*
 import ir.mahozad.android.component.DrawDirection.LTR
+import ir.mahozad.android.component.LayoutDirection.HORIZONTAL
 import kotlin.math.max
 
 /**
@@ -20,11 +21,11 @@ import kotlin.math.max
  * NOTE 2: We treat **sibling margins** and **parent padding and first child margins** in
  *  [*collapsing*](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing) manner.
  */
-internal fun calculateStartPositions(
+internal fun arrangeChildren(
     children: List<Box>,
     layoutDirection: LayoutDirection,
     drawDirection: DrawDirection,
-    childrenAlignment: Alignment,
+    alignment: Alignment,
     /** top-left when LTR, top-right when RTL of where the whole box should start */
     startCoordinates: Coordinates,
     wrapping: Wrapping,
@@ -36,46 +37,115 @@ internal fun calculateStartPositions(
     if (children.isEmpty()) {
         return emptyList()
     }
-    val factor = if (drawDirection == LTR) 1 else -1
-    var start = startCoordinates.x + (border?.thickness ?: 0f) * factor
-    var top = startCoordinates.y + (border?.thickness ?: 0f)
-    val result = mutableListOf<Coordinates>()
-
-    val maxSiblingWidth = children.maxOf { it.width }
-    val maxSiblingHeight = children.maxOf { it.height }
-
-    if (layoutDirection == LayoutDirection.HORIZONTAL) {
-        var lastHorizontalMargin = (paddings?.start ?: 0f) * factor
-        var verticalOffset = 0f
-        for (child in children) {
-            if (childrenAlignment == CENTER) {
-                verticalOffset = max(0f, (maxSiblingHeight - child.height) / 2f)
-            } else if (childrenAlignment == Alignment.END) {
-                verticalOffset = max(0f, maxSiblingHeight - child.height)
-            }
-            val childTop = top + max(child.margins?.top ?: 0f, paddings?.top ?: 0f) + verticalOffset
-            start += max(lastHorizontalMargin, child.margins?.start ?: 0f) * factor
-            val coordinates = Coordinates(start, childTop)
-            result.add(coordinates)
-            start += child.width * factor
-            lastHorizontalMargin = child.margins?.end ?: 0f
-        }
+    val arranger = if (layoutDirection == HORIZONTAL) {
+        HorizontalArranger(children, alignment, drawDirection, startCoordinates, paddings, border)
     } else {
-        var lastVerticalMargin = paddings?.top ?: 0f
-        var horizontalOffset = 0f
-        for (child in children) {
-            if (childrenAlignment == CENTER) {
-                horizontalOffset = max(0f, (maxSiblingWidth - child.width) / 2f)
-            } else if (childrenAlignment == Alignment.END) {
-                horizontalOffset = max(0f, maxSiblingWidth - child.width)
-            }
-            val childStart = start + (max(child.margins?.start ?: 0f, paddings?.start ?: 0f) + horizontalOffset) * factor
-            top += max(lastVerticalMargin, child.margins?.top ?: 0f)
-            val coordinates = Coordinates(childStart, top)
-            result.add(coordinates)
-            top += child.height
-            lastVerticalMargin = child.margins?.bottom ?: 0f
-        }
+        VerticalArranger(children, alignment, drawDirection, startCoordinates, paddings, border)
     }
-    return result
+    return arranger.arrange()
+}
+
+private abstract class Arranger(
+    protected val children: List<Box>,
+    protected val alignment: Alignment,
+    drawDirection: DrawDirection,
+    startCoordinates: Coordinates,
+    border: Border?, // borders of this box
+) {
+
+    protected var lastSpace = 0f
+    protected val factor = if (drawDirection == LTR) 1 else -1
+    protected var start = startCoordinates.x + (border?.thickness ?: 0f) * factor
+    protected var top = startCoordinates.y + (border?.thickness ?: 0f)
+    protected val maxSiblingWidth = children.maxOf { it.width }
+    protected val maxSiblingHeight = children.maxOf { it.height }
+
+    /**
+     * Template pattern.
+     */
+    fun arrange(): List<Coordinates> {
+        lastSpace = getInitialSpace()
+        val result = mutableListOf<Coordinates>()
+        for (child in children) {
+            val offset = calculateOffset(child)
+            val childTop = calculateChildTop(child, offset)
+            val childStart = calculateChildStart(child, offset)
+            result.add(Coordinates(childStart, childTop))
+            incrementAxis(child)
+            lastSpace = getFinishMargin(child)
+        }
+        return result
+    }
+
+    private fun calculateOffset(child: Box) = when (alignment) {
+        CENTER -> max(0f, getMaxMinusChildSize(child) / 2f)
+        START -> 0f
+        END -> max(0f, getMaxMinusChildSize(child))
+    }
+
+    abstract fun getInitialSpace(): Float
+
+    abstract fun incrementAxis(child: Box)
+
+    abstract fun getFinishMargin(child: Box): Float
+
+    abstract fun calculateChildTop(child: Box, offset: Float): Float
+
+    abstract fun calculateChildStart(child: Box, offset: Float): Float
+
+    abstract fun getMaxMinusChildSize(child: Box): Float
+}
+
+private class HorizontalArranger(
+    children: List<Box>,
+    alignment: Alignment,
+    drawDirection: DrawDirection,
+    startCoordinates: Coordinates,
+    val paddings: Paddings?,
+    border: Border?
+) : Arranger(children, alignment, drawDirection, startCoordinates, border) {
+
+    override fun getInitialSpace() = (paddings?.start ?: 0f) * factor
+
+    override fun incrementAxis(child: Box) {
+        start += child.width * factor
+    }
+
+    override fun getFinishMargin(child: Box) = child.margins?.end ?: 0f
+
+    override fun calculateChildTop(child: Box, offset: Float) = top + max(child.margins?.top ?: 0f, paddings?.top ?: 0f) + offset
+
+    override fun calculateChildStart(child: Box, offset: Float): Float {
+        start += max(lastSpace, child.margins?.start ?: 0f) * factor
+        return start
+    }
+
+    override fun getMaxMinusChildSize(child: Box) = maxSiblingHeight - child.height
+}
+
+private class VerticalArranger(
+    children: List<Box>,
+    alignment: Alignment,
+    drawDirection: DrawDirection,
+    startCoordinates: Coordinates,
+    val paddings: Paddings?,
+    border: Border?
+) : Arranger(children, alignment, drawDirection, startCoordinates, border) {
+
+    override fun getInitialSpace() = paddings?.top ?: 0f
+
+    override fun incrementAxis(child: Box) {
+        top += child.height
+    }
+
+    override fun getFinishMargin(child: Box) = child.margins?.bottom ?: 0f
+
+    override fun calculateChildTop(child: Box, offset: Float): Float {
+        top += max(lastSpace, child.margins?.top ?: 0f)
+        return top
+    }
+
+    override fun calculateChildStart(child: Box, offset: Float) = start + (max(child.margins?.start ?: 0f, paddings?.start ?: 0f) + offset) * factor
+
+    override fun getMaxMinusChildSize(child: Box) = maxSiblingWidth - child.width
 }

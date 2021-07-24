@@ -41,7 +41,7 @@ class ArrangerTest {
         val paddings = null
         val border = null
 
-        val childrenCoordinates = calculateStartPositions(children, layoutDirection, drawDirection, alignment, startCoordinates, wrapping, paddings, border, availableWidth, availableHeight)
+        val childrenCoordinates = arrangeChildren(children, layoutDirection, drawDirection, alignment, startCoordinates, wrapping, paddings, border, availableWidth, availableHeight)
 
         assertThat(childrenCoordinates).isEmpty()
     }
@@ -58,7 +58,7 @@ class ArrangerTest {
         val paddings = null
         val border = null
 
-        val childrenCoordinates = calculateStartPositions(children, layoutDirection, drawDirection, alignment, startCoordinates, wrapping, paddings, border, availableWidth, availableHeight)
+        val childrenCoordinates = arrangeChildren(children, layoutDirection, drawDirection, alignment, startCoordinates, wrapping, paddings, border, availableWidth, availableHeight)
 
         assertThat(childrenCoordinates).isEmpty()
     }
@@ -80,7 +80,7 @@ class ArrangerTest {
         val availableWidth = 400f
         val availableHeight = 350f
 
-        val childrenCoordinates = calculateStartPositions(children, layoutDirection, drawDirection, alignment, startCoordinates, wrapping, paddings, border, availableWidth, availableHeight)
+        val childrenCoordinates = arrangeChildren(children, layoutDirection, drawDirection, alignment, startCoordinates, wrapping, paddings, border, availableWidth, availableHeight)
 
         for ((i, coordinates) in childrenCoordinates.withIndex()) {
             assertThat(coordinates)
