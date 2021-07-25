@@ -13,6 +13,7 @@
       app:labelType="outside"
       app:startAngle="250"
       app:legendType="bottomHorizontal"
+      app:legendsPercentage="enabled"
       app:legendIconsMargin="4dp"
       app:legendsMargin="4dp"
       app:legendsTitle="Legends"

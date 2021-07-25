@@ -28,6 +28,8 @@ import java.text.NumberFormat
 import kotlin.math.max
 import kotlin.math.min
 
+const val ENABLED = true
+const val DISABLED = false
 const val DEFAULT_SIZE = 256 /* dp */
 const val DEFAULT_START_ANGLE = -90
 const val DEFAULT_HOLE_RATIO = 0.25f
@@ -40,6 +42,9 @@ const val DEFAULT_LEGEND_BOX_MARGIN = 8f /* dp */
 const val DEFAULT_LEGENDS_TITLE_SIZE = 18f /* sp */
 const val DEFAULT_LEGEND_ICONS_MARGIN = 8f /* dp */
 const val DEFAULT_LEGEND_ICONS_ALPHA = 1f
+const val DEFAULT_LEGENDS_PERCENTAGE_STATUS = DISABLED
+const val DEFAULT_LEGENDS_PERCENTAGE_MARGIN = 8f /* dp */
+const val DEFAULT_LEGENDS_PERCENTAGE_SIZE = 16f /* sp */
 const val DEFAULT_LEGENDS_MARGIN = 4f /* dp */
 /* sp so user can easily specify the same value for both label size and icon height to make them the same size */
 const val DEFAULT_LABEL_ICONS_HEIGHT = DEFAULT_LABELS_SIZE /* sp */
@@ -54,6 +59,7 @@ const val DEFAULT_SHOULD_CENTER_PIE = true
 @ColorInt const val DEFAULT_LEGENDS_COLOR = Color.WHITE
 @ColorInt const val DEFAULT_LEGEND_BOX_BACKGROUND_COLOR = Color.TRANSPARENT
 @ColorInt const val DEFAULT_LEGENDS_TITLE_COLOR = Color.WHITE
+@ColorInt const val DEFAULT_LEGENDS_PERCENTAGE_COLOR = Color.WHITE
 // If null, the colors of the icon itself is used
 @ColorInt val defaultLabelIconsTint: Int? = null
 @ColorInt val defaultLegendIconsTint: Int? = null
@@ -118,6 +124,10 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         @Dimension val legendIconHeight: Float? = null,
         @Dimension val legendIconMargin: Float? = null,
         @ColorInt val legendIconTint: Int? = color,
+        @ColorInt val legendPercentageColor: Int? = null,
+        @Dimension val legendPercentageSize: Float? = null,
+        @Dimension val legendPercentageMargin: Float? = null,
+        @FloatRange(from = 0.0, to = 1.0) val legendIconAlpha: Float = 1f,
         val legendIconPlacement: IconPlacement = START,
 
         /**
@@ -266,6 +276,27 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     var legendsTitleSize = spToPx(DEFAULT_LEGENDS_TITLE_SIZE)
         set(size /* px */) {
             field = size
+            invalidate()
+        }
+    var legendsPercentageSize = spToPx(DEFAULT_LEGENDS_PERCENTAGE_SIZE)
+        set(size /* px */) {
+            field = size
+            invalidate()
+        }
+    var isLegendsPercentageEnabled = DEFAULT_LEGENDS_PERCENTAGE_STATUS
+        set(shouldEnable) {
+            field = shouldEnable
+            invalidate()
+            requestLayout()
+        }
+    var legendsPercentageColor = DEFAULT_LEGENDS_PERCENTAGE_COLOR
+        set(color) {
+            field = color
+            invalidate()
+        }
+    var legendsPercentageMargin = dpToPx(DEFAULT_LEGENDS_PERCENTAGE_MARGIN)
+        set(margin /* px */) {
+            field = margin
             invalidate()
         }
     var legendIconsHeight = spToPx(DEFAULT_LEGEND_ICONS_HEIGHT)
@@ -435,6 +466,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             val slicesPointerLength = it.getDimension(R.styleable.PieChart_slicesPointerLength, -1f)
             val slicesPointerWidth = it.getDimension(R.styleable.PieChart_slicesPointerWidth, -1f)
             slicesPointer = if (slicesPointerLength <= 0 || slicesPointerWidth <= 0) defaultSlicesPointer else SlicePointer(slicesPointerLength, slicesPointerWidth, 0)
+            isLegendsPercentageEnabled = it.getInt(R.styleable.PieChart_legendsPercentage, 0) == 1
             labelIconsPlacement = IconPlacement.values()[
                     it.getInt(R.styleable.PieChart_labelIconsPlacement, defaultLabelIconsPlacement.ordinal)
             ]
@@ -489,14 +521,21 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             val legendsTitle = Text(legendsTitle, size = legendsTitleSize, color = legendsTitleColor, font = DEFAULT)
             val legends = mutableListOf<Box>()
             for (slice in slices) {
-                val legendText = Text(slice.legend, size = slice.legendSize ?: legendsSize, color = slice.legendColor?: legendsColor, font = DEFAULT)
                 var legendDrawable: Drawable? = null
                 slice.legendIcon?.let { iconId ->
                     legendDrawable = resources.getDrawable(iconId, null)
                     slice.labelIconTint?.let { tint -> legendDrawable?.setTint(tint) }
                 }
-                val legendIcon = Icon(legendDrawable?:resources.getDrawable(legendsIcon.resId, null), slice.legendIconHeight?: legendIconsHeight, Margins(start = legendIconsMargin, end = legendIconsMargin), tint= legendIconsTint, alpha = legendIconsAlpha)
-                val legend = Container(children = listOf(legendIcon, legendText), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL, margins = Margins(start = legendsMargin, end = legendsMargin))
+                val legendIcon = Icon(legendDrawable?:resources.getDrawable(legendsIcon.resId, null), slice.legendIconHeight?: legendIconsHeight, tint= slice.legendIconTint?:legendIconsTint, alpha = slice.legendIconAlpha ?: legendIconsAlpha)
+                val legendText = Text(slice.legend, size = slice.legendSize ?: legendsSize, color = slice.legendColor?: legendsColor, margins = Margins(start = slice.legendIconMargin?:legendIconsMargin, end = slice.legendPercentageMargin ?: legendsPercentageMargin), font = DEFAULT)
+                val legendComponents = mutableListOf<Box>()
+                legendComponents.add(legendIcon)
+                legendComponents.add(legendText)
+                if (isLegendsPercentageEnabled) {
+                    val legendPercentage = Text(NumberFormat.getPercentInstance().format(slice.fraction), size = slice.legendPercentageSize?: legendsPercentageSize, color = slice.legendPercentageColor?: legendsPercentageColor, font = DEFAULT)
+                    legendComponents.add(legendPercentage)
+                }
+                val legend = Container(legendComponents, childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL, margins = Margins(start = legendsMargin, end = legendsMargin))
                 legends.add(legend)
             }
             val legendsContainer = Container(children = legends, childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)

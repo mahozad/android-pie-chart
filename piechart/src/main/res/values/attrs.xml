@@ -30,6 +30,10 @@
     <!-- Reference to an array of colors -->
     <attr name="legendIconsTintArray" format="reference"/>
     <attr name="legendsMargin" format="dimension"/>
+    <attr name="legendsPercentage" format="enum">
+      <enum name="disabled" value="0"/>
+      <enum name="enabled" value="1"/>
+    </attr>
     <attr name="legendsColor" format="color"/>
     <attr name="legendBoxBackgroundColor" format="color"/>
     <attr name="legendBoxMargin" format="dimension"/>

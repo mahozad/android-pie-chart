@@ -11,6 +11,7 @@
   <public name="legendType" format="enum"/>
   <public name="legendsTitle" format="string"/>
   <public name="legendsSize" format="dimension"/>
+  <public name="legendsPercentage" format="enum"/>
   <public name="legendsTitleSize" format="dimension"/>
   <public name="legendsMargin" format="dimension"/>
   <public name="legendIconsTint" format="color"/>
