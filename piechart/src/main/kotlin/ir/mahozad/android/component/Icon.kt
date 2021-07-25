@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import androidx.annotation.ColorInt
+import androidx.annotation.FloatRange
 import ir.mahozad.android.calculateLabelIconWidth
 
 internal class Icon(
@@ -11,7 +12,8 @@ internal class Icon(
     override val height: Float,
     override val margins: Margins? = null,
     override val paddings: Paddings? = null,
-    @ColorInt private val tint: Int? = null
+    @ColorInt private val tint: Int? = null,
+    @FloatRange(from = 0.0, to = 1.0) private val alpha: Float = 1f
 ) : Box {
 
     override val width = calculateLabelIconWidth(drawable, height)
@@ -22,6 +24,7 @@ internal class Icon(
         val bottom = top + if (width == 0f) 0f else height
         drawable?.bounds = Rect(start.toInt(), top.toInt(), right.toInt(), bottom.toInt())
         tint?.let { drawable?.setTint(it) }
+        drawable?.alpha = (alpha * 255).toInt() // Setting alpha should be *AFTER* setting the color/tint to override the color/tint alpha
     }
 
     override fun draw(canvas: Canvas) {

@@ -36,9 +36,11 @@ const val DEFAULT_OVERLAY_ALPHA = 0.25f
 const val DEFAULT_GAP = 8f /* px */
 const val DEFAULT_LABELS_SIZE = 18f /* sp */
 const val DEFAULT_LEGENDS_SIZE = 16f /* sp */
+const val DEFAULT_LEGEND_BOX_MARGIN = 8f /* dp */
 const val DEFAULT_LEGENDS_TITLE_SIZE = 18f /* sp */
 const val DEFAULT_LEGEND_ICONS_MARGIN = 8f /* dp */
-const val DEFAULT_MARGIN_BETWEEN_LEGENDS = 4f /* dp */
+const val DEFAULT_LEGEND_ICONS_ALPHA = 1f
+const val DEFAULT_LEGENDS_MARGIN = 4f /* dp */
 /* sp so user can easily specify the same value for both label size and icon height to make them the same size */
 const val DEFAULT_LABEL_ICONS_HEIGHT = DEFAULT_LABELS_SIZE /* sp */
 const val DEFAULT_LEGEND_ICONS_HEIGHT = DEFAULT_LEGENDS_SIZE /* sp */
@@ -50,6 +52,7 @@ const val DEFAULT_LEGENDS_TITLE = ""
 const val DEFAULT_SHOULD_CENTER_PIE = true
 @ColorInt const val DEFAULT_LABELS_COLOR = Color.WHITE
 @ColorInt const val DEFAULT_LEGENDS_COLOR = Color.WHITE
+@ColorInt const val DEFAULT_LEGEND_BOX_BACKGROUND_COLOR = Color.TRANSPARENT
 @ColorInt const val DEFAULT_LEGENDS_TITLE_COLOR = Color.WHITE
 // If null, the colors of the icon itself is used
 @ColorInt val defaultLabelIconsTint: Int? = null
@@ -229,7 +232,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             invalidate()
             requestLayout()
         }
-    var marginBetweenLegends = dpToPx(DEFAULT_MARGIN_BETWEEN_LEGENDS)
+    var legendsMargin = dpToPx(DEFAULT_LEGENDS_MARGIN)
         set(margin /* px */) {
             field = margin
             invalidate()
@@ -238,6 +241,21 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     var legendsColor = DEFAULT_LEGENDS_COLOR
         set(color) {
             field = color
+            invalidate()
+        }
+    var legendBoxBackgroundColor = DEFAULT_LEGEND_BOX_BACKGROUND_COLOR
+        set(color) {
+            field = color
+            invalidate()
+        }
+    var legendBoxMargin = dpToPx(DEFAULT_LEGEND_BOX_MARGIN)
+        set(margin /* px */) {
+            field = margin
+            invalidate()
+        }
+    var legendIconsAlpha = DEFAULT_LEGEND_ICONS_ALPHA
+        set(alpha) {
+            field = alpha
             invalidate()
         }
     var legendsTitleColor = DEFAULT_LEGENDS_TITLE_COLOR
@@ -407,8 +425,11 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             legendsTitleSize = it.getDimension(R.styleable.PieChart_legendsTitleSize, spToPx(DEFAULT_LEGENDS_TITLE_SIZE))
             legendIconsTint = getIconTint(it, R.styleable.PieChart_legendIconsTint)
             legendIconsTintArray = getColorArray(it, R.styleable.PieChart_legendIconsTintArray)
-            marginBetweenLegends = it.getDimension(R.styleable.PieChart_marginBetweenLegends, dpToPx(DEFAULT_MARGIN_BETWEEN_LEGENDS))
+            legendsMargin = it.getDimension(R.styleable.PieChart_legendsMargin, dpToPx(DEFAULT_LEGENDS_MARGIN))
             legendsColor = it.getColor(R.styleable.PieChart_legendsColor, DEFAULT_LEGENDS_COLOR)
+            legendBoxBackgroundColor = it.getColor(R.styleable.PieChart_legendBoxBackgroundColor, DEFAULT_LEGEND_BOX_BACKGROUND_COLOR)
+            legendBoxMargin = it.getDimension(R.styleable.PieChart_legendBoxMargin, dpToPx(DEFAULT_LEGEND_BOX_MARGIN))
+            legendIconsAlpha = it.getFloat(R.styleable.PieChart_legendIconsAlpha, DEFAULT_LEGEND_ICONS_ALPHA)
             legendsTitleColor = it.getColor(R.styleable.PieChart_legendsTitleColor, DEFAULT_LEGENDS_TITLE_COLOR)
             shouldCenterPie = it.getBoolean(R.styleable.PieChart_shouldCenterPie, DEFAULT_SHOULD_CENTER_PIE)
             val slicesPointerLength = it.getDimension(R.styleable.PieChart_slicesPointerLength, -1f)
@@ -474,12 +495,12 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
                     legendDrawable = resources.getDrawable(iconId, null)
                     slice.labelIconTint?.let { tint -> legendDrawable?.setTint(tint) }
                 }
-                val legendIcon = Icon(legendDrawable?:resources.getDrawable(legendsIcon.resId, null), slice.legendIconHeight?: legendIconsHeight)
-                val legend = Container(children = listOf(legendIcon, legendText), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
+                val legendIcon = Icon(legendDrawable?:resources.getDrawable(legendsIcon.resId, null), slice.legendIconHeight?: legendIconsHeight, Margins(start = legendIconsMargin, end = legendIconsMargin), tint= legendIconsTint, alpha = legendIconsAlpha)
+                val legend = Container(children = listOf(legendIcon, legendText), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL, margins = Margins(start = legendsMargin, end = legendsMargin))
                 legends.add(legend)
             }
             val legendsContainer = Container(children = legends, childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
-            legendsBox = Container(children = listOf(legendsTitle, legendsContainer), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.VERTICAL, background = Background(Color.argb(170, 93, 100, 10)), border = Border(10f, color= Color.RED, alpha = 0.3f))
+            legendsBox = Container(children = listOf(legendsTitle, legendsContainer), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.VERTICAL, background = Background(legendBoxBackgroundColor), border = Border(10f, color= Color.RED, alpha = 0.3f))
 
 
             val maxAvailableWidth = (width - paddingLeft - paddingRight).toFloat()

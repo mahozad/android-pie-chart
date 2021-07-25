@@ -29,8 +29,11 @@
     <attr name="legendIconsTint" format="color"/>
     <!-- Reference to an array of colors -->
     <attr name="legendIconsTintArray" format="reference"/>
-    <attr name="marginBetweenLegends" format="dimension"/>
+    <attr name="legendsMargin" format="dimension"/>
     <attr name="legendsColor" format="color"/>
+    <attr name="legendBoxBackgroundColor" format="color"/>
+    <attr name="legendBoxMargin" format="dimension"/>
+    <attr name="legendIconsAlpha" format="float"/>
     <attr name="legendsTitleColor" format="color"/>
     <attr name="legendType" format="enum">
       <enum name="none" value="0"/>

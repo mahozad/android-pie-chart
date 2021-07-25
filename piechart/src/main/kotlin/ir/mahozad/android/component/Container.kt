@@ -47,6 +47,7 @@ internal class Container(
         if (layoutDirection == LayoutDirection.HORIZONTAL) {
             children.sumOf { it.width.toDouble() }.toFloat() +
                     (border?.thickness ?: 0f) * 2 +
+                    /* + children horizontal margins */
                     max(paddings?.start ?: 0f, children.first().margins?.start ?: 0f) +
                     max(paddings?.end ?: 0f, children.last().margins?.end ?: 0f)
         } else {
@@ -93,10 +94,10 @@ internal class Container(
 
     private fun drawBorder(canvas: Canvas) {
         border?.let { border ->
+            paint.strokeWidth = border.thickness
             paint.style = Paint.Style.STROKE
             paint.color = border.color
-            paint.alpha = (border.alpha * 255).toInt()
-            paint.strokeWidth = border.thickness
+            paint.alpha = (border.alpha * 255).toInt() // Setting alpha should be *AFTER* setting the color to override the color alpha
             border.dashArray?.let { paint.pathEffect = DashPathEffect(it.toFloatArray(), 0f) }
             canvas.drawRoundRect(borderBounds, border.cornerRadius, border.cornerRadius, paint)
         }
@@ -106,7 +107,7 @@ internal class Container(
         background?.let { background ->
             paint.style = Paint.Style.FILL
             paint.color = background.color
-            paint.alpha = (background.alpha * 255).toInt()
+            paint.alpha = (background.alpha * 255).toInt() // Setting alpha should be *AFTER* setting the color to override the color alpha
             canvas.drawRoundRect(bounds, background.cornerRadius, background.cornerRadius, paint)
         }
     }

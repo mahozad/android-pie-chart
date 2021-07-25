@@ -5,6 +5,7 @@ import android.graphics.Color
 import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
 import androidx.annotation.FloatRange
+import androidx.core.graphics.alpha
 
 /**
  * We arrange the components using a
@@ -41,9 +42,13 @@ internal enum class LayoutDirection { VERTICAL, HORIZONTAL }
 
 internal enum class DrawDirection { RTL, LTR }
 
-internal data class Paddings(val top: Float, val bottom: Float, val start: Float, val end: Float)
+internal data class Paddings(val top: Float = 0f, val bottom: Float = 0f, val start: Float = 0f, val end: Float = 0f) {
+    constructor(padding: Float) : this(padding, padding, padding, padding)
+}
 
-internal data class Margins(val top: Float, val bottom: Float, val start: Float, val end: Float)
+internal data class Margins(val top: Float = 0f, val bottom: Float = 0f, val start: Float = 0f, val end: Float = 0f) {
+    constructor(margin: Float) : this(margin, margin, margin, margin)
+}
 
 internal data class Border(
     @Dimension val thickness: Float,
@@ -53,7 +58,7 @@ internal data class Border(
     /**
      * NOTE: this is a convenience property because the alpha can be specified in the color itself as well.
      */
-    @FloatRange(from = 0.0, to = 1.0) val alpha: Float = 1f
+    @FloatRange(from = 0.0, to = 1.0) val alpha: Float = color.alpha / 255f
 )
 
 internal data class Background(
@@ -62,7 +67,7 @@ internal data class Background(
     /**
      * NOTE: this is a convenience property because the alpha can be specified in the color itself as well.
      */
-    @FloatRange(from = 0.0, to = 1.0) val alpha: Float = 1f
+    @FloatRange(from = 0.0, to = 1.0) val alpha: Float = color.alpha / 255f
 )
 
 internal sealed class Wrapping {
