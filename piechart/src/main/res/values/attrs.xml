@@ -20,6 +20,15 @@
     <attr name="slicesPointerWidth" format="dimension"/>
     <attr name="shouldCenterPie" format="boolean"/>
     <attr name="centerLabel" format="string"/>
+    <attr name="legendsTitle" format="string"/>
+    <attr name="legendsSize" format="dimension"/>
+    <attr name="legendType" format="enum">
+      <enum name="none" value="0"/>
+      <enum name="bottomHorizontal" value="1"/>
+      <enum name="topHorizontal" value="2"/>
+      <enum name="startVertical" value="3"/>
+      <enum name="endVertical" value="4"/>
+    </attr>
     <attr name="legendsIcon" format="enum">
       <enum name="square" value="0"/>
       <enum name="squareHallow" value="1"/>

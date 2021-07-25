@@ -37,12 +37,15 @@ const val DEFAULT_OVERLAY_RATIO = 0.55f
 const val DEFAULT_OVERLAY_ALPHA = 0.25f
 const val DEFAULT_GAP = 8f /* px */
 const val DEFAULT_LABELS_SIZE = 18f /* sp */
+const val DEFAULT_LEGENDS_SIZE = 18f /* sp */
 /* sp so user can easily specify the same value for both label size and icon height to make them the same size */
 const val DEFAULT_LABEL_ICONS_HEIGHT = DEFAULT_LABELS_SIZE /* sp */
+const val DEFAULT_LEGEND_ICONS_HEIGHT = DEFAULT_LEGENDS_SIZE /* sp */
 const val DEFAULT_LABEL_ICONS_MARGIN = 8f /* dp */
 const val DEFAULT_LABEL_OFFSET = 0.75f
 const val DEFAULT_OUTSIDE_LABELS_MARGIN = 28f /* dp */
 const val DEFAULT_CENTER_LABEL = ""
+const val DEFAULT_LEGENDS_TITLE = ""
 const val DEFAULT_SHOULD_CENTER_PIE = true
 @ColorInt const val DEFAULT_LABELS_COLOR = Color.WHITE
 // If null, the colors of the icon itself is used
@@ -51,6 +54,7 @@ val defaultGapPosition = MIDDLE
 val defaultGradientType = RADIAL
 val defaultDrawDirection = CLOCKWISE
 val defaultLabelIconsPlacement = START
+val defaultLegendType = PieChart.LegendType.NONE
 val defaultLegendsIcon = SQUARE
 val defaultLabelType = INSIDE
 val defaultLabelsFont: Typeface = DEFAULT
@@ -156,13 +160,13 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
     enum class LegendType {
         NONE,
-        TOP_VERTICAL,
-        TOP_HORIZONTAL,
-        BOTTOM_VERTICAL,
         BOTTOM_HORIZONTAL,
+        TOP_HORIZONTAL,
         START_VERTICAL,
-        START_HORIZONTAL,
         END_VERTICAL,
+        BOTTOM_VERTICAL,
+        TOP_VERTICAL,
+        START_HORIZONTAL,
         END_HORIZONTAL
     }
 
@@ -197,6 +201,22 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         set(size /* px */) {
             field = size
             invalidate()
+        }
+    var legendsSize = spToPx(DEFAULT_LEGENDS_SIZE)
+        set(size /* px */) {
+            field = size
+            invalidate()
+        }
+    var legendsTitle = DEFAULT_LEGENDS_TITLE
+        set(title) {
+            field = title
+            invalidate()
+        }
+    var legendType = defaultLegendType
+        set(type) {
+            field = type
+            invalidate()
+            requestLayout()
         }
     var labelsFont = defaultLabelsFont
         set(font) {
@@ -320,12 +340,17 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             labelIconsMargin = it.getDimension(R.styleable.PieChart_labelIconsMargin, dpToPx(DEFAULT_LABEL_ICONS_MARGIN))
             outsideLabelsMargin = it.getDimension(R.styleable.PieChart_outsideLabelsMargin, dpToPx(DEFAULT_OUTSIDE_LABELS_MARGIN))
             centerLabel = it.getString(R.styleable.PieChart_centerLabel) ?: DEFAULT_CENTER_LABEL
+            legendsSize = it.getDimension(R.styleable.PieChart_legendsSize, spToPx(DEFAULT_LEGENDS_SIZE))
+            legendsTitle = it.getString(R.styleable.PieChart_legendsTitle) ?: DEFAULT_LEGENDS_TITLE
             shouldCenterPie = it.getBoolean(R.styleable.PieChart_shouldCenterPie, DEFAULT_SHOULD_CENTER_PIE)
             val slicesPointerLength = it.getDimension(R.styleable.PieChart_slicesPointerLength, -1f)
             val slicesPointerWidth = it.getDimension(R.styleable.PieChart_slicesPointerWidth, -1f)
             slicesPointer = if (slicesPointerLength <= 0 || slicesPointerWidth <= 0) defaultSlicesPointer else SlicePointer(slicesPointerLength, slicesPointerWidth, 0)
             labelIconsPlacement = IconPlacement.values()[
                     it.getInt(R.styleable.PieChart_labelIconsPlacement, defaultLabelIconsPlacement.ordinal)
+            ]
+            legendType = LegendType.values()[
+                    it.getInt(R.styleable.PieChart_legendType, defaultLegendType.ordinal)
             ]
             labelType = LabelType.values()[
                     it.getInt(R.styleable.PieChart_labelType, defaultLabelType.ordinal)
@@ -360,7 +385,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
 
 
-        val legendsTitle = Text("Title", size = 50f, color = Color.BLACK, font = DEFAULT)
+        val legendsTitle = Text(legendsTitle, size = 50f, color = Color.BLACK, font = DEFAULT)
         val drawable1 = resources.getDrawable(R.drawable.ic_circle, null)
         val drawable2 = resources.getDrawable(R.drawable.ic_circle, null)
         val drawable3 = resources.getDrawable(R.drawable.ic_circle, null)

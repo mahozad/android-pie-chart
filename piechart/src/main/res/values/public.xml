@@ -8,6 +8,10 @@
   <public name="slicesPointerLength" format="dimension"/>
   <public name="slicesPointerWidth" format="dimension"/>
   <public name="shouldCenterPie" format="boolean"/>
+  <public name="legendType" format="enum"/>
+  <public name="legendsTitle" format="string"/>
+  <public name="legendsSize" format="dimension"/>
+  <public name="legendsIcon" format="enum"/>
   <public name="gapPosition" format="enum"/>
   <public name="startAngle" format="integer"/>
   <public name="labelsSize" format="dimension"/>
