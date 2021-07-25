@@ -1,16 +1,14 @@
 package ir.mahozad.android
 
 import android.content.Context
+import android.content.res.TypedArray
 import android.graphics.*
 import android.graphics.Paint.ANTI_ALIAS_FLAG
 import android.graphics.Typeface.DEFAULT
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
-import androidx.annotation.ColorInt
-import androidx.annotation.Dimension
-import androidx.annotation.DrawableRes
-import androidx.annotation.FloatRange
+import androidx.annotation.*
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.content.res.use
@@ -22,7 +20,7 @@ import ir.mahozad.android.PieChart.GapPosition.MIDDLE
 import ir.mahozad.android.PieChart.GradientType.RADIAL
 import ir.mahozad.android.PieChart.IconPlacement.START
 import ir.mahozad.android.PieChart.LabelType.*
-import ir.mahozad.android.PieChart.LegendIcons.SQUARE
+import ir.mahozad.android.PieChart.LegendIcons.CIRCLE
 import ir.mahozad.android.PieChart.SlicePointer
 import ir.mahozad.android.component.*
 import ir.mahozad.android.component.Icon
@@ -37,7 +35,10 @@ const val DEFAULT_OVERLAY_RATIO = 0.55f
 const val DEFAULT_OVERLAY_ALPHA = 0.25f
 const val DEFAULT_GAP = 8f /* px */
 const val DEFAULT_LABELS_SIZE = 18f /* sp */
-const val DEFAULT_LEGENDS_SIZE = 18f /* sp */
+const val DEFAULT_LEGENDS_SIZE = 16f /* sp */
+const val DEFAULT_LEGENDS_TITLE_SIZE = 18f /* sp */
+const val DEFAULT_LEGEND_ICONS_MARGIN = 8f /* dp */
+const val DEFAULT_MARGIN_BETWEEN_LEGENDS = 4f /* dp */
 /* sp so user can easily specify the same value for both label size and icon height to make them the same size */
 const val DEFAULT_LABEL_ICONS_HEIGHT = DEFAULT_LABELS_SIZE /* sp */
 const val DEFAULT_LEGEND_ICONS_HEIGHT = DEFAULT_LEGENDS_SIZE /* sp */
@@ -48,17 +49,21 @@ const val DEFAULT_CENTER_LABEL = ""
 const val DEFAULT_LEGENDS_TITLE = ""
 const val DEFAULT_SHOULD_CENTER_PIE = true
 @ColorInt const val DEFAULT_LABELS_COLOR = Color.WHITE
+@ColorInt const val DEFAULT_LEGENDS_COLOR = Color.WHITE
+@ColorInt const val DEFAULT_LEGENDS_TITLE_COLOR = Color.WHITE
 // If null, the colors of the icon itself is used
 @ColorInt val defaultLabelIconsTint: Int? = null
+@ColorInt val defaultLegendIconsTint: Int? = null
 val defaultGapPosition = MIDDLE
 val defaultGradientType = RADIAL
 val defaultDrawDirection = CLOCKWISE
 val defaultLabelIconsPlacement = START
 val defaultLegendType = PieChart.LegendType.NONE
-val defaultLegendsIcon = SQUARE
+val defaultLegendsIcon = CIRCLE
 val defaultLabelType = INSIDE
 val defaultLabelsFont: Typeface = DEFAULT
 val defaultSlicesPointer: SlicePointer? = null
+val defaultLegendIconsTintArray = intArrayOf(0xff3F51B5.toInt())
 
 /**
  * This is the order that these commonly used view methods are run:
@@ -102,8 +107,14 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
          */
         @Dimension val outsideLabelMargin: Float? = null,
         val pointer: SlicePointer? = null,
+
+        val legend: String = "",
+        @ColorInt val legendColor: Int? = null,
+        @Dimension val legendSize: Float? = null,
         @DrawableRes val legendIcon: Int? = null,
-        @ColorInt val legendIconTint: Int? = null,
+        @Dimension val legendIconHeight: Float? = null,
+        @Dimension val legendIconMargin: Float? = null,
+        @ColorInt val legendIconTint: Int? = color,
         val legendIconPlacement: IconPlacement = START,
 
         /**
@@ -218,6 +229,54 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             invalidate()
             requestLayout()
         }
+    var marginBetweenLegends = dpToPx(DEFAULT_MARGIN_BETWEEN_LEGENDS)
+        set(margin /* px */) {
+            field = margin
+            invalidate()
+            requestLayout()
+        }
+    var legendsColor = DEFAULT_LEGENDS_COLOR
+        set(color) {
+            field = color
+            invalidate()
+        }
+    var legendsTitleColor = DEFAULT_LEGENDS_TITLE_COLOR
+        set(color) {
+            field = color
+            invalidate()
+        }
+    var legendsTitleSize = spToPx(DEFAULT_LEGENDS_TITLE_SIZE)
+        set(size /* px */) {
+            field = size
+            invalidate()
+        }
+    var legendIconsHeight = spToPx(DEFAULT_LEGEND_ICONS_HEIGHT)
+        set(height /* px */) {
+            field = height
+            invalidate()
+        }
+    var legendIconsMargin = dpToPx(DEFAULT_LEGEND_ICONS_MARGIN)
+        set(margin /* px */) {
+            field = margin
+            invalidate()
+        }
+
+    /**
+     * Order:
+     *   1. use slice.legendIconTint
+     *   2. if slice.legendIconTint == null, use legendIconTintArray
+     *   3. if legendIconTintArray == null, use legendIconsTint
+     */
+    var legendIconsTint = defaultLegendIconsTint
+        set(color) {
+            field = color
+            invalidate()
+        }
+    var legendIconsTintArray = defaultLegendIconsTintArray
+        set(array) {
+            field = array
+            invalidate()
+        }
     var labelsFont = defaultLabelsFont
         set(font) {
             field = font
@@ -285,6 +344,9 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             field = shouldCenter
             invalidate()
         }
+    /**
+     * Is overridden by icon of the slice if it is assigned a value other than *null*
+     */
     var legendsIcon: Icon = defaultLegendsIcon
     var centerLabel = DEFAULT_CENTER_LABEL
     var gapPosition = defaultGapPosition
@@ -297,7 +359,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         // Slice(fraction = 0.5f, label = "qlyO([", color = ContextCompat.getColor(context, android.R.color.holo_blue_dark)),
 
         Slice(0.43f, ContextCompat.getColor(context, android.R.color.holo_green_dark), labelIcon = R.drawable.ic_square /*pointer = SlicePointer(50f,100f,0)*/),
-        Slice(0.21f, ContextCompat.getColor(context, android.R.color.holo_orange_dark)),
+        Slice(0.21f, ContextCompat.getColor(context, android.R.color.holo_orange_dark), legend = "Dairy"),
         Slice(0.19f, ContextCompat.getColor(context, android.R.color.holo_blue_dark)),
         Slice(0.14f, ContextCompat.getColor(context, android.R.color.holo_red_light)),
         Slice(0.03f, ContextCompat.getColor(context, android.R.color.holo_purple))
@@ -331,17 +393,23 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             labelsSize = it.getDimension(R.styleable.PieChart_labelsSize, spToPx(DEFAULT_LABELS_SIZE))
             labelOffset = it.getFloat(R.styleable.PieChart_labelOffset, DEFAULT_LABEL_OFFSET)
             labelsColor = it.getColor(R.styleable.PieChart_labelsColor, DEFAULT_LABELS_COLOR)
-            // Do not use -1 as no color; -1 is white: https://stackoverflow.com/a/30430194
-            val iconTint = it.getColor(R.styleable.PieChart_labelIconsTint, /* no value or @null */Int.MAX_VALUE)
-            labelIconsTint = if (iconTint == Int.MAX_VALUE) null else iconTint
+            labelIconsTint = getIconTint(it, R.styleable.PieChart_labelIconsTint)
             val fontId = it.getResourceId(R.styleable.PieChart_labelsFont, -1)
             labelsFont = if (fontId == -1) defaultLabelsFont else ResourcesCompat.getFont(context, fontId)!!
             labelIconsHeight = it.getDimension(R.styleable.PieChart_labelIconsHeight, spToPx(DEFAULT_LABEL_ICONS_HEIGHT))
+            legendIconsHeight = it.getDimension(R.styleable.PieChart_legendIconsHeight, spToPx(DEFAULT_LEGEND_ICONS_HEIGHT))
+            legendIconsMargin = it.getDimension(R.styleable.PieChart_legendIconsMargin, dpToPx(DEFAULT_LEGEND_ICONS_MARGIN))
             labelIconsMargin = it.getDimension(R.styleable.PieChart_labelIconsMargin, dpToPx(DEFAULT_LABEL_ICONS_MARGIN))
             outsideLabelsMargin = it.getDimension(R.styleable.PieChart_outsideLabelsMargin, dpToPx(DEFAULT_OUTSIDE_LABELS_MARGIN))
             centerLabel = it.getString(R.styleable.PieChart_centerLabel) ?: DEFAULT_CENTER_LABEL
             legendsSize = it.getDimension(R.styleable.PieChart_legendsSize, spToPx(DEFAULT_LEGENDS_SIZE))
             legendsTitle = it.getString(R.styleable.PieChart_legendsTitle) ?: DEFAULT_LEGENDS_TITLE
+            legendsTitleSize = it.getDimension(R.styleable.PieChart_legendsTitleSize, spToPx(DEFAULT_LEGENDS_TITLE_SIZE))
+            legendIconsTint = getIconTint(it, R.styleable.PieChart_legendIconsTint)
+            legendIconsTintArray = getColorArray(it, R.styleable.PieChart_legendIconsTintArray)
+            marginBetweenLegends = it.getDimension(R.styleable.PieChart_marginBetweenLegends, dpToPx(DEFAULT_MARGIN_BETWEEN_LEGENDS))
+            legendsColor = it.getColor(R.styleable.PieChart_legendsColor, DEFAULT_LEGENDS_COLOR)
+            legendsTitleColor = it.getColor(R.styleable.PieChart_legendsTitleColor, DEFAULT_LEGENDS_TITLE_COLOR)
             shouldCenterPie = it.getBoolean(R.styleable.PieChart_shouldCenterPie, DEFAULT_SHOULD_CENTER_PIE)
             val slicesPointerLength = it.getDimension(R.styleable.PieChart_slicesPointerLength, -1f)
             val slicesPointerWidth = it.getDimension(R.styleable.PieChart_slicesPointerWidth, -1f)
@@ -370,6 +438,18 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         }
     }
 
+    private fun getIconTint(typedArray: TypedArray, @StyleableRes attrName: Int): Int? {
+        // Do not use -1 as no color; -1 is white: https://stackoverflow.com/a/30430194
+        val tint = typedArray.getColor(attrName, /* if user specified no value or @null */ Int.MAX_VALUE)
+        return if (tint == Int.MAX_VALUE) null else tint
+    }
+
+    @ColorInt
+    private fun getColorArray(typedArray: TypedArray, @StyleableRes attrName: Int): IntArray {
+        val arrayId = typedArray.getResourceId(attrName, -1)
+        return if (arrayId == -1) intArrayOf() else resources.getIntArray(arrayId)
+    }
+
     /**
      * This method is called when your view is first assigned a size, and again
      * if the size of your view changes for any reason.
@@ -384,47 +464,50 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
 
+        if (legendType == LegendType.BOTTOM_HORIZONTAL) {
+            val legendsTitle = Text(legendsTitle, size = legendsTitleSize, color = legendsTitleColor, font = DEFAULT)
+            val legends = mutableListOf<Box>()
+            for (slice in slices) {
+                val legendText = Text(slice.legend, size = slice.legendSize ?: legendsSize, color = slice.legendColor?: legendsColor, font = DEFAULT)
+                var legendDrawable: Drawable? = null
+                slice.legendIcon?.let { iconId ->
+                    legendDrawable = resources.getDrawable(iconId, null)
+                    slice.labelIconTint?.let { tint -> legendDrawable?.setTint(tint) }
+                }
+                val legendIcon = Icon(legendDrawable?:resources.getDrawable(legendsIcon.resId, null), slice.legendIconHeight?: legendIconsHeight)
+                val legend = Container(children = listOf(legendIcon, legendText), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
+                legends.add(legend)
+            }
+            val legendsContainer = Container(children = legends, childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
+            legendsBox = Container(children = listOf(legendsTitle, legendsContainer), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.VERTICAL, background = Background(Color.argb(170, 93, 100, 10)), border = Border(10f, color= Color.RED, alpha = 0.3f))
 
-        val legendsTitle = Text(legendsTitle, size = 50f, color = Color.BLACK, font = DEFAULT)
-        val drawable1 = resources.getDrawable(R.drawable.ic_circle, null)
-        val drawable2 = resources.getDrawable(R.drawable.ic_circle, null)
-        val drawable3 = resources.getDrawable(R.drawable.ic_circle, null)
-        val icon1 = Icon(drawable1, 100f)
-        val icon2 = Icon(drawable2, 100f)
-        val icon3 = Icon(drawable3, 100f)
-        val label1 = Text("Legend 1", size = 50f, color = Color.BLACK, font = DEFAULT)
-        val label2 = Text("Second legend", size = 50f, color = Color.BLACK, font = DEFAULT)
-        val label3 = Text("Leg3", size = 50f, color = Color.BLACK, font = DEFAULT)
-        val legend1 = Container(children = listOf(icon1, label1), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
-        val legend2 = Container(children = listOf(icon2, label2), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
-        val legend3 = Container(children = listOf(icon3, label3), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
-        val legends = Container(children = listOf(legend1, legend2, legend3), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
-        legendsBox = Container(children = listOf(legendsTitle, legends), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.VERTICAL, background = Background(Color.argb(170, 93, 100, 10)), border = Border(10f, color= Color.RED, alpha = 0.3f))
-        /* if (legendType == TOP | BOTTOM) */
-        val maxAvailableWidth = (width - paddingLeft - paddingRight).toFloat()
-        val maxAvailableHeight = (height - paddingTop - paddingBottom) / 2f // Arbitrary
-        val legendsRectHeight = min(maxAvailableHeight, legendsBox.height)
-        val legendsRectWidth = min(maxAvailableWidth, legendsBox.width)
-        val legendsRectLeft = max(0f, (maxAvailableWidth - legendsRectWidth) / 2f)
-        val legendsRectTop = height - paddingBottom - legendsRectHeight
-        legendsRect = RectF(legendsRectLeft, legendsRectTop, legendsRectLeft + legendsRectWidth, legendsRectTop + legendsRectHeight)
-        val heightForPie = (height - legendsRectHeight).toInt()
-        val widthForPie = width
-        /* end if */
-        legendsBox.layOut(legendsRectTop, legendsRectLeft, ir.mahozad.android.component.DrawDirection.LTR)
 
-        // FIXME: modify the following methods in this way:
-        //  val drawableArea = calculateDrawableArea(paddings)
-        //  val legendsBoxHeight = max(legendsBoxHeight, view.height/2)
-        //  drawableArea = drawableArea - legendsBox.height // if legends box on top or bottom
-        //  val pieRadius = calculateRadius(drawableArea, ...)
-        //  val pieCenter = calculateRadius(drawableArea, ...)
+            val maxAvailableWidth = (width - paddingLeft - paddingRight).toFloat()
+            val maxAvailableHeight = (height - paddingTop - paddingBottom) / 2f // Arbitrary
+            val legendsRectHeight = min(maxAvailableHeight, legendsBox.height)
+            val legendsRectWidth = min(maxAvailableWidth, legendsBox.width)
+            val legendsRectLeft = max(0f, (maxAvailableWidth - legendsRectWidth) / 2f)
+            val legendsRectTop = height - paddingBottom - legendsRectHeight
+            legendsRect = RectF(legendsRectLeft, legendsRectTop, legendsRectLeft + legendsRectWidth, legendsRectTop + legendsRectHeight)
+            val heightForPie = (height - legendsRectHeight).toInt()
+            val widthForPie = width
+            /* end if */
+            legendsBox.layOut(legendsRectTop, legendsRectLeft, ir.mahozad.android.component.DrawDirection.LTR)
 
-        totalDrawableRect.set(0f+paddingLeft, 0f + paddingTop, width - paddingRight.toFloat(), height - paddingBottom.toFloat())
-        pieRadius = calculateRadius(widthForPie, heightForPie, paddingLeft, paddingRight, paddingTop, paddingBottom)
-        center = calculateCenter(width, heightForPie, paddingLeft, paddingRight, paddingTop, paddingBottom)
-        val (top, left, right, bottom) = calculateBoundaries(center, pieRadius)
-        pieEnclosingRect.set(RectF(left, top, right, bottom))
+
+            // FIXME: modify the following methods in this way:
+            //  val drawableArea = calculateDrawableArea(paddings)
+            //  val legendsBoxHeight = max(legendsBoxHeight, view.height/2)
+            //  drawableArea = drawableArea - legendsBox.height // if legends box on top or bottom
+            //  val pieRadius = calculateRadius(drawableArea, ...)
+            //  val pieCenter = calculateRadius(drawableArea, ...)
+
+            totalDrawableRect.set(0f+paddingLeft, 0f + paddingTop, width - paddingRight.toFloat(), height - paddingBottom.toFloat())
+            pieRadius = calculateRadius(widthForPie, heightForPie, paddingLeft, paddingRight, paddingTop, paddingBottom)
+            center = calculateCenter(width, heightForPie, paddingLeft, paddingRight, paddingTop, paddingBottom)
+            val (top, left, right, bottom) = calculateBoundaries(center, pieRadius)
+            pieEnclosingRect.set(RectF(left, top, right, bottom))
+        }
 
 
         if (labelType == OUTSIDE) {

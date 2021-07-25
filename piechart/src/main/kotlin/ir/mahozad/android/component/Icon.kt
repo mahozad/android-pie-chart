@@ -7,7 +7,7 @@ import androidx.annotation.ColorInt
 import ir.mahozad.android.calculateLabelIconWidth
 
 internal class Icon(
-    private val drawable: Drawable,
+    private val drawable: Drawable?,
     override val height: Float,
     override val margins: Margins? = null,
     override val paddings: Paddings? = null,
@@ -19,12 +19,12 @@ internal class Icon(
     override fun layOut(top: Float, start: Float, drawDirection: DrawDirection) {
         // TODO: Take into account the drawDirection parameter
         val right = start + width
-        val bottom = top + height
-        drawable.bounds = Rect(start.toInt(), top.toInt(), right.toInt(), bottom.toInt())
-        tint?.let { drawable.setTint(it) }
+        val bottom = top + if (width == 0f) 0f else height
+        drawable?.bounds = Rect(start.toInt(), top.toInt(), right.toInt(), bottom.toInt())
+        tint?.let { drawable?.setTint(it) }
     }
 
     override fun draw(canvas: Canvas) {
-        drawable.draw(canvas)
+        drawable?.draw(canvas)
     }
 }

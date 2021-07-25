@@ -11,7 +11,15 @@
   <public name="legendType" format="enum"/>
   <public name="legendsTitle" format="string"/>
   <public name="legendsSize" format="dimension"/>
+  <public name="legendsTitleSize" format="dimension"/>
+  <public name="marginBetweenLegends" format="dimension"/>
+  <public name="legendIconsTint" format="color"/>
+  <public name="legendIconsTintArray" format="reference"/>
   <public name="legendsIcon" format="enum"/>
+  <public name="legendsColor" format="color"/>
+  <public name="legendIconsHeight" format="dimension"/>
+  <public name="legendIconsMargin" format="dimension"/>
+  <public name="legendsTitleColor" format="color"/>
   <public name="gapPosition" format="enum"/>
   <public name="startAngle" format="integer"/>
   <public name="labelsSize" format="dimension"/>

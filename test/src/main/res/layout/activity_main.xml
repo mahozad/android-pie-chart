@@ -12,6 +12,8 @@
       android:layout_height="wrap_content"
       app:labelType="outside"
       app:startAngle="250"
+      app:legendType="bottomHorizontal"
+      app:legendsTitle="Legends"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"

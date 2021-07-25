@@ -22,6 +22,16 @@
     <attr name="centerLabel" format="string"/>
     <attr name="legendsTitle" format="string"/>
     <attr name="legendsSize" format="dimension"/>
+    <attr name="legendsTitleSize" format="dimension"/>
+    <attr name="legendIconsHeight" format="dimension"/>
+    <attr name="legendIconsMargin" format="dimension"/>
+    <!-- The value can be @null too -->
+    <attr name="legendIconsTint" format="color"/>
+    <!-- Reference to an array of colors -->
+    <attr name="legendIconsTintArray" format="reference"/>
+    <attr name="marginBetweenLegends" format="dimension"/>
+    <attr name="legendsColor" format="color"/>
+    <attr name="legendsTitleColor" format="color"/>
     <attr name="legendType" format="enum">
       <enum name="none" value="0"/>
       <enum name="bottomHorizontal" value="1"/>
