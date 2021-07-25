@@ -37,6 +37,12 @@
       <enum name="triangleOutwardHallow" value="13"/>
       <enum name="triangleDownward" value="14"/>
       <enum name="triangleDownwardHallow" value="15"/>
+      <enum name="arc1" value="16"/>
+      <enum name="arc2" value="17"/>
+      <enum name="arc3" value="18"/>
+      <enum name="slice1" value="19"/>
+      <enum name="slice2" value="20"/>
+      <enum name="slice3" value="21"/>
     </attr>
     <!-- Indicated where the gap should be created;
          middle means that half the gap is overlapping the previous slice

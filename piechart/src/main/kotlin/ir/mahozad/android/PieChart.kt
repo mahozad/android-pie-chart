@@ -145,7 +145,13 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         TRIANGLE_OUTWARD(R.drawable.ic_triangle_outward),
         TRIANGLE_OUTWARD_HALLOW(R.drawable.ic_triangle_outward_hollow),
         TRIANGLE_DOWNWARD(R.drawable.ic_triangle_downward),
-        TRIANGLE_DOWNWARD_HALLOW(R.drawable.ic_triangle_downward_hollow)
+        TRIANGLE_DOWNWARD_HALLOW(R.drawable.ic_triangle_downward_hollow),
+        ARC1(R.drawable.ic_arc1),
+        ARC2(R.drawable.ic_arc2),
+        ARC3(R.drawable.ic_arc3),
+        SLICE1(R.drawable.ic_slice1),
+        SLICE2(R.drawable.ic_slice2),
+        SLICE3(R.drawable.ic_slice3)
     }
 
     enum class LegendType {
