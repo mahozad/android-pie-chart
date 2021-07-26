@@ -5,6 +5,7 @@ import android.graphics.DashPathEffect
 import android.graphics.Paint
 import android.graphics.RectF
 import ir.mahozad.android.Coordinates
+import ir.mahozad.android.PieChart
 import ir.mahozad.android.component.Wrapping.Wrap
 import kotlin.math.max
 
@@ -98,7 +99,9 @@ internal class Container(
             paint.style = Paint.Style.STROKE
             paint.color = border.color
             paint.alpha = (border.alpha * 255).toInt() // Setting alpha should be *AFTER* setting the color to override the color alpha
-            border.dashArray?.let { paint.pathEffect = DashPathEffect(it.toFloatArray(), 0f) }
+            if (border.type == PieChart.BorderType.DASHED) {
+                border.dashArray?.let { paint.pathEffect = DashPathEffect(it.toFloatArray(), 0f) }
+            }
             canvas.drawRoundRect(borderBounds, border.cornerRadius, border.cornerRadius, paint)
         }
     }

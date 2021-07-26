@@ -37,6 +37,18 @@
     <attr name="legendsColor" format="color"/>
     <attr name="legendBoxBackgroundColor" format="color"/>
     <attr name="legendBoxMargin" format="dimension"/>
+    <attr name="legendBoxPadding" format="dimension"/>
+    <attr name="legendBoxBorder" format="dimension"/>
+    <attr name="legendBoxBorderCornerRadius" format="dimension"/>
+    <attr name="legendBoxBorderAlpha" format="float"/>
+    <attr name="legendBoxBorderColor" format="color"/>
+    <!-- A string containing lengths of ON and OFF for the line in dp unit separated by space,comma, or semicolon.
+         Example: "3, 0.8" -->
+    <attr name="legendBoxBorderDashArray" format="string"/>
+    <attr name="legendBoxBorderType" format="enum">
+      <enum name="solid" value="0"/>
+      <enum name="dashed" value="1"/>
+    </attr>
     <attr name="legendIconsAlpha" format="float"/>
     <attr name="legendsTitleColor" format="color"/>
     <attr name="legendType" format="enum">

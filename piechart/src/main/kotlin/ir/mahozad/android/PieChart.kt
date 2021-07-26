@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.*
+import androidx.annotation.Dimension.PX
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.content.res.use
@@ -39,6 +40,11 @@ const val DEFAULT_GAP = 8f /* px */
 const val DEFAULT_LABELS_SIZE = 18f /* sp */
 const val DEFAULT_LEGENDS_SIZE = 16f /* sp */
 const val DEFAULT_LEGEND_BOX_MARGIN = 8f /* dp */
+const val DEFAULT_LEGEND_BOX_PADDING = 4f /* dp */
+const val DEFAULT_LEGEND_BOX_BORDER = 2f /* dp */
+const val DEFAULT_LEGEND_BOX_BORDER_DASH_ARRAY = "4, 4" /* dp (each) */
+@FloatRange(from = 0.0, to = 1.0) const val DEFAULT_LEGEND_BOX_BORDER_ALPHA = 1f
+const val DEFAULT_LEGEND_BOX_BORDER_CORNER_RADIUS = 3f /* dp */
 const val DEFAULT_LEGENDS_TITLE_SIZE = 18f /* sp */
 const val DEFAULT_LEGEND_ICONS_MARGIN = 8f /* dp */
 const val DEFAULT_LEGEND_ICONS_ALPHA = 1f
@@ -58,6 +64,7 @@ const val DEFAULT_SHOULD_CENTER_PIE = true
 @ColorInt const val DEFAULT_LABELS_COLOR = Color.WHITE
 @ColorInt const val DEFAULT_LEGENDS_COLOR = Color.WHITE
 @ColorInt const val DEFAULT_LEGEND_BOX_BACKGROUND_COLOR = Color.TRANSPARENT
+@ColorInt const val DEFAULT_LEGEND_BOX_BORDER_COLOR = Color.TRANSPARENT
 @ColorInt const val DEFAULT_LEGENDS_TITLE_COLOR = Color.WHITE
 @ColorInt const val DEFAULT_LEGENDS_PERCENTAGE_COLOR = Color.WHITE
 // If null, the colors of the icon itself is used
@@ -70,6 +77,7 @@ val defaultLabelIconsPlacement = START
 val defaultLegendType = PieChart.LegendType.NONE
 val defaultLegendsIcon = CIRCLE
 val defaultLabelType = INSIDE
+val defaultLegendBoxBorderType = PieChart.BorderType.SOLID
 val defaultLabelsFont: Typeface = DEFAULT
 val defaultSlicesPointer: SlicePointer? = null
 val defaultLegendIconsTintArray = intArrayOf(0xff3F51B5.toInt())
@@ -151,6 +159,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     enum class IconPlacement { START, END, LEFT, RIGHT, TOP, BOTTOM }
     enum class GradientType { RADIAL, SWEEP }
     enum class GapPosition { MIDDLE, PRECEDING_SLICE, SUCCEEDING_SLICE }
+    enum class BorderType {SOLID, DASHED}
     /* TODO: Rename inside to inner or internal and outside to outer or external (?) */
     enum class LabelType { NONE, INSIDE, OUTSIDE, INSIDE_CIRCULAR, OUTSIDE_CIRCULAR_INWARD, OUTSIDE_CIRCULAR_OUTWARD, OUTSIDE_WITH_LINES_ON_SIDES }
     data class SlicePointer(val length: Float, val width: Float, val color: Int)
@@ -261,6 +270,41 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     var legendBoxMargin = dpToPx(DEFAULT_LEGEND_BOX_MARGIN)
         set(margin /* px */) {
             field = margin
+            invalidate()
+        }
+    var legendBoxPadding = dpToPx(DEFAULT_LEGEND_BOX_PADDING)
+        set(padding /* px */) {
+            field = padding
+            invalidate()
+        }
+    var legendBoxBorder = dpToPx(DEFAULT_LEGEND_BOX_BORDER)
+        set(border /* px */) {
+            field = border
+            invalidate()
+        }
+    var legendBoxBorderCornerRadius = dpToPx(DEFAULT_LEGEND_BOX_BORDER_CORNER_RADIUS)
+        set(radius /* px */) {
+            field = radius
+            invalidate()
+        }
+    var legendBoxBorderColor = DEFAULT_LEGEND_BOX_BORDER_COLOR
+        set(color) {
+            field = color
+            invalidate()
+        }
+    var legendBoxBorderAlpha = DEFAULT_LEGEND_BOX_BORDER_ALPHA
+        set(alpha) {
+            field = alpha
+            invalidate()
+        }
+    var legendBoxBorderType = defaultLegendBoxBorderType
+        set(type) {
+            field = type
+            invalidate()
+        }
+    var legendBoxBorderDashArray = parseBorderDashArray(DEFAULT_LEGEND_BOX_BORDER_DASH_ARRAY)
+        set(@Dimension(unit = PX) array) {
+            field = array
             invalidate()
         }
     var legendIconsAlpha = DEFAULT_LEGEND_ICONS_ALPHA
@@ -460,6 +504,12 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             legendsColor = it.getColor(R.styleable.PieChart_legendsColor, DEFAULT_LEGENDS_COLOR)
             legendBoxBackgroundColor = it.getColor(R.styleable.PieChart_legendBoxBackgroundColor, DEFAULT_LEGEND_BOX_BACKGROUND_COLOR)
             legendBoxMargin = it.getDimension(R.styleable.PieChart_legendBoxMargin, dpToPx(DEFAULT_LEGEND_BOX_MARGIN))
+            legendBoxPadding = it.getDimension(R.styleable.PieChart_legendBoxPadding, dpToPx(DEFAULT_LEGEND_BOX_PADDING))
+            legendBoxBorder = it.getDimension(R.styleable.PieChart_legendBoxBorder, dpToPx(DEFAULT_LEGEND_BOX_BORDER))
+            legendBoxBorderCornerRadius = it.getDimension(R.styleable.PieChart_legendBoxBorderCornerRadius, dpToPx(DEFAULT_LEGEND_BOX_BORDER_CORNER_RADIUS))
+            legendBoxBorderAlpha = it.getFloat(R.styleable.PieChart_legendBoxBorderAlpha, DEFAULT_LEGEND_BOX_BORDER_ALPHA)
+            legendBoxBorderColor = it.getColor(R.styleable.PieChart_legendBoxBorderColor, DEFAULT_LEGEND_BOX_BORDER_COLOR)
+            legendBoxBorderDashArray = parseBorderDashArray(it.getString(R.styleable.PieChart_legendBoxBorderDashArray) ?: DEFAULT_LEGEND_BOX_BORDER_DASH_ARRAY)
             legendIconsAlpha = it.getFloat(R.styleable.PieChart_legendIconsAlpha, DEFAULT_LEGEND_ICONS_ALPHA)
             legendsTitleColor = it.getColor(R.styleable.PieChart_legendsTitleColor, DEFAULT_LEGENDS_TITLE_COLOR)
             shouldCenterPie = it.getBoolean(R.styleable.PieChart_shouldCenterPie, DEFAULT_SHOULD_CENTER_PIE)
@@ -467,6 +517,9 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             val slicesPointerWidth = it.getDimension(R.styleable.PieChart_slicesPointerWidth, -1f)
             slicesPointer = if (slicesPointerLength <= 0 || slicesPointerWidth <= 0) defaultSlicesPointer else SlicePointer(slicesPointerLength, slicesPointerWidth, 0)
             isLegendsPercentageEnabled = it.getInt(R.styleable.PieChart_legendsPercentage, 0) == 1
+            legendBoxBorderType = BorderType.values()[
+                    it.getInt(R.styleable.PieChart_legendBoxBorderType, defaultLegendBoxBorderType.ordinal)
+            ]
             labelIconsPlacement = IconPlacement.values()[
                     it.getInt(R.styleable.PieChart_labelIconsPlacement, defaultLabelIconsPlacement.ordinal)
             ]
@@ -539,7 +592,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 legends.add(legend)
             }
             val legendsContainer = Container(children = legends, childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
-            legendsBox = Container(children = listOf(legendsTitle, legendsContainer), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.VERTICAL, background = Background(legendBoxBackgroundColor), border = Border(10f, color= Color.RED, alpha = 0.3f))
+            legendsBox = Container(children = listOf(legendsTitle, legendsContainer), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.VERTICAL, background = Background(legendBoxBackgroundColor), paddings = Paddings(legendBoxPadding), border = Border(legendBoxBorder, color = legendBoxBorderColor, alpha = legendBoxBorderAlpha, cornerRadius = legendBoxBorderCornerRadius, type = legendBoxBorderType, dashArray = legendBoxBorderDashArray))
 
 
             val maxAvailableWidth = (width - paddingLeft - paddingRight).toFloat()
@@ -593,6 +646,12 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         // Or could abandon using clip path and do the operations on the pie itself
         clip.set(rect - hole - gaps)
     }
+
+    private fun parseBorderDashArray(string: String) = string
+        .replace(Regex("""[,;]"""), " ")
+        .replace(Regex("""\s+"""), " ")
+        .split(" ")
+        .map { it.toFloat() }
 
     private fun makeGaps(): Path {
         val gaps = Path()

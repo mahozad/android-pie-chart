@@ -6,6 +6,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
 import androidx.annotation.FloatRange
 import androidx.core.graphics.alpha
+import ir.mahozad.android.PieChart
 
 /**
  * We arrange the components using a
@@ -56,6 +57,7 @@ internal data class Border(
     @Dimension val thickness: Float,
     @ColorInt val color: Int = Color.BLACK,
     @Dimension val cornerRadius: Float = 0f,
+    val type: PieChart.BorderType = PieChart.BorderType.SOLID,
     val dashArray: List<Float>? = null,
     /**
      * NOTE: this is a convenience property because the alpha can be specified in the color itself as well.

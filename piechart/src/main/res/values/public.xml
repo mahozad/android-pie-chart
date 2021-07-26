@@ -20,6 +20,13 @@
   <public name="legendsColor" format="color"/>
   <public name="legendBoxBackgroundColor" format="color"/>
   <public name="legendBoxMargin" format="dimension"/>
+  <public name="legendBoxPadding" format="dimension"/>
+  <public name="legendBoxBorder" format="dimension"/>
+  <public name="legendBoxBorderCornerRadius" format="dimension"/>
+  <public name="legendBoxBorderAlpha" format="float"/>
+  <public name="legendBoxBorderColor" format="color"/>
+  <public name="legendBoxBorderType" format="enum"/>
+  <public name="legendBoxBorderDashArray" format="string"/>
   <public name="legendIconsAlpha" format="float"/>
   <public name="legendIconsHeight" format="dimension"/>
   <public name="legendIconsMargin" format="dimension"/>
