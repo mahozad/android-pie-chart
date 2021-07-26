@@ -51,7 +51,7 @@ const val DEFAULT_LEGEND_ICONS_MARGIN = 8f /* dp */
 const val DEFAULT_LEGEND_ICONS_ALPHA = 1f
 const val DEFAULT_LEGENDS_PERCENTAGE_STATUS = DISABLED
 const val DEFAULT_LEGENDS_PERCENTAGE_MARGIN = 8f /* dp */
-const val DEFAULT_LEGENDS_PERCENTAGE_SIZE = 16f /* sp */
+const val DEFAULT_LEGENDS_PERCENTAGE_SIZE = DEFAULT_LEGENDS_SIZE /* sp */
 const val DEFAULT_LEGENDS_MARGIN = 4f /* dp */
 /* sp so user can easily specify the same value for both label size and icon height to make them the same size */
 const val DEFAULT_LABEL_ICONS_HEIGHT = DEFAULT_LABELS_SIZE /* sp */
@@ -503,6 +503,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             legendsSize = it.getDimension(R.styleable.PieChart_legendsSize, spToPx(DEFAULT_LEGENDS_SIZE))
             legendsTitle = it.getString(R.styleable.PieChart_legendsTitle) ?: DEFAULT_LEGENDS_TITLE
             legendsTitleSize = it.getDimension(R.styleable.PieChart_legendsTitleSize, spToPx(DEFAULT_LEGENDS_TITLE_SIZE))
+            legendsPercentageSize = it.getDimension(R.styleable.PieChart_legendsPercentageSize, spToPx(DEFAULT_LEGENDS_PERCENTAGE_SIZE))
+            legendsPercentageColor = it.getColor(R.styleable.PieChart_legendsPercentageColor, DEFAULT_LEGENDS_PERCENTAGE_COLOR)
             legendIconsTint = getIconTint(it, R.styleable.PieChart_legendIconsTint)
             legendIconsTintArray = getColorArray(it, R.styleable.PieChart_legendIconsTintArray)
             legendsMargin = it.getDimension(R.styleable.PieChart_legendsMargin, dpToPx(DEFAULT_LEGENDS_MARGIN))

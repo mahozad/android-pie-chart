@@ -22,6 +22,8 @@
     <attr name="centerLabel" format="string"/>
     <attr name="legendsTitle" format="string"/>
     <attr name="legendsSize" format="dimension"/>
+    <attr name="legendsPercentageSize" format="dimension"/>
+    <attr name="legendsPercentageColor" format="color"/>
     <attr name="legendsTitleSize" format="dimension"/>
     <attr name="legendIconsHeight" format="dimension"/>
     <attr name="legendIconsMargin" format="dimension"/>
