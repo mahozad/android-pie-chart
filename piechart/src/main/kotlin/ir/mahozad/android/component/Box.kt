@@ -35,7 +35,7 @@ internal interface Box {
     fun draw(canvas: Canvas)
 }
 
-internal enum class Alignment { START, CENTER, END }
+enum class Alignment { START, CENTER, END }
 
 /**
  * Refer [here](https://developer.mozilla.org/en-US/docs/Web/CSS/flex-direction)

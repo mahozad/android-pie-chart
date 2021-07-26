@@ -24,6 +24,11 @@
     <attr name="legendsSize" format="dimension"/>
     <attr name="legendsPercentageSize" format="dimension"/>
     <attr name="legendsPercentageColor" format="color"/>
+    <attr name="legendsAlignment" format="enum">
+      <enum name="start" value="0"/>
+      <enum name="center" value="1"/>
+      <enum name="end" value="2"/>
+    </attr>
     <attr name="legendsTitleSize" format="dimension"/>
     <attr name="legendIconsHeight" format="dimension"/>
     <attr name="legendIconsMargin" format="dimension"/>

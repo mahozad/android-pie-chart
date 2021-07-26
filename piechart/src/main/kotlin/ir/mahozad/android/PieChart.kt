@@ -77,6 +77,7 @@ val defaultDrawDirection = CLOCKWISE
 val defaultLabelIconsPlacement = START
 val defaultLegendType = PieChart.LegendType.NONE
 val defaultLegendsIcon = CIRCLE
+val defaultLegendsAlignment = Alignment.CENTER
 val defaultLabelType = INSIDE
 val defaultLegendBoxBorderType = PieChart.BorderType.SOLID
 val defaultLabelsFont: Typeface = DEFAULT
@@ -238,6 +239,11 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     var legendsSize = spToPx(DEFAULT_LEGENDS_SIZE)
         set(size /* px */) {
             field = size
+            invalidate()
+        }
+    var legendsAlignment = defaultLegendsAlignment
+        set(alignment) {
+            field = alignment
             invalidate()
         }
     var legendsTitle = DEFAULT_LEGENDS_TITLE
@@ -526,6 +532,9 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             val slicesPointerWidth = it.getDimension(R.styleable.PieChart_slicesPointerWidth, -1f)
             slicesPointer = if (slicesPointerLength <= 0 || slicesPointerWidth <= 0) defaultSlicesPointer else SlicePointer(slicesPointerLength, slicesPointerWidth, 0)
             isLegendsPercentageEnabled = it.getInt(R.styleable.PieChart_legendsPercentage, 0) == 1
+            legendsAlignment = Alignment.values()[
+                    it.getInt(R.styleable.PieChart_legendsAlignment, defaultLegendsAlignment.ordinal)
+            ]
             legendBoxBorderType = BorderType.values()[
                     it.getInt(R.styleable.PieChart_legendBoxBorderType, defaultLegendBoxBorderType.ordinal)
             ]
@@ -579,7 +588,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
 
-        if (legendType == LegendType.BOTTOM_HORIZONTAL) {
+
             val legendsTitle = Text(legendsTitle, size = legendsTitleSize, color = legendsTitleColor, font = DEFAULT, margins = Margins(bottom = legendTitleMargin))
             val legends = mutableListOf<Box>()
             for (slice in slices) {
@@ -600,36 +609,42 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 val legend = Container(legendComponents, childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL, margins = Margins(start = legendsMargin, end = legendsMargin))
                 legends.add(legend)
             }
-            val legendsContainer = Container(children = legends, childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
+
+
+        if (legendType == LegendType.BOTTOM_HORIZONTAL|| legendType == LegendType.TOP_HORIZONTAL) {
+            val legendsContainer = Container(children = legends, childrenAlignment = legendsAlignment, layoutDirection = LayoutDirection.HORIZONTAL)
             legendsBox = Container(children = listOf(legendsTitle, legendsContainer), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.VERTICAL, background = Background(legendBoxBackgroundColor), paddings = Paddings(legendBoxPadding), border = Border(legendBoxBorder, color = legendBoxBorderColor, alpha = legendBoxBorderAlpha, cornerRadius = legendBoxBorderCornerRadius, type = legendBoxBorderType, dashArray = legendBoxBorderDashArray))
-
-
-            val maxAvailableWidth = (width - paddingLeft - paddingRight).toFloat()
-            val maxAvailableHeight = (height - paddingTop - paddingBottom) / 2f // Arbitrary
-            val legendsRectHeight = min(maxAvailableHeight, legendsBox.height)
-            val legendsRectWidth = min(maxAvailableWidth, legendsBox.width)
-            val legendsRectLeft = max(0f, (maxAvailableWidth - legendsRectWidth) / 2f)
-            val legendsRectTop = height - paddingBottom - legendsRectHeight
-            legendsRect = RectF(legendsRectLeft, legendsRectTop, legendsRectLeft + legendsRectWidth, legendsRectTop + legendsRectHeight)
-            val heightForPie = (height - legendsRectHeight).toInt()
-            val widthForPie = width
-            /* end if */
-            legendsBox.layOut(legendsRectTop, legendsRectLeft, ir.mahozad.android.component.DrawDirection.LTR)
-
-
-            // FIXME: modify the following methods in this way:
-            //  val drawableArea = calculateDrawableArea(paddings)
-            //  val legendsBoxHeight = max(legendsBoxHeight, view.height/2)
-            //  drawableArea = drawableArea - legendsBox.height // if legends box on top or bottom
-            //  val pieRadius = calculateRadius(drawableArea, ...)
-            //  val pieCenter = calculateRadius(drawableArea, ...)
-
-            totalDrawableRect.set(0f+paddingLeft, 0f + paddingTop, width - paddingRight.toFloat(), height - paddingBottom.toFloat())
-            pieRadius = calculateRadius(widthForPie, heightForPie, paddingLeft, paddingRight, paddingTop, paddingBottom)
-            center = calculateCenter(width, heightForPie, paddingLeft, paddingRight, paddingTop, paddingBottom)
-            val (top, left, right, bottom) = calculateBoundaries(center, pieRadius)
-            pieEnclosingRect.set(RectF(left, top, right, bottom))
+        } else if (legendType == LegendType.START_VERTICAL || legendType == LegendType.END_VERTICAL) {
+            val legendsContainer = Container(children = legends, childrenAlignment = legendsAlignment, layoutDirection = LayoutDirection.VERTICAL)
+            legendsBox = Container(children = listOf(legendsTitle, legendsContainer), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.VERTICAL, background = Background(legendBoxBackgroundColor), paddings = Paddings(legendBoxPadding), border = Border(legendBoxBorder, color = legendBoxBorderColor, alpha = legendBoxBorderAlpha, cornerRadius = legendBoxBorderCornerRadius, type = legendBoxBorderType, dashArray = legendBoxBorderDashArray))
         }
+
+
+        val maxAvailableWidth = (width - paddingLeft - paddingRight).toFloat()
+        val maxAvailableHeight = (height - paddingTop - paddingBottom) / 2f // Arbitrary
+        val legendsRectHeight = min(maxAvailableHeight, legendsBox.height)
+        val legendsRectWidth = min(maxAvailableWidth, legendsBox.width)
+        val legendsRectLeft = max(0f, (maxAvailableWidth - legendsRectWidth) / 2f)
+        val legendsRectTop = height - paddingBottom - legendsRectHeight
+        legendsRect = RectF(legendsRectLeft, legendsRectTop, legendsRectLeft + legendsRectWidth, legendsRectTop + legendsRectHeight)
+        val heightForPie = (height - legendsRectHeight).toInt()
+        val widthForPie = width
+        /* end if */
+        legendsBox.layOut(legendsRectTop, legendsRectLeft, ir.mahozad.android.component.DrawDirection.LTR)
+
+
+        // FIXME: modify the following methods in this way:
+        //  val drawableArea = calculateDrawableArea(paddings)
+        //  val legendsBoxHeight = max(legendsBoxHeight, view.height/2)
+        //  drawableArea = drawableArea - legendsBox.height // if legends box on top or bottom
+        //  val pieRadius = calculateRadius(drawableArea, ...)
+        //  val pieCenter = calculateRadius(drawableArea, ...)
+
+        totalDrawableRect.set(0f+paddingLeft, 0f + paddingTop, width - paddingRight.toFloat(), height - paddingBottom.toFloat())
+        pieRadius = calculateRadius(widthForPie, heightForPie, paddingLeft, paddingRight, paddingTop, paddingBottom)
+        center = calculateCenter(width, heightForPie, paddingLeft, paddingRight, paddingTop, paddingBottom)
+        val (top, left, right, bottom) = calculateBoundaries(center, pieRadius)
+        pieEnclosingRect.set(RectF(left, top, right, bottom))
 
 
         if (labelType == OUTSIDE) {

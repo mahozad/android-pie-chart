@@ -14,6 +14,7 @@
   <public name="legendsSize" format="dimension"/>
   <public name="legendsPercentageSize" format="dimension"/>
   <public name="legendsPercentageColor" format="color"/>
+  <public name="legendsAlignment" format="enum"/>
   <public name="legendsPercentage" format="enum"/>
   <public name="legendsPercentageMargin" format="dimension"/>
   <public name="legendsTitleSize" format="dimension"/>
