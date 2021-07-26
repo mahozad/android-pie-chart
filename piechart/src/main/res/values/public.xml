@@ -9,9 +9,11 @@
   <public name="slicesPointerWidth" format="dimension"/>
   <public name="shouldCenterPie" format="boolean"/>
   <public name="legendType" format="enum"/>
+  <public name="legendTitleMargin" format="dimension"/>
   <public name="legendsTitle" format="string"/>
   <public name="legendsSize" format="dimension"/>
   <public name="legendsPercentage" format="enum"/>
+  <public name="legendsPercentageMargin" format="dimension"/>
   <public name="legendsTitleSize" format="dimension"/>
   <public name="legendsMargin" format="dimension"/>
   <public name="legendIconsTint" format="color"/>

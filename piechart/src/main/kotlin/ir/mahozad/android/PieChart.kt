@@ -39,6 +39,7 @@ const val DEFAULT_OVERLAY_ALPHA = 0.25f
 const val DEFAULT_GAP = 8f /* px */
 const val DEFAULT_LABELS_SIZE = 18f /* sp */
 const val DEFAULT_LEGENDS_SIZE = 16f /* sp */
+const val DEFAULT_LEGEND_TITLE_MARGIN = 8f /* dp */
 const val DEFAULT_LEGEND_BOX_MARGIN = 8f /* dp */
 const val DEFAULT_LEGEND_BOX_PADDING = 4f /* dp */
 const val DEFAULT_LEGEND_BOX_BORDER = 2f /* dp */
@@ -342,6 +343,11 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             field = margin
             invalidate()
         }
+    var legendTitleMargin = dpToPx(DEFAULT_LEGEND_TITLE_MARGIN)
+        set(margin /* px */) {
+            field = margin
+            invalidate()
+        }
     var legendIconsHeight = spToPx(DEFAULT_LEGEND_ICONS_HEIGHT)
         set(height /* px */) {
             field = height
@@ -503,7 +509,9 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             legendsColor = it.getColor(R.styleable.PieChart_legendsColor, DEFAULT_LEGENDS_COLOR)
             legendBoxBackgroundColor = it.getColor(R.styleable.PieChart_legendBoxBackgroundColor, DEFAULT_LEGEND_BOX_BACKGROUND_COLOR)
             legendBoxMargin = it.getDimension(R.styleable.PieChart_legendBoxMargin, dpToPx(DEFAULT_LEGEND_BOX_MARGIN))
+            legendTitleMargin = it.getDimension(R.styleable.PieChart_legendTitleMargin, dpToPx(DEFAULT_LEGEND_TITLE_MARGIN))
             legendBoxPadding = it.getDimension(R.styleable.PieChart_legendBoxPadding, dpToPx(DEFAULT_LEGEND_BOX_PADDING))
+            legendsPercentageMargin = it.getDimension(R.styleable.PieChart_legendsPercentageMargin, dpToPx(DEFAULT_LEGENDS_PERCENTAGE_MARGIN))
             legendBoxBorder = it.getDimension(R.styleable.PieChart_legendBoxBorder, dpToPx(DEFAULT_LEGEND_BOX_BORDER))
             legendBoxBorderCornerRadius = it.getDimension(R.styleable.PieChart_legendBoxBorderCornerRadius, dpToPx(DEFAULT_LEGEND_BOX_BORDER_CORNER_RADIUS))
             legendBoxBorderAlpha = it.getFloat(R.styleable.PieChart_legendBoxBorderAlpha, DEFAULT_LEGEND_BOX_BORDER_ALPHA)
@@ -570,7 +578,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
 
         if (legendType == LegendType.BOTTOM_HORIZONTAL) {
-            val legendsTitle = Text(legendsTitle, size = legendsTitleSize, color = legendsTitleColor, font = DEFAULT)
+            val legendsTitle = Text(legendsTitle, size = legendsTitleSize, color = legendsTitleColor, font = DEFAULT, margins = Margins(bottom = legendTitleMargin))
             val legends = mutableListOf<Box>()
             for (slice in slices) {
                 var legendDrawable: Drawable? = null

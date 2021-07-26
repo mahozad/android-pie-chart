@@ -3,6 +3,7 @@ package ir.mahozad.android.component
 import android.graphics.Canvas
 import android.graphics.DashPathEffect
 import android.graphics.Paint
+import android.graphics.Paint.ANTI_ALIAS_FLAG
 import android.graphics.RectF
 import ir.mahozad.android.Coordinates
 import ir.mahozad.android.PieChart
@@ -22,7 +23,7 @@ internal class Container(
 
     private val bounds = RectF(0f, 0f, 0f, 0f)
     private val borderBounds = RectF(0f, 0f, 0f, 0f)
-    private val paint = Paint()
+    private val paint = Paint(ANTI_ALIAS_FLAG)
 
     // init {
     //     if (wrapping == Wrap) {
@@ -48,7 +49,8 @@ internal class Container(
         if (layoutDirection == LayoutDirection.HORIZONTAL) {
             children.sumOf { it.width.toDouble() }.toFloat() +
                     (border?.thickness ?: 0f) * 2 +
-                    /* + children horizontal margins */
+                    // Sum of all the collapsing margins between each pair of children
+                    children.zipWithNext { a, b -> max(a.margins?.end ?: 0f, b.margins?.start ?: 0f) }.sum() +
                     max(paddings?.start ?: 0f, children.first().margins?.start ?: 0f) +
                     max(paddings?.end ?: 0f, children.last().margins?.end ?: 0f)
         } else {
