@@ -12,7 +12,7 @@
       android:layout_height="wrap_content"
       app:labelType="outside"
       app:startAngle="250"
-      app:legendType="topHorizontal"
+      app:legendType="bottomHorizontal"
       app:legendsAlignment="center"
       app:legendsTitle="Legends"
       app:legendTitleMargin="0dp"

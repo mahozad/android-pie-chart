@@ -65,7 +65,8 @@
       <enum name="bottomHorizontal" value="1"/>
       <enum name="topHorizontal" value="2"/>
       <enum name="startVertical" value="3"/>
-      <enum name="endVertical" value="4"/>
+      <enum name="inHoleVertical" value="4"/>
+      <enum name="endVertical" value="5"/>
     </attr>
     <attr name="legendsIcon" format="enum">
       <enum name="square" value="0"/>
