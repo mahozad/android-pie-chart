@@ -9,9 +9,11 @@ import androidx.core.graphics.alpha
 
 /**
  * We arrange the components using a
- * [box model](https://limpet.net/mbrubeck/2014/09/08/toy-layout-engine-5-boxes.html)
- * and implement it with the
- * [*composite* pattern](https://en.wikipedia.org/wiki/Composite_pattern).
+ * [box model](https://limpet.net/mbrubeck/2014/09/08/toy-layout-engine-5-boxes.html).
+ *
+ * Implement the model with the
+ * [*composite* pattern](https://en.wikipedia.org/wiki/Composite_pattern):
+ * treat a collection of objects in the same way as individual objects.
  *
  * Refer here for how [*Flexbox* algorithm](https://www.w3.org/TR/css-flexbox-1/#layout-algorithm) works.
  * [Here](https://github.com/facebook/yoga) is an example library implementing Flexbox.
