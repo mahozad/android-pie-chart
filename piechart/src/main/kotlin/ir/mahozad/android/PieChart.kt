@@ -37,7 +37,7 @@ const val DEFAULT_SIZE = 256 /* dp */
 const val DEFAULT_START_ANGLE = -90
 const val DEFAULT_HOLE_RATIO = 0.25f
 const val DEFAULT_OVERLAY_RATIO = 0.55f
-const val DEFAULT_OVERLAY_ALPHA = 0.25f
+const val DEFAULT_OVERLAY_ALPHA = 0.05f
 const val DEFAULT_GAP = 8f /* px */
 const val DEFAULT_LABELS_SIZE = 18f /* sp */
 const val DEFAULT_LEGENDS_SIZE = 16f /* sp */
@@ -473,6 +473,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     )
     private val pie = Path()
     private val clip = Path()
+    private lateinit var gaps: Path
     private val overlay = Path()
     private val mainPaint: Paint = Paint(ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
     private val pieEnclosingRect = RectF()
@@ -652,7 +653,13 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             legendsRectTop = max(0f, (maxAvailableHeight - legendsRectHeight) / 2f)
             newPaddings = Paddings(paddingTop.toFloat(), paddingBottom.toFloat(), paddingStart+ legendsRectWidth+legendBoxMargin, paddingEnd.toFloat())
         }else if (legendType == LegendType.IN_HOLE_VERTICAL) {
-
+            val maxAvailableWidth = (width - paddingLeft - paddingRight) / 3f
+            val maxAvailableHeight = (height - paddingTop - paddingBottom).toFloat()
+            legendsRectHeight = min(maxAvailableHeight, legendsBox.height)
+            legendsRectWidth = min(maxAvailableWidth, legendsBox.width)
+            legendsRectLeft = (width / 2f) - (legendsRectWidth / 2f)
+            legendsRectTop = max(0f, (maxAvailableHeight - legendsRectHeight) / 2f)
+            newPaddings = Paddings(paddingTop.toFloat(), paddingBottom.toFloat(), paddingStart.toFloat(), paddingEnd.toFloat())
         }else if (legendType == LegendType.END_VERTICAL) {
             val maxAvailableWidth = (width - paddingLeft - paddingRight) / 2f
             val maxAvailableHeight = (height - paddingTop - paddingBottom).toFloat()
@@ -697,15 +704,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         }
 
         pie.reset()
-        val holeRadius = holeRatio * pieRadius
         val overlayRadius = overlayRatio * pieRadius
         overlay.set(Path().apply { addCircle(center.x, center.y, overlayRadius, Path.Direction.CW) })
-        val rect = Path().apply { addRect(totalDrawableRect, Path.Direction.CW) }
-        val hole = Path().apply { addCircle(center.x, center.y, holeRadius, Path.Direction.CW) }
-        val gaps = makeGaps()
-        // Could also have set the fillType to EVEN_ODD and just add the other paths to the clip
-        // Or could abandon using clip path and do the operations on the pie itself
-        clip.set(rect - hole - gaps)
     }
 
     private fun parseBorderDashArray(string: String) = string
@@ -761,8 +761,6 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
          * and many drawing objects require expensive initialization. Creating drawing objects within your
          * onDraw() method significantly reduces performance and can make your UI appear sluggish.
          */
-        // clipping should be applied before drawing other things
-        canvas.clipPath(clip)
 
         var currentAngle = startAngle.toFloat()
         for (slice in slices) {
@@ -787,8 +785,26 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             }
 
             mainPaint.shader = gradient
+
+
+
+            // FIXME: Move clip object creation out of the for loop
+            val rect = Path().apply { addRect(totalDrawableRect, Path.Direction.CW) }
+            val holeRadius = holeRatio * pieRadius
+            val hole = Path().apply { addCircle(center.x, center.y, holeRadius, Path.Direction.CW) }
+            gaps = makeGaps()
+            // Could also have set the fillType to EVEN_ODD and just add the other paths to the clip
+            // Or could abandon using clip path and do the operations on the pie itself
+            // Clipping should be applied before drawing other things
+            clip.set(rect - hole - gaps)
             val slicePath = makeSlice(center, pieEnclosingRect, currentAngle, slice.fraction, drawDirection, slice.pointer ?: slicesPointer)
-            canvas.drawPath(slicePath, mainPaint)
+            canvas.withClip(clip) {
+                canvas.drawPath(slicePath, mainPaint)
+                mainPaint.shader = null
+                mainPaint.color = ContextCompat.getColor(context, android.R.color.black) // or better Color.BLACK
+                mainPaint.alpha = (overlayAlpha * 255).toInt()
+                canvas.drawPath(overlay, mainPaint)
+            }
 
             updatePaintForLabel(mainPaint, slice.labelSize ?: labelsSize, slice.labelColor ?: labelsColor, slice.labelFont ?: labelsFont)
 
@@ -921,10 +937,6 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         // mainPaint.getTextBounds(centerLabel, 0, centerLabel.length, bounds)
         // val textHeight = bounds.height()
         // canvas.drawText(centerLabel, centerX, centerY + (textHeight / 2), mainPaint)
-
-        mainPaint.color = ContextCompat.getColor(context, android.R.color.black) // or better Color.BLACK
-        mainPaint.alpha = (overlayAlpha * 255).toInt()
-        canvas.drawPath(overlay, mainPaint)
 
         canvas.withClip(legendsRect) {
             legendsBox.draw(canvas)

@@ -129,6 +129,7 @@ internal fun updatePaintForLabel(paint: Paint, size: Float, @ColorInt color: Int
     paint.typeface = font
     paint.textSize = size
     paint.textAlign = CENTER
+    paint.alpha = 255
     return paint
 }
 
