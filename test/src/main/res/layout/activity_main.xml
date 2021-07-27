@@ -15,7 +15,7 @@
       app:legendType="bottomHorizontal"
       app:legendsAlignment="center"
       app:legendsTitle="Legends"
-      app:legendTitleMargin="0dp"
+      app:legendTitleMargin="8dp"
       app:legendsPercentage="enabled"
       app:legendsPercentageMargin="4dp"
       app:legendIconsMargin="4dp"

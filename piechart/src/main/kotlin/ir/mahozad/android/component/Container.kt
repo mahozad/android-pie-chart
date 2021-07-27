@@ -56,19 +56,21 @@ internal class Container(
         } else {
             children.maxOf { it.width } +
                     (border?.thickness ?: 0f) * 2 +
-                    max(paddings?.start ?: 0f, children.first().margins?.start ?: 0f) +
-                    max(paddings?.end ?: 0f, children.last().margins?.end ?: 0f)
+                    max(paddings?.start ?: 0f, children.maxOf { it.margins?.start ?: 0f }) +
+                    max(paddings?.end ?: 0f, children.maxOf { it.margins?.end ?: 0f })
         }
     }
     override val height by lazy {
         if (layoutDirection == LayoutDirection.HORIZONTAL) {
             children.maxOf { it.height } +
                     (border?.thickness ?: 0f) * 2 +
-                    max(paddings?.top ?: 0f, children.first().margins?.top ?: 0f) +
-                    max(paddings?.bottom ?: 0f, children.last().margins?.bottom ?: 0f)
+                    max(paddings?.top ?: 0f, children.maxOf { it.margins?.top ?: 0f }) +
+                    max(paddings?.bottom ?: 0f, children.maxOf { it.margins?.bottom ?: 0f })
         } else {
             children.sumOf { it.height.toDouble() }.toFloat() +
                     (border?.thickness ?: 0f) * 2 +
+                    // Sum of all the collapsing margins between each pair of children
+                    children.zipWithNext { a, b -> max(a.margins?.bottom ?: 0f, b.margins?.top ?: 0f) }.sum() +
                     max(paddings?.top ?: 0f, children.first().margins?.top ?: 0f) +
                     max(paddings?.bottom ?: 0f, children.last().margins?.bottom ?: 0f)
         }

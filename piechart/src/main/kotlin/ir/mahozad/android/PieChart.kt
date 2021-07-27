@@ -592,26 +592,26 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
 
 
-            val legendsTitle = Text(legendsTitle, size = legendsTitleSize, color = legendsTitleColor, font = DEFAULT, margins = Margins(bottom = legendTitleMargin))
-            val legends = mutableListOf<Box>()
-            for (slice in slices) {
-                var legendDrawable: Drawable? = null
-                slice.legendIcon?.let { iconId ->
-                    legendDrawable = resources.getDrawable(iconId, null)
-                    slice.labelIconTint?.let { tint -> legendDrawable?.setTint(tint) }
-                }
-                val legendIcon = Icon(legendDrawable?:resources.getDrawable(legendsIcon.resId, null), slice.legendIconHeight?: legendIconsHeight, tint= slice.legendIconTint?:legendIconsTint, alpha = slice.legendIconAlpha ?: legendIconsAlpha)
-                val legendText = Text(slice.legend, size = slice.legendSize ?: legendsSize, color = slice.legendColor?: legendsColor, margins = Margins(start = slice.legendIconMargin?:legendIconsMargin, end = slice.legendPercentageMargin ?: legendsPercentageMargin), font = DEFAULT)
-                val legendComponents = mutableListOf<Box>()
-                legendComponents.add(legendIcon)
-                legendComponents.add(legendText)
-                if (isLegendsPercentageEnabled) {
-                    val legendPercentage = Text(NumberFormat.getPercentInstance().format(slice.fraction), size = slice.legendPercentageSize?: legendsPercentageSize, color = slice.legendPercentageColor?: legendsPercentageColor, font = DEFAULT)
-                    legendComponents.add(legendPercentage)
-                }
-                val legend = Container(legendComponents, childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL, margins = Margins(start = legendsMargin, end = legendsMargin))
-                legends.add(legend)
+        val legendsTitle = Text(legendsTitle, size = legendsTitleSize, color = legendsTitleColor, font = DEFAULT, margins = Margins(bottom = legendTitleMargin))
+        val legends = mutableListOf<Box>()
+        for (slice in slices) {
+            var legendDrawable: Drawable? = null
+            slice.legendIcon?.let { iconId ->
+                legendDrawable = resources.getDrawable(iconId, null)
+                slice.labelIconTint?.let { tint -> legendDrawable?.setTint(tint) }
             }
+            val legendIcon = Icon(legendDrawable?:resources.getDrawable(legendsIcon.resId, null), slice.legendIconHeight?: legendIconsHeight, tint= slice.legendIconTint?:legendIconsTint, alpha = slice.legendIconAlpha ?: legendIconsAlpha)
+            val legendText = Text(slice.legend, size = slice.legendSize ?: legendsSize, color = slice.legendColor?: legendsColor, margins = Margins(start = slice.legendIconMargin?:legendIconsMargin, end = slice.legendPercentageMargin ?: legendsPercentageMargin), font = DEFAULT)
+            val legendComponents = mutableListOf<Box>()
+            legendComponents.add(legendIcon)
+            legendComponents.add(legendText)
+            if (isLegendsPercentageEnabled) {
+                val legendPercentage = Text(NumberFormat.getPercentInstance().format(slice.fraction), size = slice.legendPercentageSize?: legendsPercentageSize, color = slice.legendPercentageColor?: legendsPercentageColor, font = DEFAULT)
+                legendComponents.add(legendPercentage)
+            }
+            val legend = Container(legendComponents, childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL, margins = Margins(start = legendsMargin, end = legendsMargin))
+            legends.add(legend)
+        }
 
 
         if (legendType == LegendType.BOTTOM_HORIZONTAL || legendType == LegendType.TOP_HORIZONTAL) {
@@ -622,8 +622,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             legendsBox = Container(children = listOf(legendsTitle, legendsContainer), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.VERTICAL, background = Background(legendBoxBackgroundColor), paddings = Paddings(legendBoxPadding), border = Border(legendBoxBorder, color = legendBoxBorderColor, alpha = legendBoxBorderAlpha, cornerRadius = legendBoxBorderCornerRadius, type = legendBoxBorderType, dashArray = legendBoxBorderDashArray))
         }
         val direction = if (layoutDirection == LAYOUT_DIRECTION_LTR) LTR else RTL
-        var heightForPie = height
-        var widthForPie = width
+        var newPaddings = Paddings(0f)
         var legendsRectLeft = 0f
         var legendsRectTop = 0f
         var legendsRectHeight = 0f
@@ -635,8 +634,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             legendsRectWidth = min(maxAvailableWidth, legendsBox.width)
             legendsRectLeft = max(0f, (maxAvailableWidth - legendsRectWidth) / 2f)
             legendsRectTop = height - paddingBottom - legendsRectHeight
-            heightForPie = (height - legendsRectHeight).toInt()
-            widthForPie = width
+            newPaddings = Paddings(paddingTop.toFloat(), paddingBottom+legendsRectHeight, paddingStart.toFloat(), paddingEnd.toFloat())
         }else if (legendType == LegendType.TOP_HORIZONTAL) {
             val maxAvailableWidth = (width - paddingLeft - paddingRight).toFloat()
             val maxAvailableHeight = (height - paddingTop - paddingBottom) / 2f // Arbitrary
@@ -644,8 +642,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             legendsRectWidth = min(maxAvailableWidth, legendsBox.width)
             legendsRectLeft = max(0f, (maxAvailableWidth - legendsRectWidth) / 2f)
             legendsRectTop = paddingTop.toFloat()
-            heightForPie = (height - legendsRectHeight).toInt()
-            widthForPie = width
+            newPaddings = Paddings(paddingTop.toFloat()+legendsRectHeight, paddingBottom.toFloat(), paddingStart.toFloat(), paddingEnd.toFloat())
         }else if (legendType == LegendType.START_VERTICAL) {
             val maxAvailableWidth = (width - paddingLeft - paddingRight) / 2f
             val maxAvailableHeight = (height - paddingTop - paddingBottom).toFloat()
@@ -653,8 +650,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             legendsRectWidth = min(maxAvailableWidth, legendsBox.width)
             legendsRectLeft = paddingLeft.toFloat()
             legendsRectTop = max(0f, (maxAvailableHeight - legendsRectHeight) / 2f)
-            heightForPie = height
-            widthForPie = (width - legendsRectWidth).toInt()
+            newPaddings = Paddings(paddingTop.toFloat(), paddingBottom.toFloat(), paddingStart.toFloat()+ legendsRectWidth, paddingEnd.toFloat())
         }else if (legendType == LegendType.IN_HOLE_VERTICAL) {
 
         }else if (legendType == LegendType.END_VERTICAL) {
@@ -664,8 +660,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             legendsRectWidth = min(maxAvailableWidth, legendsBox.width)
             legendsRectLeft = width - paddingRight - legendsRectWidth
             legendsRectTop = max(0f, (maxAvailableHeight - legendsRectHeight) / 2f)
-            heightForPie = height
-            widthForPie = (width - legendsRectWidth).toInt()
+            newPaddings = Paddings(paddingTop.toFloat(), paddingBottom.toFloat(), paddingStart.toFloat(), paddingEnd.toFloat()+ legendsRectWidth)
         } else {
 
         }
@@ -683,8 +678,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         //  val pieCenter = calculateRadius(drawableArea, ...)
 
         totalDrawableRect.set(0f+paddingLeft, 0f + paddingTop, width - paddingRight.toFloat(), height - paddingBottom.toFloat())
-        pieRadius = calculateRadius(widthForPie, heightForPie, paddingLeft, paddingRight, paddingTop, paddingBottom)
-        center = calculateCenter(widthForPie, heightForPie, paddingLeft, paddingRight, paddingTop, paddingBottom)
+        pieRadius = calculateRadius(width, height, newPaddings.start.toInt(), newPaddings.end.toInt(), newPaddings.top.toInt(), newPaddings.bottom.toInt())
+        center = calculateCenter(width, height, newPaddings.start.toInt(), newPaddings.end.toInt(), newPaddings.top.toInt(), newPaddings.bottom.toInt())
         val (top, left, right, bottom) = calculateBoundaries(center, pieRadius)
         pieEnclosingRect.set(RectF(left, top, right, bottom))
 
