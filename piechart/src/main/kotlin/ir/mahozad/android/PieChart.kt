@@ -634,7 +634,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             legendsRectWidth = min(maxAvailableWidth, legendsBox.width)
             legendsRectLeft = max(0f, (maxAvailableWidth - legendsRectWidth) / 2f)
             legendsRectTop = height - paddingBottom - legendsRectHeight
-            newPaddings = Paddings(paddingTop.toFloat(), paddingBottom+legendsRectHeight, paddingStart.toFloat(), paddingEnd.toFloat())
+            newPaddings = Paddings(paddingTop.toFloat(), paddingBottom+legendsRectHeight+legendBoxMargin, paddingStart.toFloat(), paddingEnd.toFloat())
         }else if (legendType == LegendType.TOP_HORIZONTAL) {
             val maxAvailableWidth = (width - paddingLeft - paddingRight).toFloat()
             val maxAvailableHeight = (height - paddingTop - paddingBottom) / 2f // Arbitrary
@@ -642,7 +642,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             legendsRectWidth = min(maxAvailableWidth, legendsBox.width)
             legendsRectLeft = max(0f, (maxAvailableWidth - legendsRectWidth) / 2f)
             legendsRectTop = paddingTop.toFloat()
-            newPaddings = Paddings(paddingTop.toFloat()+legendsRectHeight, paddingBottom.toFloat(), paddingStart.toFloat(), paddingEnd.toFloat())
+            newPaddings = Paddings(paddingTop.toFloat()+legendsRectHeight+legendBoxMargin, paddingBottom.toFloat(), paddingStart.toFloat(), paddingEnd.toFloat())
         }else if (legendType == LegendType.START_VERTICAL) {
             val maxAvailableWidth = (width - paddingLeft - paddingRight) / 2f
             val maxAvailableHeight = (height - paddingTop - paddingBottom).toFloat()
@@ -650,7 +650,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             legendsRectWidth = min(maxAvailableWidth, legendsBox.width)
             legendsRectLeft = paddingLeft.toFloat()
             legendsRectTop = max(0f, (maxAvailableHeight - legendsRectHeight) / 2f)
-            newPaddings = Paddings(paddingTop.toFloat(), paddingBottom.toFloat(), paddingStart.toFloat()+ legendsRectWidth, paddingEnd.toFloat())
+            newPaddings = Paddings(paddingTop.toFloat(), paddingBottom.toFloat(), paddingStart+ legendsRectWidth+legendBoxMargin, paddingEnd.toFloat())
         }else if (legendType == LegendType.IN_HOLE_VERTICAL) {
 
         }else if (legendType == LegendType.END_VERTICAL) {
@@ -660,7 +660,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             legendsRectWidth = min(maxAvailableWidth, legendsBox.width)
             legendsRectLeft = width - paddingRight - legendsRectWidth
             legendsRectTop = max(0f, (maxAvailableHeight - legendsRectHeight) / 2f)
-            newPaddings = Paddings(paddingTop.toFloat(), paddingBottom.toFloat(), paddingStart.toFloat(), paddingEnd.toFloat()+ legendsRectWidth)
+            newPaddings = Paddings(paddingTop.toFloat(), paddingBottom.toFloat(), paddingStart.toFloat(), paddingEnd+ legendsRectWidth+legendBoxMargin)
         } else {
 
         }
