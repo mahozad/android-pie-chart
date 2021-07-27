@@ -694,7 +694,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             }
             newPaddings = Paddings(paddingTop.toFloat(), paddingBottom.toFloat(), paddingStart.toFloat(), paddingEnd+ legendsRectWidth+legendBoxMargin)
         } else {
-
+            legendsBox = EmptyBox()
         }
         legendsRect = RectF(legendsRectLeft, legendsRectTop, legendsRectLeft + legendsRectWidth, legendsRectTop + legendsRectHeight)
         legendsBox.layOut(legendsRectTop, legendsRectLeft, direction)

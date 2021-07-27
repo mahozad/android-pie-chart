@@ -79,3 +79,13 @@ internal sealed class Wrapping {
     object Wrap : Wrapping()
     object Clip : Wrapping()
 }
+
+internal class EmptyBox(
+    override val width: Float = 0f,
+    override val height: Float = 0f,
+    override val margins: Margins? = null,
+    override val paddings: Paddings? = null
+) : Box {
+    override fun layOut(top: Float, start: Float, drawDirection: DrawDirection) = Unit
+    override fun draw(canvas: Canvas) = Unit
+}
