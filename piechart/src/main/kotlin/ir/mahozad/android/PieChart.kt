@@ -619,6 +619,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
                 val legendPercentage = Text(NumberFormat.getPercentInstance().format(slice.fraction), size = slice.legendPercentageSize?: legendsPercentageSize, color = slice.legendPercentageColor?: legendsPercentageColor, font = DEFAULT)
                 legendComponents.add(legendPercentage)
             }
+            /* FIXME: The first legend should not have start margin and the last legend should not have end margin (user can achieve first start margin and last end margin with parent padding) */
             val legend = Container(legendComponents, childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL, margins = Margins(start = legendsMargin, end = legendsMargin))
             legends.add(legend)
         }
