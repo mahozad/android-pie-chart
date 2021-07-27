@@ -8,6 +8,9 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import androidx.annotation.ColorInt
+import androidx.annotation.Dimension
+import androidx.annotation.Dimension.PX
+import androidx.annotation.FloatRange
 import ir.mahozad.android.PieChart.*
 import ir.mahozad.android.PieChart.DrawDirection.CLOCKWISE
 import ir.mahozad.android.PieChart.DrawDirection.COUNTER_CLOCKWISE
@@ -123,13 +126,19 @@ internal fun calculateGapCoordinates(
 }
 
 // TODO: Move to PaintUtil or another appropriate file
-internal fun updatePaintForLabel(paint: Paint, size: Float, @ColorInt color: Int, font: Typeface): Paint {
+internal fun updatePaintForLabel(
+    paint: Paint,
+    @Dimension(unit = PX) size: Float,
+    @ColorInt color: Int,
+    font: Typeface,
+    @FloatRange(from = 0.0, to = 1.0) alpha: Float = 1f
+): Paint {
     paint.color = color
     paint.shader = null
     paint.typeface = font
     paint.textSize = size
     paint.textAlign = CENTER
-    paint.alpha = 255
+    paint.alpha = (alpha * 255).toInt()
     return paint
 }
 

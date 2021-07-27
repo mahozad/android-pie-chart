@@ -20,6 +20,38 @@
     <attr name="slicesPointerWidth" format="dimension"/>
     <attr name="shouldCenterPie" format="boolean"/>
     <attr name="centerLabel" format="string"/>
+    <attr name="centerLabelSize" format="dimension"/>
+    <attr name="centerLabelColor" format="color"/>
+    <attr name="centerLabelFont" format="reference"/>
+    <attr name="centerLabelIconHeight" format="dimension"/>
+    <attr name="centerLabelIconMargin" format="dimension"/>
+    <attr name="centerLabelIconTint" format="color"/>
+    <attr name="centerLabelIconAlpha" format="float"/>
+    <attr name="centerLabelAlpha" format="float"/>
+    <attr name="centerLabelIcon" format="enum">
+      <enum name="square" value="0"/>
+      <enum name="squareHallow" value="1"/>
+      <enum name="circle" value="2"/>
+      <enum name="circleHallow" value="3"/>
+      <enum name="rectangle" value="4"/>
+      <enum name="rectangleHallow" value="5"/>
+      <enum name="rectangleTall" value="6"/>
+      <enum name="rectangleTallHallow" value="7"/>
+      <enum name="triangle" value="8"/>
+      <enum name="triangleHallow" value="9"/>
+      <enum name="triangleInward" value="10"/>
+      <enum name="triangleInwardHallow" value="11"/>
+      <enum name="triangleOutward" value="12"/>
+      <enum name="triangleOutwardHallow" value="13"/>
+      <enum name="triangleDownward" value="14"/>
+      <enum name="triangleDownwardHallow" value="15"/>
+      <enum name="arc1" value="16"/>
+      <enum name="arc2" value="17"/>
+      <enum name="arc3" value="18"/>
+      <enum name="slice1" value="19"/>
+      <enum name="slice2" value="20"/>
+      <enum name="slice3" value="21"/>
+    </attr>
     <attr name="legendsTitle" format="string"/>
     <attr name="legendsSize" format="dimension"/>
     <attr name="legendsPercentageSize" format="dimension"/>
@@ -146,6 +178,7 @@
 <!--      <enum name="outsideWithPointer" value="5"/>-->
 <!--      <enum name="outsideWithLinesOnSides" value="6"/>-->
     </attr>
+    <!-- TODO: Use fraction instead of float as format? -->
     <attr name="holeRatio" format="float"/>
     <attr name="overlayRatio" format="float"/>
     <attr name="overlayAlpha" format="float"/>

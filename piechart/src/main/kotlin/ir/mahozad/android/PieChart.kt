@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.*
+import androidx.annotation.Dimension.DP
 import androidx.annotation.Dimension.PX
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -16,12 +17,12 @@ import androidx.core.content.res.use
 import androidx.core.graphics.minus
 import androidx.core.graphics.withClip
 import androidx.core.graphics.withRotation
+import ir.mahozad.android.PieChart.DefaultIcons.CIRCLE
 import ir.mahozad.android.PieChart.DrawDirection.CLOCKWISE
 import ir.mahozad.android.PieChart.GapPosition.MIDDLE
 import ir.mahozad.android.PieChart.GradientType.RADIAL
 import ir.mahozad.android.PieChart.IconPlacement.START
 import ir.mahozad.android.PieChart.LabelType.*
-import ir.mahozad.android.PieChart.LegendIcons.CIRCLE
 import ir.mahozad.android.PieChart.SlicePointer
 import ir.mahozad.android.component.*
 import ir.mahozad.android.component.DrawDirection.LTR
@@ -62,6 +63,11 @@ const val DEFAULT_LABEL_ICONS_MARGIN = 8f /* dp */
 const val DEFAULT_LABEL_OFFSET = 0.75f
 const val DEFAULT_OUTSIDE_LABELS_MARGIN = 28f /* dp */
 const val DEFAULT_CENTER_LABEL = ""
+const val DEFAULT_CENTER_LABEL_SIZE = 16f /* sp */
+const val DEFAULT_CENTER_LABEL_ICON_HEIGHT = DEFAULT_CENTER_LABEL_SIZE /* sp */
+@Dimension(unit = DP) const val DEFAULT_CENTER_LABEL_ICON_MARGIN = 8f
+@FloatRange(from = 0.0, to = 1.0) const val DEFAULT_CENTER_LABEL_ALPHA = 1f
+@FloatRange(from = 0.0, to = 1.0) const val DEFAULT_CENTER_LABEL_ICON_ALPHA = 1f
 const val DEFAULT_LEGENDS_TITLE = ""
 const val DEFAULT_SHOULD_CENTER_PIE = true
 @ColorInt const val DEFAULT_LABELS_COLOR = Color.WHITE
@@ -70,20 +76,24 @@ const val DEFAULT_SHOULD_CENTER_PIE = true
 @ColorInt const val DEFAULT_LEGEND_BOX_BORDER_COLOR = Color.TRANSPARENT
 @ColorInt const val DEFAULT_LEGENDS_TITLE_COLOR = Color.WHITE
 @ColorInt const val DEFAULT_LEGENDS_PERCENTAGE_COLOR = Color.WHITE
+@ColorInt const val DEFAULT_CENTER_LABEL_COLOR = Color.WHITE
 // If null, the colors of the icon itself is used
 @ColorInt val defaultLabelIconsTint: Int? = null
 @ColorInt val defaultLegendIconsTint: Int? = null
+@ColorInt val defaultCenterLabelIconTint: Int? = null
 val defaultGapPosition = MIDDLE
 val defaultGradientType = RADIAL
 val defaultDrawDirection = CLOCKWISE
 val defaultLabelIconsPlacement = START
 val defaultLegendType = PieChart.LegendType.NONE
 val defaultLegendsIcon = CIRCLE
+val defaultCenterLabelIcon = PieChart.DefaultIcons.NO_ICON
 val defaultLegendsAlignment = Alignment.CENTER
 val defaultLegendBoxAlignment = Alignment.CENTER
 val defaultLabelType = INSIDE
 val defaultLegendBoxBorderType = PieChart.BorderType.SOLID
 val defaultLabelsFont: Typeface = DEFAULT
+val defaultCenterLabelFont: Typeface = DEFAULT
 val defaultSlicesPointer: SlicePointer? = null
 val defaultLegendIconsTintArray = intArrayOf(0xff3F51B5.toInt())
 
@@ -167,10 +177,10 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     /* TODO: Rename inside to inner or internal and outside to outer or external (?) */
     enum class LabelType { NONE, INSIDE, OUTSIDE, INSIDE_CIRCULAR, OUTSIDE_CIRCULAR_INWARD, OUTSIDE_CIRCULAR_OUTWARD, OUTSIDE_WITH_LINES_ON_SIDES }
     data class SlicePointer(val length: Float, val width: Float, val color: Int)
+
     interface Icon { val resId: Int }
     class CustomIcon(@DrawableRes override val resId: Int) : Icon
-
-    enum class LegendIcons(@DrawableRes override val resId: Int) : Icon {
+    enum class DefaultIcons(@DrawableRes override val resId: Int) : Icon {
         SQUARE(R.drawable.ic_square),
         SQUARE_HOLLOW(R.drawable.ic_square_hollow),
         CIRCLE(R.drawable.ic_circle),
@@ -192,7 +202,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         ARC3(R.drawable.ic_arc3),
         SLICE1(R.drawable.ic_slice1),
         SLICE2(R.drawable.ic_slice2),
-        SLICE3(R.drawable.ic_slice3)
+        SLICE3(R.drawable.ic_slice3),
+        NO_ICON(R.drawable.ic_empty)
     }
 
     enum class LegendType {
@@ -395,6 +406,36 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             field = font
             invalidate()
         }
+    var centerLabelFont = defaultCenterLabelFont
+        set(font) {
+            field = font
+            invalidate()
+        }
+    var centerLabelIconHeight = DEFAULT_CENTER_LABEL_ICON_HEIGHT
+        set(@Dimension(unit = PX) height) {
+            field = height
+            invalidate()
+        }
+    var centerLabelIconMargin = DEFAULT_CENTER_LABEL_ICON_MARGIN
+        set(@Dimension(unit = PX) margin) {
+            field = margin
+            invalidate()
+        }
+    var centerLabelIconTint = defaultCenterLabelIconTint
+        set(@ColorInt color) {
+            field = color
+            invalidate()
+        }
+    var centerLabelAlpha = DEFAULT_CENTER_LABEL_ALPHA
+        set(@FloatRange(from = 0.0, to = 1.0) alpha) {
+            field = alpha.coerceIn(0f, 1f)
+            invalidate()
+        }
+    var centerLabelIconAlpha = DEFAULT_CENTER_LABEL_ICON_ALPHA
+        set(@FloatRange(from = 0.0, to = 1.0) alpha) {
+            field = alpha.coerceIn(0f, 1f)
+            invalidate()
+        }
     var labelOffset = DEFAULT_LABEL_OFFSET
         set(offset) {
             field = offset.coerceIn(0f, 1f)
@@ -461,7 +502,26 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
      * Is overridden by icon of the slice if it is assigned a value other than *null*
      */
     var legendsIcon: Icon = defaultLegendsIcon
+    var centerLabelIcon : Icon = defaultCenterLabelIcon
+        set(icon) {
+            field = icon
+            invalidate()
+        }
     var centerLabel = DEFAULT_CENTER_LABEL
+        set(label) {
+            field = label
+            invalidate()
+        }
+    var centerLabelSize = DEFAULT_CENTER_LABEL_SIZE
+        set(@Dimension(unit = PX) size) {
+            field = size
+            invalidate()
+        }
+    var centerLabelColor = DEFAULT_CENTER_LABEL_COLOR
+        set(color) {
+            field = color
+            invalidate()
+        }
     var gapPosition = defaultGapPosition
     var gradientType = defaultGradientType
     var drawDirection = defaultDrawDirection
@@ -486,6 +546,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private val totalDrawableRect = RectF()
     private var pieRadius = 0f
     private var center = Coordinates(0f, 0f)
+    private lateinit var centerLabelBox: Box
     private lateinit var legendsBox: Box
 
     /**
@@ -508,20 +569,27 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             labelOffset = it.getFloat(R.styleable.PieChart_labelOffset, DEFAULT_LABEL_OFFSET)
             labelsColor = it.getColor(R.styleable.PieChart_labelsColor, DEFAULT_LABELS_COLOR)
             labelIconsTint = getIconTint(it, R.styleable.PieChart_labelIconsTint)
-            val fontId = it.getResourceId(R.styleable.PieChart_labelsFont, -1)
-            labelsFont = if (fontId == -1) defaultLabelsFont else ResourcesCompat.getFont(context, fontId)!!
+            labelsFont = getFont(it, R.styleable.PieChart_labelsFont, defaultLabelsFont)
+            centerLabelFont = getFont(it, R.styleable.PieChart_centerLabelFont, defaultCenterLabelFont)
+            centerLabelIconAlpha = it.getFloat(R.styleable.PieChart_centerLabelIconAlpha, DEFAULT_CENTER_LABEL_ICON_ALPHA)
+            centerLabelAlpha = it.getFloat(R.styleable.PieChart_centerLabelAlpha, DEFAULT_CENTER_LABEL_ALPHA)
             labelIconsHeight = it.getDimension(R.styleable.PieChart_labelIconsHeight, spToPx(DEFAULT_LABEL_ICONS_HEIGHT))
+            centerLabelIconHeight = it.getDimension(R.styleable.PieChart_centerLabelIconHeight, dpToPx(DEFAULT_CENTER_LABEL_ICON_HEIGHT))
             legendIconsHeight = it.getDimension(R.styleable.PieChart_legendIconsHeight, spToPx(DEFAULT_LEGEND_ICONS_HEIGHT))
             legendIconsMargin = it.getDimension(R.styleable.PieChart_legendIconsMargin, dpToPx(DEFAULT_LEGEND_ICONS_MARGIN))
+            centerLabelIconMargin = it.getDimension(R.styleable.PieChart_centerLabelIconMargin, dpToPx(DEFAULT_CENTER_LABEL_ICON_MARGIN))
             labelIconsMargin = it.getDimension(R.styleable.PieChart_labelIconsMargin, dpToPx(DEFAULT_LABEL_ICONS_MARGIN))
             outsideLabelsMargin = it.getDimension(R.styleable.PieChart_outsideLabelsMargin, dpToPx(DEFAULT_OUTSIDE_LABELS_MARGIN))
             centerLabel = it.getString(R.styleable.PieChart_centerLabel) ?: DEFAULT_CENTER_LABEL
             legendsSize = it.getDimension(R.styleable.PieChart_legendsSize, spToPx(DEFAULT_LEGENDS_SIZE))
+            centerLabelSize = it.getDimension(R.styleable.PieChart_centerLabelSize, spToPx(DEFAULT_CENTER_LABEL_SIZE))
+            centerLabelColor = it.getColor(R.styleable.PieChart_centerLabelColor, DEFAULT_CENTER_LABEL_COLOR)
             legendsTitle = it.getString(R.styleable.PieChart_legendsTitle) ?: DEFAULT_LEGENDS_TITLE
             legendsTitleSize = it.getDimension(R.styleable.PieChart_legendsTitleSize, spToPx(DEFAULT_LEGENDS_TITLE_SIZE))
             legendsPercentageSize = it.getDimension(R.styleable.PieChart_legendsPercentageSize, spToPx(DEFAULT_LEGENDS_PERCENTAGE_SIZE))
             legendsPercentageColor = it.getColor(R.styleable.PieChart_legendsPercentageColor, DEFAULT_LEGENDS_PERCENTAGE_COLOR)
             legendIconsTint = getIconTint(it, R.styleable.PieChart_legendIconsTint)
+            centerLabelIconTint = getIconTint(it, R.styleable.PieChart_centerLabelIconTint)
             legendIconsTintArray = getColorArray(it, R.styleable.PieChart_legendIconsTintArray)
             legendsMargin = it.getDimension(R.styleable.PieChart_legendsMargin, dpToPx(DEFAULT_LEGENDS_MARGIN))
             legendsColor = it.getColor(R.styleable.PieChart_legendsColor, DEFAULT_LEGENDS_COLOR)
@@ -560,8 +628,11 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             labelType = LabelType.values()[
                     it.getInt(R.styleable.PieChart_labelType, defaultLabelType.ordinal)
             ]
-            legendsIcon = LegendIcons.values()[
+            legendsIcon = DefaultIcons.values()[
                     it.getInt(R.styleable.PieChart_legendsIcon, defaultLegendsIcon.ordinal)
+            ]
+            centerLabelIcon = DefaultIcons.values()[
+                    it.getInt(R.styleable.PieChart_centerLabelIcon, defaultCenterLabelIcon.ordinal)
             ]
             gapPosition = GapPosition.values()[
                     it.getInt(R.styleable.PieChart_gapPosition, defaultGapPosition.ordinal)
@@ -573,6 +644,11 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
                     it.getInt(R.styleable.PieChart_drawDirection, defaultDrawDirection.ordinal)
             ]
         }
+    }
+
+    private fun getFont(typedArray: TypedArray, @StyleableRes font: Int, defaultFont: Typeface): Typeface {
+        val fontId = typedArray.getResourceId(font, -1)
+        return if (fontId == -1) defaultFont else ResourcesCompat.getFont(context, fontId)!!
     }
 
     private fun getIconTint(typedArray: TypedArray, @StyleableRes attrName: Int): Int? {
@@ -732,6 +808,12 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         pie.reset()
         val overlayRadius = overlayRatio * pieRadius
         overlay.set(Path().apply { addCircle(center.x, center.y, overlayRadius, Path.Direction.CW) })
+
+
+        val centerLabelIcon = Icon(resources.getDrawable(centerLabelIcon.resId, null), centerLabelIconHeight, tint = centerLabelIconTint, alpha = centerLabelIconAlpha, margins = Margins(end = centerLabelIconMargin))
+        val centerLabelText = Text(centerLabel, size = centerLabelSize, color = centerLabelColor, font = centerLabelFont, alpha = centerLabelAlpha)
+        centerLabelBox = Container(listOf(centerLabelIcon, centerLabelText), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
+        centerLabelBox.layOut(center.y - centerLabelBox.height / 2f, center.x - centerLabelBox.width / 2f, LTR)
     }
 
     private fun parseBorderDashArray(string: String) = string
@@ -967,6 +1049,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         canvas.withClip(legendsRect) {
             legendsBox.draw(canvas)
         }
+        centerLabelBox.draw(canvas)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

@@ -6,6 +6,7 @@ import android.graphics.RectF
 import android.graphics.Typeface
 import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
+import androidx.annotation.FloatRange
 import ir.mahozad.android.calculateLabelBounds
 import ir.mahozad.android.updatePaintForLabel
 
@@ -15,10 +16,11 @@ internal class Text(
     override val paddings: Paddings? = null,
     @Dimension size: Float,
     @ColorInt color: Int,
-    font: Typeface
+    font: Typeface,
+    @FloatRange(from = 0.0, to = 1.0) alpha: Float = 1f
 ) : Box {
 
-    private val paint = updatePaintForLabel(Paint(), size, color, font)
+    private val paint = updatePaintForLabel(Paint(), size, color, font, alpha)
     private val dimensions = calculateLabelBounds(string, paint)
     private val bounds = RectF(0f, 0f, 0f, 0f)
     private var descent = paint.descent()

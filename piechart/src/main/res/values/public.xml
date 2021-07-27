@@ -8,6 +8,15 @@
   <public name="slicesPointerLength" format="dimension"/>
   <public name="slicesPointerWidth" format="dimension"/>
   <public name="shouldCenterPie" format="boolean"/>
+  <public name="centerLabel" format="string"/>
+  <public name="centerLabelSize" format="dimension"/>
+  <public name="centerLabelColor" format="color"/>
+  <public name="centerLabelFont" format="reference"/>
+  <public name="centerLabelIconHeight" format="dimension"/>
+  <public name="centerLabelIconMargin" format="dimension"/>
+  <public name="centerLabelIconTint" format="color"/>
+  <public name="centerLabelIconAlpha" format="float"/>
+  <public name="centerLabelAlpha" format="float"/>
   <public name="legendType" format="enum"/>
   <public name="legendTitleMargin" format="dimension"/>
   <public name="legendsTitle" format="string"/>
