@@ -19,6 +19,13 @@
     <attr name="slicesPointerLength" format="dimension"/>
     <attr name="slicesPointerWidth" format="dimension"/>
     <attr name="shouldCenterPie" format="boolean"/>
+    <attr name="centerBackground" format="enum">
+      <enum name="disabled" value="0"/>
+      <enum name="enabled" value="1"/>
+    </attr>
+    <attr name="centerBackgroundColor" format="color"/>
+    <attr name="centerBackgroundRatio" format="float"/>
+    <attr name="centerBackgroundAlpha" format="float"/>
     <attr name="centerLabel" format="string"/>
     <attr name="centerLabelSize" format="dimension"/>
     <attr name="centerLabelColor" format="color"/>

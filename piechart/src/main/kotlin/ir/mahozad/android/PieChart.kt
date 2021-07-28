@@ -39,6 +39,9 @@ const val DEFAULT_START_ANGLE = -90
 const val DEFAULT_HOLE_RATIO = 0.25f
 const val DEFAULT_OVERLAY_RATIO = 0.55f
 const val DEFAULT_OVERLAY_ALPHA = 0.05f
+const val DEFAULT_CENTER_BACKGROUND_STATUS = DISABLED
+@FloatRange(from = 0.0, to = 1.0) const val DEFAULT_CENTER_BACKGROUND_RATIO = 0.5f
+@FloatRange(from = 0.0, to = 1.0) const val DEFAULT_CENTER_BACKGROUND_ALPHA = 1f
 const val DEFAULT_GAP = 8f /* px */
 const val DEFAULT_LABELS_SIZE = 18f /* sp */
 const val DEFAULT_LEGENDS_SIZE = 16f /* sp */
@@ -77,6 +80,7 @@ const val DEFAULT_SHOULD_CENTER_PIE = true
 @ColorInt const val DEFAULT_LEGENDS_TITLE_COLOR = Color.WHITE
 @ColorInt const val DEFAULT_LEGENDS_PERCENTAGE_COLOR = Color.WHITE
 @ColorInt const val DEFAULT_CENTER_LABEL_COLOR = Color.WHITE
+@ColorInt const val DEFAULT_CENTER_BACKGROUND_COLOR = Color.GRAY
 // If null, the colors of the icon itself is used
 @ColorInt val defaultLabelIconsTint: Int? = null
 @ColorInt val defaultLegendIconsTint: Int? = null
@@ -436,6 +440,26 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             field = alpha.coerceIn(0f, 1f)
             invalidate()
         }
+    var isCenterBackgroundEnabled = DEFAULT_CENTER_BACKGROUND_STATUS
+        set(shouldEnable) {
+            field = shouldEnable
+            invalidate()
+        }
+    var centerBackgroundColor = DEFAULT_CENTER_BACKGROUND_COLOR
+        set(@ColorInt color) {
+            field = color
+            invalidate()
+        }
+    var centerBackgroundRatio = DEFAULT_CENTER_BACKGROUND_RATIO
+        set(@FloatRange(from = 0.0, to = 1.0) ratio) {
+            field = ratio
+            invalidate()
+        }
+    var centerBackgroundAlpha = DEFAULT_CENTER_BACKGROUND_ALPHA
+        set(@FloatRange(from = 0.0, to = 1.0) alpha) {
+            field = alpha
+            invalidate()
+        }
     var labelOffset = DEFAULT_LABEL_OFFSET
         set(offset) {
             field = offset.coerceIn(0f, 1f)
@@ -584,6 +608,10 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             legendsSize = it.getDimension(R.styleable.PieChart_legendsSize, spToPx(DEFAULT_LEGENDS_SIZE))
             centerLabelSize = it.getDimension(R.styleable.PieChart_centerLabelSize, spToPx(DEFAULT_CENTER_LABEL_SIZE))
             centerLabelColor = it.getColor(R.styleable.PieChart_centerLabelColor, DEFAULT_CENTER_LABEL_COLOR)
+            isCenterBackgroundEnabled = it.getInt(R.styleable.PieChart_centerBackground, 0) == 1
+            centerBackgroundColor = it.getColor(R.styleable.PieChart_centerBackgroundColor, DEFAULT_CENTER_BACKGROUND_COLOR)
+            centerBackgroundRatio = it.getFloat(R.styleable.PieChart_centerBackgroundRatio, DEFAULT_CENTER_BACKGROUND_RATIO)
+            centerBackgroundAlpha = it.getFloat(R.styleable.PieChart_centerBackgroundAlpha, DEFAULT_CENTER_BACKGROUND_ALPHA)
             legendsTitle = it.getString(R.styleable.PieChart_legendsTitle) ?: DEFAULT_LEGENDS_TITLE
             legendsTitleSize = it.getDimension(R.styleable.PieChart_legendsTitleSize, spToPx(DEFAULT_LEGENDS_TITLE_SIZE))
             legendsPercentageSize = it.getDimension(R.styleable.PieChart_legendsPercentageSize, spToPx(DEFAULT_LEGENDS_PERCENTAGE_SIZE))
@@ -869,6 +897,12 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
          * and many drawing objects require expensive initialization. Creating drawing objects within your
          * onDraw() method significantly reduces performance and can make your UI appear sluggish.
          */
+
+        if (isCenterBackgroundEnabled) {
+            mainPaint.color = centerBackgroundColor
+            mainPaint.alpha = (centerBackgroundAlpha * 255).toInt()
+            canvas.drawCircle(center.x, center.y, centerBackgroundRatio * pieRadius, mainPaint)
+        }
 
         var currentAngle = startAngle.toFloat()
         for (slice in slices) {

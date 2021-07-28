@@ -8,6 +8,9 @@
   <public name="slicesPointerLength" format="dimension"/>
   <public name="slicesPointerWidth" format="dimension"/>
   <public name="shouldCenterPie" format="boolean"/>
+  <public name="centerBackgroundColor" format="color"/>
+  <public name="centerBackgroundRatio" format="float"/>
+  <public name="centerBackgroundAlpha" format="float"/>
   <public name="centerLabel" format="string"/>
   <public name="centerLabelSize" format="dimension"/>
   <public name="centerLabelColor" format="color"/>
