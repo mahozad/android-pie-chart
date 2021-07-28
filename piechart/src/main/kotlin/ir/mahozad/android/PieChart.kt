@@ -38,7 +38,7 @@ const val DEFAULT_SIZE = 256 /* dp */
 const val DEFAULT_START_ANGLE = -90
 const val DEFAULT_HOLE_RATIO = 0.25f
 const val DEFAULT_OVERLAY_RATIO = 0.55f
-const val DEFAULT_OVERLAY_ALPHA = 0.05f
+const val DEFAULT_OVERLAY_ALPHA = 0.15f
 const val DEFAULT_CENTER_BACKGROUND_STATUS = DISABLED
 @FloatRange(from = 0.0, to = 1.0) const val DEFAULT_CENTER_BACKGROUND_RATIO = 0.5f
 @FloatRange(from = 0.0, to = 1.0) const val DEFAULT_CENTER_BACKGROUND_ALPHA = 1f
@@ -842,6 +842,16 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         val centerLabelText = Text(centerLabel, size = centerLabelSize, color = centerLabelColor, font = centerLabelFont, alpha = centerLabelAlpha)
         centerLabelBox = Container(listOf(centerLabelIcon, centerLabelText), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
         centerLabelBox.layOut(center.y - centerLabelBox.height / 2f, center.x - centerLabelBox.width / 2f, LTR)
+
+
+        val rect = Path().apply { addRect(totalDrawableRect, Path.Direction.CW) }
+        val holeRadius = holeRatio * pieRadius
+        val hole = Path().apply { addCircle(center.x, center.y, holeRadius, Path.Direction.CW) }
+        gaps = makeGaps()
+        // Could also have set the fillType to EVEN_ODD and just add the other paths to the clip
+        // Or could abandon using clip path and do the operations on the pie itself
+        // Clipping should be applied before drawing other things
+        clip.set(rect - hole - gaps)
     }
 
     private fun parseBorderDashArray(string: String) = string
@@ -901,7 +911,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         if (isCenterBackgroundEnabled) {
             mainPaint.color = centerBackgroundColor
             mainPaint.alpha = (centerBackgroundAlpha * 255).toInt()
-            canvas.drawCircle(center.x, center.y, centerBackgroundRatio * pieRadius, mainPaint)
+            val backgroundRadius = centerBackgroundRatio * pieRadius
+            canvas.drawCircle(center.x, center.y, backgroundRadius, mainPaint)
         }
 
         var currentAngle = startAngle.toFloat()
@@ -928,24 +939,9 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
             mainPaint.shader = gradient
 
-
-
-            // FIXME: Move clip object creation out of the for loop
-            val rect = Path().apply { addRect(totalDrawableRect, Path.Direction.CW) }
-            val holeRadius = holeRatio * pieRadius
-            val hole = Path().apply { addCircle(center.x, center.y, holeRadius, Path.Direction.CW) }
-            gaps = makeGaps()
-            // Could also have set the fillType to EVEN_ODD and just add the other paths to the clip
-            // Or could abandon using clip path and do the operations on the pie itself
-            // Clipping should be applied before drawing other things
-            clip.set(rect - hole - gaps)
             val slicePath = makeSlice(center, pieEnclosingRect, currentAngle, slice.fraction, drawDirection, slice.pointer ?: slicesPointer)
             canvas.withClip(clip) {
                 canvas.drawPath(slicePath, mainPaint)
-                mainPaint.shader = null
-                mainPaint.color = ContextCompat.getColor(context, android.R.color.black) // or better Color.BLACK
-                mainPaint.alpha = (overlayAlpha * 255).toInt()
-                canvas.drawPath(overlay, mainPaint)
             }
 
             updatePaintForLabel(mainPaint, slice.labelSize ?: labelsSize, slice.labelColor ?: labelsColor, slice.labelFont ?: labelsFont)
@@ -1069,6 +1065,13 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             }
 
             currentAngle = calculateEndAngle(currentAngle, slice.fraction, drawDirection)
+        }
+
+        canvas.withClip(clip) {
+            mainPaint.shader = null
+            mainPaint.color = ContextCompat.getColor(context, android.R.color.black) // or better Color.BLACK
+            mainPaint.alpha = (overlayAlpha * 255).toInt()
+            canvas.drawPath(overlay, mainPaint)
         }
 
         // The center label gets clipped by the clip path and is not shown
