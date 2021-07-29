@@ -77,3 +77,8 @@ See the following pages for how to set up GitHub packages, CI, code coverage, et
   - https://stefma.medium.com/how-to-store-a-android-keystore-safely-on-github-actions-f0cef9413784
   - https://www.igorkromin.net/index.php/2017/04/26/base64-encode-or-decode-on-the-command-line-without-installing-extra-tools-on-linux-windows-or-macos/
   - https://about.codecov.io/blog/code-coverage-for-android-development-using-kotlin-jacoco-github-actions-and-codecov/
+
+
+To sign the commits, I used the same gpg key as above.
+Refer to https://stackoverflow.com/a/68557572 and to https://superuser.com/a/1428651
+for how to set up commit signing.
