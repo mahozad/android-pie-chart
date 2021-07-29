@@ -64,29 +64,21 @@ internal fun calculateWidthAndHeight(
  *  not paddingStart and paddingEnd.
  */
 internal fun calculateCenter(
-    width: Int,
-    height: Int,
-    paddingLeft: Int,
-    paddingRight: Int,
-    paddingTop: Int,
-    paddingBottom: Int
+    top: Float,
+    start: Float,
+    width: Float,
+    height: Float
 ): Coordinates {
-    val centerX = (width + paddingLeft - paddingRight) / 2f
-    val centerY = (height + paddingTop - paddingBottom) / 2f
+    val centerX = start + width  / 2f
+    val centerY = top + height / 2f
     return Coordinates(centerX, centerY)
 }
 
 internal fun calculateRadius(
-    width: Int,
-    height: Int,
-    paddingLeft: Int,
-    paddingRight: Int,
-    paddingTop: Int,
-    paddingBottom: Int
+    width: Float,
+    height: Float
 ): Float {
-    val availableWidth = width - (paddingLeft + paddingRight)
-    val availableHeight = height - (paddingTop + paddingBottom)
-    return min(availableWidth, availableHeight) / 2f
+    return min(width, height) / 2f
 }
 
 internal fun calculateBoundaries(origin: Coordinates, radius: Float): Boundaries {

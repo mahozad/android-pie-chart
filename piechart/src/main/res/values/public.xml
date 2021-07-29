@@ -20,7 +20,9 @@
   <public name="centerLabelIconTint" format="color"/>
   <public name="centerLabelIconAlpha" format="float"/>
   <public name="centerLabelAlpha" format="float"/>
-  <public name="legendType" format="enum"/>
+  <public name="legend" format="enum"/>
+  <public name="legendArrangement" format="enum"/>
+  <public name="legendPosition" format="enum"/>
   <public name="legendTitleMargin" format="dimension"/>
   <public name="legendsTitle" format="string"/>
   <public name="legendsSize" format="dimension"/>

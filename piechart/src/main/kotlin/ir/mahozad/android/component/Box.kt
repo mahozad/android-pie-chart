@@ -48,6 +48,9 @@ internal enum class DrawDirection { RTL, LTR }
 
 internal data class Paddings(val top: Float = 0f, val bottom: Float = 0f, val start: Float = 0f, val end: Float = 0f) {
     constructor(padding: Float) : this(padding, padding, padding, padding)
+    constructor(top: Int, bottom: Int, start: Int, end: Int) : this(top.toFloat(), bottom.toFloat(), start.toFloat(), end.toFloat())
+    val horizontal = start + end
+    val vertical = top + bottom
 }
 
 internal data class Margins(val top: Float = 0f, val bottom: Float = 0f, val start: Float = 0f, val end: Float = 0f) {

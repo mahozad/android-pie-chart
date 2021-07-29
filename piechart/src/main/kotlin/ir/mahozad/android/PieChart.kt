@@ -2,10 +2,12 @@ package ir.mahozad.android
 
 import android.content.Context
 import android.content.res.TypedArray
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.Paint.ANTI_ALIAS_FLAG
+import android.graphics.Typeface
 import android.graphics.Typeface.DEFAULT
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.*
@@ -14,27 +16,24 @@ import androidx.annotation.Dimension.PX
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.content.res.use
-import androidx.core.graphics.minus
-import androidx.core.graphics.withClip
-import androidx.core.graphics.withRotation
 import ir.mahozad.android.PieChart.DefaultIcons.CIRCLE
 import ir.mahozad.android.PieChart.DrawDirection.CLOCKWISE
 import ir.mahozad.android.PieChart.GapPosition.MIDDLE
 import ir.mahozad.android.PieChart.GradientType.RADIAL
 import ir.mahozad.android.PieChart.IconPlacement.START
-import ir.mahozad.android.PieChart.LabelType.*
+import ir.mahozad.android.PieChart.LabelType.INSIDE
+import ir.mahozad.android.PieChart.LegendPosition.*
 import ir.mahozad.android.PieChart.SlicePointer
 import ir.mahozad.android.component.*
 import ir.mahozad.android.component.DrawDirection.LTR
-import ir.mahozad.android.component.DrawDirection.RTL
 import ir.mahozad.android.component.Icon
+import ir.mahozad.android.util.calculatePieDimensions
+import ir.mahozad.android.util.parseBorderDashArray
 import java.text.NumberFormat
-import kotlin.math.max
-import kotlin.math.min
 
 const val ENABLED = true
 const val DISABLED = false
-const val DEFAULT_SIZE = 256 /* dp */
+const val DEFAULT_PIE_SIZE = 256 /* dp */
 const val DEFAULT_START_ANGLE = -90
 const val DEFAULT_HOLE_RATIO = 0.25f
 const val DEFAULT_OVERLAY_RATIO = 0.55f
@@ -44,6 +43,7 @@ const val DEFAULT_CENTER_BACKGROUND_STATUS = DISABLED
 @FloatRange(from = 0.0, to = 1.0) const val DEFAULT_CENTER_BACKGROUND_ALPHA = 1f
 const val DEFAULT_GAP = 8f /* px */
 const val DEFAULT_LABELS_SIZE = 18f /* sp */
+const val DEFAULT_LEGEND_STATUS = DISABLED
 const val DEFAULT_LEGENDS_SIZE = 16f /* sp */
 const val DEFAULT_LEGEND_TITLE_MARGIN = 8f /* dp */
 const val DEFAULT_LEGEND_BOX_MARGIN = 8f /* dp */
@@ -89,7 +89,8 @@ val defaultGapPosition = MIDDLE
 val defaultGradientType = RADIAL
 val defaultDrawDirection = CLOCKWISE
 val defaultLabelIconsPlacement = START
-val defaultLegendType = PieChart.LegendType.NONE
+val defaultLegendPosition = BOTTOM
+val defaultLegendArrangement = PieChart.LegendArrangement.HORIZONTAL
 val defaultLegendsIcon = CIRCLE
 val defaultCenterLabelIcon = PieChart.DefaultIcons.NO_ICON
 val defaultLegendsAlignment = Alignment.CENTER
@@ -181,6 +182,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     /* TODO: Rename inside to inner or internal and outside to outer or external (?) */
     enum class LabelType { NONE, INSIDE, OUTSIDE, INSIDE_CIRCULAR, OUTSIDE_CIRCULAR_INWARD, OUTSIDE_CIRCULAR_OUTWARD, OUTSIDE_WITH_LINES_ON_SIDES }
     data class SlicePointer(val length: Float, val width: Float, val color: Int)
+    enum class LegendArrangement { HORIZONTAL, VERTICAL }
+    enum class LegendPosition { TOP, BOTTOM, CENTER /* AKA IN_HOLE */, START, END, LEFT, RIGHT }
 
     interface Icon { val resId: Int }
     class CustomIcon(@DrawableRes override val resId: Int) : Icon
@@ -209,21 +212,6 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         SLICE3(R.drawable.ic_slice3),
         NO_ICON(R.drawable.ic_empty)
     }
-
-    enum class LegendType {
-        NONE,
-        BOTTOM_HORIZONTAL,
-        TOP_HORIZONTAL,
-        START_VERTICAL,
-        IN_HOLE_VERTICAL,
-        END_VERTICAL,
-        BOTTOM_VERTICAL,
-        TOP_VERTICAL,
-        START_HORIZONTAL,
-        END_HORIZONTAL
-    }
-
-    private lateinit var legendsRect : RectF
 
     var startAngle = DEFAULT_START_ANGLE
         set(angle) {
@@ -255,6 +243,12 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             field = size
             invalidate()
         }
+    var isLegendEnabled = DEFAULT_LEGEND_STATUS
+        set(shouldEnable) {
+            field = shouldEnable
+            invalidate()
+            requestLayout()
+        }
     var legendsSize = spToPx(DEFAULT_LEGENDS_SIZE)
         set(size /* px */) {
             field = size
@@ -275,9 +269,15 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             field = title
             invalidate()
         }
-    var legendType = defaultLegendType
-        set(type) {
-            field = type
+    var legendPosition = defaultLegendPosition
+        set(position) {
+            field = position
+            invalidate()
+            requestLayout()
+        }
+    var legendArrangement = defaultLegendArrangement
+        set(arrangement) {
+            field = arrangement
             invalidate()
             requestLayout()
         }
@@ -561,17 +561,10 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         Slice(0.14f, ContextCompat.getColor(context, android.R.color.holo_red_light)),
         Slice(0.03f, ContextCompat.getColor(context, android.R.color.holo_purple))
     )
-    private val pie = Path()
-    private val clip = Path()
-    private lateinit var gaps: Path
-    private val overlay = Path()
     private val mainPaint: Paint = Paint(ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
-    private val pieEnclosingRect = RectF()
-    private val totalDrawableRect = RectF()
-    private var pieRadius = 0f
-    private var center = Coordinates(0f, 0f)
+    private lateinit var pie: Pie
+    private lateinit var chartBox: Box
     private lateinit var centerLabelBox: Box
-    private lateinit var legendsBox: Box
 
     /**
      * Attributes are a powerful way of controlling the behavior and appearance of views,
@@ -605,13 +598,14 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             labelIconsMargin = it.getDimension(R.styleable.PieChart_labelIconsMargin, dpToPx(DEFAULT_LABEL_ICONS_MARGIN))
             outsideLabelsMargin = it.getDimension(R.styleable.PieChart_outsideLabelsMargin, dpToPx(DEFAULT_OUTSIDE_LABELS_MARGIN))
             centerLabel = it.getString(R.styleable.PieChart_centerLabel) ?: DEFAULT_CENTER_LABEL
-            legendsSize = it.getDimension(R.styleable.PieChart_legendsSize, spToPx(DEFAULT_LEGENDS_SIZE))
             centerLabelSize = it.getDimension(R.styleable.PieChart_centerLabelSize, spToPx(DEFAULT_CENTER_LABEL_SIZE))
             centerLabelColor = it.getColor(R.styleable.PieChart_centerLabelColor, DEFAULT_CENTER_LABEL_COLOR)
             isCenterBackgroundEnabled = it.getInt(R.styleable.PieChart_centerBackground, 0) == 1
             centerBackgroundColor = it.getColor(R.styleable.PieChart_centerBackgroundColor, DEFAULT_CENTER_BACKGROUND_COLOR)
             centerBackgroundRatio = it.getFloat(R.styleable.PieChart_centerBackgroundRatio, DEFAULT_CENTER_BACKGROUND_RATIO)
             centerBackgroundAlpha = it.getFloat(R.styleable.PieChart_centerBackgroundAlpha, DEFAULT_CENTER_BACKGROUND_ALPHA)
+            isLegendEnabled = it.getInt(R.styleable.PieChart_legend, 0) == 1
+            legendsSize = it.getDimension(R.styleable.PieChart_legendsSize, spToPx(DEFAULT_LEGENDS_SIZE))
             legendsTitle = it.getString(R.styleable.PieChart_legendsTitle) ?: DEFAULT_LEGENDS_TITLE
             legendsTitleSize = it.getDimension(R.styleable.PieChart_legendsTitleSize, spToPx(DEFAULT_LEGENDS_TITLE_SIZE))
             legendsPercentageSize = it.getDimension(R.styleable.PieChart_legendsPercentageSize, spToPx(DEFAULT_LEGENDS_PERCENTAGE_SIZE))
@@ -650,8 +644,11 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             labelIconsPlacement = IconPlacement.values()[
                     it.getInt(R.styleable.PieChart_labelIconsPlacement, defaultLabelIconsPlacement.ordinal)
             ]
-            legendType = LegendType.values()[
-                    it.getInt(R.styleable.PieChart_legendType, defaultLegendType.ordinal)
+            legendPosition = LegendPosition.values()[
+                    it.getInt(R.styleable.PieChart_legendPosition, defaultLegendPosition.ordinal)
+            ]
+            legendArrangement = LegendArrangement.values()[
+                    it.getInt(R.styleable.PieChart_legendArrangement, defaultLegendArrangement.ordinal)
             ]
             labelType = LabelType.values()[
                     it.getInt(R.styleable.PieChart_labelType, defaultLabelType.ordinal)
@@ -705,174 +702,40 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
 
-
-        val legendsTitle = Text(legendsTitle, size = legendsTitleSize, color = legendsTitleColor, font = DEFAULT, margins = Margins(bottom = legendTitleMargin))
-        val legends = mutableListOf<Box>()
-        for (slice in slices) {
-            var legendDrawable: Drawable? = null
-            slice.legendIcon?.let { iconId ->
-                legendDrawable = resources.getDrawable(iconId, null)
-                slice.labelIconTint?.let { tint -> legendDrawable?.setTint(tint) }
-            }
-            val legendIcon = Icon(legendDrawable?:resources.getDrawable(legendsIcon.resId, null), slice.legendIconHeight?: legendIconsHeight, tint= slice.legendIconTint?:legendIconsTint, alpha = slice.legendIconAlpha ?: legendIconsAlpha)
-            val legendText = Text(slice.legend, size = slice.legendSize ?: legendsSize, color = slice.legendColor?: legendsColor, margins = Margins(start = slice.legendIconMargin?:legendIconsMargin, end = slice.legendPercentageMargin ?: legendsPercentageMargin), font = DEFAULT)
-            val legendComponents = mutableListOf<Box>()
-            legendComponents.add(legendIcon)
-            legendComponents.add(legendText)
-            if (isLegendsPercentageEnabled) {
-                val legendPercentage = Text(NumberFormat.getPercentInstance().format(slice.fraction), size = slice.legendPercentageSize?: legendsPercentageSize, color = slice.legendPercentageColor?: legendsPercentageColor, font = DEFAULT)
-                legendComponents.add(legendPercentage)
-            }
-            /* FIXME: The first legend should not have start margin and the last legend should not have end margin (user can achieve first start margin and last end margin with parent padding) */
-            val legend = Container(legendComponents, childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL, margins = Margins(start = legendsMargin, end = legendsMargin))
-            legends.add(legend)
-        }
-
-
-        if (legendType == LegendType.BOTTOM_HORIZONTAL || legendType == LegendType.TOP_HORIZONTAL) {
-            val legendsContainer = Container(children = legends, childrenAlignment = legendsAlignment, layoutDirection = LayoutDirection.HORIZONTAL)
-            legendsBox = Container(children = listOf(legendsTitle, legendsContainer), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.VERTICAL, background = Background(legendBoxBackgroundColor), paddings = Paddings(legendBoxPadding), border = Border(legendBoxBorder, color = legendBoxBorderColor, alpha = legendBoxBorderAlpha, cornerRadius = legendBoxBorderCornerRadius, type = legendBoxBorderType, dashArray = legendBoxBorderDashArray))
-        } else if (legendType == LegendType.START_VERTICAL || legendType == LegendType.IN_HOLE_VERTICAL || legendType == LegendType.END_VERTICAL) {
-            val legendsContainer = Container(children = legends, childrenAlignment = legendsAlignment, layoutDirection = LayoutDirection.VERTICAL)
-            legendsBox = Container(children = listOf(legendsTitle, legendsContainer), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.VERTICAL, background = Background(legendBoxBackgroundColor), paddings = Paddings(legendBoxPadding), border = Border(legendBoxBorder, color = legendBoxBorderColor, alpha = legendBoxBorderAlpha, cornerRadius = legendBoxBorderCornerRadius, type = legendBoxBorderType, dashArray = legendBoxBorderDashArray))
-        }
-        val direction = if (layoutDirection == LAYOUT_DIRECTION_LTR) LTR else RTL
-        var newPaddings = Paddings(0f)
-        var legendsRectLeft = 0f
-        var legendsRectTop = 0f
-        var legendsRectHeight = 0f
-        var legendsRectWidth = 0f
-        if (legendType == LegendType.BOTTOM_HORIZONTAL) {
-            val maxAvailableWidth = (width - paddingLeft - paddingRight).toFloat()
-            val maxAvailableHeight = (height - paddingTop - paddingBottom) / 2f // Arbitrary
-            legendsRectHeight = min(maxAvailableHeight, legendsBox.height)
-            legendsRectWidth = min(maxAvailableWidth, legendsBox.width)
-            legendsRectLeft = when (legendBoxAlignment) {
-                Alignment.START -> 0f
-                Alignment.CENTER -> max(0f, (maxAvailableWidth - legendsRectWidth) / 2f)
-                Alignment.END -> width-paddingEnd-legendsRectWidth
-            }
-            legendsRectTop = height - paddingBottom - legendsRectHeight
-            newPaddings = Paddings(paddingTop.toFloat(), paddingBottom+legendsRectHeight+legendBoxMargin, paddingStart.toFloat(), paddingEnd.toFloat())
-        } else if (legendType == LegendType.TOP_HORIZONTAL) {
-            val maxAvailableWidth = (width - paddingLeft - paddingRight).toFloat()
-            val maxAvailableHeight = (height - paddingTop - paddingBottom) / 2f // Arbitrary
-            legendsRectHeight = min(maxAvailableHeight, legendsBox.height)
-            legendsRectWidth = min(maxAvailableWidth, legendsBox.width)
-            legendsRectLeft = when (legendBoxAlignment) {
-                Alignment.START -> 0f
-                Alignment.CENTER -> max(0f, (maxAvailableWidth - legendsRectWidth) / 2f)
-                Alignment.END -> width-paddingEnd-legendsRectWidth
-            }
-            legendsRectTop = paddingTop.toFloat()
-            newPaddings = Paddings(paddingTop.toFloat()+legendsRectHeight+legendBoxMargin, paddingBottom.toFloat(), paddingStart.toFloat(), paddingEnd.toFloat())
-        }else if (legendType == LegendType.START_VERTICAL) {
-            val maxAvailableWidth = (width - paddingLeft - paddingRight) / 2f
-            val maxAvailableHeight = (height - paddingTop - paddingBottom).toFloat()
-            legendsRectHeight = min(maxAvailableHeight, legendsBox.height)
-            legendsRectWidth = min(maxAvailableWidth, legendsBox.width)
-            legendsRectLeft = paddingLeft.toFloat()
-            legendsRectTop = when (legendBoxAlignment) {
-                Alignment.START -> 0f
-                Alignment.CENTER -> max(0f, (maxAvailableHeight - legendsRectHeight) / 2f)
-                Alignment.END -> height-paddingBottom-legendsRectHeight
-            }
-            newPaddings = Paddings(paddingTop.toFloat(), paddingBottom.toFloat(), paddingStart+ legendsRectWidth+legendBoxMargin, paddingEnd.toFloat())
-        }else if (legendType == LegendType.IN_HOLE_VERTICAL) {
-            val maxAvailableWidth = (width - paddingLeft - paddingRight) / 3f
-            val maxAvailableHeight = (height - paddingTop - paddingBottom).toFloat()
-            legendsRectHeight = min(maxAvailableHeight, legendsBox.height)
-            legendsRectWidth = min(maxAvailableWidth, legendsBox.width)
-            legendsRectLeft = (width / 2f) - (legendsRectWidth / 2f)
-            legendsRectTop = max(0f, (maxAvailableHeight - legendsRectHeight) / 2f)
-            newPaddings = Paddings(paddingTop.toFloat(), paddingBottom.toFloat(), paddingStart.toFloat(), paddingEnd.toFloat())
-        }else if (legendType == LegendType.END_VERTICAL) {
-            val maxAvailableWidth = (width - paddingLeft - paddingRight) / 2f
-            val maxAvailableHeight = (height - paddingTop - paddingBottom).toFloat()
-            legendsRectHeight = min(maxAvailableHeight, legendsBox.height)
-            legendsRectWidth = min(maxAvailableWidth, legendsBox.width)
-            legendsRectLeft = width - paddingRight - legendsRectWidth
-            legendsRectTop = when (legendBoxAlignment) {
-                Alignment.START -> 0f
-                Alignment.CENTER -> max(0f, (maxAvailableHeight - legendsRectHeight) / 2f)
-                Alignment.END -> height-paddingBottom-legendsRectHeight
-            }
-            newPaddings = Paddings(paddingTop.toFloat(), paddingBottom.toFloat(), paddingStart.toFloat(), paddingEnd+ legendsRectWidth+legendBoxMargin)
-        } else {
-            legendsBox = EmptyBox()
-        }
-        legendsRect = RectF(legendsRectLeft, legendsRectTop, legendsRectLeft + legendsRectWidth, legendsRectTop + legendsRectHeight)
-        legendsBox.layOut(legendsRectTop, legendsRectLeft, direction)
-
-
-
-
-        // FIXME: modify the following methods in this way:
-        //  val drawableArea = calculateDrawableArea(paddings)
-        //  val legendsBoxHeight = max(legendsBoxHeight, view.height/2)
-        //  drawableArea = drawableArea - legendsBox.height // if legends box on top or bottom
-        //  val pieRadius = calculateRadius(drawableArea, ...)
-        //  val pieCenter = calculateRadius(drawableArea, ...)
-
-        totalDrawableRect.set(0f+paddingLeft, 0f + paddingTop, width - paddingRight.toFloat(), height - paddingBottom.toFloat())
-        pieRadius = calculateRadius(width, height, newPaddings.start.toInt(), newPaddings.end.toInt(), newPaddings.top.toInt(), newPaddings.bottom.toInt())
-        center = calculateCenter(width, height, newPaddings.start.toInt(), newPaddings.end.toInt(), newPaddings.top.toInt(), newPaddings.bottom.toInt())
-        val (top, left, right, bottom) = calculateBoundaries(center, pieRadius)
-        pieEnclosingRect.set(RectF(left, top, right, bottom))
-
-
-        if (labelType == OUTSIDE) {
-            val defaults = Defaults(outsideLabelsMargin, labelsSize, labelsColor, labelsFont, labelIconsHeight, labelIconsMargin, labelIconsPlacement)
-            pieEnclosingRect.set(calculatePieNewBoundsForOutsideLabel(context, pieEnclosingRect, slices, drawDirection, startAngle, defaults, shouldCenterPie))
-            center = Coordinates((pieEnclosingRect.left + pieEnclosingRect.right) / 2f, (pieEnclosingRect.top + pieEnclosingRect.bottom) / 2f)
-            pieRadius = pieEnclosingRect.width() / 2f
-        } else if (labelType == OUTSIDE_CIRCULAR_INWARD || labelType == OUTSIDE_CIRCULAR_OUTWARD) {
-            val defaults = Defaults(outsideLabelsMargin, labelsSize, labelsColor, labelsFont, labelIconsHeight, labelIconsMargin, labelIconsPlacement)
-            pieEnclosingRect.set(calculatePieNewBoundsForOutsideCircularLabel(context, pieEnclosingRect, slices, defaults, shouldCenterPie))
-            center = Coordinates((pieEnclosingRect.left + pieEnclosingRect.right) / 2f, (pieEnclosingRect.top + pieEnclosingRect.bottom) / 2f)
-            pieRadius = pieEnclosingRect.width() / 2f
-        }
-
-        pie.reset()
-        val overlayRadius = overlayRatio * pieRadius
-        overlay.set(Path().apply { addCircle(center.x, center.y, overlayRadius, Path.Direction.CW) })
-
+        val legendBox = LegendBuilder().createLegendBox(context, slices, legendsTitle, legendsTitleSize, legendsTitleColor, legendTitleMargin, legendsIcon, legendIconsHeight, legendIconsTint, legendIconsAlpha, legendsSize, legendsColor, legendIconsMargin, legendsPercentageMargin, isLegendsPercentageEnabled, legendsPercentageSize, legendsPercentageColor, legendsMargin, legendArrangement, legendsAlignment, legendBoxBackgroundColor, legendBoxPadding, legendBoxBorder, legendBoxBorderColor, legendBoxBorderAlpha, legendBoxBorderCornerRadius, legendBoxBorderType, legendBoxBorderDashArray)
+        val (pieWidth, pieHeight) = calculatePieDimensions(width, height, Paddings(paddingTop, paddingBottom, paddingStart, paddingEnd), isLegendEnabled, legendBoxMargin, legendPosition, legendBox.width, legendBox.height)
+        pie = Pie(context, pieWidth, pieHeight, null, null, startAngle, slices, labelType, outsideLabelsMargin, labelsSize, labelsColor, labelsFont, labelIconsHeight, labelIconsMargin, labelIconsPlacement, labelIconsTint, labelOffset, shouldCenterPie, drawDirection, overlayRatio, overlayAlpha, gradientType, holeRatio, slicesPointer, gap, gapPosition)
+        val chartDirection = determineChartDirection(legendPosition)
+        val chartComponents = makeChartComponentList(pie, isLegendEnabled, legendBox, legendPosition)
+        chartBox = Container(chartComponents, chartDirection, legendBoxAlignment, paddings = Paddings(paddingTop, paddingBottom, paddingStart, paddingEnd))
+        chartBox.layOut(0f, 0f, LTR)
 
         val centerLabelIcon = Icon(resources.getDrawable(centerLabelIcon.resId, null), centerLabelIconHeight, tint = centerLabelIconTint, alpha = centerLabelIconAlpha, margins = Margins(end = centerLabelIconMargin))
         val centerLabelText = Text(centerLabel, size = centerLabelSize, color = centerLabelColor, font = centerLabelFont, alpha = centerLabelAlpha)
         centerLabelBox = Container(listOf(centerLabelIcon, centerLabelText), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
-        centerLabelBox.layOut(center.y - centerLabelBox.height / 2f, center.x - centerLabelBox.width / 2f, LTR)
-
-
-        val rect = Path().apply { addRect(totalDrawableRect, Path.Direction.CW) }
-        val holeRadius = holeRatio * pieRadius
-        val hole = Path().apply { addCircle(center.x, center.y, holeRadius, Path.Direction.CW) }
-        gaps = makeGaps()
-        // Could also have set the fillType to EVEN_ODD and just add the other paths to the clip
-        // Or could abandon using clip path and do the operations on the pie itself
-        // Clipping should be applied before drawing other things
-        clip.set(rect - hole - gaps)
+        centerLabelBox.layOut(pie.center.y - centerLabelBox.height / 2f, pie.center.x - centerLabelBox.width / 2f, LTR)
     }
 
-    private fun parseBorderDashArray(string: String) = string
-        .replace(Regex("""[,;]"""), " ")
-        .replace(Regex("""\s+"""), " ")
-        .split(" ")
-        .map { it.toFloat() }
-
-    private fun makeGaps(): Path {
-        val gaps = Path()
-        var angle = startAngle.toFloat()
-        for (slice in slices) {
-            angle = calculateEndAngle(angle, slice.fraction, drawDirection)
-            val (c1, c2, c3, c4) = calculateGapCoordinates(center, angle, gap, pieRadius, gapPosition)
-            gaps.moveTo(c1.x, c1.y)
-            gaps.lineTo(c2.x, c2.y)
-            gaps.lineTo(c3.x, c3.y)
-            gaps.lineTo(c4.x, c4.y)
-            gaps.close()
+    private fun makeChartComponentList(
+        pie: Pie,
+        isLegendEnabled: Boolean,
+        legendBox: Box,
+        legendPosition: LegendPosition
+    ): List<Box> {
+        return when {
+            !isLegendEnabled -> listOf(pie)
+            legendPosition == TOP -> listOf(legendBox, pie)
+            legendPosition == BOTTOM -> listOf(pie, legendBox)
+            legendPosition == LegendPosition.START -> listOf(legendBox, pie)
+            legendPosition == LegendPosition.END -> listOf(pie, legendBox)
+            else -> /* if == CENTER */ listOf(pie, legendBox)
         }
-        return gaps
+    }
+
+    private fun determineChartDirection(legendPosition: LegendPosition) = when (legendPosition) {
+        TOP, BOTTOM -> LayoutDirection.VERTICAL
+        CENTER -> LayoutDirection.LAYERED
+        else -> LayoutDirection.HORIZONTAL
     }
 
     /**
@@ -911,181 +774,10 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         if (isCenterBackgroundEnabled) {
             mainPaint.color = centerBackgroundColor
             mainPaint.alpha = (centerBackgroundAlpha * 255).toInt()
-            val backgroundRadius = centerBackgroundRatio * pieRadius
-            canvas.drawCircle(center.x, center.y, backgroundRadius, mainPaint)
+            val backgroundRadius = centerBackgroundRatio * pie.radius
+            canvas.drawCircle(pie.center.x, pie.center.y, backgroundRadius, mainPaint)
         }
-
-        var currentAngle = startAngle.toFloat()
-        for (slice in slices) {
-
-            val gradient = if (gradientType == RADIAL) {
-                RadialGradient(center.x, center.y, pieRadius, slice.color, slice.colorEnd, Shader.TileMode.MIRROR)
-            } else {
-                val colors = slices.map {  listOf(it.color, it.colorEnd) }.flatten().toIntArray()
-                val positions = slices.map { it.fraction }
-                    .scan(listOf(0f)) { acc, value -> listOf(acc.first() + value, acc.first() + value) }
-                    .flatten()
-                    .dropLast(1)
-                    .toFloatArray()
-                val sweepGradient = SweepGradient(center.x, center.y, colors, positions)
-                // Adjust the start angle
-                val sweepGradientDefaultStartAngle = 0f
-                val rotate = startAngle - sweepGradientDefaultStartAngle
-                val gradientMatrix = Matrix()
-                gradientMatrix.preRotate(rotate, center.x, center.y)
-                sweepGradient.setLocalMatrix(gradientMatrix)
-                sweepGradient
-            }
-
-            mainPaint.shader = gradient
-
-            val slicePath = makeSlice(center, pieEnclosingRect, currentAngle, slice.fraction, drawDirection, slice.pointer ?: slicesPointer)
-            canvas.withClip(clip) {
-                canvas.drawPath(slicePath, mainPaint)
-            }
-
-            updatePaintForLabel(mainPaint, slice.labelSize ?: labelsSize, slice.labelColor ?: labelsColor, slice.labelFont ?: labelsFont)
-
-            val middleAngle = calculateMiddleAngle(currentAngle, slice.fraction, drawDirection)
-
-            if (labelType == NONE) {
-                // Do nothing
-            } else if (labelType == OUTSIDE) {
-                var labelIcon : Drawable? = null
-                slice.labelIcon?.let { iconId ->
-                    labelIcon = resources.getDrawable(iconId, null)
-                    slice.labelIconTint?.let { tint -> labelIcon?.setTint(tint) }
-                }
-                val outsideLabelMargin = slice.outsideLabelMargin ?: outsideLabelsMargin
-                val iconPlacement = slice.labelIconPlacement  ?: labelIconsPlacement
-                val iconMargin = slice.labelIconMargin ?: labelIconsMargin
-                val iconHeight = slice.labelIconHeight ?: labelIconsHeight
-                val labelBounds = calculateLabelBounds(slice.label, mainPaint)
-                val iconBounds = calculateIconBounds(labelIcon, iconHeight)
-                val labelAndIconCombinedBounds = calculateLabelAndIconCombinedBounds(labelBounds, iconBounds, iconMargin, iconPlacement)
-                val absoluteCombinedBounds = calculateAbsoluteBoundsForOutsideLabelAndIcon(labelAndIconCombinedBounds, middleAngle, center, pieRadius, outsideLabelMargin)
-                val iconAbsoluteBounds = calculateBoundsForOutsideLabelIcon(absoluteCombinedBounds, iconBounds, iconPlacement)
-                val labelCoordinates = calculateCoordinatesForOutsideLabel(absoluteCombinedBounds, labelBounds, mainPaint, iconPlacement)
-                canvas.drawText(slice.label, labelCoordinates.x, labelCoordinates.y, mainPaint)
-                labelIcon?.setBounds(iconAbsoluteBounds.left.toInt(), iconAbsoluteBounds.top.toInt(), iconAbsoluteBounds.right.toInt(), iconAbsoluteBounds.bottom.toInt())
-                labelIcon?.draw(canvas)
-
-
-
-
-
-                // This block of code is for debugging
-                /*val rect = RectF(labelCoordinates.x - labelBounds.width() / 2f, labelCoordinates.y + mainPaint.ascent(), labelCoordinates.x + labelBounds.width() / 2f, labelCoordinates.y + mainPaint.descent())
-                mainPaint.style = Paint.Style.STROKE
-                mainPaint.color = Color.RED
-                canvas.drawRect(rect, mainPaint)
-                mainPaint.style = Paint.Style.FILL
-                canvas.drawCircle(labelCoordinates.x, labelCoordinates.y, 4f, mainPaint)
-
-                mainPaint.style = Paint.Style.STROKE
-                mainPaint.color = Color.BLUE
-                canvas.drawRect(absoluteCombinedBounds, mainPaint)
-                mainPaint.style = Paint.Style.FILL
-                canvas.drawCircle(absoluteCombinedBounds.centerX(), absoluteCombinedBounds.centerY(), 4f, mainPaint)
-
-                mainPaint.style = Paint.Style.STROKE
-                mainPaint.color = Color.MAGENTA
-                val pieCenterMarker = Path()
-                pieCenterMarker.moveTo(center.x, center.y - 20)
-                pieCenterMarker.lineTo(center.x, center.y - 200)
-                pieCenterMarker.moveTo(center.x, center.y + 20)
-                pieCenterMarker.lineTo(center.x, center.y + 200)
-                pieCenterMarker.moveTo(center.x - 20, center.y)
-                pieCenterMarker.lineTo(center.x - 200, center.y)
-                pieCenterMarker.moveTo(center.x + 20, center.y)
-                pieCenterMarker.lineTo(center.x + 200, center.y)
-                canvas.drawPath(pieCenterMarker, mainPaint)
-                mainPaint.style = Paint.Style.FILL*/
-
-
-
-
-            } else if (labelType == OUTSIDE_CIRCULAR_INWARD || labelType == OUTSIDE_CIRCULAR_OUTWARD) {
-                val isOutward = labelType == OUTSIDE_CIRCULAR_OUTWARD
-                var labelIcon : Drawable? = null
-                slice.labelIcon?.let { iconId ->
-                    labelIcon = resources.getDrawable(iconId, null)
-                    (slice.labelIconTint ?: labelIconsTint)?.let { labelIcon?.setTint(it) }
-                }
-                val outsideLabelMargin = slice.outsideLabelMargin ?: outsideLabelsMargin
-                val iconPlacement = slice.labelIconPlacement ?: labelIconsPlacement
-                val iconMargin = slice.labelIconMargin ?: labelIconsMargin
-                val iconHeight = slice.labelIconHeight ?: labelIconsHeight
-                val iconBounds = calculateIconBounds(labelIcon, iconHeight)
-                val pathForLabel = makePathForOutsideCircularLabel(middleAngle, center, pieRadius, slice.label, mainPaint, iconBounds, iconMargin, iconPlacement, outsideLabelMargin, isOutward)
-                val iconRotation = calculateIconRotationAngleForOutsideCircularLabel(middleAngle, pieRadius, outsideLabelMargin, slice.label, mainPaint, iconBounds, iconMargin, iconPlacement, isOutward)
-                val iconAbsoluteBounds = calculateIconAbsoluteBoundsForOutsideCircularLabel(middleAngle, center, pieRadius, slice.label, mainPaint, iconBounds, iconMargin, iconPlacement, outsideLabelMargin)
-                canvas.drawTextOnPath(slice.label, pathForLabel, 0f, 0f, mainPaint)
-                canvas.withRotation(iconRotation, iconAbsoluteBounds.centerX(), iconAbsoluteBounds.centerY()) {
-                    labelIcon?.setBounds(iconAbsoluteBounds.left.toInt(), iconAbsoluteBounds.top.toInt(), iconAbsoluteBounds.right.toInt(), iconAbsoluteBounds.bottom.toInt())
-                    labelIcon?.draw(canvas)
-                }
-
-
-
-
-                // This block of code is for debugging
-                /*mainPaint.style = Paint.Style.STROKE
-                val radius = pieRadius + outsideLabelMargin + max(iconBounds.height(), calculateLabelBounds(slice.label, mainPaint).height()) / 2f
-                val totalFraction = (iconBounds.width() + iconMargin + calculateLabelBounds(slice.label, mainPaint).width()) / (2 * PI.toFloat() * radius)
-                val startAngle = calculateEndAngle(middleAngle, totalFraction / 2f, DrawDirection.COUNTER_CLOCKWISE)
-                val sweepAngle = totalFraction * 360f
-                val bounds = RectF(center.x - radius, center.y - radius, center.x + radius, center.y + radius)
-                canvas.drawArc(bounds, startAngle, sweepAngle, true, mainPaint)
-                mainPaint.style = Paint.Style.STROKE
-                mainPaint.color = Color.RED
-                canvas.drawPath(pathForLabel, mainPaint)*/
-
-
-
-            } else {
-                var labelIcon : Drawable? = null
-                slice.labelIcon?.let { iconId ->
-                    labelIcon = resources.getDrawable(iconId, null)
-                    slice.labelIconTint?.let { tint -> labelIcon?.setTint(tint) }
-                }
-                val iconPlacement = slice.labelIconPlacement  ?: labelIconsPlacement
-                val iconMargin = slice.labelIconMargin ?: labelIconsMargin
-                val iconHeight = slice.labelIconHeight ?: labelIconsHeight
-                val labelOffset = /* TODO: add slice.LabelOffset ?:*/ labelOffset
-                val labelBounds = calculateLabelBounds(slice.label, mainPaint)
-                val iconBounds = calculateIconBounds(labelIcon, iconHeight)
-                val labelAndIconCombinedBounds = calculateLabelAndIconCombinedBounds(labelBounds, iconBounds, iconMargin, iconPlacement)
-                val absoluteCombinedBounds = calculateAbsoluteBoundsForInsideLabelAndIcon(labelAndIconCombinedBounds, middleAngle, center, pieRadius, labelOffset)
-                val iconAbsoluteBounds = calculateBoundsForOutsideLabelIcon(absoluteCombinedBounds, iconBounds, iconPlacement)
-                val labelCoordinates = calculateCoordinatesForOutsideLabel(absoluteCombinedBounds, labelBounds, mainPaint, iconPlacement)
-                canvas.drawText(slice.label, labelCoordinates.x, labelCoordinates.y, mainPaint)
-                labelIcon?.setBounds(iconAbsoluteBounds.left.toInt(), iconAbsoluteBounds.top.toInt(), iconAbsoluteBounds.right.toInt(), iconAbsoluteBounds.bottom.toInt())
-                labelIcon?.draw(canvas)
-            }
-
-            currentAngle = calculateEndAngle(currentAngle, slice.fraction, drawDirection)
-        }
-
-        canvas.withClip(clip) {
-            mainPaint.shader = null
-            mainPaint.color = ContextCompat.getColor(context, android.R.color.black) // or better Color.BLACK
-            mainPaint.alpha = (overlayAlpha * 255).toInt()
-            canvas.drawPath(overlay, mainPaint)
-        }
-
-        // The center label gets clipped by the clip path and is not shown
-        // mainPaint.color = ContextCompat.getColor(context, android.R.color.black)
-        // mainPaint.textSize = labelSize
-        // mainPaint.textAlign = Paint.Align.CENTER
-        // val bounds = Rect()
-        // mainPaint.getTextBounds(centerLabel, 0, centerLabel.length, bounds)
-        // val textHeight = bounds.height()
-        // canvas.drawText(centerLabel, centerX, centerY + (textHeight / 2), mainPaint)
-
-        canvas.withClip(legendsRect) {
-            legendsBox.draw(canvas)
-        }
+        chartBox.draw(canvas)
         centerLabelBox.draw(canvas)
     }
 
