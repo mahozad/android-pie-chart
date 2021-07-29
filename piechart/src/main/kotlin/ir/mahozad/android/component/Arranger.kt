@@ -4,6 +4,7 @@ import ir.mahozad.android.Coordinates
 import ir.mahozad.android.component.Alignment.*
 import ir.mahozad.android.component.DrawDirection.LTR
 import ir.mahozad.android.component.LayoutDirection.HORIZONTAL
+import ir.mahozad.android.component.LayoutDirection.VERTICAL
 import kotlin.math.max
 
 /**
@@ -37,10 +38,10 @@ internal fun arrangeChildren(
     if (children.isEmpty()) {
         return emptyList()
     }
-    val arranger = if (layoutDirection == HORIZONTAL) {
-        HorizontalArranger(children, alignment, drawDirection, startCoordinates, paddings, border)
-    } else {
-        VerticalArranger(children, alignment, drawDirection, startCoordinates, paddings, border)
+    val arranger = when (layoutDirection) {
+        HORIZONTAL -> HorizontalArranger(children, alignment, drawDirection, startCoordinates, paddings, border)
+        VERTICAL -> VerticalArranger(children, alignment, drawDirection, startCoordinates, paddings, border)
+        else -> LayeredArranger(children, alignment, alignment, drawDirection, startCoordinates, paddings, border)
     }
     return arranger.arrange()
 }
@@ -148,4 +149,36 @@ private class VerticalArranger(
     override fun calculateChildStart(child: Box, offset: Float) = start + (max(child.margins?.start ?: 0f, paddings?.start ?: 0f) + offset) * factor
 
     override fun getMaxMinusChildSize(child: Box) = maxSiblingWidth - child.width
+}
+
+private class LayeredArranger(
+    children: List<Box>,
+    val horizontalAlignment: Alignment,
+    val verticalAlignment: Alignment,
+    val drawDirection: DrawDirection,
+    startCoordinates: Coordinates,
+    val paddings: Paddings?,
+    border: Border?
+) : Arranger(children, verticalAlignment, drawDirection, startCoordinates, border) {
+
+    override fun getInitialSpace() = 0f
+    override fun incrementAxis(child: Box) {}
+    override fun getFinishMargin(child: Box) = 0f
+    override fun getMaxMinusChildSize(child: Box) = 0f
+
+    override fun calculateChildTop(child: Box, offset: Float): Float {
+        return when (verticalAlignment) {
+            START -> top + max(paddings?.top ?: 0f, child.margins?.top ?: 0f)
+            CENTER -> top + (paddings?.top ?: 0f) + (maxSiblingHeight / 2f) - (child.height / 2f)
+            else -> top + (paddings?.top ?: 0f) + (maxSiblingHeight) - child.height
+        }
+    }
+
+    override fun calculateChildStart(child: Box, offset: Float): Float {
+        return when (horizontalAlignment) {
+            START -> start + max(paddings?.start ?: 0f, child.margins?.start ?: 0f) * factor
+            CENTER -> start + ((paddings?.start ?: 0f) + (maxSiblingWidth / 2f) - (child.width / 2f)) * factor
+            else -> start + ((paddings?.start ?: 0f) + (maxSiblingWidth) - child.width) * factor
+        }
+    }
 }
