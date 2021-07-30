@@ -3,7 +3,6 @@ package ir.mahozad.android.util
 import ir.mahozad.android.PieChart
 import ir.mahozad.android.PieChart.LegendPosition.*
 import ir.mahozad.android.component.Paddings
-import kotlin.math.min
 
 internal fun parseBorderDashArray(string: String?): List<Float> {
     if (string == null || string.isBlank()) return emptyList()
@@ -27,16 +26,10 @@ internal fun calculatePieDimensions(
     var pieWidth = viewWidth.toFloat() - viewPaddings.horizontal
     var pieHeight = viewHeight.toFloat() - viewPaddings.vertical
     if (!isLegendEnabled) return Pair(pieWidth, pieHeight)
-    val legendsRectHeight: Float
-    val legendsRectWidth: Float
     if (legendPosition == TOP || legendPosition == BOTTOM) {
-        val maxAvailableHeight = (viewHeight - viewPaddings.vertical) / 2f // Arbitrary
-        legendsRectHeight = min(maxAvailableHeight, legendBoxHeight)
-        pieHeight = pieHeight - legendsRectHeight - legendBoxMargin
+        pieHeight = pieHeight - legendBoxHeight - legendBoxMargin
     } else if (legendPosition == START || legendPosition == END) {
-        val maxAvailableWidth = (viewWidth - viewPaddings.horizontal) / 2f // Arbitrary
-        legendsRectWidth = min(maxAvailableWidth, legendBoxWidth)
-        pieWidth = pieWidth - legendsRectWidth - legendBoxMargin
+        pieWidth = pieWidth - legendBoxWidth - legendBoxMargin
     }
     return Pair(pieWidth, pieHeight)
 }

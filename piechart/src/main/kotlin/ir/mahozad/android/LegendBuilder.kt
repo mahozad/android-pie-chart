@@ -3,6 +3,7 @@ package ir.mahozad.android
 import android.content.Context
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
+import ir.mahozad.android.PieChart.LegendPosition.*
 import ir.mahozad.android.component.*
 import java.text.NumberFormat
 
@@ -12,6 +13,8 @@ internal class LegendBuilder {
 
     internal fun createLegendBox(
         context: Context,
+        maxAvailableWidth: Float,
+        maxAvailableHeight: Float,
         slices: List<PieChart.Slice>,
         legendsTitle: String,
         legendsTitleSize: Float,
@@ -39,6 +42,10 @@ internal class LegendBuilder {
         legendBoxBorderCornerRadius: Float,
         legendBoxBorderType: PieChart.BorderType,
         legendBoxBorderDashArray: List<Float>,
+        legendBoxMargin: Float,
+        legendBoxPosition: PieChart.LegendPosition,
+        legendLinesMargin: Float,
+        legendsWrapping: Wrapping
     ): Box {
         val title = makeTitle(legendsTitle, legendsTitleSize, legendsTitleColor, legendTitleMargin)
         val legends = mutableListOf<Box>()
@@ -47,12 +54,15 @@ internal class LegendBuilder {
             legends.add(legend)
         }
         val legendDirection = if (legendArrangement == PieChart.LegendArrangement.HORIZONTAL) LayoutDirection.HORIZONTAL else LayoutDirection.VERTICAL
-        val legendsContainer = Container(legends, childrenAlignment = legendsAlignment, layoutDirection = legendDirection)
+        val legendsContainer = Container(legends, maxAvailableWidth, maxAvailableHeight, childrenAlignment = legendsAlignment, layoutDirection = legendDirection, legendLinesMargin = legendLinesMargin, wrapping = legendsWrapping)
+        val legendBoxMargins = createBoxMargins(legendBoxMargin, legendBoxPosition)
         legendBox = Container(
-            children = listOf(title, legendsContainer),
+            listOf(title, legendsContainer),
+            maxAvailableWidth, maxAvailableHeight,
             childrenAlignment = Alignment.CENTER,
             layoutDirection = LayoutDirection.VERTICAL,
             background = Background(legendBoxBackgroundColor),
+            margins = legendBoxMargins,
             paddings = Paddings(legendBoxPadding),
             border = Border(
                 legendBoxBorder,
@@ -64,6 +74,17 @@ internal class LegendBuilder {
             )
         )
         return legendBox
+    }
+
+    private fun createBoxMargins(
+        legendBoxMargin: Float,
+        legendBoxPosition: PieChart.LegendPosition
+    ) = when (legendBoxPosition) {
+        TOP -> Margins(bottom = legendBoxMargin)
+        BOTTOM -> Margins(top = legendBoxMargin)
+        START -> Margins(end = legendBoxMargin)
+        END -> Margins(start = legendBoxMargin)
+        else -> null
     }
 
     private fun makeLegend(
@@ -97,7 +118,7 @@ internal class LegendBuilder {
             legendComponents.add(legendPercentage)
         }
         /* FIXME: The first legend should not have start margin and the last legend should not have end margin (user can achieve first start margin and last end margin with parent padding) */
-        return Container(legendComponents, childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL, margins = Margins(start = legendsMargin, end = legendsMargin))
+        return Container(legendComponents, Float.MAX_VALUE, Float.MAX_VALUE, childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL, margins = Margins(start = legendsMargin, end = legendsMargin))
     }
 
     private fun makeLegendText(

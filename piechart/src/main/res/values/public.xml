@@ -24,6 +24,8 @@
   <public name="legendArrangement" format="enum"/>
   <public name="legendPosition" format="enum"/>
   <public name="legendTitleMargin" format="dimension"/>
+  <public name="legendLinesMargin" format="dimension"/>
+  <public name="legendsWrapping" format="enum"/>
   <public name="legendsTitle" format="string"/>
   <public name="legendsSize" format="dimension"/>
   <public name="legendsPercentageSize" format="dimension"/>

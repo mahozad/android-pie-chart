@@ -97,7 +97,13 @@
     <attr name="legendIconsTintArray" format="reference"/>
     <attr name="legendsMargin" format="dimension"/>
     <attr name="legendTitleMargin" format="dimension"/>
+    <!-- Margin between legend rows/columns if wrapping is enabled -->
+    <attr name="legendLinesMargin" format="dimension"/>
     <attr name="legendsPercentageMargin" format="dimension"/>
+    <attr name="legendsWrapping" format="enum">
+      <enum name="wrap" value="0"/>
+      <enum name="clip" value="1"/>
+    </attr>
     <attr name="legendsPercentage" format="enum">
       <enum name="disabled" value="0"/>
       <enum name="enabled" value="1"/>

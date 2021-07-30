@@ -78,12 +78,7 @@ internal data class Background(
     @FloatRange(from = 0.0, to = 1.0) val alpha: Float = color.alpha / 255f
 )
 
-internal sealed class Wrapping {
-    object Wrap : Wrapping()
-    object Clip : Wrapping()
-    object Scroll : Wrapping()
-    object Paginate : Wrapping()
-}
+enum class Wrapping { WRAP, CLIP, SCROLL, PAGINATE }
 
 internal class EmptyBox(
     override val width: Float = 0f,

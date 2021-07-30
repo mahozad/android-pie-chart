@@ -45,8 +45,9 @@ const val DEFAULT_GAP = 8f /* px */
 const val DEFAULT_LABELS_SIZE = 18f /* sp */
 const val DEFAULT_LEGEND_STATUS = DISABLED
 const val DEFAULT_LEGENDS_SIZE = 16f /* sp */
-const val DEFAULT_LEGEND_TITLE_MARGIN = 8f /* dp */
 const val DEFAULT_LEGEND_BOX_MARGIN = 8f /* dp */
+const val DEFAULT_LEGEND_TITLE_MARGIN = 8f /* dp */
+const val DEFAULT_LEGEND_LINES_MARGIN = 10f /* dp */
 const val DEFAULT_LEGEND_BOX_PADDING = 4f /* dp */
 const val DEFAULT_LEGEND_BOX_BORDER = 2f /* dp */
 const val DEFAULT_LEGEND_BOX_BORDER_DASH_ARRAY = "4, 4" /* dp (each) */
@@ -95,6 +96,7 @@ val defaultLegendsIcon = CIRCLE
 val defaultCenterLabelIcon = PieChart.DefaultIcons.NO_ICON
 val defaultLegendsAlignment = Alignment.CENTER
 val defaultLegendBoxAlignment = Alignment.CENTER
+val defaultLegendsWrapping = Wrapping.WRAP
 val defaultLabelType = INSIDE
 val defaultLegendBoxBorderType = PieChart.BorderType.SOLID
 val defaultLabelsFont: Typeface = DEFAULT
@@ -264,6 +266,11 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             field = alignment
             invalidate()
         }
+    var legendsWrapping  = defaultLegendsWrapping
+        set(wrapping) {
+            field = wrapping
+            invalidate()
+        }
     var legendsTitle = DEFAULT_LEGENDS_TITLE
         set(title) {
             field = title
@@ -375,6 +382,11 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         }
     var legendTitleMargin = dpToPx(DEFAULT_LEGEND_TITLE_MARGIN)
         set(margin /* px */) {
+            field = margin
+            invalidate()
+        }
+    var legendLinesMargin = dpToPx(DEFAULT_LEGEND_LINES_MARGIN)
+        set(@Dimension(unit = PX) margin) {
             field = margin
             invalidate()
         }
@@ -618,6 +630,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             legendBoxBackgroundColor = it.getColor(R.styleable.PieChart_legendBoxBackgroundColor, DEFAULT_LEGEND_BOX_BACKGROUND_COLOR)
             legendBoxMargin = it.getDimension(R.styleable.PieChart_legendBoxMargin, dpToPx(DEFAULT_LEGEND_BOX_MARGIN))
             legendTitleMargin = it.getDimension(R.styleable.PieChart_legendTitleMargin, dpToPx(DEFAULT_LEGEND_TITLE_MARGIN))
+            legendLinesMargin = it.getDimension(R.styleable.PieChart_legendLinesMargin, dpToPx(DEFAULT_LEGEND_LINES_MARGIN))
             legendBoxPadding = it.getDimension(R.styleable.PieChart_legendBoxPadding, dpToPx(DEFAULT_LEGEND_BOX_PADDING))
             legendsPercentageMargin = it.getDimension(R.styleable.PieChart_legendsPercentageMargin, dpToPx(DEFAULT_LEGENDS_PERCENTAGE_MARGIN))
             legendBoxBorder = it.getDimension(R.styleable.PieChart_legendBoxBorder, dpToPx(DEFAULT_LEGEND_BOX_BORDER))
@@ -637,6 +650,9 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             ]
             legendBoxAlignment = Alignment.values()[
                     it.getInt(R.styleable.PieChart_legendBoxAlignment, defaultLegendBoxAlignment.ordinal)
+            ]
+            legendsWrapping = Wrapping.values()[
+                    it.getInt(R.styleable.PieChart_legendsWrapping, defaultLegendsWrapping.ordinal)
             ]
             legendBoxBorderType = BorderType.values()[
                     it.getInt(R.styleable.PieChart_legendBoxBorderType, defaultLegendBoxBorderType.ordinal)
@@ -702,17 +718,28 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     override fun onSizeChanged(width: Int, height: Int, oldWidth: Int, oldHeight: Int) {
         super.onSizeChanged(width, height, oldWidth, oldHeight)
 
-        val legendBox = LegendBuilder().createLegendBox(context, slices, legendsTitle, legendsTitleSize, legendsTitleColor, legendTitleMargin, legendsIcon, legendIconsHeight, legendIconsTint, legendIconsAlpha, legendsSize, legendsColor, legendIconsMargin, legendsPercentageMargin, isLegendsPercentageEnabled, legendsPercentageSize, legendsPercentageColor, legendsMargin, legendArrangement, legendsAlignment, legendBoxBackgroundColor, legendBoxPadding, legendBoxBorder, legendBoxBorderColor, legendBoxBorderAlpha, legendBoxBorderCornerRadius, legendBoxBorderType, legendBoxBorderDashArray)
+        val maxAvailableWidthForLegendBox = when (legendPosition) {
+            TOP, BOTTOM -> (width - paddingStart - paddingEnd).toFloat()
+            LegendPosition.START, END -> (width - paddingStart - paddingEnd) / 2f // Arbitrary
+            else -> (width - paddingStart - paddingEnd).toFloat()
+        }
+        val maxAvailableHeightForLegendBox = when (legendPosition) {
+            TOP, BOTTOM -> (width - paddingTop - paddingBottom).toFloat()
+            LegendPosition.START, END ->  (height - paddingTop - paddingBottom) / 2f // Arbitrary
+            else -> (width - paddingTop - paddingBottom).toFloat()
+        }
+
+        val legendBox = LegendBuilder().createLegendBox(context, maxAvailableWidthForLegendBox, maxAvailableHeightForLegendBox, slices, legendsTitle, legendsTitleSize, legendsTitleColor, legendTitleMargin, legendsIcon, legendIconsHeight, legendIconsTint, legendIconsAlpha, legendsSize, legendsColor, legendIconsMargin, legendsPercentageMargin, isLegendsPercentageEnabled, legendsPercentageSize, legendsPercentageColor, legendsMargin, legendArrangement, legendsAlignment, legendBoxBackgroundColor, legendBoxPadding, legendBoxBorder, legendBoxBorderColor, legendBoxBorderAlpha, legendBoxBorderCornerRadius, legendBoxBorderType, legendBoxBorderDashArray, legendBoxMargin, legendPosition, legendLinesMargin, legendsWrapping)
         val (pieWidth, pieHeight) = calculatePieDimensions(width, height, Paddings(paddingTop, paddingBottom, paddingStart, paddingEnd), isLegendEnabled, legendBoxMargin, legendPosition, legendBox.width, legendBox.height)
         pie = Pie(context, pieWidth, pieHeight, null, null, startAngle, slices, labelType, outsideLabelsMargin, labelsSize, labelsColor, labelsFont, labelIconsHeight, labelIconsMargin, labelIconsPlacement, labelIconsTint, labelOffset, shouldCenterPie, drawDirection, overlayRatio, overlayAlpha, gradientType, holeRatio, slicesPointer, gap, gapPosition)
         val chartDirection = determineChartDirection(legendPosition)
         val chartComponents = makeChartComponentList(pie, isLegendEnabled, legendBox, legendPosition)
-        chartBox = Container(chartComponents, chartDirection, legendBoxAlignment, paddings = Paddings(paddingTop, paddingBottom, paddingStart, paddingEnd))
+        chartBox = Container(chartComponents, width.toFloat(), height.toFloat(), chartDirection, legendBoxAlignment, paddings = Paddings(paddingTop, paddingBottom, paddingStart, paddingEnd))
         chartBox.layOut(0f, 0f, LTR)
 
         val centerLabelIcon = Icon(resources.getDrawable(centerLabelIcon.resId, null), centerLabelIconHeight, tint = centerLabelIconTint, alpha = centerLabelIconAlpha, margins = Margins(end = centerLabelIconMargin))
         val centerLabelText = Text(centerLabel, size = centerLabelSize, color = centerLabelColor, font = centerLabelFont, alpha = centerLabelAlpha)
-        centerLabelBox = Container(listOf(centerLabelIcon, centerLabelText), childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
+        centerLabelBox = Container(listOf(centerLabelIcon, centerLabelText), Float.MAX_VALUE, Float.MAX_VALUE, childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
         centerLabelBox.layOut(pie.center.y - centerLabelBox.height / 2f, pie.center.x - centerLabelBox.width / 2f, LTR)
     }
 
