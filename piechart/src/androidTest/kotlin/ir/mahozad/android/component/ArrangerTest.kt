@@ -1,6 +1,5 @@
 package ir.mahozad.android.component
 
-import android.graphics.Canvas
 import ir.mahozad.android.Coordinates
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.util.FloatComparator
@@ -18,16 +17,6 @@ import org.junit.jupiter.params.provider.MethodSource
  */
 @TestInstance(PER_CLASS)
 class ArrangerTest {
-
-    private class MockBox(
-        override val width: Float,
-        override val height: Float,
-        override val margins: Margins? = null,
-        override val paddings: Paddings? = null
-    ) : Box {
-        override fun layOut(top: Float, start: Float, drawDirection: DrawDirection) { /* Not needed */ }
-        override fun draw(canvas: Canvas) { /* Not needed */ }
-    }
 
     @Test fun horizontalContainerWithStartAlignmentAndNoChildAndClipWrappingAndNoPaddingsAndNoBorders() {
         val startCoordinates = Coordinates(120f, 235f)
@@ -134,11 +123,11 @@ class ArrangerTest {
         /* TWO small child with ARBITRARY margin, HORIZONTAL direction, LTR, START alignment, CLIP wrapping, NO paddings, NO Borders */
         arguments(listOf(MockBox(34f, 29f, margins = Margins(5f, 9f, 10f, 12f)), MockBox(46f, 33f, margins = Margins(4f, 8f, 7f, 13.5f))), LayoutDirection.HORIZONTAL, DrawDirection.LTR, Alignment.START, Wrapping.Clip, null, null, listOf(Coordinates(130f, 240f), Coordinates(176f, 239f))),
         /* TWO small child with ARBITRARY margin, HORIZONTAL direction, RTL, START alignment, CLIP wrapping, ARBITRARY paddings, ARBITRARY Borders */
-        arguments(listOf(MockBox(34f, 29f, margins = Margins(5f, 9f, 10f, 12f)), MockBox(46f, 33f, margins = Margins(4f, 8f, 7f, 13.5f))), LayoutDirection.HORIZONTAL, DrawDirection.RTL, Alignment.START, Wrapping.Clip, Paddings(11f, 15f, 10f,  12f,), Border(16f), listOf(Coordinates(94f, 262f), Coordinates(48f, 262f))),
+        arguments(listOf(MockBox(34f, 29f, margins = Margins(5f, 9f, 10f, 12f)), MockBox(46f, 33f, margins = Margins(4f, 8f, 7f, 13.5f))), LayoutDirection.HORIZONTAL, DrawDirection.RTL, Alignment.START, Wrapping.Clip, Paddings(11f, 15f, 10f, 12f,), Border(16f), listOf(Coordinates(94f, 262f), Coordinates(48f, 262f))),
         /* TWO small child with ARBITRARY margin, HORIZONTAL direction, RTL, CENTER alignment, CLIP wrapping, ARBITRARY paddings, ARBITRARY Borders */
-        arguments(listOf(MockBox(34f, 29f, margins = Margins(5f, 9f, 10f, 12f)), MockBox(46f, 33f, margins = Margins(4f, 8f, 7f, 13.5f))), LayoutDirection.HORIZONTAL, DrawDirection.RTL, Alignment.CENTER, Wrapping.Clip, Paddings(11f, 15f, 10f,  12f,), Border(16f), listOf(Coordinates(94f, 264f), Coordinates(48f, 262f))),
+        arguments(listOf(MockBox(34f, 29f, margins = Margins(5f, 9f, 10f, 12f)), MockBox(46f, 33f, margins = Margins(4f, 8f, 7f, 13.5f))), LayoutDirection.HORIZONTAL, DrawDirection.RTL, Alignment.CENTER, Wrapping.Clip, Paddings(11f, 15f, 10f, 12f,), Border(16f), listOf(Coordinates(94f, 264f), Coordinates(48f, 262f))),
         /* TWO small child with ARBITRARY margin, HORIZONTAL direction, RTL, END alignment, CLIP wrapping, ARBITRARY paddings, ARBITRARY Borders */
-        arguments(listOf(MockBox(34f, 29f, margins = Margins(9f, 5f, 10f, 12f)), MockBox(46f, 33f, margins = Margins(4f, 8f, 7f, 13.5f))), LayoutDirection.HORIZONTAL, DrawDirection.RTL, Alignment.END, Wrapping.Clip, Paddings(11f, 15f, 10f,  12f,), Border(16f), listOf(Coordinates(94f, 266f), Coordinates(48f, 262f))),
+        arguments(listOf(MockBox(34f, 29f, margins = Margins(9f, 5f, 10f, 12f)), MockBox(46f, 33f, margins = Margins(4f, 8f, 7f, 13.5f))), LayoutDirection.HORIZONTAL, DrawDirection.RTL, Alignment.END, Wrapping.Clip, Paddings(11f, 15f, 10f, 12f,), Border(16f), listOf(Coordinates(94f, 266f), Coordinates(48f, 262f))),
         /* **************************************************************** */
         /* ONE small child with NO margin, VERTICAL direction, LTR, START alignment, CLIP wrapping, NO paddings, NO Borders */
         arguments(listOf(MockBox(34f, 29f)), LayoutDirection.VERTICAL, DrawDirection.LTR, Alignment.START, Wrapping.Clip, null, null, listOf(Coordinates(120f, 235f))),
@@ -165,11 +154,11 @@ class ArrangerTest {
         /* TWO small child with ARBITRARY margin, VERTICAL direction, LTR, START alignment, CLIP wrapping, NO paddings, NO Borders */
         arguments(listOf(MockBox(34f, 29f, margins = Margins(13f, 17f, 10f, 12f)), MockBox(46f, 33f, margins = Margins(4.5f, 8f, 7f, 13.5f))), LayoutDirection.VERTICAL, DrawDirection.LTR, Alignment.START, Wrapping.Clip, null, null, listOf(Coordinates(130f, 248f), Coordinates(127f, 294f))),
         /* TWO small child with ARBITRARY margin, VERTICAL direction, RTL, START alignment, CLIP wrapping, ARBITRARY paddings, ARBITRARY Borders */
-        arguments(listOf(MockBox(34f, 29f, margins = Margins(13f, 17f, 10f, 12f)), MockBox(46f, 33f, margins = Margins(4.5f, 8f, 7f, 13.5f))), LayoutDirection.VERTICAL, DrawDirection.RTL, Alignment.START, Wrapping.Clip, Paddings(11f, 15f, 10f,  12f,), Border(16f), listOf(Coordinates(94f, 264f), Coordinates(94f, 310f))),
+        arguments(listOf(MockBox(34f, 29f, margins = Margins(13f, 17f, 10f, 12f)), MockBox(46f, 33f, margins = Margins(4.5f, 8f, 7f, 13.5f))), LayoutDirection.VERTICAL, DrawDirection.RTL, Alignment.START, Wrapping.Clip, Paddings(11f, 15f, 10f, 12f,), Border(16f), listOf(Coordinates(94f, 264f), Coordinates(94f, 310f))),
         /* TWO small child with ARBITRARY margin, VERTICAL direction, RTL, CENTER alignment, CLIP wrapping, ARBITRARY paddings, ARBITRARY Borders */
-        arguments(listOf(MockBox(34f, 29f, margins = Margins(13f, 17f, 10f, 12f)), MockBox(46f, 33f, margins = Margins(4.5f, 8f, 7f, 13.5f))), LayoutDirection.VERTICAL, DrawDirection.RTL, Alignment.CENTER, Wrapping.Clip, Paddings(11f, 15f, 10f,  12f,), Border(16f), listOf(Coordinates(88f, 264f), Coordinates(94f, 310f))),
+        arguments(listOf(MockBox(34f, 29f, margins = Margins(13f, 17f, 10f, 12f)), MockBox(46f, 33f, margins = Margins(4.5f, 8f, 7f, 13.5f))), LayoutDirection.VERTICAL, DrawDirection.RTL, Alignment.CENTER, Wrapping.Clip, Paddings(11f, 15f, 10f, 12f,), Border(16f), listOf(Coordinates(88f, 264f), Coordinates(94f, 310f))),
         /* TWO small child with ARBITRARY margin, VERTICAL direction, RTL, END alignment, CLIP wrapping, ARBITRARY paddings, ARBITRARY Borders */
-        arguments(listOf(MockBox(34f, 29f, margins = Margins(13f, 17f, 10f, 12f)), MockBox(46f, 33f, margins = Margins(4.5f, 8f, 7f, 13.5f))), LayoutDirection.VERTICAL, DrawDirection.RTL, Alignment.END, Wrapping.Clip, Paddings(11f, 15f, 10f,  12f,), Border(16f), listOf(Coordinates(82f, 264f), Coordinates(94f, 310f))),
+        arguments(listOf(MockBox(34f, 29f, margins = Margins(13f, 17f, 10f, 12f)), MockBox(46f, 33f, margins = Margins(4.5f, 8f, 7f, 13.5f))), LayoutDirection.VERTICAL, DrawDirection.RTL, Alignment.END, Wrapping.Clip, Paddings(11f, 15f, 10f, 12f,), Border(16f), listOf(Coordinates(82f, 264f), Coordinates(94f, 310f))),
         /* **************************************************************** */
         /* ONE small child with NO margin, LAYERED direction, LTR, START alignment, CLIP wrapping, NO paddings, NO Borders */
         arguments(listOf(MockBox(34f, 29f)), LayoutDirection.LAYERED, DrawDirection.LTR, Alignment.START, Wrapping.Clip, null, null, listOf(Coordinates(120f, 235f))),
@@ -196,10 +185,10 @@ class ArrangerTest {
         /* TWO small child with ARBITRARY margin, LAYERED direction, LTR, START alignment, CLIP wrapping, NO paddings, NO Borders */
         arguments(listOf(MockBox(34f, 29f, margins = Margins(13f, 17f, 10f, 12f)), MockBox(46f, 33f, margins = Margins(4.5f, 8f, 7f, 13.5f))), LayoutDirection.LAYERED, DrawDirection.LTR, Alignment.START, Wrapping.Clip, null, null, listOf(Coordinates(130f, 248f), Coordinates(127f, 239.5f))),
         /* TWO small child with ARBITRARY margin, LAYERED direction, RTL, START alignment, CLIP wrapping, ARBITRARY paddings, ARBITRARY Borders */
-        arguments(listOf(MockBox(34f, 29f, margins = Margins(13f, 17f, 10f, 12f)), MockBox(46f, 33f, margins = Margins(4.5f, 8f, 7f, 13.5f))), LayoutDirection.LAYERED, DrawDirection.RTL, Alignment.START, Wrapping.Clip, Paddings(11f, 15f, 10f,  12f,), Border(16f), listOf(Coordinates(94f, 264f), Coordinates(94f, 262f))),
+        arguments(listOf(MockBox(34f, 29f, margins = Margins(13f, 17f, 10f, 12f)), MockBox(46f, 33f, margins = Margins(4.5f, 8f, 7f, 13.5f))), LayoutDirection.LAYERED, DrawDirection.RTL, Alignment.START, Wrapping.Clip, Paddings(11f, 15f, 10f, 12f,), Border(16f), listOf(Coordinates(94f, 264f), Coordinates(94f, 262f))),
         /* TWO small child with ARBITRARY margin, LAYERED direction, RTL, CENTER alignment, CLIP wrapping, ARBITRARY paddings, ARBITRARY Borders */
-        arguments(listOf(MockBox(34f, 29f, margins = Margins(13f, 17f, 10f, 12f)), MockBox(46f, 33f, margins = Margins(4.5f, 8f, 7f, 13.5f))), LayoutDirection.LAYERED, DrawDirection.RTL, Alignment.CENTER, Wrapping.Clip, Paddings(11f, 15f, 10f,  12f,), Border(16f), listOf(Coordinates(88f, 264f), Coordinates(94f, 262f))),
+        arguments(listOf(MockBox(34f, 29f, margins = Margins(13f, 17f, 10f, 12f)), MockBox(46f, 33f, margins = Margins(4.5f, 8f, 7f, 13.5f))), LayoutDirection.LAYERED, DrawDirection.RTL, Alignment.CENTER, Wrapping.Clip, Paddings(11f, 15f, 10f, 12f,), Border(16f), listOf(Coordinates(88f, 264f), Coordinates(94f, 262f))),
         /* TWO small child with ARBITRARY margin, LAYERED direction, RTL, END alignment, CLIP wrapping, ARBITRARY paddings, ARBITRARY Borders */
-        arguments(listOf(MockBox(34f, 29f, margins = Margins(13f, 17f, 10f, 12f)), MockBox(46f, 33f, margins = Margins(4.5f, 8f, 7f, 13.5f))), LayoutDirection.LAYERED, DrawDirection.RTL, Alignment.END, Wrapping.Clip, Paddings(11f, 15f, 10f,  12f,), Border(16f), listOf(Coordinates(82f, 266f), Coordinates(94f, 262f))),
+        arguments(listOf(MockBox(34f, 29f, margins = Margins(13f, 17f, 10f, 12f)), MockBox(46f, 33f, margins = Margins(4.5f, 8f, 7f, 13.5f))), LayoutDirection.LAYERED, DrawDirection.RTL, Alignment.END, Wrapping.Clip, Paddings(11f, 15f, 10f, 12f,), Border(16f), listOf(Coordinates(82f, 266f), Coordinates(94f, 262f))),
     )
 }
