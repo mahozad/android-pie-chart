@@ -79,9 +79,10 @@ internal data class Background(
 )
 
 internal sealed class Wrapping {
-    object Scroll : Wrapping()
     object Wrap : Wrapping()
     object Clip : Wrapping()
+    object Scroll : Wrapping()
+    object Paginate : Wrapping()
 }
 
 internal class EmptyBox(
