@@ -51,7 +51,7 @@ internal class LegendBuilder {
         val title = makeTitle(legendsTitle, legendsTitleSize, legendsTitleColor, legendTitleMargin)
         val legends = mutableListOf<Box>()
         for (slice in slices) {
-            val legend = makeLegend(slice, context, legendsIcon, legendIconsHeight, legendIconsTint, legendIconsAlpha, legendsSize, legendsColor, legendArrangement, legendIconsMargin, legendsPercentageMargin, isLegendsPercentageEnabled, legendsPercentageSize, legendsPercentageColor, legendsMargin)
+            val legend = makeLegend(slice,maxAvailableWidth,maxAvailableHeight, context, legendsIcon, legendIconsHeight, legendIconsTint, legendIconsAlpha, legendsSize, legendsColor, legendArrangement, legendIconsMargin, legendsPercentageMargin, isLegendsPercentageEnabled, legendsPercentageSize, legendsPercentageColor, legendsMargin)
             legends.add(legend)
         }
         val legendDirection = if (legendArrangement == PieChart.LegendArrangement.HORIZONTAL) LayoutDirection.HORIZONTAL else LayoutDirection.VERTICAL
@@ -90,6 +90,8 @@ internal class LegendBuilder {
 
     private fun makeLegend(
         slice: PieChart.Slice,
+        maxAvailableWidth:Float,
+        maxAvailableHeight:Float,
         context: Context,
         legendsIcon: PieChart.Icon,
         legendIconsHeight: Float,
@@ -125,7 +127,7 @@ internal class LegendBuilder {
             Margins(top = legendsMargin, bottom = legendsMargin)
         }
         /* FIXME: The first legend should not have start margin and the last legend should not have end margin (user can achieve first start margin and last end margin with parent padding) */
-        return Container(legendComponents, Float.MAX_VALUE, Float.MAX_VALUE, childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL, margins = margins)
+        return Container(legendComponents, maxAvailableWidth, maxAvailableHeight, childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL, margins = margins)
     }
 
     private fun makeLegendText(

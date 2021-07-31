@@ -742,7 +742,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         val maxAvailableHeightForLegendBox = when (legendPosition) {
             TOP, BOTTOM -> (height - paddingTop - paddingBottom) / 2f // Arbitrary
             LegendPosition.START, END ->  (height - paddingTop - paddingBottom).toFloat()
-            else -> (width - paddingTop - paddingBottom).toFloat()
+            else -> (height - paddingTop - paddingBottom).toFloat()
         }
 
         val legendBox = LegendBuilder().createLegendBox(context, maxAvailableWidthForLegendBox, maxAvailableHeightForLegendBox, slices, legendsTitle, legendsTitleSize, legendsTitleColor, legendTitleMargin, legendsTitleAlignment, legendsIcon, legendIconsHeight, legendIconsTint, legendIconsAlpha, legendsSize, legendsColor, legendIconsMargin, legendsPercentageMargin, isLegendsPercentageEnabled, legendsPercentageSize, legendsPercentageColor, legendsMargin, legendArrangement, legendsAlignment, legendBoxBackgroundColor, legendBoxPadding, legendBoxBorder, legendBoxBorderColor, legendBoxBorderAlpha, legendBoxBorderCornerRadius, legendBoxBorderType, legendBoxBorderDashArray, legendBoxMargin, legendPosition, legendLinesMargin, legendsWrapping)
@@ -755,7 +755,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
 
         val centerLabelIcon = Icon(resources.getDrawable(centerLabelIcon.resId, null), centerLabelIconHeight, tint = centerLabelIconTint, alpha = centerLabelIconAlpha, margins = Margins(end = centerLabelIconMargin))
         val centerLabelText = Text(centerLabel, size = centerLabelSize, color = centerLabelColor, font = centerLabelFont, alpha = centerLabelAlpha)
-        centerLabelBox = Container(listOf(centerLabelIcon, centerLabelText), Float.MAX_VALUE, Float.MAX_VALUE, childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
+        centerLabelBox = Container(listOf(centerLabelIcon, centerLabelText), width.toFloat()-paddingStart-paddingEnd, height.toFloat()-paddingTop - paddingBottom, childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
         centerLabelBox.layOut(pie.center.y - centerLabelBox.height / 2f, pie.center.x - centerLabelBox.width / 2f, LTR)
     }
 
