@@ -38,6 +38,7 @@ const val DEFAULT_START_ANGLE = -90
 const val DEFAULT_HOLE_RATIO = 0.25f
 const val DEFAULT_OVERLAY_RATIO = 0.55f
 const val DEFAULT_OVERLAY_ALPHA = 0.15f
+const val DEFAULT_CENTER_LABEL_STATUS = DISABLED
 const val DEFAULT_CENTER_BACKGROUND_STATUS = DISABLED
 @FloatRange(from = 0.0, to = 1.0) const val DEFAULT_CENTER_BACKGROUND_RATIO = 0.5f
 @FloatRange(from = 0.0, to = 1.0) const val DEFAULT_CENTER_BACKGROUND_ALPHA = 1f
@@ -538,6 +539,11 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
      * Is overridden by icon of the slice if it is assigned a value other than *null*
      */
     var legendsIcon: Icon = defaultLegendsIcon
+    var isCenterLabelEnabled = DEFAULT_CENTER_LABEL_STATUS
+        set(shouldEnable) {
+            field = shouldEnable
+            invalidate()
+        }
     var centerLabelIcon : Icon = defaultCenterLabelIcon
         set(icon) {
             field = icon
@@ -599,6 +605,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             labelsColor = it.getColor(R.styleable.PieChart_labelsColor, DEFAULT_LABELS_COLOR)
             labelIconsTint = getIconTint(it, R.styleable.PieChart_labelIconsTint)
             labelsFont = getFont(it, R.styleable.PieChart_labelsFont, defaultLabelsFont)
+            isCenterLabelEnabled = it.getInt(R.styleable.PieChart_centerLabelStatus, 0) == 1
             centerLabelFont = getFont(it, R.styleable.PieChart_centerLabelFont, defaultCenterLabelFont)
             centerLabelIconAlpha = it.getFloat(R.styleable.PieChart_centerLabelIconAlpha, DEFAULT_CENTER_LABEL_ICON_ALPHA)
             centerLabelAlpha = it.getFloat(R.styleable.PieChart_centerLabelAlpha, DEFAULT_CENTER_LABEL_ALPHA)
@@ -612,11 +619,11 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             centerLabel = it.getString(R.styleable.PieChart_centerLabel) ?: DEFAULT_CENTER_LABEL
             centerLabelSize = it.getDimension(R.styleable.PieChart_centerLabelSize, spToPx(DEFAULT_CENTER_LABEL_SIZE))
             centerLabelColor = it.getColor(R.styleable.PieChart_centerLabelColor, DEFAULT_CENTER_LABEL_COLOR)
-            isCenterBackgroundEnabled = it.getInt(R.styleable.PieChart_centerBackground, 0) == 1
+            isCenterBackgroundEnabled = it.getInt(R.styleable.PieChart_centerBackgroundStatus, 0) == 1
             centerBackgroundColor = it.getColor(R.styleable.PieChart_centerBackgroundColor, DEFAULT_CENTER_BACKGROUND_COLOR)
             centerBackgroundRatio = it.getFloat(R.styleable.PieChart_centerBackgroundRatio, DEFAULT_CENTER_BACKGROUND_RATIO)
             centerBackgroundAlpha = it.getFloat(R.styleable.PieChart_centerBackgroundAlpha, DEFAULT_CENTER_BACKGROUND_ALPHA)
-            isLegendEnabled = it.getInt(R.styleable.PieChart_legend, 0) == 1
+            isLegendEnabled = it.getInt(R.styleable.PieChart_legendStatus, 0) == 1
             legendsSize = it.getDimension(R.styleable.PieChart_legendsSize, spToPx(DEFAULT_LEGENDS_SIZE))
             legendsTitle = it.getString(R.styleable.PieChart_legendsTitle) ?: DEFAULT_LEGENDS_TITLE
             legendsTitleSize = it.getDimension(R.styleable.PieChart_legendsTitleSize, spToPx(DEFAULT_LEGENDS_TITLE_SIZE))
@@ -644,7 +651,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             val slicesPointerLength = it.getDimension(R.styleable.PieChart_slicesPointerLength, -1f)
             val slicesPointerWidth = it.getDimension(R.styleable.PieChart_slicesPointerWidth, -1f)
             slicesPointer = if (slicesPointerLength <= 0 || slicesPointerWidth <= 0) defaultSlicesPointer else SlicePointer(slicesPointerLength, slicesPointerWidth, 0)
-            isLegendsPercentageEnabled = it.getInt(R.styleable.PieChart_legendsPercentage, 0) == 1
+            isLegendsPercentageEnabled = it.getInt(R.styleable.PieChart_legendsPercentageStatus, 0) == 1
             legendsAlignment = Alignment.values()[
                     it.getInt(R.styleable.PieChart_legendsAlignment, defaultLegendsAlignment.ordinal)
             ]

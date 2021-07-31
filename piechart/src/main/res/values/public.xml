@@ -8,9 +8,11 @@
   <public name="slicesPointerLength" format="dimension"/>
   <public name="slicesPointerWidth" format="dimension"/>
   <public name="shouldCenterPie" format="boolean"/>
+  <public name="centerBackgroundStatus" format="enum"/>
   <public name="centerBackgroundColor" format="color"/>
   <public name="centerBackgroundRatio" format="float"/>
   <public name="centerBackgroundAlpha" format="float"/>
+  <public name="centerLabelStatus" format="enum"/>
   <public name="centerLabel" format="string"/>
   <public name="centerLabelSize" format="dimension"/>
   <public name="centerLabelColor" format="color"/>
@@ -20,7 +22,7 @@
   <public name="centerLabelIconTint" format="color"/>
   <public name="centerLabelIconAlpha" format="float"/>
   <public name="centerLabelAlpha" format="float"/>
-  <public name="legend" format="enum"/>
+  <public name="legendStatus" format="enum"/>
   <public name="legendArrangement" format="enum"/>
   <public name="legendPosition" format="enum"/>
   <public name="legendTitleMargin" format="dimension"/>
@@ -32,7 +34,7 @@
   <public name="legendsPercentageColor" format="color"/>
   <public name="legendsAlignment" format="enum"/>
   <public name="legendBoxAlignment" format="enum"/>
-  <public name="legendsPercentage" format="enum"/>
+  <public name="legendsPercentageStatus" format="enum"/>
   <public name="legendsPercentageMargin" format="dimension"/>
   <public name="legendsTitleSize" format="dimension"/>
   <public name="legendsMargin" format="dimension"/>
