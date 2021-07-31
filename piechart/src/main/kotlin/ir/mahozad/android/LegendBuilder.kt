@@ -50,7 +50,7 @@ internal class LegendBuilder {
         val title = makeTitle(legendsTitle, legendsTitleSize, legendsTitleColor, legendTitleMargin)
         val legends = mutableListOf<Box>()
         for (slice in slices) {
-            val legend = makeLegend(slice, context, legendsIcon, legendIconsHeight, legendIconsTint, legendIconsAlpha, legendsSize, legendsColor, legendIconsMargin, legendsPercentageMargin, isLegendsPercentageEnabled, legendsPercentageSize, legendsPercentageColor, legendsMargin)
+            val legend = makeLegend(slice, context, legendsIcon, legendIconsHeight, legendIconsTint, legendIconsAlpha, legendsSize, legendsColor, legendArrangement, legendIconsMargin, legendsPercentageMargin, isLegendsPercentageEnabled, legendsPercentageSize, legendsPercentageColor, legendsMargin)
             legends.add(legend)
         }
         val legendDirection = if (legendArrangement == PieChart.LegendArrangement.HORIZONTAL) LayoutDirection.HORIZONTAL else LayoutDirection.VERTICAL
@@ -96,6 +96,7 @@ internal class LegendBuilder {
         legendIconsAlpha: Float,
         legendsSize: Float,
         legendsColor: Int,
+        legendArrangement: PieChart.LegendArrangement,
         legendIconsMargin: Float,
         legendsPercentageMargin: Float,
         isLegendsPercentageEnabled: Boolean,
@@ -117,8 +118,13 @@ internal class LegendBuilder {
             val legendPercentage = makeLegendPercentage(slice, legendsPercentageSize, legendsPercentageColor)
             legendComponents.add(legendPercentage)
         }
+        val margins = if (legendArrangement == PieChart.LegendArrangement.HORIZONTAL) {
+            Margins(start = legendsMargin, end = legendsMargin)
+        } else {
+            Margins(top = legendsMargin, bottom = legendsMargin)
+        }
         /* FIXME: The first legend should not have start margin and the last legend should not have end margin (user can achieve first start margin and last end margin with parent padding) */
-        return Container(legendComponents, Float.MAX_VALUE, Float.MAX_VALUE, childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL, margins = Margins(start = legendsMargin, end = legendsMargin))
+        return Container(legendComponents, Float.MAX_VALUE, Float.MAX_VALUE, childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL, margins = margins)
     }
 
     private fun makeLegendText(
