@@ -82,3 +82,4 @@ See the following pages for how to set up GitHub packages, CI, code coverage, et
 To sign the commits, I used the same gpg key as above.
 Refer to https://stackoverflow.com/a/68557572 and to https://superuser.com/a/1428651
 for how to set up commit signing.
+To set up and start gpg-agent on Windows see https://stackoverflow.com/a/51407128
