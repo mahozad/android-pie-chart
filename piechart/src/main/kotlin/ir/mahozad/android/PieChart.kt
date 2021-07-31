@@ -724,8 +724,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             else -> (width - paddingStart - paddingEnd).toFloat()
         }
         val maxAvailableHeightForLegendBox = when (legendPosition) {
-            TOP, BOTTOM -> (width - paddingTop - paddingBottom).toFloat()
-            LegendPosition.START, END ->  (height - paddingTop - paddingBottom) / 2f // Arbitrary
+            TOP, BOTTOM -> (height - paddingTop - paddingBottom) / 2f // Arbitrary
+            LegendPosition.START, END ->  (height - paddingTop - paddingBottom).toFloat()
             else -> (width - paddingTop - paddingBottom).toFloat()
         }
 
