@@ -20,6 +20,7 @@ internal class LegendBuilder {
         legendsTitleSize: Float,
         legendsTitleColor: Int,
         legendTitleMargin: Float,
+        legendsTitleAlignment: Alignment,
         legendsIcon: PieChart.Icon,
         legendIconsHeight: Float,
         legendIconsTint: Int?,
@@ -59,7 +60,7 @@ internal class LegendBuilder {
         legendBox = Container(
             listOf(title, legendsContainer),
             maxAvailableWidth, maxAvailableHeight,
-            childrenAlignment = Alignment.CENTER,
+            childrenAlignment = legendsTitleAlignment,
             layoutDirection = LayoutDirection.VERTICAL,
             background = Background(legendBoxBackgroundColor),
             margins = legendBoxMargins,
