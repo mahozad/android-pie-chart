@@ -347,7 +347,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             field = type
             invalidate()
         }
-    var legendBoxBorderDashArray = parseBorderDashArray(DEFAULT_LEGEND_BOX_BORDER_DASH_ARRAY)
+    var legendBoxBorderDashArray = parseBorderDashArray(DEFAULT_LEGEND_BOX_BORDER_DASH_ARRAY).map { dpToPx(it) }
         set(@Dimension(unit = PX) array) {
             field = array
             invalidate()
@@ -657,7 +657,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             legendBoxBorderCornerRadius = it.getDimension(R.styleable.PieChart_legendBoxBorderCornerRadius, dpToPx(DEFAULT_LEGEND_BOX_BORDER_CORNER_RADIUS))
             legendBoxBorderAlpha = it.getFloat(R.styleable.PieChart_legendBoxBorderAlpha, DEFAULT_LEGEND_BOX_BORDER_ALPHA)
             legendBoxBorderColor = it.getColor(R.styleable.PieChart_legendBoxBorderColor, DEFAULT_LEGEND_BOX_BORDER_COLOR)
-            legendBoxBorderDashArray = parseBorderDashArray(it.getString(R.styleable.PieChart_legendBoxBorderDashArray) ?: DEFAULT_LEGEND_BOX_BORDER_DASH_ARRAY)
+            legendBoxBorderDashArray = parseBorderDashArray(it.getString(R.styleable.PieChart_legendBoxBorderDashArray) ?: DEFAULT_LEGEND_BOX_BORDER_DASH_ARRAY).map { num -> dpToPx(num) }
             legendIconsAlpha = it.getFloat(R.styleable.PieChart_legendIconsAlpha, DEFAULT_LEGEND_ICONS_ALPHA)
             legendsTitleColor = it.getColor(R.styleable.PieChart_legendsTitleColor, DEFAULT_LEGENDS_TITLE_COLOR)
             shouldCenterPie = it.getBoolean(R.styleable.PieChart_shouldCenterPie, DEFAULT_SHOULD_CENTER_PIE)
