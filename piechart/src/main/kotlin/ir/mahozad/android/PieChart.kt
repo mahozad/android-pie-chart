@@ -57,6 +57,7 @@ const val DEFAULT_LEGEND_BOX_BORDER_CORNER_RADIUS = 3f /* dp */
 const val DEFAULT_LEGENDS_TITLE_SIZE = 18f /* sp */
 const val DEFAULT_LEGEND_ICONS_MARGIN = 8f /* dp */
 const val DEFAULT_LEGEND_ICONS_ALPHA = 1f
+const val DEFAULT_LEGEND_BOX_BORDER_STATUS = DISABLED
 const val DEFAULT_LEGENDS_PERCENTAGE_STATUS = DISABLED
 const val DEFAULT_LEGENDS_PERCENTAGE_MARGIN = 8f /* dp */
 const val DEFAULT_LEGENDS_PERCENTAGE_SIZE = DEFAULT_LEGENDS_SIZE /* sp */
@@ -377,6 +378,12 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             invalidate()
             requestLayout()
         }
+    var isLegendBoxBorderEnabled = DEFAULT_LEGEND_BOX_BORDER_STATUS
+        set(shouldEnable) {
+            field = shouldEnable
+            invalidate()
+            requestLayout()
+        }
     var legendsPercentageColor = DEFAULT_LEGENDS_PERCENTAGE_COLOR
         set(color) {
             field = color
@@ -658,6 +665,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             val slicesPointerWidth = it.getDimension(R.styleable.PieChart_slicesPointerWidth, -1f)
             slicesPointer = if (slicesPointerLength <= 0 || slicesPointerWidth <= 0) defaultSlicesPointer else SlicePointer(slicesPointerLength, slicesPointerWidth, 0)
             isLegendsPercentageEnabled = it.getInt(R.styleable.PieChart_legendsPercentageStatus, 0) == 1
+            isLegendBoxBorderEnabled = it.getInt(R.styleable.PieChart_legendBoxBorderStatus, 0) == 1
             legendsTitleAlignment = Alignment.values()[
                     it.getInt(R.styleable.PieChart_legendsTitleAlignment, defaultLegendsTitleAlignment.ordinal)
             ]
@@ -745,7 +753,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             else -> (height - paddingTop - paddingBottom).toFloat()
         }
 
-        val legendBox = LegendBuilder().createLegendBox(context, maxAvailableWidthForLegendBox, maxAvailableHeightForLegendBox, slices, legendsTitle, legendsTitleSize, legendsTitleColor, legendTitleMargin, legendsTitleAlignment, legendsIcon, legendIconsHeight, legendIconsTint, legendIconsAlpha, legendsSize, legendsColor, legendIconsMargin, legendsPercentageMargin, isLegendsPercentageEnabled, legendsPercentageSize, legendsPercentageColor, legendsMargin, legendArrangement, legendsAlignment, legendBoxBackgroundColor, legendBoxPadding, legendBoxBorder, legendBoxBorderColor, legendBoxBorderAlpha, legendBoxBorderCornerRadius, legendBoxBorderType, legendBoxBorderDashArray, legendBoxMargin, legendPosition, legendLinesMargin, legendsWrapping)
+        val legendBox = LegendBuilder().createLegendBox(context, maxAvailableWidthForLegendBox, maxAvailableHeightForLegendBox, slices, legendsTitle, legendsTitleSize, legendsTitleColor, legendTitleMargin, legendsTitleAlignment, legendsIcon, legendIconsHeight, legendIconsTint, legendIconsAlpha, legendsSize, legendsColor, legendIconsMargin, legendsPercentageMargin, isLegendsPercentageEnabled, legendsPercentageSize, legendsPercentageColor, legendsMargin, legendArrangement, legendsAlignment, legendBoxBackgroundColor, legendBoxPadding, legendBoxBorder, legendBoxBorderColor, legendBoxBorderAlpha, legendBoxBorderCornerRadius, legendBoxBorderType, legendBoxBorderDashArray, legendBoxMargin, legendPosition, legendLinesMargin, legendsWrapping, isLegendBoxBorderEnabled)
         val (pieWidth, pieHeight) = calculatePieDimensions(width, height, Paddings(paddingTop, paddingBottom, paddingStart, paddingEnd), isLegendEnabled, legendBoxMargin, legendPosition, legendBox.width, legendBox.height)
         pie = Pie(context, pieWidth, pieHeight, null, null, startAngle, slices, labelType, outsideLabelsMargin, labelsSize, labelsColor, labelsFont, labelIconsHeight, labelIconsMargin, labelIconsPlacement, labelIconsTint, labelOffset, shouldCenterPie, drawDirection, overlayRatio, overlayAlpha, gradientType, holeRatio, slicesPointer, gap, gapPosition)
         val chartDirection = determineChartDirection(legendPosition)

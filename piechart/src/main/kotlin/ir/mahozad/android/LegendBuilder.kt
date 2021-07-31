@@ -46,7 +46,8 @@ internal class LegendBuilder {
         legendBoxMargin: Float,
         legendBoxPosition: PieChart.LegendPosition,
         legendLinesMargin: Float,
-        legendsWrapping: Wrapping
+        legendsWrapping: Wrapping,
+        isLegendBoxBorderEnabled: Boolean
     ): Box {
         val title = makeTitle(legendsTitle, legendsTitleSize, legendsTitleColor, legendTitleMargin)
         val legends = mutableListOf<Box>()
@@ -65,14 +66,15 @@ internal class LegendBuilder {
             background = Background(legendBoxBackgroundColor),
             margins = legendBoxMargins,
             paddings = Paddings(legendBoxPadding),
-            border = Border(
+            border = if (isLegendBoxBorderEnabled)
+            Border(
                 legendBoxBorder,
                 color = legendBoxBorderColor,
                 alpha = legendBoxBorderAlpha,
                 cornerRadius = legendBoxBorderCornerRadius,
                 type = legendBoxBorderType,
                 dashArray = legendBoxBorderDashArray
-            )
+            ) else null
         )
         return legendBox
     }
