@@ -52,7 +52,7 @@ const val DEFAULT_LEGEND_LINES_MARGIN = 10f /* dp */
 const val DEFAULT_LEGEND_BOX_PADDING = 4f /* dp */
 const val DEFAULT_LEGEND_BOX_BORDER = 2f /* dp */
 const val DEFAULT_LEGEND_BOX_BORDER_DASH_ARRAY = "4, 4" /* dp (each) */
-@FloatRange(from = 0.0, to = 1.0) const val DEFAULT_LEGEND_BOX_BORDER_ALPHA = 1f
+@FloatRange(from = 0.0, to = 1.0) const val DEFAULT_LEGEND_BOX_BORDER_ALPHA = 0.4f
 const val DEFAULT_LEGEND_BOX_BORDER_CORNER_RADIUS = 3f /* dp */
 const val DEFAULT_LEGENDS_TITLE_SIZE = 18f /* sp */
 const val DEFAULT_LEGEND_ICONS_MARGIN = 8f /* dp */
@@ -79,7 +79,7 @@ const val DEFAULT_SHOULD_CENTER_PIE = true
 @ColorInt const val DEFAULT_LABELS_COLOR = Color.WHITE
 @ColorInt const val DEFAULT_LEGENDS_COLOR = Color.WHITE
 @ColorInt const val DEFAULT_LEGEND_BOX_BACKGROUND_COLOR = Color.TRANSPARENT
-@ColorInt const val DEFAULT_LEGEND_BOX_BORDER_COLOR = Color.TRANSPARENT
+@ColorInt const val DEFAULT_LEGEND_BOX_BORDER_COLOR = Color.BLACK
 @ColorInt const val DEFAULT_LEGENDS_TITLE_COLOR = Color.WHITE
 @ColorInt const val DEFAULT_LEGENDS_PERCENTAGE_COLOR = Color.WHITE
 @ColorInt const val DEFAULT_CENTER_LABEL_COLOR = Color.WHITE
