@@ -1,7 +1,6 @@
 package ir.mahozad.android
 
 import android.content.Context
-import android.content.res.Resources
 import android.content.res.TypedArray
 import android.graphics.Canvas
 import android.graphics.Color
@@ -29,6 +28,8 @@ import ir.mahozad.android.component.*
 import ir.mahozad.android.component.DrawDirection.LTR
 import ir.mahozad.android.component.Icon
 import ir.mahozad.android.util.calculatePieDimensions
+import ir.mahozad.android.util.getColorArray
+import ir.mahozad.android.util.getIconTint
 import ir.mahozad.android.util.parseBorderDashArray
 import java.text.NumberFormat
 
@@ -642,7 +643,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             legendsPercentageSize = it.getDimension(R.styleable.PieChart_legendsPercentageSize, spToPx(DEFAULT_LEGENDS_PERCENTAGE_SIZE))
             legendsPercentageColor = it.getColor(R.styleable.PieChart_legendsPercentageColor, DEFAULT_LEGENDS_PERCENTAGE_COLOR)
             centerLabelIconTint = getIconTint(it, R.styleable.PieChart_centerLabelIconTint)
-            legendIconsTintArray = getColorArray(it, R.styleable.PieChart_legendIconsTint)
+            legendIconsTintArray = getColorArray(it, resources, R.styleable.PieChart_legendIconsTint)
             legendsMargin = it.getDimension(R.styleable.PieChart_legendsMargin, dpToPx(DEFAULT_LEGENDS_MARGIN))
             legendsColor = it.getColor(R.styleable.PieChart_legendsColor, DEFAULT_LEGENDS_COLOR)
             legendBoxBackgroundColor = it.getColor(R.styleable.PieChart_legendBoxBackgroundColor, DEFAULT_LEGEND_BOX_BACKGROUND_COLOR)
@@ -712,44 +713,6 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
     private fun getFont(typedArray: TypedArray, @StyleableRes font: Int, defaultFont: Typeface): Typeface {
         val fontId = typedArray.getResourceId(font, -1)
         return if (fontId == -1) defaultFont else ResourcesCompat.getFont(context, fontId)!!
-    }
-
-    private fun getIconTint(typedArray: TypedArray, @StyleableRes attrName: Int): Int? {
-        // Do not use -1 as no color; -1 is white: https://stackoverflow.com/a/30430194
-        val tint = typedArray.getColor(attrName, /* if user specified no value or @null */ Int.MAX_VALUE)
-        return if (tint == Int.MAX_VALUE) null else tint
-    }
-
-    /**
-     * Test cases: "", "@null", "#ff0", "@color/sampleColor", "@array/sampleColorArray", attribute omitted from xml
-     */
-    @ColorInt
-    private fun getColorArray(typedArray: TypedArray, @StyleableRes attrName: Int): IntArray? {
-        val arrayId = typedArray.getResourceId(attrName, -1)
-        if (arrayId != -1) {
-            // If the attribute value is a reference to a resource...
-            try {
-                return resources.getIntArray(arrayId)
-            } catch (e: Resources.NotFoundException) {
-                // if it was not reference to a color array, it is a reference to a color
-                /*val color = resources.getColor(arrayId)
-                return intArrayOf(color)*/
-                val color = getIconTint(typedArray, attrName)
-                if (color != null) {
-                    return intArrayOf(color)
-                } else {
-                    return null
-                }
-            }
-        } else {
-            // If the attribute value is a literal color value...
-            val color = getIconTint(typedArray, attrName)
-            if (color != null) {
-                return intArrayOf(color)
-            } else {
-                return null
-            }
-        }
     }
 
     /**

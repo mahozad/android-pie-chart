@@ -1,0 +1,26 @@
+<resources>
+
+  <style name="TestStyleNotDefined">
+  </style>
+
+  <style name="TestStyleEmptyAttribute">
+    <item name="testAttr1"/>
+  </style>
+
+  <style name="TestStyleAtNullAttribute">
+    <item name="testAttr1">@null</item>
+  </style>
+
+  <style name="TestStyleColorLiteral">
+    <item name="testAttr1">#ff0</item>
+  </style>
+
+  <style name="TestStyleColorReference">
+    <item name="testAttr1">@color/testColor</item>
+  </style>
+
+  <style name="TestStyleColorArrayReference">
+    <item name="testAttr1">@array/testColorArray</item>
+  </style>
+
+</resources>

@@ -1,0 +1,9 @@
+<resources>
+  <color name="testColor">#f0f</color>
+  <array name="testColorArray">
+    <item>#ff00AE28</item>
+    <item>#5F00aE48</item>
+    <item>#AE28ff</item>
+    <item>#18f</item>
+  </array>
+</resources>

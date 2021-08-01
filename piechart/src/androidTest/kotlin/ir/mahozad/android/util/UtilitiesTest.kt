@@ -1,5 +1,6 @@
 package ir.mahozad.android.util
 
+import androidx.test.platform.app.InstrumentationRegistry
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestInstance
@@ -58,5 +59,29 @@ class UtilitiesTest {
         arguments(arrayOf("a", "b"), 1, "b"),
         arguments(arrayOf("a", "b"), 2, "a"),
         arguments(arrayOf("a", "b"), 3, "b"),
+    )
+
+    @DisplayName("Get color array")
+    @ParameterizedTest(name = "Test #{index} with attr: {0}")
+    @MethodSource("argumentProvider3")
+    fun getColorArray(themeId: Int, expectedColorArray: IntArray?) {
+        val resources = InstrumentationRegistry.getInstrumentation().targetContext.resources
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        context.setTheme(themeId)
+        val testTheme = context.theme
+        val typedArray = testTheme.obtainStyledAttributes(ir.mahozad.android.test.R.styleable.TestStyleable)
+
+        val array = getColorArray(typedArray, resources, ir.mahozad.android.test.R.styleable.TestStyleable_testAttr1)
+
+        assertThat(array).isEqualTo(expectedColorArray)
+    }
+
+    private fun argumentProvider3() = listOf(
+        arguments(ir.mahozad.android.test.R.style.TestStyleNotDefined, null),
+        arguments(ir.mahozad.android.test.R.style.TestStyleEmptyAttribute, null),
+        arguments(ir.mahozad.android.test.R.style.TestStyleAtNullAttribute, null),
+        arguments(ir.mahozad.android.test.R.style.TestStyleColorLiteral, intArrayOf(-256)),
+        arguments(ir.mahozad.android.test.R.style.TestStyleColorReference, intArrayOf(-65281)),
+        arguments(ir.mahozad.android.test.R.style.TestStyleColorArrayReference, intArrayOf(-16732632, 1593880136, -5363457, -15628033))
     )
 }
