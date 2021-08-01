@@ -1,5 +1,6 @@
 package ir.mahozad.android.util
 
+import android.content.Context
 import android.content.res.Resources
 import android.content.res.TypedArray
 import androidx.annotation.ColorInt
@@ -53,27 +54,23 @@ internal fun getIconTint(typedArray: TypedArray, @StyleableRes attrName: Int): I
     return if (tint == Int.MAX_VALUE) null else tint
 }
 
+/**
+ * Gets an attribute of type *reference|color*.
+ *
+ * The attribute can be a reference to a color array, a reference to a color, or a color literal.
+ */
 @ColorInt
-internal fun getColorArray(typedArray: TypedArray, resources: Resources, @StyleableRes attrName: Int): IntArray? {
-    val arrayId = typedArray.getResourceId(attrName, -1)
-    if (arrayId != -1) {
-        // If the attribute value is a reference to a resource...
-        try {
-            return resources.getIntArray(arrayId)
-        } catch (e: Resources.NotFoundException) {
-            // If it didn't reference a color array, it is a reference to a color
-            val color = getIconTint(typedArray, attrName)
-            return when {
-                color != null -> intArrayOf(color)
-                else -> null
-            }
-        }
-    } else {
-        // If the attribute value is a literal color value...
+internal fun getColorArray(
+    context: Context,
+    typedArray: TypedArray,
+    @StyleableRes attrName: Int
+): IntArray? {
+    return try {
+        val arrayId = typedArray.getResourceId(attrName, -1)
+        context.resources.getIntArray(arrayId)
+    } catch (e: Resources.NotFoundException) {
+        /* It was not an array; try as a single color */
         val color = getIconTint(typedArray, attrName)
-        return when {
-            color != null -> intArrayOf(color)
-            else -> null
-        }
+        if (color != null) intArrayOf(color) else null
     }
 }

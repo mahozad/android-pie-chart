@@ -65,13 +65,12 @@ class UtilitiesTest {
     @ParameterizedTest(name = "Test #{index} with attr: {0}")
     @MethodSource("argumentProvider3")
     fun getColorArray(themeId: Int, expectedColorArray: IntArray?) {
-        val resources = InstrumentationRegistry.getInstrumentation().targetContext.resources
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         context.setTheme(themeId)
         val testTheme = context.theme
         val typedArray = testTheme.obtainStyledAttributes(ir.mahozad.android.test.R.styleable.TestStyleable)
 
-        val array = getColorArray(typedArray, resources, ir.mahozad.android.test.R.styleable.TestStyleable_testAttr1)
+        val array = getColorArray(context, typedArray, ir.mahozad.android.test.R.styleable.TestStyleable_testAttr1)
 
         assertThat(array).isEqualTo(expectedColorArray)
     }
