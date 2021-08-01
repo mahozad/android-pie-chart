@@ -66,15 +66,16 @@ internal class LegendBuilder {
             background = Background(legendBoxBackgroundColor),
             margins = legendBoxMargins,
             paddings = Paddings(legendBoxPadding),
-            border = if (isLegendBoxBorderEnabled)
-            Border(
-                legendBoxBorder,
+            // FIXME: If border is not enabled pass null instead of making its thickness 0.001f;
+            //  passing null caused the whole horizontal bottom legend box to disappear.
+            border = Border(
+                if (isLegendBoxBorderEnabled) legendBoxBorder else 0.001f,
                 color = legendBoxBorderColor,
                 alpha = legendBoxBorderAlpha,
                 cornerRadius = legendBoxBorderCornerRadius,
                 type = legendBoxBorderType,
                 dashArray = legendBoxBorderDashArray
-            ) else null
+            )
         )
         return legendBox
     }
