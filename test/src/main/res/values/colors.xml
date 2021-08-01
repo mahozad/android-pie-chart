@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="sampleColor">#ff0</color>
+  <array name="sampleColorArray">
+    <item>#ff00AE28</item>
+    <item>#5F00aE48</item>
+    <item>#AE28ff</item>
+    <item>#18f</item>
+  </array>
+</resources>
