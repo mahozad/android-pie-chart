@@ -40,8 +40,7 @@
   <public name="legendsPercentageMargin" format="dimension"/>
   <public name="legendsTitleSize" format="dimension"/>
   <public name="legendsMargin" format="dimension"/>
-  <public name="legendIconsTint" format="color"/>
-  <public name="legendIconsTintArray" format="reference"/>
+  <public name="legendIconsTint" format="reference|color"/>
   <public name="legendsIcon" format="enum"/>
   <public name="legendsColor" format="color"/>
   <public name="legendBoxBackgroundColor" format="color"/>

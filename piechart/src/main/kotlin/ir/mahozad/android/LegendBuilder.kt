@@ -5,6 +5,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import ir.mahozad.android.PieChart.LegendPosition.*
 import ir.mahozad.android.component.*
+import ir.mahozad.android.util.getElementCircular
 import java.text.NumberFormat
 
 internal class LegendBuilder {
@@ -16,6 +17,7 @@ internal class LegendBuilder {
         maxAvailableWidth: Float,
         maxAvailableHeight: Float,
         slices: List<PieChart.Slice>,
+        legendIconsTintArray: IntArray?,
         legendsTitle: String,
         legendsTitleSize: Float,
         legendsTitleColor: Int,
@@ -23,7 +25,6 @@ internal class LegendBuilder {
         legendsTitleAlignment: Alignment,
         legendsIcon: PieChart.Icon,
         legendIconsHeight: Float,
-        legendIconsTint: Int?,
         legendIconsAlpha: Float,
         legendsSize: Float,
         legendsColor: Int,
@@ -51,8 +52,8 @@ internal class LegendBuilder {
     ): Box {
         val title = makeTitle(legendsTitle, legendsTitleSize, legendsTitleColor, legendTitleMargin)
         val legends = mutableListOf<Box>()
-        for (slice in slices) {
-            val legend = makeLegend(slice,maxAvailableWidth,maxAvailableHeight, context, legendsIcon, legendIconsHeight, legendIconsTint, legendIconsAlpha, legendsSize, legendsColor, legendArrangement, legendIconsMargin, legendsPercentageMargin, isLegendsPercentageEnabled, legendsPercentageSize, legendsPercentageColor, legendsMargin)
+        for ((i,slice) in slices.withIndex()) {
+            val legend = makeLegend(i,slice,maxAvailableWidth,maxAvailableHeight, context, legendIconsTintArray, legendsIcon, legendIconsHeight, legendIconsAlpha, legendsSize, legendsColor, legendArrangement, legendIconsMargin, legendsPercentageMargin, isLegendsPercentageEnabled, legendsPercentageSize, legendsPercentageColor, legendsMargin)
             legends.add(legend)
         }
         val legendDirection = if (legendArrangement == PieChart.LegendArrangement.HORIZONTAL) LayoutDirection.HORIZONTAL else LayoutDirection.VERTICAL
@@ -92,13 +93,14 @@ internal class LegendBuilder {
     }
 
     private fun makeLegend(
+        legendIndex: Int,
         slice: PieChart.Slice,
         maxAvailableWidth:Float,
         maxAvailableHeight:Float,
         context: Context,
+        legendIconsTintArray: IntArray?,
         legendsIcon: PieChart.Icon,
         legendIconsHeight: Float,
-        legendIconsTint: Int?,
         legendIconsAlpha: Float,
         legendsSize: Float,
         legendsColor: Int,
@@ -115,7 +117,7 @@ internal class LegendBuilder {
             legendDrawable = context.resources.getDrawable(iconId, null)
             slice.labelIconTint?.let { tint -> legendDrawable?.setTint(tint) }
         }
-        val legendIcon = makeLegendIcon(legendDrawable, context, legendsIcon, slice, legendIconsHeight, legendIconsTint, legendIconsAlpha)
+        val legendIcon = makeLegendIcon(legendDrawable, context, legendsIcon, slice, legendIndex, legendIconsTintArray, legendIconsHeight, legendIconsAlpha)
         val legendText = makeLegendText(slice, legendsSize, legendsColor, legendIconsMargin, legendsPercentageMargin)
         val legendComponents = mutableListOf<Box>()
         legendComponents.add(legendIcon)
@@ -166,13 +168,14 @@ internal class LegendBuilder {
         context: Context,
         legendsIcon: PieChart.Icon,
         slice: PieChart.Slice,
+        iconIndex: Int,
+        legendIconsTintArray: IntArray?,
         legendIconsHeight: Float,
-        legendIconsTint: Int?,
         legendIconsAlpha: Float
     ) = Icon(
         legendDrawable ?: context.resources.getDrawable(legendsIcon.resId, null),
         slice.legendIconHeight ?: legendIconsHeight,
-        tint = slice.legendIconTint ?: legendIconsTint,
+        tint = legendIconsTintArray.getElementCircular(iconIndex) ?: slice.legendIconTint,
         alpha = slice.legendIconAlpha ?: legendIconsAlpha
     )
 

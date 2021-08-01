@@ -33,3 +33,12 @@ internal fun calculatePieDimensions(
     }
     return Pair(pieWidth, pieHeight)
 }
+
+internal fun IntArray?.getElementCircular(index: Int): Int? {
+    return this?.toTypedArray().getElementCircular(index)
+}
+
+internal fun <T> Array<T>?.getElementCircular(index: Int) = when {
+    this == null || isEmpty() -> null
+    else -> this[index % size]
+}

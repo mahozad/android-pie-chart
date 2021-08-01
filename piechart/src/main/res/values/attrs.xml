@@ -100,10 +100,8 @@
     <attr name="legendsTitleSize" format="dimension"/>
     <attr name="legendIconsHeight" format="dimension"/>
     <attr name="legendIconsMargin" format="dimension"/>
-    <!-- The value can be @null too -->
-    <attr name="legendIconsTint" format="color"/>
-    <!-- Reference to an array of colors -->
-    <attr name="legendIconsTintArray" format="reference"/>
+    <!-- Reference to an array of colors or a single color. can be @null too -->
+    <attr name="legendIconsTint" format="reference|color"/>
     <attr name="legendsMargin" format="dimension"/>
     <attr name="legendTitleMargin" format="dimension"/>
     <!-- Margin between legend rows/columns if wrapping is enabled -->

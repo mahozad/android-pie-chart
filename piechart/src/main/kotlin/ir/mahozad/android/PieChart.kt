@@ -1,6 +1,7 @@
 package ir.mahozad.android
 
 import android.content.Context
+import android.content.res.Resources
 import android.content.res.TypedArray
 import android.graphics.Canvas
 import android.graphics.Color
@@ -86,7 +87,6 @@ const val DEFAULT_SHOULD_CENTER_PIE = true
 @ColorInt const val DEFAULT_CENTER_BACKGROUND_COLOR = Color.GRAY
 // If null, the colors of the icon itself is used
 @ColorInt val defaultLabelIconsTint: Int? = null
-@ColorInt val defaultLegendIconsTint: Int? = null
 @ColorInt val defaultCenterLabelIconTint: Int? = null
 val defaultGapPosition = MIDDLE
 val defaultGradientType = RADIAL
@@ -105,7 +105,7 @@ val defaultLegendBoxBorderType = PieChart.BorderType.SOLID
 val defaultLabelsFont: Typeface = DEFAULT
 val defaultCenterLabelFont: Typeface = DEFAULT
 val defaultSlicesPointer: SlicePointer? = null
-val defaultLegendIconsTintArray = intArrayOf(0xff3F51B5.toInt())
+val defaultLegendIconsTintArray: IntArray? = null
 
 /**
  * This is the order that these commonly used view methods are run:
@@ -416,16 +416,15 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         }
 
     /**
-     * Order:
-     *   1. use slice.legendIconTint
-     *   2. if slice.legendIconTint == null, use legendIconTintArray
-     *   3. if legendIconTintArray == null, use legendIconsTint
+     * If this array is not null it is used to tint icons.
+     *
+     * If user wants to assign the same color to all icons,
+     * specify a single color literal or reference.
+     * FIXME: Because of an unknown bug, when there is a single color,
+     *  icons after the first one do not get tinted with that single color.
+     *
+     * If the array has fewer colors than there are icons, then the colors are used in circular way.
      */
-    var legendIconsTint = defaultLegendIconsTint
-        set(color) {
-            field = color
-            invalidate()
-        }
     var legendIconsTintArray = defaultLegendIconsTintArray
         set(array) {
             field = array
@@ -642,9 +641,8 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             legendsTitleSize = it.getDimension(R.styleable.PieChart_legendsTitleSize, spToPx(DEFAULT_LEGENDS_TITLE_SIZE))
             legendsPercentageSize = it.getDimension(R.styleable.PieChart_legendsPercentageSize, spToPx(DEFAULT_LEGENDS_PERCENTAGE_SIZE))
             legendsPercentageColor = it.getColor(R.styleable.PieChart_legendsPercentageColor, DEFAULT_LEGENDS_PERCENTAGE_COLOR)
-            legendIconsTint = getIconTint(it, R.styleable.PieChart_legendIconsTint)
             centerLabelIconTint = getIconTint(it, R.styleable.PieChart_centerLabelIconTint)
-            legendIconsTintArray = getColorArray(it, R.styleable.PieChart_legendIconsTintArray)
+            legendIconsTintArray = getColorArray(it, R.styleable.PieChart_legendIconsTint)
             legendsMargin = it.getDimension(R.styleable.PieChart_legendsMargin, dpToPx(DEFAULT_LEGENDS_MARGIN))
             legendsColor = it.getColor(R.styleable.PieChart_legendsColor, DEFAULT_LEGENDS_COLOR)
             legendBoxBackgroundColor = it.getColor(R.styleable.PieChart_legendBoxBackgroundColor, DEFAULT_LEGEND_BOX_BACKGROUND_COLOR)
@@ -722,10 +720,36 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         return if (tint == Int.MAX_VALUE) null else tint
     }
 
+    /**
+     * Test cases: "", "@null", "#ff0", "@color/sampleColor", "@array/sampleColorArray", attribute omitted from xml
+     */
     @ColorInt
-    private fun getColorArray(typedArray: TypedArray, @StyleableRes attrName: Int): IntArray {
+    private fun getColorArray(typedArray: TypedArray, @StyleableRes attrName: Int): IntArray? {
         val arrayId = typedArray.getResourceId(attrName, -1)
-        return if (arrayId == -1) intArrayOf() else resources.getIntArray(arrayId)
+        if (arrayId != -1) {
+            // If the attribute value is a reference to a resource...
+            try {
+                return resources.getIntArray(arrayId)
+            } catch (e: Resources.NotFoundException) {
+                // if it was not reference to a color array, it is a reference to a color
+                /*val color = resources.getColor(arrayId)
+                return intArrayOf(color)*/
+                val color = getIconTint(typedArray, attrName)
+                if (color != null) {
+                    return intArrayOf(color)
+                } else {
+                    return null
+                }
+            }
+        } else {
+            // If the attribute value is a literal color value...
+            val color = getIconTint(typedArray, attrName)
+            if (color != null) {
+                return intArrayOf(color)
+            } else {
+                return null
+            }
+        }
     }
 
     /**
@@ -753,7 +777,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             else -> (height - paddingTop - paddingBottom).toFloat()
         }
 
-        val legendBox = LegendBuilder().createLegendBox(context, maxAvailableWidthForLegendBox, maxAvailableHeightForLegendBox, slices, legendsTitle, legendsTitleSize, legendsTitleColor, legendTitleMargin, legendsTitleAlignment, legendsIcon, legendIconsHeight, legendIconsTint, legendIconsAlpha, legendsSize, legendsColor, legendIconsMargin, legendsPercentageMargin, isLegendsPercentageEnabled, legendsPercentageSize, legendsPercentageColor, legendsMargin, legendArrangement, legendsAlignment, legendBoxBackgroundColor, legendBoxPadding, legendBoxBorder, legendBoxBorderColor, legendBoxBorderAlpha, legendBoxBorderCornerRadius, legendBoxBorderType, legendBoxBorderDashArray, legendBoxMargin, legendPosition, legendLinesMargin, legendsWrapping, isLegendBoxBorderEnabled)
+        val legendBox = LegendBuilder().createLegendBox(context, maxAvailableWidthForLegendBox, maxAvailableHeightForLegendBox, slices,legendIconsTintArray, legendsTitle, legendsTitleSize, legendsTitleColor, legendTitleMargin, legendsTitleAlignment, legendsIcon, legendIconsHeight, legendIconsAlpha, legendsSize, legendsColor, legendIconsMargin, legendsPercentageMargin, isLegendsPercentageEnabled, legendsPercentageSize, legendsPercentageColor, legendsMargin, legendArrangement, legendsAlignment, legendBoxBackgroundColor, legendBoxPadding, legendBoxBorder, legendBoxBorderColor, legendBoxBorderAlpha, legendBoxBorderCornerRadius, legendBoxBorderType, legendBoxBorderDashArray, legendBoxMargin, legendPosition, legendLinesMargin, legendsWrapping, isLegendBoxBorderEnabled)
         val (pieWidth, pieHeight) = calculatePieDimensions(width, height, Paddings(paddingTop, paddingBottom, paddingStart, paddingEnd), isLegendEnabled, legendBoxMargin, legendPosition, legendBox.width, legendBox.height)
         pie = Pie(context, pieWidth, pieHeight, null, null, startAngle, slices, labelType, outsideLabelsMargin, labelsSize, labelsColor, labelsFont, labelIconsHeight, labelIconsMargin, labelIconsPlacement, labelIconsTint, labelOffset, shouldCenterPie, drawDirection, overlayRatio, overlayAlpha, gradientType, holeRatio, slicesPointer, gap, gapPosition)
         val chartDirection = determineChartDirection(legendPosition)
