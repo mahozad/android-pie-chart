@@ -160,7 +160,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         @ColorInt val legendPercentageColor: Int? = null,
         @Dimension val legendPercentageSize: Float? = null,
         @Dimension val legendPercentageMargin: Float? = null,
-        @FloatRange(from = 0.0, to = 1.0) val legendIconAlpha: Float = 1f,
+        @FloatRange(from = 0.0, to = 1.0) val legendIconAlpha: Float? = 1f,
 
         /**
          * Can also set the default value to the slice fraction.
