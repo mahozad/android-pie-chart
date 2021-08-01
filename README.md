@@ -27,7 +27,7 @@ A Pie/Donut<sup id="ref-1">[1](#footnote-1)</sup>/Ring chart for Android.
 
 ### build.gradle[.kts]
 ```groovy
-implementation("ir.mahozad.android:pie-chart:0.4.0")
+implementation("ir.mahozad.android:pie-chart:0.5.0")
 ```
 
 ### layout.xml

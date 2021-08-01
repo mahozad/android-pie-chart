@@ -1,5 +1,25 @@
 # History of notable changes introduced in each version
 
+## v0.5.0 (2021-08-01)
+#### New features
+  - Legends ([17d74f86] and other commits)  
+    Including properties and attributes for:
+    - Legends automatic wrapping
+    - Legends box (enable/disable, title, background, border, color, position, alignment)
+    - Legends arrangement (horizontal/vertical)
+    - Legends percentage (enable/disable, size, color)
+    - Legends alignment
+    - Legends icons (default icons, tint, height, margin from legend text)
+  - Center label ([5907b86d])
+  - Center background ([f88d28c5])
+#### Updates
+  - Update some library dependencies ([e9420e85])
+  - Update Kotlin version ([ce8cda52])
+#### Other
+  - Fix empty javadoc jar by including dokka documentation in it ([87195e51])
+
+[All commits since version 0.4.0]
+
 ## v0.4.0 (2021-07-04)
 #### New features
   - Outside inward circular label ([3bad21df])
@@ -27,12 +47,12 @@
 
 ## v0.2.0 (2021-05-29)
 #### New features
-- Outside label (currently not supporting icon) ([d5269dd9])
-- Outward Pointer for slices ([d5269dd9])
-- Label icon for inside labels ([7dffb164])
-- Properties for changing label colors ([7c374cec])
+  - Outside label (currently not supporting icon) ([d5269dd9])
+  - Outward Pointer for slices ([d5269dd9])
+  - Label icon for inside labels ([7dffb164])
+  - Properties for changing label colors ([7c374cec])
 #### Updates
-- Attributes are now public to use in layouts ([64a1f18d])
+  - Attributes are now public to use in layouts ([64a1f18d])
 
 [All commits since version 0.1.0]
 
@@ -43,6 +63,7 @@ This is the first release of the library.
 [All commits since version 0.1.0]: https://github.com/mahozad/android-pie-chart/compare/v0.1.0...v0.2.0
 [All commits since version 0.2.0]: https://github.com/mahozad/android-pie-chart/compare/v0.2.0...v0.3.0
 [All commits since version 0.3.0]: https://github.com/mahozad/android-pie-chart/compare/v0.3.0...v0.4.0
+[All commits since version 0.4.0]: https://github.com/mahozad/android-pie-chart/compare/v0.4.0...v0.5.0
 
 [64a1f18d]: https://github.com/mahozad/android-pie-chart/commit/64a1f18d
 [7c374cec]: https://github.com/mahozad/android-pie-chart/commit/7c374cec
@@ -58,6 +79,12 @@ This is the first release of the library.
 [3bad21df]: https://github.com/mahozad/android-pie-chart/commit/3bad21df
 [e0724cb7]: https://github.com/mahozad/android-pie-chart/commit/e0724cb7
 [891f77be]: https://github.com/mahozad/android-pie-chart/commit/891f77be
+[17d74f86]: https://github.com/mahozad/android-pie-chart/commit/17d74f86
+[5907b86d]: https://github.com/mahozad/android-pie-chart/commit/5907b86d
+[f88d28c5]: https://github.com/mahozad/android-pie-chart/commit/f88d28c5
+[e9420e85]: https://github.com/mahozad/android-pie-chart/commit/e9420e85
+[ce8cda52]: https://github.com/mahozad/android-pie-chart/commit/ce8cda52
+[87195e51]: https://github.com/mahozad/android-pie-chart/commit/87195e51
 
 [comment]: <> (NOTE: Be aware that modifying the format of this file might impact the script that makes body for GitHub release)
 
@@ -73,3 +100,5 @@ This is the first release of the library.
   - deprecation 1
 #### Removals
   - removal 1
+#### Other
+  - other 1
