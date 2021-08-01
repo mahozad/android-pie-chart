@@ -20,51 +20,42 @@ class ArrangerTest {
 
     @Test fun horizontalContainerWithStartAlignmentAndNoChildAndClipWrappingAndNoPaddingsAndNoBorders() {
         val startCoordinates = Coordinates(120f, 235f)
-        val availableWidth = 400f
-        val availableHeight = 350f
         val children = emptyList<Box>()
         val layoutDirection = LayoutDirection.HORIZONTAL
         val drawDirection = DrawDirection.LTR
         val alignment = Alignment.START
-        val wrapping = Wrapping.CLIP
         val paddings = null
         val border = null
 
-        val childrenCoordinates = arrangeChildren(children, layoutDirection, drawDirection, alignment, startCoordinates, wrapping, paddings, border, availableWidth, availableHeight)
+        val childrenCoordinates = arrangeChildren(children, layoutDirection, drawDirection, alignment, startCoordinates, paddings, border)
 
         assertThat(childrenCoordinates).isEmpty()
     }
 
     @Test fun verticalContainerWithStartAlignmentAndNoChildAndClipWrappingAndNoPaddingsAndNoBorders() {
         val startCoordinates = Coordinates(120f, 235f)
-        val availableWidth = 400f
-        val availableHeight = 350f
         val children = emptyList<Box>()
         val layoutDirection = LayoutDirection.VERTICAL
         val drawDirection = DrawDirection.LTR
         val alignment = Alignment.START
-        val wrapping = Wrapping.CLIP
         val paddings = null
         val border = null
 
-        val childrenCoordinates = arrangeChildren(children, layoutDirection, drawDirection, alignment, startCoordinates, wrapping, paddings, border, availableWidth, availableHeight)
+        val childrenCoordinates = arrangeChildren(children, layoutDirection, drawDirection, alignment, startCoordinates, paddings, border)
 
         assertThat(childrenCoordinates).isEmpty()
     }
 
     @Test fun layeredContainerWithStartAlignmentAndNoChildAndClipWrappingAndNoPaddingsAndNoBorders() {
         val startCoordinates = Coordinates(120f, 235f)
-        val availableWidth = 400f
-        val availableHeight = 350f
         val children = emptyList<Box>()
         val layoutDirection = LayoutDirection.LAYERED
         val drawDirection = DrawDirection.LTR
         val alignment = Alignment.START
-        val wrapping = Wrapping.CLIP
         val paddings = null
         val border = null
 
-        val childrenCoordinates = arrangeChildren(children, layoutDirection, drawDirection, alignment, startCoordinates, wrapping, paddings, border, availableWidth, availableHeight)
+        val childrenCoordinates = arrangeChildren(children, layoutDirection, drawDirection, alignment, startCoordinates, paddings, border)
 
         assertThat(childrenCoordinates).isEmpty()
     }
@@ -83,10 +74,8 @@ class ArrangerTest {
         expectedCoordinates: List<Coordinates>
     ) {
         val startCoordinates = Coordinates(120f, 235f)
-        val availableWidth = 400f
-        val availableHeight = 350f
 
-        val childrenCoordinates = arrangeChildren(children, layoutDirection, drawDirection, alignment, startCoordinates, wrapping, paddings, border, availableWidth, availableHeight)
+        val childrenCoordinates = arrangeChildren(children, layoutDirection, drawDirection, alignment, startCoordinates, paddings, border,)
 
         for ((i, coordinates) in childrenCoordinates.withIndex()) {
             assertThat(coordinates)

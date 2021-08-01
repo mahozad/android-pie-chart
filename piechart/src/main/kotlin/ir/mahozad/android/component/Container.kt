@@ -166,7 +166,7 @@ internal class Container(
         bounds.set(start, top, start + width, top + height) // Used to draw the background
         val borderOffset = (border?.thickness?: 0f) / 2f
         borderBounds.set(bounds.left + borderOffset, bounds.top + borderOffset, bounds.right - borderOffset, bounds.bottom - borderOffset)
-        val positions = arrangeChildren(internalChildren, internalLayoutDirection, drawDirection, childrenAlignment, Coordinates(start, top), wrapping, paddings, border, maxAvailableWidth, maxAvailableHeight,)
+        val positions = arrangeChildren(internalChildren, internalLayoutDirection, drawDirection, childrenAlignment, Coordinates(start, top), paddings, border)
         for ((i, child) in internalChildren.withIndex()) {
             child.layOut(positions[i].y, positions[i].x, drawDirection)
         }

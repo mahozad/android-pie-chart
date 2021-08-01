@@ -29,11 +29,8 @@ internal fun arrangeChildren(
     alignment: Alignment,
     /** top-left when LTR, top-right when RTL of where the whole box should start */
     startCoordinates: Coordinates,
-    wrapping: Wrapping,
-    paddings: Paddings?, // paddings of this box
-    border: Border?, // borders of this box
-    maxAvailableWidth: Float,
-    maxAvailableHeight: Float
+    paddings: Paddings?, // paddings of this container box
+    border: Border?, // borders of this container box
 ): List<Coordinates> {
     if (children.isEmpty()) {
         return emptyList()
