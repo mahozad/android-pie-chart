@@ -8,3 +8,4 @@ Graphics Gems V. A Collection of Practical Techniques for the Computer Graphics 
 [This video](https://youtu.be/jlKrTTdTCUE) explains the Android canvas in detail
 
 For unit testing a custom view see https://stackoverflow.com/q/48965231/8583692
+also see https://android.googlesource.com/platform/cts/+/0ceca29/tests/tests/content/src/android/content/cts/ContextTest.java
