@@ -70,7 +70,7 @@ class UtilitiesTest {
         val testTheme = context.theme
         val typedArray = testTheme.obtainStyledAttributes(ir.mahozad.android.test.R.styleable.TestStyleable)
 
-        val array = getColorArray(context, typedArray, ir.mahozad.android.test.R.styleable.TestStyleable_testAttr1)
+        val array = getColorArray(typedArray, ir.mahozad.android.test.R.styleable.TestStyleable_testAttr1)
 
         assertThat(array).isEqualTo(expectedColorArray)
     }

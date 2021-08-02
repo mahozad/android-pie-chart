@@ -643,7 +643,7 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             legendsPercentageSize = it.getDimension(R.styleable.PieChart_legendsPercentageSize, spToPx(DEFAULT_LEGENDS_PERCENTAGE_SIZE))
             legendsPercentageColor = it.getColor(R.styleable.PieChart_legendsPercentageColor, DEFAULT_LEGENDS_PERCENTAGE_COLOR)
             centerLabelIconTint = getIconTint(it, R.styleable.PieChart_centerLabelIconTint)
-            legendIconsTintArray = getColorArray(context, it, R.styleable.PieChart_legendIconsTint)
+            legendIconsTintArray = getColorArray(it, R.styleable.PieChart_legendIconsTint)
             legendsMargin = it.getDimension(R.styleable.PieChart_legendsMargin, dpToPx(DEFAULT_LEGENDS_MARGIN))
             legendsColor = it.getColor(R.styleable.PieChart_legendsColor, DEFAULT_LEGENDS_COLOR)
             legendBoxBackgroundColor = it.getColor(R.styleable.PieChart_legendBoxBackgroundColor, DEFAULT_LEGEND_BOX_BACKGROUND_COLOR)

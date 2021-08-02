@@ -1,6 +1,5 @@
 package ir.mahozad.android.util
 
-import android.content.Context
 import android.content.res.Resources
 import android.content.res.TypedArray
 import androidx.annotation.ColorInt
@@ -60,14 +59,10 @@ internal fun getIconTint(typedArray: TypedArray, @StyleableRes attrName: Int): I
  * The attribute can be a reference to a color array, a reference to a color, or a color literal.
  */
 @ColorInt
-internal fun getColorArray(
-    context: Context,
-    typedArray: TypedArray,
-    @StyleableRes attrName: Int
-): IntArray? {
+internal fun getColorArray(typedArray: TypedArray, @StyleableRes attrName: Int): IntArray? {
     return try {
         val arrayId = typedArray.getResourceId(attrName, -1)
-        context.resources.getIntArray(arrayId)
+        typedArray.resources.getIntArray(arrayId)
     } catch (e: Resources.NotFoundException) {
         /* It was not an array; try as a single color */
         val color = getIconTint(typedArray, attrName)
