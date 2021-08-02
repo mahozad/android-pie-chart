@@ -11,9 +11,8 @@ import android.graphics.Typeface.DEFAULT
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.*
-import androidx.annotation.Dimension.DP
-import androidx.annotation.Dimension.PX
-import androidx.core.content.ContextCompat
+import androidx.annotation.Dimension.*
+import androidx.annotation.IntRange
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.content.res.use
 import ir.mahozad.android.PieChart.DefaultIcons.CIRCLE
@@ -35,44 +34,44 @@ import java.text.NumberFormat
 
 const val ENABLED = true
 const val DISABLED = false
-const val DEFAULT_PIE_SIZE = 256 /* dp */
-const val DEFAULT_START_ANGLE = -90
-const val DEFAULT_HOLE_RATIO = 0.25f
-const val DEFAULT_OVERLAY_RATIO = 0.55f
-const val DEFAULT_OVERLAY_ALPHA = 0.15f
+@Dimension(unit = DP) const val DEFAULT_PIE_RADIUS = 256
+@IntRange(from = -360, to = 360) const val DEFAULT_START_ANGLE = -90
+@FloatRange(from = 0.0, to = 1.0) const val DEFAULT_HOLE_RATIO = 0.25f
+@FloatRange(from = 0.0, to = 1.0) const val DEFAULT_OVERLAY_RATIO = 0.55f
+@FloatRange(from = 0.0, to = 1.0) const val DEFAULT_OVERLAY_ALPHA = 0.15f
 const val DEFAULT_CENTER_LABEL_STATUS = DISABLED
 const val DEFAULT_CENTER_BACKGROUND_STATUS = DISABLED
 @FloatRange(from = 0.0, to = 1.0) const val DEFAULT_CENTER_BACKGROUND_RATIO = 0.5f
 @FloatRange(from = 0.0, to = 1.0) const val DEFAULT_CENTER_BACKGROUND_ALPHA = 1f
-const val DEFAULT_GAP = 8f /* px */
-const val DEFAULT_LABELS_SIZE = 18f /* sp */
+@Dimension(unit = DP) const val DEFAULT_GAP = 8f
+@Dimension(unit = SP) const val DEFAULT_LABELS_SIZE = 18f
 const val DEFAULT_LEGEND_STATUS = DISABLED
-const val DEFAULT_LEGENDS_SIZE = 16f /* sp */
-const val DEFAULT_LEGEND_BOX_MARGIN = 8f /* dp */
-const val DEFAULT_LEGEND_TITLE_MARGIN = 8f /* dp */
-const val DEFAULT_LEGEND_LINES_MARGIN = 10f /* dp */
-const val DEFAULT_LEGEND_BOX_PADDING = 4f /* dp */
-const val DEFAULT_LEGEND_BOX_BORDER = 2f /* dp */
+@Dimension(unit = SP) const val DEFAULT_LEGENDS_SIZE = 16f
+@Dimension(unit = DP) const val DEFAULT_LEGEND_BOX_MARGIN = 8f
+@Dimension(unit = DP) const val DEFAULT_LEGEND_TITLE_MARGIN = 8f
+@Dimension(unit = DP) const val DEFAULT_LEGEND_LINES_MARGIN = 10f
+@Dimension(unit = DP) const val DEFAULT_LEGEND_BOX_PADDING = 4f
+@Dimension(unit = DP) const val DEFAULT_LEGEND_BOX_BORDER = 2f
 const val DEFAULT_LEGEND_BOX_BORDER_DASH_ARRAY = "4, 4" /* dp (each) */
 @FloatRange(from = 0.0, to = 1.0) const val DEFAULT_LEGEND_BOX_BORDER_ALPHA = 0.4f
-const val DEFAULT_LEGEND_BOX_BORDER_CORNER_RADIUS = 3f /* dp */
-const val DEFAULT_LEGENDS_TITLE_SIZE = 18f /* sp */
-const val DEFAULT_LEGEND_ICONS_MARGIN = 8f /* dp */
+@Dimension(unit = DP) const val DEFAULT_LEGEND_BOX_BORDER_CORNER_RADIUS = 3f
+@Dimension(unit = SP) const val DEFAULT_LEGENDS_TITLE_SIZE = 18f
+@Dimension(unit = DP) const val DEFAULT_LEGEND_ICONS_MARGIN = 8f
 const val DEFAULT_LEGEND_ICONS_ALPHA = 1f
 const val DEFAULT_LEGEND_BOX_BORDER_STATUS = DISABLED
 const val DEFAULT_LEGENDS_PERCENTAGE_STATUS = DISABLED
-const val DEFAULT_LEGENDS_PERCENTAGE_MARGIN = 8f /* dp */
-const val DEFAULT_LEGENDS_PERCENTAGE_SIZE = DEFAULT_LEGENDS_SIZE /* sp */
-const val DEFAULT_LEGENDS_MARGIN = 4f /* dp */
+@Dimension(unit = DP) const val DEFAULT_LEGENDS_PERCENTAGE_MARGIN = 8f
+@Dimension(unit = SP) const val DEFAULT_LEGENDS_PERCENTAGE_SIZE = DEFAULT_LEGENDS_SIZE
+@Dimension(unit = DP) const val DEFAULT_LEGENDS_MARGIN = 4f
 /* sp so user can easily specify the same value for both label size and icon height to make them the same size */
-const val DEFAULT_LABEL_ICONS_HEIGHT = DEFAULT_LABELS_SIZE /* sp */
-const val DEFAULT_LEGEND_ICONS_HEIGHT = DEFAULT_LEGENDS_SIZE /* sp */
-const val DEFAULT_LABEL_ICONS_MARGIN = 8f /* dp */
+@Dimension(unit = SP) const val DEFAULT_LABEL_ICONS_HEIGHT = DEFAULT_LABELS_SIZE
+@Dimension(unit = SP) const val DEFAULT_LEGEND_ICONS_HEIGHT = DEFAULT_LEGENDS_SIZE
+@Dimension(unit = DP) const val DEFAULT_LABEL_ICONS_MARGIN = 8f
 const val DEFAULT_LABEL_OFFSET = 0.75f
-const val DEFAULT_OUTSIDE_LABELS_MARGIN = 28f /* dp */
+@Dimension(unit = DP) const val DEFAULT_OUTSIDE_LABELS_MARGIN = 28f
 const val DEFAULT_CENTER_LABEL = ""
-const val DEFAULT_CENTER_LABEL_SIZE = 16f /* sp */
-const val DEFAULT_CENTER_LABEL_ICON_HEIGHT = DEFAULT_CENTER_LABEL_SIZE /* sp */
+@Dimension(unit = SP) const val DEFAULT_CENTER_LABEL_SIZE = 16f
+@Dimension(unit = SP) const val DEFAULT_CENTER_LABEL_ICON_HEIGHT = DEFAULT_CENTER_LABEL_SIZE
 @Dimension(unit = DP) const val DEFAULT_CENTER_LABEL_ICON_MARGIN = 8f
 @FloatRange(from = 0.0, to = 1.0) const val DEFAULT_CENTER_LABEL_ALPHA = 1f
 @FloatRange(from = 0.0, to = 1.0) const val DEFAULT_CENTER_LABEL_ICON_ALPHA = 1f
@@ -107,6 +106,14 @@ val defaultLabelsFont: Typeface = DEFAULT
 val defaultCenterLabelFont: Typeface = DEFAULT
 val defaultSlicesPointer: SlicePointer? = null
 val defaultLegendIconsTintArray: IntArray? = null
+val defaultSlices = listOf(
+    /* ContextCompat.getColor(context, android.R.color.holo_green_dark) */
+    PieChart.Slice(0.43f, Color.HSVToColor(floatArrayOf(88f, 0.85f, 0.7f))),
+    PieChart.Slice(0.21f, Color.HSVToColor(floatArrayOf(51f, 0.82f, 0.8f))),
+    PieChart.Slice(0.19f, Color.HSVToColor(floatArrayOf(200f, 0.82f, 0.8f))),
+    PieChart.Slice(0.14f, Color.HSVToColor(floatArrayOf(338f, 0.82f, 0.8f))),
+    PieChart.Slice(0.03f, Color.HSVToColor(floatArrayOf(27f, 0.82f, 0.8f)))
+)
 
 /**
  * This is the order that these commonly used view methods are run:
@@ -180,6 +187,13 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         @FloatRange(from = 0.0, to = 1.0) val scale: Float = 1f
     )
 
+    var slices = defaultSlices
+        set(list) {
+            field = list
+            pie.slices = list
+            invalidate()
+        }
+
     enum class DrawDirection { CLOCKWISE, COUNTER_CLOCKWISE }
     enum class IconPlacement { START, END, LEFT, RIGHT, TOP, BOTTOM }
     enum class GradientType { RADIAL, SWEEP }
@@ -219,46 +233,127 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
         NO_ICON(R.drawable.ic_empty)
     }
 
+    /**
+     * Can be any integer number. It will be automatically normalized to range 0..360.
+     */
     var startAngle = DEFAULT_START_ANGLE
         set(angle) {
             field = normalizeAngle(angle)
+            // FIXME: Using reflection to check for variable initialization state
+            if (::pie.isInitialized) pie.startAngle = angle
             invalidate()
         }
+    @IntegerRes
+    var startAngleResource = 0
+        set(resourceId) {
+            field = resourceId
+            startAngle = resources.getInteger(resourceId)
+        }
+    @FloatRange(from = 0.0, to = 1.0)
     var holeRatio = DEFAULT_HOLE_RATIO
         set(ratio) {
             field = ratio.coerceIn(0f, 1f)
+            if (::pie.isInitialized) pie.holeRatio = ratio
             invalidate()
         }
+    @FractionRes
+    var holeRatioResource = 0
+        set(resourceId) {
+            field = resourceId
+            holeRatio = resources.getFraction(resourceId, 1, 1)
+        }
+    @FloatRange(from = 0.0, to = 1.0)
     var overlayRatio = DEFAULT_OVERLAY_RATIO
         set(ratio) {
             field = ratio.coerceIn(0f, 1f)
+            if (::pie.isInitialized) pie.overlayRatio = ratio
             invalidate()
         }
+    @FractionRes
+    var overlayRatioResource = 0
+        set(resourceId) {
+            field = resourceId
+            overlayRatio = resources.getFraction(resourceId, 1, 1)
+        }
+    @FloatRange(from = 0.0, to = 1.0)
     var overlayAlpha = DEFAULT_OVERLAY_ALPHA
         set(alpha) {
             field = alpha.coerceIn(0f, 1f)
+            if (::pie.isInitialized) pie.overlayAlpha = alpha
             invalidate()
         }
-    var gap = DEFAULT_GAP
+    @FractionRes
+    var overlayAlphaResource = 0
+        set(resourceId) {
+            field = resourceId
+            overlayAlpha = resources.getFraction(resourceId, 1, 1)
+        }
+    @Dimension(unit = PX)
+    var gap = dpToPx(DEFAULT_GAP)
         set(width) {
             field = width
+            if (::pie.isInitialized) pie.gap = width
             invalidate()
         }
+    @Dimension(unit = DP)
+    var gapDp = DEFAULT_GAP
+        set(widthDp) {
+            field = widthDp
+            gap = dpToPx(widthDp)
+        }
+    @DimenRes
+    var gapResource = 0
+        set(resourceId) {
+            field = resourceId
+            gap = resources.getDimension(resourceId)
+        }
+    @Dimension(unit = PX)
     var labelsSize = spToPx(DEFAULT_LABELS_SIZE)
-        set(size /* px */) {
+        set(size) {
             field = size
+            if (::pie.isInitialized) pie.labelsSize = size
             invalidate()
+        }
+    @Dimension(unit = SP)
+    var labelsSizeSp = DEFAULT_LABELS_SIZE
+        set(sizeSp) {
+            field = sizeSp
+            labelsSize = spToPx(sizeSp)
+        }
+    @DimenRes
+    var labelsSizeResource = 0
+        set(resourceId) {
+            field = resourceId
+            labelsSize = resources.getDimension(resourceId)
         }
     var isLegendEnabled = DEFAULT_LEGEND_STATUS
         set(shouldEnable) {
             field = shouldEnable
             invalidate()
-            requestLayout()
         }
+    @BoolRes
+    var isLegendEnabledResource = 0
+        set(resourceId) {
+            field = resourceId
+            isLegendEnabled = resources.getBoolean(resourceId)
+        }
+    @Dimension(unit = PX)
     var legendsSize = spToPx(DEFAULT_LEGENDS_SIZE)
-        set(size /* px */) {
+        set(size) {
             field = size
             invalidate()
+        }
+    @Dimension(unit = SP)
+    var legendsSizeSp = DEFAULT_LEGENDS_SIZE
+        set(sizeSp) {
+            field = sizeSp
+            legendsSize = spToPx(sizeSp)
+        }
+    @DimenRes
+    var legendsSizeResource = 0
+        set(resourceId) {
+            field = resourceId
+            legendsSize = resources.getDimension(resourceId)
         }
     var legendsTitleAlignment = defaultLegendsTitleAlignment
         set(alignment) {
@@ -578,21 +673,22 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
             invalidate()
         }
     var gapPosition = defaultGapPosition
+        set(position) {
+            field = position
+            invalidate()
+        }
     var gradientType = defaultGradientType
+        set(type) {
+            field = type
+            invalidate()
+        }
     var drawDirection = defaultDrawDirection
-    var slices = listOf(
-        // Slice(fraction = 0.125f, label = "qlyO([", color = ContextCompat.getColor(context, android.R.color.holo_green_dark)),
-        // Slice(fraction = 0.25f, label = "qlyO([", color = ContextCompat.getColor(context, android.R.color.holo_orange_dark)),
-        // Slice(fraction = 0.125f, label = "qlyO([", color = ContextCompat.getColor(context, android.R.color.holo_purple)),
-        // Slice(fraction = 0.5f, label = "qlyO([", color = ContextCompat.getColor(context, android.R.color.holo_blue_dark)),
+        set(direction) {
+            field = direction
+            invalidate()
+        }
 
-        Slice(0.43f, ContextCompat.getColor(context, android.R.color.holo_green_dark), labelIcon = R.drawable.ic_square /*pointer = SlicePointer(50f,100f,0)*/),
-        Slice(0.21f, ContextCompat.getColor(context, android.R.color.holo_orange_dark), legend = "Dairy"),
-        Slice(0.19f, ContextCompat.getColor(context, android.R.color.holo_blue_dark)),
-        Slice(0.14f, ContextCompat.getColor(context, android.R.color.holo_red_light)),
-        Slice(0.03f, ContextCompat.getColor(context, android.R.color.holo_purple))
-    )
-    private val mainPaint: Paint = Paint(ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
+    private val paint = Paint(ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
     private lateinit var pie: Pie
     private lateinit var chartBox: Box
     private lateinit var centerLabelBox: Box
@@ -810,10 +906,10 @@ class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
          */
 
         if (isCenterBackgroundEnabled) {
-            mainPaint.color = centerBackgroundColor
-            mainPaint.alpha = (centerBackgroundAlpha * 255).toInt()
+            paint.color = centerBackgroundColor
+            paint.alpha = (centerBackgroundAlpha * 255).toInt()
             val backgroundRadius = centerBackgroundRatio * pie.radius
-            canvas.drawCircle(pie.center.x, pie.center.y, backgroundRadius, mainPaint)
+            canvas.drawCircle(pie.center.x, pie.center.y, backgroundRadius, paint)
         }
         chartBox.draw(canvas)
         centerLabelBox.draw(canvas)
