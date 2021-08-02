@@ -1,6 +1,8 @@
 @file:JvmName("ChangelogGenerator")
 @file:CompilerOptions("-jvm-target", "11")
+@file:Repository("https://repo.maven.apache.org/maven2")
 @file:Repository("https://jcenter.bintray.com")
+@file:Repository("https://jitpack.io")
 // @file:DependsOn("com.example:library:1.2.3")
 
 import java.nio.file.Files
