@@ -47,6 +47,7 @@ internal fun <T> Array<T>?.getElementCircular(index: Int) = when {
     else -> this[index % size]
 }
 
+@ColorInt
 internal fun getIconTint(typedArray: TypedArray, @StyleableRes attrName: Int): Int? {
     // Do not use -1 as no color; -1 is white: https://stackoverflow.com/a/30430194
     val tint = typedArray.getColor(attrName, /* if user specified no value or @null */ Int.MAX_VALUE)
