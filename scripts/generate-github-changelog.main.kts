@@ -8,7 +8,7 @@ import java.nio.file.Path
 import java.util.stream.Collectors
 
 val versionLineRegex = Regex(""".*v\d+\.\d+\.\d+.* \(\d{4}-\d{2}-\d{2}\)""")
-val outputPath = Path.of("changelog.txt")
+val outputPath: Path = Path.of("changelog.txt")
 
 val result = buildString {
     val releaseType = determineTypeOfThisRelease()
