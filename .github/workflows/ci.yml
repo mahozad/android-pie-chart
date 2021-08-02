@@ -17,6 +17,7 @@ jobs:
       - name: Run all unit tests
         run: ./gradlew :piechart:test --stacktrace
       - name: Run all instrumentation tests
+        if: always() # Run even if the previous steps failed
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 30
@@ -26,6 +27,7 @@ jobs:
           script: ./gradlew :piechart:connectedAndroidTest --stacktrace
           disable-animations: false
       - name: Upload test reports
+        if: always() # Run even if the previous steps failed
         uses: actions/upload-artifact@v2
         with:
           name: tests-report
