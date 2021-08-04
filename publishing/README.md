@@ -1,6 +1,11 @@
 See this good template repository for Android (specifically, how it configures publishing):
 https://github.com/cortinico/kotlin-android-template/blob/master/buildSrc/src/main/kotlin/publish.gradle.kts
 
+For which checksums to include and what to sign when uploading artifacts see
+https://stackoverflow.com/q/66217110/8583692 and
+https://docs.gradle.org/6.0.1/release-notes.html#publication-of-sha256-and-sha512-checksums and
+https://docs.gradle.org/current/userguide/signing_plugin.html#sec:specifying_what_to_sign
+
 For successful login, go to the url replied in Sonatype Jira ticket of the corresponding repository ([currently here](https://s01.oss.sonatype.org/)).  
 The username and password are the same as the Sonatype Jira account.
 
