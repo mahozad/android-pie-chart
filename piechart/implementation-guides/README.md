@@ -6,6 +6,12 @@ See *Nice Numbers for Graph Labels (657)* for how to generate axis labels for ch
 Graphics Gems V. A Collection of Practical Techniques for the Computer Graphics Programmer
 
 [This video](https://youtu.be/jlKrTTdTCUE) explains the Android canvas in detail
+and [this](https://youtu.be/H05mF0qrBVA)
+and [this](https://youtu.be/4NNmMO8Aykw)
+
+The difference between extending from *View* and extending from *Drawable* is that
+unlike *View*, a *Drawable* does not have any facility to receive events
+or otherwise interact with the user.
 
 For unit testing a custom view see
 https://stackoverflow.com/q/48965231/8583692 and
