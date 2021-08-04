@@ -270,5 +270,6 @@ dependencies {
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
     androidTestImplementation("org.assertj:assertj-core:3.20.2")
     androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.2.2")
+    androidTestImplementation("androidx.constraintlayout:constraintlayout:2.1.0")
     androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.2.2")
 }
