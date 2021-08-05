@@ -123,6 +123,8 @@ val defaultSlices = listOf(
  * 4. onLayout
  * 5. onDraw         // draw your view content at the size specified by the parent
  *
+ * See [this](https://stackoverflow.com/q/20670828/8583692) for more information about the constructors.
+ *
  * Any time that you make a change to your view that affects the appearance but not the size,
  * then call invalidate(). This will cause onDraw to be called again (but not all of those other previous methods).
  *
@@ -132,7 +134,11 @@ val defaultSlices = listOf(
  *
  * See [this helpful post](https://stackoverflow.com/a/42430834) for more information.
  */
-class PieChart(context: Context, attrs: AttributeSet) : View(context, attrs) {
+class PieChart @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
+) : View(context, attrs, defStyle) {
 
     data class Slice(
         @FloatRange(from = 0.0, to = 1.0) val fraction: Float,
