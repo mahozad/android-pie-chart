@@ -123,7 +123,10 @@ val defaultSlices = listOf(
  * 4. onLayout
  * 5. onDraw         // draw your view content at the size specified by the parent
  *
- * See [this](https://stackoverflow.com/q/20670828/8583692) for more information about the constructors.
+ * See [this](https://stackoverflow.com/a/36717800/8583692) and
+ * [this](https://stackoverflow.com/q/20670828/8583692) and
+ * [this](https://medium.com/@mmlodawski/https-medium-com-mmlodawski-do-not-always-trust-jvmoverloads-5251f1ad2cfe)
+ * for more information about the constructors.
  *
  * Any time that you make a change to your view that affects the appearance but not the size,
  * then call invalidate(). This will cause onDraw to be called again (but not all of those other previous methods).
