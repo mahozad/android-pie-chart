@@ -14,7 +14,7 @@ import androidx.annotation.*
 import androidx.annotation.Dimension.*
 import androidx.annotation.IntRange
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.content.res.use
+import androidx.core.content.withStyledAttributes
 import ir.mahozad.android.PieChart.DefaultIcons.CIRCLE
 import ir.mahozad.android.PieChart.DrawDirection.CLOCKWISE
 import ir.mahozad.android.PieChart.GapPosition.MIDDLE
@@ -708,106 +708,107 @@ class PieChart @JvmOverloads constructor(
      * visible appearance or behavior of your custom view.
      */
     init {
-        // TypedArray objects are a shared resource and must be recycled after use (thus the ::use function)
-        context.theme.obtainStyledAttributes(attrs, R.styleable.PieChart, 0, 0).use {
-            startAngle = normalizeAngle(it.getInt(R.styleable.PieChart_startAngle, DEFAULT_START_ANGLE))
-            holeRatio = it.getFloat(R.styleable.PieChart_holeRatio, DEFAULT_HOLE_RATIO)
-            overlayRatio = it.getFloat(R.styleable.PieChart_overlayRatio, DEFAULT_OVERLAY_RATIO)
-            overlayAlpha = it.getFloat(R.styleable.PieChart_overlayAlpha, DEFAULT_OVERLAY_ALPHA)
-            gap = it.getDimension(R.styleable.PieChart_gap, DEFAULT_GAP)
-            labelsSize = it.getDimension(R.styleable.PieChart_labelsSize, spToPx(DEFAULT_LABELS_SIZE))
-            labelOffset = it.getFloat(R.styleable.PieChart_labelOffset, DEFAULT_LABEL_OFFSET)
-            labelsColor = it.getColor(R.styleable.PieChart_labelsColor, DEFAULT_LABELS_COLOR)
-            labelIconsTint = getIconTint(it, R.styleable.PieChart_labelIconsTint)
-            labelsFont = getFont(it, R.styleable.PieChart_labelsFont, defaultLabelsFont)
-            isCenterLabelEnabled = it.getInt(R.styleable.PieChart_centerLabelStatus, 0) == 1
-            centerLabelFont = getFont(it, R.styleable.PieChart_centerLabelFont, defaultCenterLabelFont)
-            centerLabelIconAlpha = it.getFloat(R.styleable.PieChart_centerLabelIconAlpha, DEFAULT_CENTER_LABEL_ICON_ALPHA)
-            centerLabelAlpha = it.getFloat(R.styleable.PieChart_centerLabelAlpha, DEFAULT_CENTER_LABEL_ALPHA)
-            labelIconsHeight = it.getDimension(R.styleable.PieChart_labelIconsHeight, spToPx(DEFAULT_LABEL_ICONS_HEIGHT))
-            centerLabelIconHeight = it.getDimension(R.styleable.PieChart_centerLabelIconHeight, dpToPx(DEFAULT_CENTER_LABEL_ICON_HEIGHT))
-            legendIconsHeight = it.getDimension(R.styleable.PieChart_legendIconsHeight, spToPx(DEFAULT_LEGEND_ICONS_HEIGHT))
-            legendIconsMargin = it.getDimension(R.styleable.PieChart_legendIconsMargin, dpToPx(DEFAULT_LEGEND_ICONS_MARGIN))
-            centerLabelIconMargin = it.getDimension(R.styleable.PieChart_centerLabelIconMargin, dpToPx(DEFAULT_CENTER_LABEL_ICON_MARGIN))
-            labelIconsMargin = it.getDimension(R.styleable.PieChart_labelIconsMargin, dpToPx(DEFAULT_LABEL_ICONS_MARGIN))
-            outsideLabelsMargin = it.getDimension(R.styleable.PieChart_outsideLabelsMargin, dpToPx(DEFAULT_OUTSIDE_LABELS_MARGIN))
-            centerLabel = it.getString(R.styleable.PieChart_centerLabel) ?: DEFAULT_CENTER_LABEL
-            centerLabelSize = it.getDimension(R.styleable.PieChart_centerLabelSize, spToPx(DEFAULT_CENTER_LABEL_SIZE))
-            centerLabelColor = it.getColor(R.styleable.PieChart_centerLabelColor, DEFAULT_CENTER_LABEL_COLOR)
-            isCenterBackgroundEnabled = it.getInt(R.styleable.PieChart_centerBackgroundStatus, 0) == 1
-            centerBackgroundColor = it.getColor(R.styleable.PieChart_centerBackgroundColor, DEFAULT_CENTER_BACKGROUND_COLOR)
-            centerBackgroundRatio = it.getFloat(R.styleable.PieChart_centerBackgroundRatio, DEFAULT_CENTER_BACKGROUND_RATIO)
-            centerBackgroundAlpha = it.getFloat(R.styleable.PieChart_centerBackgroundAlpha, DEFAULT_CENTER_BACKGROUND_ALPHA)
-            isLegendEnabled = it.getInt(R.styleable.PieChart_legendStatus, 0) == 1
-            legendsSize = it.getDimension(R.styleable.PieChart_legendsSize, spToPx(DEFAULT_LEGENDS_SIZE))
-            legendsTitle = it.getString(R.styleable.PieChart_legendsTitle) ?: DEFAULT_LEGENDS_TITLE
-            legendsTitleSize = it.getDimension(R.styleable.PieChart_legendsTitleSize, spToPx(DEFAULT_LEGENDS_TITLE_SIZE))
-            legendsPercentageSize = it.getDimension(R.styleable.PieChart_legendsPercentageSize, spToPx(DEFAULT_LEGENDS_PERCENTAGE_SIZE))
-            legendsPercentageColor = it.getColor(R.styleable.PieChart_legendsPercentageColor, DEFAULT_LEGENDS_PERCENTAGE_COLOR)
-            centerLabelIconTint = getIconTint(it, R.styleable.PieChart_centerLabelIconTint)
-            legendIconsTintArray = getColorArray(it, R.styleable.PieChart_legendIconsTint)
-            legendsMargin = it.getDimension(R.styleable.PieChart_legendsMargin, dpToPx(DEFAULT_LEGENDS_MARGIN))
-            legendsColor = it.getColor(R.styleable.PieChart_legendsColor, DEFAULT_LEGENDS_COLOR)
-            legendBoxBackgroundColor = it.getColor(R.styleable.PieChart_legendBoxBackgroundColor, DEFAULT_LEGEND_BOX_BACKGROUND_COLOR)
-            legendBoxMargin = it.getDimension(R.styleable.PieChart_legendBoxMargin, dpToPx(DEFAULT_LEGEND_BOX_MARGIN))
-            legendTitleMargin = it.getDimension(R.styleable.PieChart_legendTitleMargin, dpToPx(DEFAULT_LEGEND_TITLE_MARGIN))
-            legendLinesMargin = it.getDimension(R.styleable.PieChart_legendLinesMargin, dpToPx(DEFAULT_LEGEND_LINES_MARGIN))
-            legendBoxPadding = it.getDimension(R.styleable.PieChart_legendBoxPadding, dpToPx(DEFAULT_LEGEND_BOX_PADDING))
-            legendsPercentageMargin = it.getDimension(R.styleable.PieChart_legendsPercentageMargin, dpToPx(DEFAULT_LEGENDS_PERCENTAGE_MARGIN))
-            legendBoxBorder = it.getDimension(R.styleable.PieChart_legendBoxBorder, dpToPx(DEFAULT_LEGEND_BOX_BORDER))
-            legendBoxBorderCornerRadius = it.getDimension(R.styleable.PieChart_legendBoxBorderCornerRadius, dpToPx(DEFAULT_LEGEND_BOX_BORDER_CORNER_RADIUS))
-            legendBoxBorderAlpha = it.getFloat(R.styleable.PieChart_legendBoxBorderAlpha, DEFAULT_LEGEND_BOX_BORDER_ALPHA)
-            legendBoxBorderColor = it.getColor(R.styleable.PieChart_legendBoxBorderColor, DEFAULT_LEGEND_BOX_BORDER_COLOR)
-            legendBoxBorderDashArray = parseBorderDashArray(it.getString(R.styleable.PieChart_legendBoxBorderDashArray) ?: DEFAULT_LEGEND_BOX_BORDER_DASH_ARRAY).map { num -> dpToPx(num) }
-            legendIconsAlpha = it.getFloat(R.styleable.PieChart_legendIconsAlpha, DEFAULT_LEGEND_ICONS_ALPHA)
-            legendsTitleColor = it.getColor(R.styleable.PieChart_legendsTitleColor, DEFAULT_LEGENDS_TITLE_COLOR)
-            shouldCenterPie = it.getBoolean(R.styleable.PieChart_shouldCenterPie, DEFAULT_SHOULD_CENTER_PIE)
-            val slicesPointerLength = it.getDimension(R.styleable.PieChart_slicesPointerLength, -1f)
-            val slicesPointerWidth = it.getDimension(R.styleable.PieChart_slicesPointerWidth, -1f)
+        // Could also have used context.theme.obtainStyledAttributes(attrs, R.styleable.PieChart, 0, 0).use {...}
+        //  TypedArray objects are a shared resource and must be recycled after use (thus the .use {} above)
+        context.withStyledAttributes(attrs, R.styleable.PieChart) {
+            startAngle = normalizeAngle(getInt(R.styleable.PieChart_startAngle, DEFAULT_START_ANGLE))
+            holeRatio = getFloat(R.styleable.PieChart_holeRatio, DEFAULT_HOLE_RATIO)
+            overlayRatio = getFloat(R.styleable.PieChart_overlayRatio, DEFAULT_OVERLAY_RATIO)
+            overlayAlpha = getFloat(R.styleable.PieChart_overlayAlpha, DEFAULT_OVERLAY_ALPHA)
+            gap = getDimension(R.styleable.PieChart_gap, DEFAULT_GAP)
+            labelsSize = getDimension(R.styleable.PieChart_labelsSize, spToPx(DEFAULT_LABELS_SIZE))
+            labelOffset = getFloat(R.styleable.PieChart_labelOffset, DEFAULT_LABEL_OFFSET)
+            labelsColor = getColor(R.styleable.PieChart_labelsColor, DEFAULT_LABELS_COLOR)
+            labelIconsTint = getIconTint(this, R.styleable.PieChart_labelIconsTint)
+            labelsFont = getFont(this, R.styleable.PieChart_labelsFont, defaultLabelsFont)
+            isCenterLabelEnabled = getInt(R.styleable.PieChart_centerLabelStatus, 0) == 1
+            centerLabelFont = getFont(this, R.styleable.PieChart_centerLabelFont, defaultCenterLabelFont)
+            centerLabelIconAlpha = getFloat(R.styleable.PieChart_centerLabelIconAlpha, DEFAULT_CENTER_LABEL_ICON_ALPHA)
+            centerLabelAlpha = getFloat(R.styleable.PieChart_centerLabelAlpha, DEFAULT_CENTER_LABEL_ALPHA)
+            labelIconsHeight = getDimension(R.styleable.PieChart_labelIconsHeight, spToPx(DEFAULT_LABEL_ICONS_HEIGHT))
+            centerLabelIconHeight = getDimension(R.styleable.PieChart_centerLabelIconHeight, dpToPx(DEFAULT_CENTER_LABEL_ICON_HEIGHT))
+            legendIconsHeight = getDimension(R.styleable.PieChart_legendIconsHeight, spToPx(DEFAULT_LEGEND_ICONS_HEIGHT))
+            legendIconsMargin = getDimension(R.styleable.PieChart_legendIconsMargin, dpToPx(DEFAULT_LEGEND_ICONS_MARGIN))
+            centerLabelIconMargin = getDimension(R.styleable.PieChart_centerLabelIconMargin, dpToPx(DEFAULT_CENTER_LABEL_ICON_MARGIN))
+            labelIconsMargin = getDimension(R.styleable.PieChart_labelIconsMargin, dpToPx(DEFAULT_LABEL_ICONS_MARGIN))
+            outsideLabelsMargin = getDimension(R.styleable.PieChart_outsideLabelsMargin, dpToPx(DEFAULT_OUTSIDE_LABELS_MARGIN))
+            centerLabel = getString(R.styleable.PieChart_centerLabel) ?: DEFAULT_CENTER_LABEL
+            centerLabelSize = getDimension(R.styleable.PieChart_centerLabelSize, spToPx(DEFAULT_CENTER_LABEL_SIZE))
+            centerLabelColor = getColor(R.styleable.PieChart_centerLabelColor, DEFAULT_CENTER_LABEL_COLOR)
+            isCenterBackgroundEnabled = getInt(R.styleable.PieChart_centerBackgroundStatus, 0) == 1
+            centerBackgroundColor = getColor(R.styleable.PieChart_centerBackgroundColor, DEFAULT_CENTER_BACKGROUND_COLOR)
+            centerBackgroundRatio = getFloat(R.styleable.PieChart_centerBackgroundRatio, DEFAULT_CENTER_BACKGROUND_RATIO)
+            centerBackgroundAlpha = getFloat(R.styleable.PieChart_centerBackgroundAlpha, DEFAULT_CENTER_BACKGROUND_ALPHA)
+            isLegendEnabled = getInt(R.styleable.PieChart_legendStatus, 0) == 1
+            legendsSize = getDimension(R.styleable.PieChart_legendsSize, spToPx(DEFAULT_LEGENDS_SIZE))
+            legendsTitle = getString(R.styleable.PieChart_legendsTitle) ?: DEFAULT_LEGENDS_TITLE
+            legendsTitleSize = getDimension(R.styleable.PieChart_legendsTitleSize, spToPx(DEFAULT_LEGENDS_TITLE_SIZE))
+            legendsPercentageSize = getDimension(R.styleable.PieChart_legendsPercentageSize, spToPx(DEFAULT_LEGENDS_PERCENTAGE_SIZE))
+            legendsPercentageColor = getColor(R.styleable.PieChart_legendsPercentageColor, DEFAULT_LEGENDS_PERCENTAGE_COLOR)
+            centerLabelIconTint = getIconTint(this, R.styleable.PieChart_centerLabelIconTint)
+            legendIconsTintArray = getColorArray(this, R.styleable.PieChart_legendIconsTint)
+            legendsMargin = getDimension(R.styleable.PieChart_legendsMargin, dpToPx(DEFAULT_LEGENDS_MARGIN))
+            legendsColor = getColor(R.styleable.PieChart_legendsColor, DEFAULT_LEGENDS_COLOR)
+            legendBoxBackgroundColor = getColor(R.styleable.PieChart_legendBoxBackgroundColor, DEFAULT_LEGEND_BOX_BACKGROUND_COLOR)
+            legendBoxMargin = getDimension(R.styleable.PieChart_legendBoxMargin, dpToPx(DEFAULT_LEGEND_BOX_MARGIN))
+            legendTitleMargin = getDimension(R.styleable.PieChart_legendTitleMargin, dpToPx(DEFAULT_LEGEND_TITLE_MARGIN))
+            legendLinesMargin = getDimension(R.styleable.PieChart_legendLinesMargin, dpToPx(DEFAULT_LEGEND_LINES_MARGIN))
+            legendBoxPadding = getDimension(R.styleable.PieChart_legendBoxPadding, dpToPx(DEFAULT_LEGEND_BOX_PADDING))
+            legendsPercentageMargin = getDimension(R.styleable.PieChart_legendsPercentageMargin, dpToPx(DEFAULT_LEGENDS_PERCENTAGE_MARGIN))
+            legendBoxBorder = getDimension(R.styleable.PieChart_legendBoxBorder, dpToPx(DEFAULT_LEGEND_BOX_BORDER))
+            legendBoxBorderCornerRadius = getDimension(R.styleable.PieChart_legendBoxBorderCornerRadius, dpToPx(DEFAULT_LEGEND_BOX_BORDER_CORNER_RADIUS))
+            legendBoxBorderAlpha = getFloat(R.styleable.PieChart_legendBoxBorderAlpha, DEFAULT_LEGEND_BOX_BORDER_ALPHA)
+            legendBoxBorderColor = getColor(R.styleable.PieChart_legendBoxBorderColor, DEFAULT_LEGEND_BOX_BORDER_COLOR)
+            legendBoxBorderDashArray = parseBorderDashArray(getString(R.styleable.PieChart_legendBoxBorderDashArray) ?: DEFAULT_LEGEND_BOX_BORDER_DASH_ARRAY).map { num -> dpToPx(num) }
+            legendIconsAlpha = getFloat(R.styleable.PieChart_legendIconsAlpha, DEFAULT_LEGEND_ICONS_ALPHA)
+            legendsTitleColor = getColor(R.styleable.PieChart_legendsTitleColor, DEFAULT_LEGENDS_TITLE_COLOR)
+            shouldCenterPie = getBoolean(R.styleable.PieChart_shouldCenterPie, DEFAULT_SHOULD_CENTER_PIE)
+            val slicesPointerLength = getDimension(R.styleable.PieChart_slicesPointerLength, -1f)
+            val slicesPointerWidth = getDimension(R.styleable.PieChart_slicesPointerWidth, -1f)
             slicesPointer = if (slicesPointerLength <= 0 || slicesPointerWidth <= 0) defaultSlicesPointer else SlicePointer(slicesPointerLength, slicesPointerWidth, 0)
-            isLegendsPercentageEnabled = it.getInt(R.styleable.PieChart_legendsPercentageStatus, 0) == 1
-            isLegendBoxBorderEnabled = it.getInt(R.styleable.PieChart_legendBoxBorderStatus, 0) == 1
+            isLegendsPercentageEnabled = getInt(R.styleable.PieChart_legendsPercentageStatus, 0) == 1
+            isLegendBoxBorderEnabled = getInt(R.styleable.PieChart_legendBoxBorderStatus, 0) == 1
             legendsTitleAlignment = Alignment.values()[
-                    it.getInt(R.styleable.PieChart_legendsTitleAlignment, defaultLegendsTitleAlignment.ordinal)
+                    getInt(R.styleable.PieChart_legendsTitleAlignment, defaultLegendsTitleAlignment.ordinal)
             ]
             legendsAlignment = Alignment.values()[
-                    it.getInt(R.styleable.PieChart_legendsAlignment, defaultLegendsAlignment.ordinal)
+                    getInt(R.styleable.PieChart_legendsAlignment, defaultLegendsAlignment.ordinal)
             ]
             legendBoxAlignment = Alignment.values()[
-                    it.getInt(R.styleable.PieChart_legendBoxAlignment, defaultLegendBoxAlignment.ordinal)
+                    getInt(R.styleable.PieChart_legendBoxAlignment, defaultLegendBoxAlignment.ordinal)
             ]
             legendsWrapping = Wrapping.values()[
-                    it.getInt(R.styleable.PieChart_legendsWrapping, defaultLegendsWrapping.ordinal)
+                    getInt(R.styleable.PieChart_legendsWrapping, defaultLegendsWrapping.ordinal)
             ]
             legendBoxBorderType = BorderType.values()[
-                    it.getInt(R.styleable.PieChart_legendBoxBorderType, defaultLegendBoxBorderType.ordinal)
+                    getInt(R.styleable.PieChart_legendBoxBorderType, defaultLegendBoxBorderType.ordinal)
             ]
             labelIconsPlacement = IconPlacement.values()[
-                    it.getInt(R.styleable.PieChart_labelIconsPlacement, defaultLabelIconsPlacement.ordinal)
+                    getInt(R.styleable.PieChart_labelIconsPlacement, defaultLabelIconsPlacement.ordinal)
             ]
             legendPosition = LegendPosition.values()[
-                    it.getInt(R.styleable.PieChart_legendPosition, defaultLegendPosition.ordinal)
+                    getInt(R.styleable.PieChart_legendPosition, defaultLegendPosition.ordinal)
             ]
             legendArrangement = LegendArrangement.values()[
-                    it.getInt(R.styleable.PieChart_legendArrangement, defaultLegendArrangement.ordinal)
+                    getInt(R.styleable.PieChart_legendArrangement, defaultLegendArrangement.ordinal)
             ]
             labelType = LabelType.values()[
-                    it.getInt(R.styleable.PieChart_labelType, defaultLabelType.ordinal)
+                    getInt(R.styleable.PieChart_labelType, defaultLabelType.ordinal)
             ]
             legendsIcon = DefaultIcons.values()[
-                    it.getInt(R.styleable.PieChart_legendsIcon, defaultLegendsIcon.ordinal)
+                    getInt(R.styleable.PieChart_legendsIcon, defaultLegendsIcon.ordinal)
             ]
             centerLabelIcon = DefaultIcons.values()[
-                    it.getInt(R.styleable.PieChart_centerLabelIcon, defaultCenterLabelIcon.ordinal)
+                    getInt(R.styleable.PieChart_centerLabelIcon, defaultCenterLabelIcon.ordinal)
             ]
             gapPosition = GapPosition.values()[
-                    it.getInt(R.styleable.PieChart_gapPosition, defaultGapPosition.ordinal)
+                    getInt(R.styleable.PieChart_gapPosition, defaultGapPosition.ordinal)
             ]
             gradientType = GradientType.values()[
-                    it.getInt(R.styleable.PieChart_gradientType, defaultGradientType.ordinal)
+                    getInt(R.styleable.PieChart_gradientType, defaultGradientType.ordinal)
             ]
             drawDirection = DrawDirection.values()[
-                    it.getInt(R.styleable.PieChart_drawDirection, defaultDrawDirection.ordinal)
+                    getInt(R.styleable.PieChart_drawDirection, defaultDrawDirection.ordinal)
             ]
         }
     }
