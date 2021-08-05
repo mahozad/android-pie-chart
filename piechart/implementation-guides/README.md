@@ -5,6 +5,8 @@ See *Nice Numbers for Graph Labels (657)* for how to generate axis labels for ch
 
 Graphics Gems V. A Collection of Practical Techniques for the Computer Graphics Programmer
 
+https://developer.android.com/codelabs/advanced-android-kotlin-training-custom-views#0
+
 [This video](https://youtu.be/jlKrTTdTCUE) explains the Android canvas in detail
 and [this](https://youtu.be/H05mF0qrBVA)
 and [this](https://youtu.be/4NNmMO8Aykw)
