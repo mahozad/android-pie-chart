@@ -10,11 +10,13 @@ import android.os.Bundle
  */
 class TestActivity : Activity() {
 
+    lateinit var chart: PieChart
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(ir.mahozad.android.test.R.layout.test_layout)
-
-        val chart = findViewById<PieChart>(ir.mahozad.android.test.R.id.testPieChart)
-        chart.setOnClickListener {  }
+        chart = findViewById(ir.mahozad.android.test.R.id.testPieChart)
     }
+
+    fun configureChart(config: (chart: PieChart) -> Unit) = config(chart)
 }
