@@ -55,6 +55,8 @@ android {
     buildTypes {
         getByName("debug") {
             isTestCoverageEnabled = true
+            isMinifyEnabled = false
+            isUseProguard = false
         }
         getByName("release") {
             isTestCoverageEnabled = true
@@ -263,6 +265,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.6.0")
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.2")
     testImplementation("org.assertj:assertj-core:3.20.2")
+    androidTestImplementation("androidx.constraintlayout:constraintlayout:2.1.0")
     androidTestImplementation("org.junit.jupiter:junit-jupiter:5.7.2")
     androidTestImplementation("androidx.test.ext:junit-ktx:1.1.3")
     androidTestImplementation("androidx.test:runner:1.4.0")
@@ -270,6 +273,5 @@ dependencies {
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.2.0")
     androidTestImplementation("org.assertj:assertj-core:3.20.2")
     androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.2.2")
-    androidTestImplementation("androidx.constraintlayout:constraintlayout:2.1.0")
     androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.2.2")
 }
