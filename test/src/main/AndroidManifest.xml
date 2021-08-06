@@ -3,7 +3,7 @@
           package="chart.test">
 
   <application android:theme="@style/TestAppTheme">
-    <activity android:name="chart.test.TesterActivity">
+    <activity android:name="chart.test.ShowCaseActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
