@@ -14,7 +14,7 @@ import org.junit.jupiter.api.extension.RegisterExtension
 
 /**
  * These tests check the final and real-world appearance of the chart in an activity
- * and also the check the chart interactivity (like clicking etc.).
+ * and also check the chart interactivity (like clicking etc.).
  *
  * Make sure the device screen is on and unlocked for the activity to go to resumed state.
  *
