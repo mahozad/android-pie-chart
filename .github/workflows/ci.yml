@@ -12,11 +12,13 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout the code
+        id: step1
         uses: actions/checkout@v2
       # See https://developer.android.com/studio/test/command-line for test types and their result location
       - name: Run all unit tests
         run: ./gradlew :piechart:test --stacktrace
       - name: Run all instrumentation tests
+        id: step2
         if: always() # Run even if the previous steps failed
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -35,16 +37,19 @@ jobs:
             piechart/build/reports/tests/
             piechart/build/reports/androidTests/connected/
       - name: Upload coverage report
+        if: ${{ steps.step1.conclusion == 'success' && steps.step2.conclusion == 'success' }}
         uses: actions/upload-artifact@v2
         with:
           name: coverage-report
           path: piechart/build/reports/coverage/debug
       - name: Download coverage report
+        if: ${{ steps.step1.conclusion == 'success' && steps.step2.conclusion == 'success' }}
         uses: actions/download-artifact@v2
         with:
           name: coverage-report
           path: piechart/build/reports/coverage/debug
       - name: Send the report to Codecov
+        if: ${{ steps.step1.conclusion == 'success' && steps.step2.conclusion == 'success' }}
         run: bash <(curl -s https://codecov.io/bash) -f "piechart/build/reports/coverage/debug/report.xml"
 
   generate-lint:
