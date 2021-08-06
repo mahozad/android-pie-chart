@@ -13,6 +13,11 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
 
 /**
+ * These tests check the final and real-world appearance of the chart in an activity
+ * and also the check the chart interactivity (like clicking etc.).
+ *
+ * Make sure the device screen is on and unlocked for the activity to go to resumed state.
+ *
  * NOTE: Because JUnit 5 is built on Java 8 from the ground up, its instrumentation tests
  *       will only run on devices running Android 8.0 (API 26) or newer. Older phones will
  *       skip the execution of these tests completely, marking them as "ignored".

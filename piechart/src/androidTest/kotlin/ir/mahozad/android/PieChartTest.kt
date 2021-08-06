@@ -6,6 +6,9 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
+/**
+ * These tests are used to test the [PieChart] class and checking that changing its properties work.
+ */
 class PieChartTest {
 
     private lateinit var pieChart: PieChart
