@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="ir.mahozad.android">
 
   <!-- For saving screenshots in tests -->
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+                   tools:ignore="ScopedStorage"
+                   tools:remove="android:maxSdkVersion"/>
 
-  <application android:theme="@style/TestAppTheme">
+  <application android:theme="@style/TestAppTheme"
+               android:requestLegacyExternalStorage="true">
     <activity android:name=".TestActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
