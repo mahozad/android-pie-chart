@@ -26,6 +26,18 @@ android {
         get("androidTest").java.srcDirs("src/androidTest/kotlin")
     }
 
+    // Since we are saving our screenshot tests on an external storage, we need to make sure that
+    // we have *WRITE_EXTERNAL_STORAGE* permission added in the manifest.
+    // When running on Marshmallow+, we also need to have those permissions granted before running a test.
+    // -g is for granting permissions when installing the app (works on Marshmallow+ only) while -r is to allow reinstalling of the app.
+    // These correspond to `adb shell pm install` options.
+    // Just be aware that this does not work with Android Studio yet.
+    //
+    // See https://medium.com/stepstone-tech/how-to-capture-screenshots-for-failed-ui-tests-9927eea6e1e4
+    adbOptions {
+        installOptions("-g", "-r")
+    }
+
     packagingOptions {
         exclude("META-INF/LICENSE*")
         exclude("META-INF/*.kotlin_module")
