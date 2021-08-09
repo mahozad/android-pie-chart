@@ -63,6 +63,9 @@ class ScreenshotTest {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         val resourceId = ir.mahozad.android.test.R.drawable.temp
         val saved = BitmapFactory.decodeResource(context.resources, resourceId)
+        // OR (the file should be in assets directory; see https://stackoverflow.com/a/9899056)
+        // val saved = getInstrumentation().getTargetContext().getResources().getAssets().open(testFile);
+
 
         scenario.onActivity { activity ->
             activity.configureChart { chart ->
