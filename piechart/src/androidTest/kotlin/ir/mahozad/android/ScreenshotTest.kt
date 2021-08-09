@@ -17,6 +17,7 @@ import org.junit.jupiter.api.extension.RegisterExtension
 
 /**
  * These tests are used to just visually inspect the chart to avoid any regressions.
+ * This is a kind of end-to-end testing.
  *
  * Make sure the device screen is on and unlocked for the activity to go to resumed state.
  */

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test
 
 /**
  * These tests are used to test the [PieChart] class and checking that changing its properties work.
+ * This is a kind of end-to-end testing.
  */
 class PieChartTest {
 
