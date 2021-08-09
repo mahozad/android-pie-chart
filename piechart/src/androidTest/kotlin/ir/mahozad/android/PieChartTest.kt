@@ -1,5 +1,7 @@
 package ir.mahozad.android
 
+import android.content.Context
+import android.content.res.Resources
 import android.view.LayoutInflater
 import androidx.test.platform.app.InstrumentationRegistry
 import org.assertj.core.api.Assertions.assertThat
@@ -12,9 +14,12 @@ import org.junit.jupiter.api.Test
 class PieChartTest {
 
     private lateinit var pieChart: PieChart
+    private lateinit var context: Context
+    private lateinit var resources: Resources
 
     @BeforeEach fun setUp() {
-        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        context = InstrumentationRegistry.getInstrumentation().targetContext
+        resources = context.resources
 
         val inflater = LayoutInflater.from(context)
         val testLayout = inflater.inflate(ir.mahozad.android.test.R.layout.test_layout, null)
@@ -44,5 +49,12 @@ class PieChartTest {
         val testLayout = inflater.inflate(ir.mahozad.android.test.R.layout.test_layout, null)
         val pieChart = testLayout.findViewById<PieChart>(ir.mahozad.android.test.R.id.testPieChart)
         assertThat(pieChart.slices).isNotEmpty()
+    }
+
+    @Test fun changeChartStartAngleResourceShouldChangeStartAngleAsWell() {
+        val resourceId = ir.mahozad.android.test.R.integer.testStartAngle
+        val expected = resources.getInteger(resourceId)
+        pieChart.startAngleResource = resourceId
+        assertThat(pieChart.startAngle).isEqualTo(expected)
     }
 }
