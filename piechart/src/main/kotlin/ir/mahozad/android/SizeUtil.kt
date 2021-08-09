@@ -59,21 +59,6 @@ internal fun calculateWidthAndHeight(
     return Pair(min, min)
 }
 
-/**
- * Note that this function works with paddingLeft and PaddingRight
- *  not paddingStart and paddingEnd.
- */
-internal fun calculateCenter(
-    top: Float,
-    start: Float,
-    width: Float,
-    height: Float
-): Coordinates {
-    val centerX = start + width  / 2f
-    val centerY = top + height / 2f
-    return Coordinates(centerX, centerY)
-}
-
 internal fun calculateRadius(
     width: Float,
     height: Float

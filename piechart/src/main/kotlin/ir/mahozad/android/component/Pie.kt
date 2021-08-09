@@ -50,7 +50,7 @@ internal class Pie(
 
     override fun layOut(top: Float, start: Float, drawDirection: DrawDirection) {
         radius = calculateRadius(width, height)
-        center = calculateCenter(top, start, width, height)
+        center = calculatePieCenter(top, start)
         val (pieTop, pieLeft, pieRight, pieBottom) = calculateBoundaries(center, radius)
         pieEnclosingRect.set(RectF(pieLeft, pieTop, pieRight, pieBottom))
 
@@ -272,4 +272,15 @@ internal class Pie(
         // canvas.drawText(centerLabel, centerX, centerY + (textHeight / 2), mainPaint)
     }
 
+    /**
+     * The visibility is internal to make it testable. Testability is more important for us.
+     */
+    internal fun calculatePieCenter(
+        pieTop: Float,
+        pieStart: Float
+    ): Coordinates {
+        val centerX = pieStart + width / 2f
+        val centerY = pieTop + height / 2f
+        return Coordinates(centerX, centerY)
+    }
 }
