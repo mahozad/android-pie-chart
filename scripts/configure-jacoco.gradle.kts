@@ -1,6 +1,6 @@
 /* See https://medium.com/@ranjeetsinha/jacoco-with-kotlin-dsl-f1f067e42cd0 */
 
-val minimumRequiredCoverage = 0.35
+val minimumRequiredCoverage = 0.80
 
 val fileFilter = setOf(
     "**/R.class",
