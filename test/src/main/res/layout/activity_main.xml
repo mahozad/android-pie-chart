@@ -23,7 +23,7 @@
       app:legendsTitle="Legends"
       app:legendsTitleAlignment="center"
       app:legendsTitleSize="14sp"
-      app:legendTitleMargin="8dp"
+      app:legendTitleMargin="10dp"
       app:legendsPercentageStatus="enabled"
       app:legendsPercentageMargin="4dp"
       app:legendIconsMargin="4dp"

@@ -300,6 +300,8 @@ dependencies {
     implementation("androidx.core:core-ktx:1.6.0")
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.2")
     testImplementation("org.assertj:assertj-core:3.20.2")
+    testImplementation("org.mockito:mockito-core:3.11.2")
+    testImplementation("org.mockito:mockito-junit-jupiter:3.11.2")
     androidTestImplementation("androidx.constraintlayout:constraintlayout:2.1.0")
     androidTestImplementation("org.junit.jupiter:junit-jupiter:5.7.2")
     androidTestImplementation("androidx.test.ext:junit-ktx:1.1.3")

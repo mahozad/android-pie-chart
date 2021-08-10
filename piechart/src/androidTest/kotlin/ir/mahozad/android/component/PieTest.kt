@@ -27,8 +27,8 @@ class PieTest {
     @MethodSource("argumentProvider1")
     internal fun calculatePieCenterWithTheGivenArguments(top: Float, start: Float, width: Float, height: Float, expectedCoordinates: Coordinates) {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
-        val pie = Pie(context, width, height, null, null, 0, emptyList(), PieChart.LabelType.INSIDE, 0f, 0f, 0, Typeface.DEFAULT, 0f, 0f, PieChart.IconPlacement.START, null, 0f, false, PieChart.DrawDirection.CLOCKWISE, 0f, 0f, PieChart.GradientType.SWEEP, 0f, null, 0f, PieChart.GapPosition.MIDDLE)
-        val center = pie.calculatePieCenter(top, start)
+        val pie = Pie(context, width, height, null, null, 0, emptyList(), 0f, PieChart.LabelType.INSIDE, 0f, 0, Typeface.DEFAULT, 0f, 0f, PieChart.IconPlacement.START, null, 0f, false, PieChart.DrawDirection.CLOCKWISE, 0f, 0f, PieChart.GradientType.SWEEP, 0f, null, 0f, PieChart.GapPosition.MIDDLE)
+        val center = pie.calculatePieCenter(top, start, width, height)
         Assertions.assertThat(center)
             .usingRecursiveComparison()
             .withComparatorForFields(FloatComparator(0.01f), Coordinates::x.name, Coordinates::y.name)

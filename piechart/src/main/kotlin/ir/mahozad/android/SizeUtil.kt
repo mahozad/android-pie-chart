@@ -17,14 +17,14 @@ import ir.mahozad.android.PieChart.DrawDirection.COUNTER_CLOCKWISE
 import ir.mahozad.android.PieChart.GapPosition.PRECEDING_SLICE
 import ir.mahozad.android.PieChart.GapPosition.SUCCEEDING_SLICE
 import ir.mahozad.android.PieChart.IconPlacement.*
+import ir.mahozad.android.labels.LabelProperties
+import ir.mahozad.android.labels.SliceProperties
 import java.util.*
 import kotlin.math.*
 
 internal data class Size(val width: Float, val height: Float)
 
 internal data class Coordinates(val x: Float, val y: Float)
-
-internal data class Boundaries(val top: Float, val left: Float, val right: Float, val bottom: Float)
 
 internal data class Defaults(
     val outsideLabelsMargin: Float,
@@ -66,12 +66,12 @@ internal fun calculateRadius(
     return min(width, height) / 2f
 }
 
-internal fun calculateBoundaries(origin: Coordinates, radius: Float): Boundaries {
+internal fun calculateBounds(origin: Coordinates, radius: Float): Bounds {
     val top = origin.y - radius
     val left = origin.x - radius
     val right = origin.x + radius
     val bottom = origin.y + radius
-    return Boundaries(top, left, right, bottom)
+    return Bounds(top, left, right, bottom)
 }
 
 internal fun calculateGapCoordinates(
@@ -347,32 +347,29 @@ private fun calculateIconAngleForOutsideCircularLabel(
  */
 internal fun calculatePieNewBoundsForOutsideLabel(
     context: Context,
-    currentBounds: RectF,
-    slices: List<Slice>,
-    drawDirection: DrawDirection,
-    startAngle: Int,
-    defaults: Defaults,
+    currentBounds: Bounds,
+    labelsProperties: List<LabelProperties>,
+    slicesProperties: List<SliceProperties>,
     shouldCenterPie: Boolean
-): RectF {
+): Bounds {
     var maxTopExcess = 0f
     var maxLeftExcess = 0f
     var maxRightExcess = 0f
     var maxBottomExcess = 0f
     val currentCenter = Coordinates((currentBounds.right + currentBounds.left) / 2f, (currentBounds.bottom + currentBounds.top) / 2f)
-    val currentRadius = currentBounds.width() / 2f
+    val currentRadius = currentBounds.width / 2f
 
-    var currentAngle = normalizeAngle(startAngle.toFloat())
-    for (slice in slices) {
-        val middleAngle = calculateMiddleAngle(currentAngle, slice.fraction, drawDirection)
-        updatePaintForLabel(paint, slice.labelSize ?: defaults.labelsSize, slice.labelColor ?: defaults.labelsColor, slice.labelFont ?: defaults.labelsFont)
+    for ((i, label) in labelsProperties.withIndex()) {
+        val middleAngle = calculateMiddleAngle(slicesProperties[i].startAngle, slicesProperties[i].fraction, slicesProperties[i].drawDirection)
+        updatePaintForLabel(paint, label.size, label.color, label.font)
         var labelIcon : Drawable? = null
-        slice.labelIcon?.let { labelIcon = context.resources.getDrawable(it, null) }
-        val outsideLabelMargin = slice.outsideLabelMargin ?: defaults.outsideLabelsMargin
-        val iconPlacement = slice.labelIconPlacement ?: defaults.labelIconsPlacement
-        val iconMargin = slice.labelIconMargin ?: defaults.labelIconsMargin
-        val iconHeight = slice.labelIconHeight ?: defaults.labelIconsHeight
+        label.icon?.let { labelIcon = context.resources.getDrawable(it, null) }
+        val outsideLabelMargin = label.marginFromPie
+        val iconPlacement = label.iconPlacement
+        val iconMargin = label.iconMargin
+        val iconHeight = label.iconHeight
         val iconBounds = calculateIconBounds(labelIcon, iconHeight)
-        val labelBounds = calculateLabelBounds(slice.label, paint)
+        val labelBounds = calculateLabelBounds(label.text, paint)
         val combinedBounds = calculateLabelAndIconCombinedBounds(labelBounds, iconBounds, iconMargin, iconPlacement)
         val absoluteCombinedBounds = calculateAbsoluteBoundsForOutsideLabelAndIcon(combinedBounds, middleAngle, currentCenter, currentRadius, outsideLabelMargin)
 
@@ -392,8 +389,6 @@ internal fun calculatePieNewBoundsForOutsideLabel(
         var bottomExcess = (absoluteCombinedBounds.bottom + verticalCorrection) - currentBounds.bottom
         if (combinedBounds.height() == 0f) bottomExcess = 0f
         maxBottomExcess = max(maxBottomExcess, bottomExcess)
-
-        currentAngle = calculateEndAngle(currentAngle, slice.fraction, drawDirection)
     }
 
     if (shouldCenterPie) {
@@ -407,8 +402,8 @@ internal fun calculatePieNewBoundsForOutsideLabel(
 
     // EITHER THIS
 
-    val width = currentBounds.width() - (maxLeftExcess + maxRightExcess)
-    val height = currentBounds.height() - (maxTopExcess + maxBottomExcess)
+    val width = currentBounds.width - (maxLeftExcess + maxRightExcess)
+    val height = currentBounds.height - (maxTopExcess + maxBottomExcess)
     if (height > width) {
         val excess = height - width
         maxTopExcess += excess / 2f
@@ -418,7 +413,7 @@ internal fun calculatePieNewBoundsForOutsideLabel(
         maxLeftExcess += excess / 2f
         maxRightExcess += excess / 2f
     }
-    return RectF(currentBounds.left + maxLeftExcess, currentBounds.top + maxTopExcess, currentBounds.right - maxRightExcess, currentBounds.bottom - maxBottomExcess)
+    return Bounds(currentBounds.left + maxLeftExcess, currentBounds.top + maxTopExcess, currentBounds.right - maxRightExcess, currentBounds.bottom - maxBottomExcess)
 
     // OR THIS (creates a little different layout)
 
@@ -431,22 +426,21 @@ internal fun calculatePieNewBoundsForOutsideLabel(
 */
 internal fun calculatePieNewBoundsForOutsideCircularLabel(
     context: Context,
-    currentBounds: RectF,
-    slices: List<Slice>,
-    defaults: Defaults,
+    currentBounds: Bounds,
+    labelsProperties: List<LabelProperties>,
     shouldCenterPie: Boolean
-): RectF {
+): Bounds {
     var maxLabelAndIconHeight = 0f
-    for (slice in slices) {
-        updatePaintForLabel(paint, slice.labelSize ?: defaults.labelsSize, slice.labelColor ?: defaults.labelsColor, slice.labelFont ?: defaults.labelsFont)
+    for (label in labelsProperties) {
+        updatePaintForLabel(paint, label.size, label.color, label.font)
         var labelIcon : Drawable? = null
-        slice.labelIcon?.let { labelIcon = context.resources.getDrawable(it, null) }
-        val outsideLabelMargin = slice.outsideLabelMargin ?: defaults.outsideLabelsMargin
-        val iconPlacement = slice.labelIconPlacement ?: defaults.labelIconsPlacement
-        val iconMargin = slice.labelIconMargin ?: defaults.labelIconsMargin
-        val iconHeight = slice.labelIconHeight ?: defaults.labelIconsHeight
+        label.icon?.let { labelIcon = context.resources.getDrawable(it, null) }
+        val outsideLabelMargin = label.marginFromPie
+        val iconPlacement = label.iconPlacement
+        val iconMargin = label.iconMargin
+        val iconHeight = label.iconHeight
         val iconBounds = calculateIconBounds(labelIcon, iconHeight)
-        val labelBounds = calculateLabelBounds(slice.label, paint)
+        val labelBounds = calculateLabelBounds(label.text, paint)
         val absolutePosition = resolveAbsolutePosition(iconPlacement)
         val adjustedIconMargin = modulateMargin(iconMargin, labelBounds, iconBounds)
         val sliceMax = if (absolutePosition == LEFT || absolutePosition == RIGHT) {
@@ -457,10 +451,10 @@ internal fun calculatePieNewBoundsForOutsideCircularLabel(
         maxLabelAndIconHeight = max(maxLabelAndIconHeight, sliceMax)
     }
     if (shouldCenterPie) {
-        return RectF(currentBounds.left + maxLabelAndIconHeight, currentBounds.top + maxLabelAndIconHeight, currentBounds.right - maxLabelAndIconHeight, currentBounds.bottom - maxLabelAndIconHeight)
+        return Bounds(currentBounds.left + maxLabelAndIconHeight, currentBounds.top + maxLabelAndIconHeight, currentBounds.right - maxLabelAndIconHeight, currentBounds.bottom - maxLabelAndIconHeight)
     } else {
         /* FIXME: Same as above branch; implement it */
-        return RectF(currentBounds.left + maxLabelAndIconHeight, currentBounds.top + maxLabelAndIconHeight, currentBounds.right - maxLabelAndIconHeight, currentBounds.bottom - maxLabelAndIconHeight)
+        return Bounds(currentBounds.left + maxLabelAndIconHeight, currentBounds.top + maxLabelAndIconHeight, currentBounds.right - maxLabelAndIconHeight, currentBounds.bottom - maxLabelAndIconHeight)
     }
 }
 
@@ -621,7 +615,7 @@ internal fun calculateAbsoluteBoundsForOutsideLabelAndIcon(
  *
  * For difference between `Paint::getTextBounds` and `Paint::measureText` see [this post](https://stackoverflow.com/a/7579469) and [this post](https://stackoverflow.com/q/3257293)
  */
-internal fun calculateCoordinatesForOutsideLabel(
+internal fun calculateLabelCoordinates(
     labelAndIconCombinedBounds: RectF,
     labelBounds: RectF,
     labelPaint: Paint,
@@ -646,7 +640,7 @@ internal fun calculateCoordinatesForOutsideLabel(
     return Coordinates(x, y)
 }
 
-internal fun calculateBoundsForOutsideLabelIcon(
+internal fun calculateLabelIconAbsoluteBounds(
     labelAndIconCombinedBounds: RectF,
     iconBounds: RectF,
     iconPlacement: IconPlacement,

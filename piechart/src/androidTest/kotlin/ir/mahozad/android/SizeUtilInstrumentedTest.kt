@@ -9,6 +9,8 @@ import ir.mahozad.android.PieChart.DrawDirection.CLOCKWISE
 import ir.mahozad.android.PieChart.DrawDirection.COUNTER_CLOCKWISE
 import ir.mahozad.android.PieChart.IconPlacement
 import ir.mahozad.android.PieChart.IconPlacement.*
+import ir.mahozad.android.labels.LabelProperties
+import ir.mahozad.android.labels.SliceProperties
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.withPrecision
 import org.assertj.core.util.FloatComparator
@@ -485,10 +487,10 @@ class SizeUtilInstrumentedTest {
         val origin = Coordinates(500f, 500f)
         val radius = 200f
 
-        val (top, left, right, bottom) = calculateBoundaries(origin, radius)
+        val (left, top, right, bottom) = calculateBounds(origin, radius)
 
-        assertThat(top).isEqualTo(300f)
         assertThat(left).isEqualTo(300f)
+        assertThat(top).isEqualTo(300f)
         assertThat(right).isEqualTo(700f)
         assertThat(bottom).isEqualTo(700f)
     }
@@ -780,204 +782,247 @@ class SizeUtilInstrumentedTest {
     // region calculatePieNewBoundsForOutsideLabels
 
     @Test fun calculatePieNewBoundsForOutsideLabels_WithDrawingClockWiseAndNoMarginAndFalseShouldCenterPie() {
-        val slices = listOf(
-            PieChart.Slice(0.5f, Color.BLACK, label = "long label"),
-            PieChart.Slice(0.105f, Color.BLACK, label = ""),
-            PieChart.Slice(0.125f, Color.BLACK, label = ""),
-            PieChart.Slice(0.02f, Color.BLACK, label = ""),
-            PieChart.Slice(0.1f, Color.BLACK, label = ""),
-            PieChart.Slice(0.15f, Color.BLACK, label = "")
-        )
+        val fractions = listOf(0.5f, 0.105f, 0.125f, 0.02f, 0.1f, 0.15f)
         val outsideLabelsMargin = 0f
         val drawDirection = CLOCKWISE
-        val currentBounds = RectF(100f, 100f, 1000f, 1000f)
+        val currentBounds = Bounds(100f, 100f, 1000f, 1000f)
         val shouldCenterPie = false
         val labelsTypeface = Typeface.DEFAULT
         val labelsSize = 63.15f
-        val startAngle = -90
+        val startAngle = -90f
         val context = getInstrumentation().targetContext
-        val defaults = Defaults(outsideLabelsMargin, labelsSize, 0, labelsTypeface, 0f, 0f, LEFT)
+        val iconPlacement = LEFT
+        val labelsProperties = listOf(
+            LabelProperties("long label", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, 0f, 0f, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, 0f, 0f, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, 0f, 0f, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, 0f, 0f, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, 0f, 0f, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, 0f, 0f, iconPlacement)
+        )
+        val startAngles = fractions.runningFold(startAngle) { angle, fraction -> calculateEndAngle(angle, fraction, drawDirection) }
+        val slicesProperties = fractions.mapIndexed { i, fraction -> SliceProperties(fraction, startAngles[i], drawDirection) }
 
-        val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, slices, drawDirection, startAngle, defaults, shouldCenterPie)
+        val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, labelsProperties, slicesProperties, shouldCenterPie)
 
-        assertThat(bounds).isEqualTo(RectF(100f, 234.5f, 731f, 865.5f))
+        assertThat(bounds).isEqualTo(Bounds(100f, 234.5f, 731f, 865.5f))
     }
 
     @Test fun calculatePieNewBoundsForOutsideLabels_WithOneSliceHavingIcon() {
-        val slices = listOf(
-            PieChart.Slice(0.43f, Color.BLACK, label = "43%", labelIcon = R.drawable.ic_circle),
-            PieChart.Slice(0.21f, Color.BLACK, label = "21%"),
-            PieChart.Slice(0.19f, Color.BLACK, label = "19%"),
-            PieChart.Slice(0.14f, Color.BLACK, label = "14%"),
-            PieChart.Slice(0.03f, Color.BLACK, label = "3%"),
-        )
+        val fractions = listOf(0.43f, 0.21f, 0.19f, 0.14f, 0.03f)
         val outsideLabelsMargin = 73.675f
         val drawDirection = CLOCKWISE
-        val currentBounds = RectF(0f, 0f, 1080f, 1080f)
+        val currentBounds = Bounds(0f, 0f, 1080f, 1080f)
         val shouldCenterPie = true
         val labelsTypeface = Typeface.DEFAULT
         val labelsSize = 42.1f
-        val startAngle = 250
+        val startAngle = 250f
+        val iconsHeight = 42.1f
+        val iconsMargin = 73.675f
         val context = getInstrumentation().targetContext
-        val defaults = Defaults(outsideLabelsMargin, labelsSize, 0, labelsTypeface, 42.1f, 73.675f, LEFT)
+        val iconPlacement = LEFT
+        val labelsProperties = listOf(
+            LabelProperties("43%", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, R.drawable.ic_circle, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("21%", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("19%", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("14%", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("3%", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+        )
+        val startAngles = fractions.runningFold(startAngle) { angle, fraction -> calculateEndAngle(angle, fraction, drawDirection) }
+        val slicesProperties = fractions.mapIndexed { i, fraction -> SliceProperties(fraction, startAngles[i], drawDirection) }
 
-        val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, slices, drawDirection, startAngle, defaults, shouldCenterPie)
+        val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, labelsProperties, slicesProperties, shouldCenterPie)
 
         assertThat(bounds)
             .usingRecursiveComparison()
-            .withComparatorForFields(FloatComparator(0.01f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
-            .isEqualTo(RectF(216.87f, 216.87f, 863.13f, 863.13f))
+            .withComparatorForFields(FloatComparator(0.01f), Bounds::left.name, Bounds::top.name, Bounds::right.name, Bounds::bottom.name)
+            .ignoringFields(Bounds::width.name, Bounds::height.name)
+            .isEqualTo(Bounds(216.87f, 216.87f, 863.13f, 863.13f))
     }
 
     @Test fun calculatePieNewBoundsForOutsideLabel_WithDrawingClockWiseAndNoMarginAndFalseShouldCenterPieAndLongLabelOnLeftSide() {
-        val slices = listOf(
-            PieChart.Slice(0.125f, Color.BLACK, label = ""),
-            PieChart.Slice(0.125f, Color.BLACK, label = ""),
-            PieChart.Slice(0.25f, Color.BLACK, label = ""),
-            PieChart.Slice(0.5f, Color.BLACK, label = "long label"),
-        )
+        val fractions = listOf(0.125f, 0.125f, 0.25f, 0.5f)
         val outsideLabelsMargin = 0f
         val drawDirection = CLOCKWISE
-        val currentBounds = RectF(100f, 100f, 1000f, 1000f)
+        val currentBounds = Bounds(100f, 100f, 1000f, 1000f)
         val shouldCenterPie = false
         val labelsTypeface = Typeface.DEFAULT
         val labelsSize = 63.15f
-        val startAngle = -90
+        val startAngle = -90f
+        val iconsHeight = 0f
+        val iconsMargin = 0f
         val context = getInstrumentation().targetContext
-        val defaults = Defaults(outsideLabelsMargin, labelsSize, 0, labelsTypeface, 0f, 0f, LEFT)
+        val iconPlacement = LEFT
+        val labelsProperties = listOf(
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("long label", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+        )
+        val startAngles = fractions.runningFold(startAngle) { angle, fraction -> calculateEndAngle(angle, fraction, drawDirection) }
+        val slicesProperties = fractions.mapIndexed { i, fraction -> SliceProperties(fraction, startAngles[i], drawDirection) }
 
-        val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, slices, drawDirection, startAngle, defaults, shouldCenterPie)
+        val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, labelsProperties, slicesProperties, shouldCenterPie)
 
         assertThat(bounds)
             .usingRecursiveComparison()
-            .withComparatorForFields(FloatComparator(0.01f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
-            .isEqualTo(RectF(369f, 234.5f, 1000f, 865.5f))
+            .withComparatorForFields(FloatComparator(0.01f), Bounds::left.name, Bounds::top.name, Bounds::right.name, Bounds::bottom.name)
+            .ignoringFields(Bounds::width.name, Bounds::height.name)
+            .isEqualTo(Bounds(369f, 234.5f, 1000f, 865.5f))
     }
 
     @Test fun calculatePieNewBoundsForOutsideLabel_WithDrawingCounterClockWiseAndNoMarginAndShouldCenterPieFalse() {
-        val slices = listOf(
-            PieChart.Slice(0.5f, Color.BLACK, label = "long label"),
-            PieChart.Slice(0.105f, Color.BLACK, label = ""),
-            PieChart.Slice(0.125f, Color.BLACK, label = ""),
-            PieChart.Slice(0.02f, Color.BLACK, label = ""),
-            PieChart.Slice(0.1f, Color.BLACK, label = ""),
-            PieChart.Slice(0.15f, Color.BLACK, label = "")
-        )
+        val fractions = listOf(0.5f, 0.105f, 0.125f, 0.02f, 0.1f, 0.15f)
         val outsideLabelsMargin = 0f
         val drawDirection = COUNTER_CLOCKWISE
-        val currentBounds = RectF(100f, 100f, 1000f, 1000f)
+        val currentBounds = Bounds(100f, 100f, 1000f, 1000f)
         val shouldCenterPie = false
         val labelsTypeface = Typeface.DEFAULT
         val labelsSize = 63.15f
-        val startAngle = -90
+        val startAngle = -90f
+        val iconsHeight = 0f
+        val iconsMargin = 0f
         val context = getInstrumentation().targetContext
-        val defaults = Defaults(outsideLabelsMargin, labelsSize, 0, labelsTypeface, 0f, 0f, LEFT)
+        val iconPlacement = LEFT
+        val labelsProperties = listOf(
+            LabelProperties("long label", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+        )
+        val startAngles = fractions.runningFold(startAngle) { angle, fraction -> calculateEndAngle(angle, fraction, drawDirection) }
+        val slicesProperties = fractions.mapIndexed { i, fraction -> SliceProperties(fraction, startAngles[i], drawDirection) }
 
-        val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, slices, drawDirection, startAngle, defaults, shouldCenterPie)
+        val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, labelsProperties, slicesProperties, shouldCenterPie)
 
         assertThat(bounds)
             .usingRecursiveComparison()
-            .withComparatorForFields(FloatComparator(0.01f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
-            .isEqualTo(RectF(369f, 234.5f, 1000f, 865.5f))
+            .withComparatorForFields(FloatComparator(0.01f), Bounds::left.name, Bounds::top.name, Bounds::right.name, Bounds::bottom.name)
+            .ignoringFields(Bounds::width.name, Bounds::height.name)
+            .isEqualTo(Bounds(369f, 234.5f, 1000f, 865.5f))
     }
 
     @Test fun calculatePieNewBoundsForOutsideLabel_WithDrawingCounterClockWiseAndNoMarginAndFalseShouldCenterPieAndLongLabelOnLeftSide() {
-        val slices = listOf(
-            PieChart.Slice(0.125f, Color.BLACK, label = ""),
-            PieChart.Slice(0.125f, Color.BLACK, label = ""),
-            PieChart.Slice(0.25f, Color.BLACK, label = ""),
-            PieChart.Slice(0.5f, Color.BLACK, label = "long label"),
-        )
+        val fractions = listOf(0.125f, 0.125f, 0.25f, 0.5f)
         val outsideLabelsMargin = 0f
         val drawDirection = COUNTER_CLOCKWISE
-        val currentBounds = RectF(100f, 100f, 1000f, 1000f)
+        val currentBounds = Bounds(100f, 100f, 1000f, 1000f)
         val shouldCenterPie = false
         val labelsTypeface = Typeface.DEFAULT
         val labelsSize = 63.15f
-        val startAngle = -90
+        val startAngle = -90f
+        val iconsHeight = 0f
+        val iconsMargin = 0f
         val context = getInstrumentation().targetContext
-        val defaults = Defaults(outsideLabelsMargin, labelsSize, 0, labelsTypeface, 0f, 0f, LEFT)
+        val iconPlacement = LEFT
+        val labelsProperties = listOf(
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("long label", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+        )
+        val startAngles = fractions.runningFold(startAngle) { angle, fraction -> calculateEndAngle(angle, fraction, drawDirection) }
+        val slicesProperties = fractions.mapIndexed { i, fraction -> SliceProperties(fraction, startAngles[i], drawDirection) }
 
-        val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, slices, drawDirection, startAngle, defaults, shouldCenterPie)
+        val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, labelsProperties, slicesProperties, shouldCenterPie)
 
-        assertThat(bounds).isEqualTo(RectF(100f, 234.5f, 731f, 865.5f))
+        assertThat(bounds).isEqualTo(Bounds(100f, 234.5f, 731f, 865.5f))
     }
 
     @Test fun calculatePieNewBoundsForOutsideLabels_WithDrawingClockWiseAndArbitraryMarginAndFalseShouldCenterPie() {
-        val slices = listOf(
-            PieChart.Slice(0.5f, Color.BLACK, label = "long label"),
-            PieChart.Slice(0.105f, Color.BLACK, label = ""),
-            PieChart.Slice(0.125f, Color.BLACK, label = ""),
-            PieChart.Slice(0.02f, Color.BLACK, label = ""),
-            PieChart.Slice(0.1f, Color.BLACK, label = ""),
-            PieChart.Slice(0.15f, Color.BLACK, label = "")
-        )
+        val fractions = listOf(0.5f, 0.105f, 0.125f, 0.02f, 0.1f, 0.15f)
         val outsideLabelsMargin = 42f
         val drawDirection = CLOCKWISE
-        val currentBounds = RectF(100f, 100f, 1000f, 1000f)
+        val currentBounds = Bounds(100f, 100f, 1000f, 1000f)
         val shouldCenterPie = false
         val labelsTypeface = Typeface.DEFAULT
         val labelsSize = 63.15f
-        val startAngle = -90
+        val startAngle = -90f
+        val iconsHeight = 0f
+        val iconsMargin = 0f
         val context = getInstrumentation().targetContext
-        val defaults = Defaults(outsideLabelsMargin, labelsSize, 0, labelsTypeface, 0f, 0f, LEFT)
+        val iconPlacement = LEFT
+        val labelsProperties = listOf(
+            LabelProperties("long label", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+        )
+        val startAngles = fractions.runningFold(startAngle) { angle, fraction -> calculateEndAngle(angle, fraction, drawDirection) }
+        val slicesProperties = fractions.mapIndexed { i, fraction -> SliceProperties(fraction, startAngles[i], drawDirection) }
 
-        val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, slices, drawDirection, startAngle, defaults, shouldCenterPie)
+        val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, labelsProperties, slicesProperties, shouldCenterPie)
 
-        assertThat(bounds).isEqualTo(RectF(100f, 255.5f, 689f, 844.5f))
+        assertThat(bounds).isEqualTo(Bounds(100f, 255.5f, 689f, 844.5f))
     }
 
     @Test fun calculatePieNewBoundsForOutsideLabels_WithOnlyTopLabelAndNoMarginAndFalseShouldCenterPie() {
-        val slices = listOf(
-            PieChart.Slice(0.5f, Color.BLACK, label = "ABC"),
-            PieChart.Slice(0.105f, Color.BLACK, label = ""),
-            PieChart.Slice(0.125f, Color.BLACK, label = ""),
-            PieChart.Slice(0.02f, Color.BLACK, label = ""),
-            PieChart.Slice(0.1f, Color.BLACK, label = ""),
-            PieChart.Slice(0.15f, Color.BLACK, label = "")
-        )
+        val fractions = listOf(0.5f, 0.105f, 0.125f, 0.02f, 0.1f, 0.15f)
         val outsideLabelsMargin = 0f
         val drawDirection = CLOCKWISE
-        val currentBounds = RectF(100f, 100f, 1000f, 1000f)
+        val currentBounds = Bounds(100f, 100f, 1000f, 1000f)
         val shouldCenterPie = false
         val labelsTypeface = Typeface.DEFAULT
         val labelsSize = 63.15f
-        val startAngle = -180
+        val startAngle = -180f
+        val iconsHeight = 0f
+        val iconsMargin = 0f
         val context = getInstrumentation().targetContext
-        val defaults = Defaults(outsideLabelsMargin, labelsSize, 0, labelsTypeface, 0f, 0f, LEFT)
+        val iconPlacement = LEFT
+        val labelsProperties = listOf(
+            LabelProperties("ABC", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+        )
+        val startAngles = fractions.runningFold(startAngle) { angle, fraction -> calculateEndAngle(angle, fraction, drawDirection) }
+        val slicesProperties = fractions.mapIndexed { i, fraction -> SliceProperties(fraction, startAngles[i], drawDirection) }
 
-        val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, slices, drawDirection, startAngle, defaults, shouldCenterPie)
+        val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, labelsProperties, slicesProperties, shouldCenterPie)
 
         assertThat(bounds)
             .usingRecursiveComparison()
-            .withComparatorForFields(FloatComparator(0.01f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
-            .isEqualTo(RectF(137f, 174f, 963f, 1000f))
+            .withComparatorForFields(FloatComparator(0.01f), Bounds::left.name, Bounds::top.name, Bounds::right.name, Bounds::bottom.name)
+            .ignoringFields(Bounds::width.name, Bounds::height.name)
+            .isEqualTo(Bounds(137f, 174f, 963f, 1000f))
     }
 
     @Test fun calculatePieNewBoundsForOutsideLabel_WithRightLabelHavingAngleGreaterThan270() {
-        val slices = listOf(
-            PieChart.Slice(0.43f, Color.BLACK, label = ""),
-            PieChart.Slice(0.21f, Color.BLACK, label = ""),
-            PieChart.Slice(0.19f, Color.BLACK, label = ""),
-            PieChart.Slice(0.14f, Color.BLACK, label = ""),
-            PieChart.Slice(0.03f, Color.BLACK, label = "3%"),
-        )
+        val fractions = listOf(0.43f, 0.21f, 0.19f, 0.14f, 0.03f)
         val outsideLabelsMargin = 0f
         val drawDirection = CLOCKWISE
-        val currentBounds = RectF(100f, 100f, 1000f, 1000f)
+        val currentBounds = Bounds(100f, 100f, 1000f, 1000f)
         val shouldCenterPie = false
         val labelsTypeface = Typeface.DEFAULT
         val labelsSize = 63.15f
-        val startAngle = 0
+        val startAngle = 0f
+        val iconsHeight = 0f
+        val iconsMargin = 0f
         val context = getInstrumentation().targetContext
-        val defaults = Defaults(outsideLabelsMargin, labelsSize, 0, labelsTypeface, 0f, 0f, LEFT)
+        val iconPlacement = LEFT
+        val labelsProperties = listOf(
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+            LabelProperties("3%", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
+        )
+        val startAngles = fractions.runningFold(startAngle) { angle, fraction -> calculateEndAngle(angle, fraction, drawDirection) }
+        val slicesProperties = fractions.mapIndexed { i, fraction -> SliceProperties(fraction, startAngles[i], drawDirection) }
 
-        val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, slices, drawDirection, startAngle, defaults, shouldCenterPie)
+        val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, labelsProperties, slicesProperties, shouldCenterPie)
 
         assertThat(bounds)
             .usingRecursiveComparison()
-            .withComparatorForFields(FloatComparator(0.01f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
-            .isEqualTo(RectF(100f, 142.74f, 914.52f, 957.26f))
+            .withComparatorForFields(FloatComparator(0.01f), Bounds::left.name, Bounds::top.name, Bounds::right.name, Bounds::bottom.name)
+            .ignoringFields(Bounds::width.name, Bounds::height.name)
+            .isEqualTo(Bounds(100f, 142.74f, 914.52f, 957.26f))
     }
 
     // endregion
@@ -1461,97 +1506,107 @@ class SizeUtilInstrumentedTest {
     // region calculatePieNewBoundsForOutsideCircularLabel
 
     @Test fun calculatePieNewBoundsForOutsideCircularLabel_WithLabelIconOnSideAndSmallerLabelHeight() {
-        val slices = listOf(
-            PieChart.Slice(0.5f, Color.BLACK, label = "14%", labelIcon = R.drawable.ic_rectangle_tall),
-            PieChart.Slice(0.105f, Color.BLACK, label = ""),
-            PieChart.Slice(0.125f, Color.BLACK, label = ""),
-            PieChart.Slice(0.02f, Color.BLACK, label = ""),
-            PieChart.Slice(0.1f, Color.BLACK, label = ""),
-            PieChart.Slice(0.15f, Color.BLACK, label = "")
-        )
         val outsideLabelsMargin = 30f
-        val currentBounds = RectF(100f, 100f, 1000f, 1000f)
+        val currentBounds = Bounds(100f, 100f, 1000f, 1000f)
         val shouldCenterPie = true
         val labelsTypeface = Typeface.DEFAULT
         val labelsSize = 60f
+        val iconHeight = 100f
+        val iconMargin = 55f
+        val iconPlacement = LEFT
         val context = getInstrumentation().targetContext
-        val defaults = Defaults(outsideLabelsMargin, labelsSize, 0, labelsTypeface, 100f, 55f, LEFT)
+        val labelsProperties = listOf(
+            LabelProperties("14%", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, R.drawable.ic_rectangle_tall, null, iconHeight, iconMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconHeight, iconMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconHeight, iconMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconHeight, iconMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconHeight, iconMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconHeight, iconMargin, iconPlacement)
+        )
 
-        val bounds = calculatePieNewBoundsForOutsideCircularLabel(context, currentBounds, slices, defaults, shouldCenterPie)
+        val bounds = calculatePieNewBoundsForOutsideCircularLabel(context, currentBounds, labelsProperties, shouldCenterPie)
 
-        assertThat(bounds).isEqualTo(RectF(230f, 230f, 870f, 870f))
+        assertThat(bounds).isEqualTo(Bounds(230f, 230f, 870f, 870f))
     }
 
     @Test fun calculatePieNewBoundsForOutsideCircularLabel_WithMarginsButNoSideIcon() {
-        val slices = listOf(
-            PieChart.Slice(0.5f, Color.BLACK, label = "14%"),
-            PieChart.Slice(0.105f, Color.BLACK, label = ""),
-            PieChart.Slice(0.125f, Color.BLACK, label = ""),
-            PieChart.Slice(0.02f, Color.BLACK, label = ""),
-            PieChart.Slice(0.1f, Color.BLACK, label = ""),
-            PieChart.Slice(0.15f, Color.BLACK, label = "")
-        )
         val outsideLabelsMargin = 30f
-        val currentBounds = RectF(100f, 100f, 1000f, 1000f)
+        val currentBounds = Bounds(100f, 100f, 1000f, 1000f)
         val shouldCenterPie = true
         val labelsTypeface = Typeface.DEFAULT
         val labelsSize = 60f
+        val iconHeight = 100f
+        val iconMargin = 55f
+        val iconPlacement = LEFT
         val context = getInstrumentation().targetContext
-        val defaults = Defaults(outsideLabelsMargin, labelsSize, 0, labelsTypeface, 100f, 55f, LEFT)
+        val labelsProperties = listOf(
+            LabelProperties("14%", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconHeight, iconMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconHeight, iconMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconHeight, iconMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconHeight, iconMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconHeight, iconMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconHeight, iconMargin, iconPlacement)
+        )
 
-        val bounds = calculatePieNewBoundsForOutsideCircularLabel(context, currentBounds, slices, defaults, shouldCenterPie)
+        val bounds = calculatePieNewBoundsForOutsideCircularLabel(context, currentBounds, labelsProperties, shouldCenterPie)
 
         assertThat(bounds)
             .usingRecursiveComparison()
-            .withComparatorForFields(FloatComparator(0.01f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
-            .isEqualTo(RectF(200.31f, 200.31f, 899.69f, 899.69f))
+            .withComparatorForFields(FloatComparator(0.01f), Bounds::left.name, Bounds::top.name, Bounds::right.name, Bounds::bottom.name)
+            .ignoringFields(Bounds::width.name, Bounds::height.name)
+            .isEqualTo(Bounds(200.31f, 200.31f, 899.69f, 899.69f))
     }
 
     @Test fun calculatePieNewBoundsForOutsideCircularLabel_WithMarginsButNoTopOrBottomIcon() {
-        val slices = listOf(
-            PieChart.Slice(0.5f, Color.BLACK, label = "14%"),
-            PieChart.Slice(0.105f, Color.BLACK, label = ""),
-            PieChart.Slice(0.125f, Color.BLACK, label = ""),
-            PieChart.Slice(0.02f, Color.BLACK, label = ""),
-            PieChart.Slice(0.1f, Color.BLACK, label = ""),
-            PieChart.Slice(0.15f, Color.BLACK, label = "")
-        )
         val outsideLabelsMargin = 30f
-        val currentBounds = RectF(100f, 100f, 1000f, 1000f)
+        val currentBounds = Bounds(100f, 100f, 1000f, 1000f)
         val shouldCenterPie = true
         val labelsTypeface = Typeface.DEFAULT
         val labelsSize = 60f
+        val iconHeight = 100f
+        val iconMargin = 55f
+        val iconPlacement = TOP
         val context = getInstrumentation().targetContext
-        val defaults = Defaults(outsideLabelsMargin, labelsSize, 0, labelsTypeface, 100f, 55f, TOP)
+        val labelsProperties = listOf(
+            LabelProperties("14%", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconHeight, iconMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconHeight, iconMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconHeight, iconMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconHeight, iconMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconHeight, iconMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconHeight, iconMargin, iconPlacement)
+        )
 
-        val bounds = calculatePieNewBoundsForOutsideCircularLabel(context, currentBounds, slices, defaults, shouldCenterPie)
+        val bounds = calculatePieNewBoundsForOutsideCircularLabel(context, currentBounds, labelsProperties, shouldCenterPie)
 
         assertThat(bounds)
             .usingRecursiveComparison()
-            .withComparatorForFields(FloatComparator(0.01f), RectF::left.name, RectF::top.name, RectF::right.name, RectF::bottom.name)
-            .isEqualTo(RectF(200.31f, 200.31f, 899.69f, 899.69f))
+            .withComparatorForFields(FloatComparator(0.01f), Bounds::left.name, Bounds::top.name, Bounds::right.name, Bounds::bottom.name)
+            .ignoringFields(Bounds::width.name, Bounds::height.name)
+            .isEqualTo(Bounds(200.31f, 200.31f, 899.69f, 899.69f))
     }
 
     @Test fun calculatePieNewBoundsForOutsideCircularLabel_WithLabelIconOnSideAndLargerLabelHeight() {
-        val slices = listOf(
-            PieChart.Slice(0.5f, Color.BLACK, label = "14%", labelIcon = R.drawable.ic_rectangle_tall),
-            PieChart.Slice(0.105f, Color.BLACK, label = ""),
-            PieChart.Slice(0.125f, Color.BLACK, label = ""),
-            PieChart.Slice(0.02f, Color.BLACK, label = ""),
-            PieChart.Slice(0.1f, Color.BLACK, label = ""),
-            PieChart.Slice(0.15f, Color.BLACK, label = "")
-        )
         val outsideLabelsMargin = 30f
-        val currentBounds = RectF(100f, 100f, 1000f, 1000f)
+        val currentBounds = Bounds(100f, 100f, 1000f, 1000f)
         val shouldCenterPie = true
         val labelsTypeface = Typeface.DEFAULT
         val labelsSize = 160f
+        val iconHeight = 100f
+        val iconMargin = 55f
+        val iconPlacement = LEFT
         val context = getInstrumentation().targetContext
-        val defaults = Defaults(outsideLabelsMargin, labelsSize, 0, labelsTypeface, 100f, 55f, LEFT)
+        val labelsProperties = listOf(
+            LabelProperties("14%", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, R.drawable.ic_rectangle_tall, null, iconHeight, iconMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconHeight, iconMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconHeight, iconMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconHeight, iconMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconHeight, iconMargin, iconPlacement),
+            LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconHeight, iconMargin, iconPlacement)
+        )
 
-        val bounds = calculatePieNewBoundsForOutsideCircularLabel(context, currentBounds, slices, defaults, shouldCenterPie)
+        val bounds = calculatePieNewBoundsForOutsideCircularLabel(context, currentBounds, labelsProperties, shouldCenterPie)
 
-        assertThat(bounds).isEqualTo(RectF(317.5f, 317.5f, 782.5f, 782.5f))
+        assertThat(bounds).isEqualTo(Bounds(317.5f, 317.5f, 782.5f, 782.5f))
     }
 
     // endregion

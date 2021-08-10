@@ -2,12 +2,13 @@ package ir.mahozad.android.component
 
 import android.content.Context
 import android.graphics.*
-import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.minus
 import androidx.core.graphics.withClip
-import androidx.core.graphics.withRotation
 import ir.mahozad.android.*
+import ir.mahozad.android.labels.LabelProperties
+import ir.mahozad.android.labels.SliceProperties
+import ir.mahozad.android.labels.createLabelsMaker
 
 internal class Pie(
     val context: Context,
@@ -17,8 +18,8 @@ internal class Pie(
     override val paddings: Paddings?,
     var startAngle: Int,
     var slices: List<PieChart.Slice>,
-    val labelType: PieChart.LabelType,
     val outsideLabelsMargin: Float,
+    val labelType: PieChart.LabelType,
     var labelsSize: Float,
     val labelsColor: Int,
     val labelsFont: Typeface,
@@ -42,41 +43,41 @@ internal class Pie(
     private val clip = Path()
     private val overlay = Path()
     private lateinit var gaps: Path
-    private val totalDrawableRect = RectF()
     private val mainPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
     var radius = 0f
     lateinit var center: Coordinates
     private val pieEnclosingRect = RectF()
+    private val labels = createLabelsMaker(context, labelType, shouldCenterPie)
 
     override fun layOut(top: Float, start: Float, drawDirection: DrawDirection) {
+        // TODO: Delete the following four lines of code and use
+        //  totalDrawableRect = RectF(start, top, start + width, top + height)
+        //  as a parameter of labels::layout and its following line.
+        //  Make sure to modify [calculatePieNewBoundsForOutsideLabel] function so that
+        //  it can accept non-square bounds as well and use it efficiently to lay the labels.
         radius = calculateRadius(width, height)
-        center = calculatePieCenter(top, start)
-        val (pieTop, pieLeft, pieRight, pieBottom) = calculateBoundaries(center, radius)
+        center = calculatePieCenter(top, start, width, height)
+        val (pieTop1, pieLeft1, pieRight1, pieBottom1) = calculateBounds(center, radius)
+        pieEnclosingRect.set(RectF(pieLeft1, pieTop1, pieRight1, pieBottom1))
+
+
+        val startAngles = slices.runningFold(startAngle.toFloat()) { angle, slice -> calculateEndAngle(angle, slice.fraction, PieChart.DrawDirection.CLOCKWISE)}
+        val slicesProperties = slices.mapIndexed {i, slice -> SliceProperties(slice.fraction, startAngles[i], PieChart.DrawDirection.CLOCKWISE) }
+        val labelsProperties = slices.map { LabelProperties(it.label, it.labelOffset ?: labelsOffset, it.outsideLabelMargin ?: outsideLabelsMargin, it.labelSize ?: labelsSize, it.labelColor ?: labelsColor, it.labelFont ?: labelsFont, it.labelIcon, it.labelIconTint ?: labelIconsTint, it.labelIconHeight ?: labelIconsHeight, it.labelIconMargin?: labelIconsMargin, it.labelIconPlacement ?: labelIconsPlacement) }
+        labels?.layOut(Bounds(pieEnclosingRect), slicesProperties, labelsProperties)
+        val remainingBounds = labels?.getRemainingBounds() ?: Bounds(pieEnclosingRect)
+        center = calculatePieCenter(remainingBounds.top, remainingBounds.left, remainingBounds.width, remainingBounds.height)
+        radius = calculateRadius(remainingBounds.width, remainingBounds.height)
+        val (pieTop, pieLeft, pieRight, pieBottom) = calculateBounds(center, radius)
         pieEnclosingRect.set(RectF(pieLeft, pieTop, pieRight, pieBottom))
 
-
-
-
-        if (labelType == PieChart.LabelType.OUTSIDE) {
-            val defaults = Defaults(outsideLabelsMargin, labelsSize, labelsColor, labelsFont, labelIconsHeight, labelIconsMargin, labelIconsPlacement)
-            pieEnclosingRect.set(calculatePieNewBoundsForOutsideLabel(context, pieEnclosingRect, slices, pieDrawDirection, startAngle, defaults, shouldCenterPie))
-            center = Coordinates((pieEnclosingRect.left + pieEnclosingRect.right) / 2f, (pieEnclosingRect.top + pieEnclosingRect.bottom) / 2f)
-            radius = pieEnclosingRect.width() / 2f
-        } else if (labelType == PieChart.LabelType.OUTSIDE_CIRCULAR_INWARD || labelType == PieChart.LabelType.OUTSIDE_CIRCULAR_OUTWARD) {
-            val defaults = Defaults(outsideLabelsMargin, labelsSize, labelsColor, labelsFont, labelIconsHeight, labelIconsMargin, labelIconsPlacement)
-            pieEnclosingRect.set(calculatePieNewBoundsForOutsideCircularLabel(context, pieEnclosingRect, slices, defaults, shouldCenterPie))
-            center = Coordinates((pieEnclosingRect.left + pieEnclosingRect.right) / 2f, (pieEnclosingRect.top + pieEnclosingRect.bottom) / 2f)
-            radius = pieEnclosingRect.width() / 2f
-        }
 
         pie.reset()
         val overlayRadius = overlayRatio * radius
         overlay.set(Path().apply { addCircle(center.x, center.y, overlayRadius, Path.Direction.CW) })
 
 
-
-        totalDrawableRect.set(start, top, start + width, top + height)
-        val rect = Path().apply { addRect(totalDrawableRect, Path.Direction.CW) }
+        val rect = Path().apply { addRect(RectF(start, top, start + width, top + height), Path.Direction.CW) }
         val holeRadius = holeRatio * radius
         val hole = Path().apply { addCircle(center.x, center.y, holeRadius, Path.Direction.CW) }
         gaps = makeGaps()
@@ -132,128 +133,10 @@ internal class Pie(
                 canvas.drawPath(slicePath, mainPaint)
             }
 
-            updatePaintForLabel(mainPaint, slice.labelSize ?: labelsSize, slice.labelColor ?: labelsColor, slice.labelFont ?: labelsFont)
-
-            val middleAngle = calculateMiddleAngle(currentAngle, slice.fraction, pieDrawDirection)
-
-            if (labelType == PieChart.LabelType.NONE) {
-                // Do nothing
-            } else if (labelType == PieChart.LabelType.OUTSIDE) {
-                var labelIcon : Drawable? = null
-                slice.labelIcon?.let { iconId ->
-                    labelIcon = context.resources.getDrawable(iconId, null)
-                    slice.labelIconTint?.let { tint -> labelIcon?.setTint(tint) }
-                }
-                val outsideLabelMargin = slice.outsideLabelMargin ?: outsideLabelsMargin
-                val iconPlacement = slice.labelIconPlacement  ?: labelIconsPlacement
-                val iconMargin = slice.labelIconMargin ?: labelIconsMargin
-                val iconHeight = slice.labelIconHeight ?: labelIconsHeight
-                val labelBounds = calculateLabelBounds(slice.label, mainPaint)
-                val iconBounds = calculateIconBounds(labelIcon, iconHeight)
-                val labelAndIconCombinedBounds = calculateLabelAndIconCombinedBounds(labelBounds, iconBounds, iconMargin, iconPlacement)
-                val absoluteCombinedBounds = calculateAbsoluteBoundsForOutsideLabelAndIcon(labelAndIconCombinedBounds, middleAngle, center, radius, outsideLabelMargin)
-                val iconAbsoluteBounds = calculateBoundsForOutsideLabelIcon(absoluteCombinedBounds, iconBounds, iconPlacement)
-                val labelCoordinates = calculateCoordinatesForOutsideLabel(absoluteCombinedBounds, labelBounds, mainPaint, iconPlacement)
-                canvas.drawText(slice.label, labelCoordinates.x, labelCoordinates.y, mainPaint)
-                labelIcon?.setBounds(iconAbsoluteBounds.left.toInt(), iconAbsoluteBounds.top.toInt(), iconAbsoluteBounds.right.toInt(), iconAbsoluteBounds.bottom.toInt())
-                labelIcon?.draw(canvas)
-
-
-
-
-
-                // This block of code is for debugging
-                /*val rect = RectF(labelCoordinates.x - labelBounds.width() / 2f, labelCoordinates.y + mainPaint.ascent(), labelCoordinates.x + labelBounds.width() / 2f, labelCoordinates.y + mainPaint.descent())
-                mainPaint.style = Paint.Style.STROKE
-                mainPaint.color = Color.RED
-                canvas.drawRect(rect, mainPaint)
-                mainPaint.style = Paint.Style.FILL
-                canvas.drawCircle(labelCoordinates.x, labelCoordinates.y, 4f, mainPaint)
-
-                mainPaint.style = Paint.Style.STROKE
-                mainPaint.color = Color.BLUE
-                canvas.drawRect(absoluteCombinedBounds, mainPaint)
-                mainPaint.style = Paint.Style.FILL
-                canvas.drawCircle(absoluteCombinedBounds.centerX(), absoluteCombinedBounds.centerY(), 4f, mainPaint)
-
-                mainPaint.style = Paint.Style.STROKE
-                mainPaint.color = Color.MAGENTA
-                val pieCenterMarker = Path()
-                pieCenterMarker.moveTo(center.x, center.y - 20)
-                pieCenterMarker.lineTo(center.x, center.y - 200)
-                pieCenterMarker.moveTo(center.x, center.y + 20)
-                pieCenterMarker.lineTo(center.x, center.y + 200)
-                pieCenterMarker.moveTo(center.x - 20, center.y)
-                pieCenterMarker.lineTo(center.x - 200, center.y)
-                pieCenterMarker.moveTo(center.x + 20, center.y)
-                pieCenterMarker.lineTo(center.x + 200, center.y)
-                canvas.drawPath(pieCenterMarker, mainPaint)
-                mainPaint.style = Paint.Style.FILL*/
-
-
-
-
-            } else if (labelType == PieChart.LabelType.OUTSIDE_CIRCULAR_INWARD || labelType == PieChart.LabelType.OUTSIDE_CIRCULAR_OUTWARD) {
-                val isOutward = labelType == PieChart.LabelType.OUTSIDE_CIRCULAR_OUTWARD
-                var labelIcon : Drawable? = null
-                slice.labelIcon?.let { iconId ->
-                    labelIcon = context.resources.getDrawable(iconId, null)
-                    (slice.labelIconTint ?: labelIconsTint)?.let { labelIcon?.setTint(it) }
-                }
-                val outsideLabelMargin = slice.outsideLabelMargin ?: outsideLabelsMargin
-                val iconPlacement = slice.labelIconPlacement ?: labelIconsPlacement
-                val iconMargin = slice.labelIconMargin ?: labelIconsMargin
-                val iconHeight = slice.labelIconHeight ?: labelIconsHeight
-                val iconBounds = calculateIconBounds(labelIcon, iconHeight)
-                val pathForLabel = makePathForOutsideCircularLabel(middleAngle, center, radius, slice.label, mainPaint, iconBounds, iconMargin, iconPlacement, outsideLabelMargin, isOutward)
-                val iconRotation = calculateIconRotationAngleForOutsideCircularLabel(middleAngle, radius, outsideLabelMargin, slice.label, mainPaint, iconBounds, iconMargin, iconPlacement, isOutward)
-                val iconAbsoluteBounds = calculateIconAbsoluteBoundsForOutsideCircularLabel(middleAngle, center, radius, slice.label, mainPaint, iconBounds, iconMargin, iconPlacement, outsideLabelMargin)
-                canvas.drawTextOnPath(slice.label, pathForLabel, 0f, 0f, mainPaint)
-                canvas.withRotation(iconRotation, iconAbsoluteBounds.centerX(), iconAbsoluteBounds.centerY()) {
-                    labelIcon?.setBounds(iconAbsoluteBounds.left.toInt(), iconAbsoluteBounds.top.toInt(), iconAbsoluteBounds.right.toInt(), iconAbsoluteBounds.bottom.toInt())
-                    labelIcon?.draw(canvas)
-                }
-
-
-
-
-                // This block of code is for debugging
-                /*mainPaint.style = Paint.Style.STROKE
-                val radius = pieRadius + outsideLabelMargin + max(iconBounds.height(), calculateLabelBounds(slice.label, mainPaint).height()) / 2f
-                val totalFraction = (iconBounds.width() + iconMargin + calculateLabelBounds(slice.label, mainPaint).width()) / (2 * PI.toFloat() * radius)
-                val startAngle = calculateEndAngle(middleAngle, totalFraction / 2f, DrawDirection.COUNTER_CLOCKWISE)
-                val sweepAngle = totalFraction * 360f
-                val bounds = RectF(center.x - radius, center.y - radius, center.x + radius, center.y + radius)
-                canvas.drawArc(bounds, startAngle, sweepAngle, true, mainPaint)
-                mainPaint.style = Paint.Style.STROKE
-                mainPaint.color = Color.RED
-                canvas.drawPath(pathForLabel, mainPaint)*/
-
-
-
-            } else {
-                var labelIcon : Drawable? = null
-                slice.labelIcon?.let { iconId ->
-                    labelIcon = context.resources.getDrawable(iconId, null)
-                    slice.labelIconTint?.let { tint -> labelIcon?.setTint(tint) }
-                }
-                val iconPlacement = slice.labelIconPlacement  ?: labelIconsPlacement
-                val labelOffset = slice.labelOffset ?: labelsOffset
-                val iconMargin = slice.labelIconMargin ?: labelIconsMargin
-                val iconHeight = slice.labelIconHeight ?: labelIconsHeight
-                val iconBounds = calculateIconBounds(labelIcon, iconHeight)
-                val labelBounds = calculateLabelBounds(slice.label, mainPaint)
-                val labelAndIconCombinedBounds = calculateLabelAndIconCombinedBounds(labelBounds, iconBounds, iconMargin, iconPlacement)
-                val absoluteCombinedBounds = calculateAbsoluteBoundsForInsideLabelAndIcon(labelAndIconCombinedBounds, middleAngle, center, radius, labelOffset)
-                val iconAbsoluteBounds = calculateBoundsForOutsideLabelIcon(absoluteCombinedBounds, iconBounds, iconPlacement)
-                val labelCoordinates = calculateCoordinatesForOutsideLabel(absoluteCombinedBounds, labelBounds, mainPaint, iconPlacement)
-                canvas.drawText(slice.label, labelCoordinates.x, labelCoordinates.y, mainPaint)
-                labelIcon?.setBounds(iconAbsoluteBounds.left.toInt(), iconAbsoluteBounds.top.toInt(), iconAbsoluteBounds.right.toInt(), iconAbsoluteBounds.bottom.toInt())
-                labelIcon?.draw(canvas)
-            }
-
             currentAngle = calculateEndAngle(currentAngle, slice.fraction, pieDrawDirection)
         }
+
+        labels?.draw(canvas)
 
         canvas.withClip(clip) {
             mainPaint.shader = null
@@ -261,15 +144,6 @@ internal class Pie(
             mainPaint.alpha = (overlayAlpha * 255).toInt()
             canvas.drawPath(overlay, mainPaint)
         }
-
-        // The center label gets clipped by the clip path and is not shown
-        // mainPaint.color = ContextCompat.getColor(context, android.R.color.black)
-        // mainPaint.textSize = labelSize
-        // mainPaint.textAlign = Paint.Align.CENTER
-        // val bounds = Rect()
-        // mainPaint.getTextBounds(centerLabel, 0, centerLabel.length, bounds)
-        // val textHeight = bounds.height()
-        // canvas.drawText(centerLabel, centerX, centerY + (textHeight / 2), mainPaint)
     }
 
     /**
@@ -277,10 +151,12 @@ internal class Pie(
      */
     internal fun calculatePieCenter(
         pieTop: Float,
-        pieStart: Float
+        pieStart: Float,
+        pieWidth: Float,
+        pieHeight: Float
     ): Coordinates {
-        val centerX = pieStart + width / 2f
-        val centerY = pieTop + height / 2f
+        val centerX = pieStart + pieWidth / 2f
+        val centerY = pieTop + pieHeight / 2f
         return Coordinates(centerX, centerY)
     }
 }
