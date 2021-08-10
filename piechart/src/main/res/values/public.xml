@@ -63,7 +63,7 @@
   <public name="labelIconsPlacement" format="enum"/>
   <public name="labelIconsHeight" format="dimension"/>
   <public name="labelIconsMargin" format="dimension"/>
-  <public name="labelOffset" format="float"/>
+  <public name="labelsOffset" format="float"/>
   <public name="labelsColor" format="color"/>
   <public name="labelIconsTint" format="color"/>
   <public name="outsideLabelsMargin" format="dimension"/>

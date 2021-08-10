@@ -182,7 +182,7 @@
     <attr name="labelsFont" format="reference"/>
     <attr name="labelIconsHeight" format="dimension"/>
     <attr name="labelIconsMargin" format="dimension"/>
-    <attr name="labelOffset" format="float"/>
+    <attr name="labelsOffset" format="float"/>
     <attr name="labelsColor" format="color"/>
     <!-- The value can be @null too -->
     <attr name="labelIconsTint" format="color"/>

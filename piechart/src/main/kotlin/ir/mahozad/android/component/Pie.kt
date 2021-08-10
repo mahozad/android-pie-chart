@@ -26,7 +26,7 @@ internal class Pie(
     val labelIconsMargin: Float,
     val labelIconsPlacement: PieChart.IconPlacement,
     val labelIconsTint: Int?,
-    val labelOffset: Float,
+    val labelsOffset: Float,
     val shouldCenterPie: Boolean,
     val pieDrawDirection: PieChart.DrawDirection,
     var overlayRatio: Float,
@@ -238,11 +238,11 @@ internal class Pie(
                     slice.labelIconTint?.let { tint -> labelIcon?.setTint(tint) }
                 }
                 val iconPlacement = slice.labelIconPlacement  ?: labelIconsPlacement
+                val labelOffset = slice.labelOffset ?: labelsOffset
                 val iconMargin = slice.labelIconMargin ?: labelIconsMargin
                 val iconHeight = slice.labelIconHeight ?: labelIconsHeight
-                val labelOffset = /* TODO: add slice.LabelOffset ?:*/ labelOffset
-                val labelBounds = calculateLabelBounds(slice.label, mainPaint)
                 val iconBounds = calculateIconBounds(labelIcon, iconHeight)
+                val labelBounds = calculateLabelBounds(slice.label, mainPaint)
                 val labelAndIconCombinedBounds = calculateLabelAndIconCombinedBounds(labelBounds, iconBounds, iconMargin, iconPlacement)
                 val absoluteCombinedBounds = calculateAbsoluteBoundsForInsideLabelAndIcon(labelAndIconCombinedBounds, middleAngle, center, radius, labelOffset)
                 val iconAbsoluteBounds = calculateBoundsForOutsideLabelIcon(absoluteCombinedBounds, iconBounds, iconPlacement)

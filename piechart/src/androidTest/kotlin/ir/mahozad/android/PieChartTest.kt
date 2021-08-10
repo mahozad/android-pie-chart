@@ -58,4 +58,11 @@ class PieChartTest {
         pieChart.startAngleResource = resourceId
         assertThat(pieChart.startAngle).isEqualTo(expected)
     }
+
+    @Test fun changeChartLabelOffsetResourceShouldChangeLabelOffsetAsWell() {
+        val resourceId = ir.mahozad.android.test.R.fraction.testLabelsOffset
+        val expected = resources.getFraction(resourceId, 1, 1)
+        pieChart.labelsOffsetResource = resourceId
+        assertThat(pieChart.labelsOffset).isEqualTo(expected)
+    }
 }

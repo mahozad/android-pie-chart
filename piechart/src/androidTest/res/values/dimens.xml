@@ -1,3 +1,4 @@
 <resources>
   <integer name="testStartAngle">88</integer>
+  <fraction name="testLabelsOffset">37%</fraction>
 </resources>
