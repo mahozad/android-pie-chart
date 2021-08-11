@@ -65,4 +65,37 @@ class PieChartTest {
         pieChart.labelsOffsetResource = resourceId
         assertThat(pieChart.labelsOffset).isEqualTo(expected)
     }
+
+    @Test fun changeChartCenterBackgroundStatusResourceShouldChangeCenterBackgroundStatusAsWell() {
+        val resourceId1 = ir.mahozad.android.test.R.bool.testCenterBackgroundEnabled
+        val resourceId2 = ir.mahozad.android.test.R.bool.testCenterBackgroundDisabled
+        val expected1 = resources.getBoolean(resourceId1)
+        val expected2 = resources.getBoolean(resourceId2)
+
+        pieChart.isCenterBackgroundEnabledResource = resourceId1
+        assertThat(pieChart.isCenterBackgroundEnabled).isEqualTo(expected1)
+        pieChart.isCenterBackgroundEnabledResource = resourceId2
+        assertThat(pieChart.isCenterBackgroundEnabled).isEqualTo(expected2)
+    }
+
+    @Test fun changeCenterBackgroundColorResourceShouldChangeCenterBackgroundColorAsWell() {
+        val resourceId = ir.mahozad.android.test.R.color.testCenterBackgroundColor
+        val expected = resources.getColor(resourceId, null)
+        pieChart.centerBackgroundColorResource = resourceId
+        assertThat(pieChart.centerBackgroundColor).isEqualTo(expected)
+    }
+
+    @Test fun changeCenterBackgroundRatioResourceShouldChangeCenterBackgroundRatioAsWell() {
+        val resourceId = ir.mahozad.android.test.R.fraction.testCenterBackgroundRatio
+        val expected = resources.getFraction(resourceId, 1, 1)
+        pieChart.centerBackgroundRatioResource = resourceId
+        assertThat(pieChart.centerBackgroundRatio).isEqualTo(expected)
+    }
+
+    @Test fun changeCenterBackgroundAlphaResourceShouldChangeCenterBackgroundAlphaAsWell() {
+        val resourceId = ir.mahozad.android.test.R.fraction.testCenterBackgroundAlpha
+        val expected = resources.getFraction(resourceId, 1, 1)
+        pieChart.centerBackgroundAlphaResource = resourceId
+        assertThat(pieChart.centerBackgroundAlpha).isEqualTo(expected)
+    }
 }

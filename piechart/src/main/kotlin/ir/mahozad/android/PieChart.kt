@@ -571,38 +571,18 @@ class PieChart @JvmOverloads constructor(
             field = alpha.coerceIn(0f, 1f)
             invalidate()
         }
-    var isCenterBackgroundEnabled = DEFAULT_CENTER_BACKGROUND_STATUS
-        set(shouldEnable) {
-            field = shouldEnable
-            invalidate()
-        }
-    var centerBackgroundColor = DEFAULT_CENTER_BACKGROUND_COLOR
-        set(@ColorInt color) {
-            field = color
-            invalidate()
-        }
-    var centerBackgroundRatio = DEFAULT_CENTER_BACKGROUND_RATIO
-        set(@FloatRange(from = 0.0, to = 1.0) ratio) {
-            field = ratio
-            invalidate()
-        }
-    var centerBackgroundAlpha = DEFAULT_CENTER_BACKGROUND_ALPHA
-        set(@FloatRange(from = 0.0, to = 1.0) alpha) {
-            field = alpha
-            invalidate()
-        }
-    @FloatRange(from = 0.0, to = 1.0)
-    var labelsOffset = DEFAULT_LABELS_OFFSET
-        set(offset) {
-            field = offset.coerceIn(0f, 1f)
-            invalidate()
-        }
-    @FractionRes
-    var labelsOffsetResource = 0
-        set(resourceId) {
-            field = resourceId
-            labelsOffset = resources.getFraction(resourceId, 1, 1)
-        }
+
+    var isCenterBackgroundEnabled by Status(DEFAULT_CENTER_BACKGROUND_STATUS)
+    var isCenterBackgroundEnabledResource by StatusResource(0, ::isCenterBackgroundEnabled)
+    var centerBackgroundColor by Color(DEFAULT_CENTER_BACKGROUND_COLOR)
+    var centerBackgroundColorResource by ColorResource(0, ::centerBackgroundColor)
+    var centerBackgroundRatio by Fraction(DEFAULT_CENTER_BACKGROUND_RATIO)
+    var centerBackgroundRatioResource by FractionResource(0, ::centerBackgroundRatio)
+    var centerBackgroundAlpha by Fraction(DEFAULT_CENTER_BACKGROUND_ALPHA)
+    var centerBackgroundAlphaResource by FractionResource(0, ::centerBackgroundAlpha)
+    var labelsOffset by Fraction(DEFAULT_LABELS_OFFSET)
+    var labelsOffsetResource by FractionResource(0, ::labelsOffset)
+
     var labelIconsHeight = spToPx(DEFAULT_LABEL_ICONS_HEIGHT)
         set(height /* px */) {
             field = height

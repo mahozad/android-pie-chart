@@ -1,6 +1,7 @@
 package ir.mahozad.android
 
 import android.graphics.*
+import android.graphics.Color
 import android.view.View
 import android.view.View.MeasureSpec.makeMeasureSpec
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
