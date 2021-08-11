@@ -1,3 +1,4 @@
+import com.adarshr.gradle.testlogger.theme.ThemeType.STANDARD
 
 // Could also have used ${rootProject.extra["kotlinVersion"]}
 val kotlinVersion: String by rootProject.extra
@@ -11,6 +12,9 @@ plugins {
     id("maven-publish")
     // To generate signature and checksum files for each artifact
     id("signing")
+    // To print beautiful logs on the console while running tests with Gradle
+    // Doesn't work for Android instrumented tests
+    id("com.adarshr.test-logger") version "3.0.0"
 }
 
 group = "ir.mahozad.android"
@@ -102,7 +106,21 @@ jacoco {
 
 apply(from = "${rootProject.projectDir}/scripts/configure-jacoco.gradle.kts")
 
+/*
+ * Configure the [test-logger plugin](https://github.com/radarsh/gradle-test-logger-plugin).
+ * Also see [this](https://stackoverflow.com/q/3963708/)
+ * and [this](https://stackoverflow.com/a/31774254/)
+ */
+testlogger {
+    theme = STANDARD
+    slowThreshold = 5000 /* ms */
+    showSimpleNames = true
+}
+
 tasks.withType(Test::class) {
+    // Specifies whether failing tests should fail the build
+    ignoreFailures = false
+
     useJUnitPlatform {
         excludeEngines("junit-vintage")
     }
