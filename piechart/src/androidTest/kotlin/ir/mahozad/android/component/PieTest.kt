@@ -1,16 +1,20 @@
 package ir.mahozad.android.component
 
+import android.graphics.Color
 import android.graphics.Typeface
 import androidx.test.platform.app.InstrumentationRegistry
 import ir.mahozad.android.Coordinates
 import ir.mahozad.android.PieChart
 import org.assertj.core.api.Assertions
+import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.util.FloatComparator
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments.arguments
 import org.junit.jupiter.params.provider.MethodSource
+import kotlin.system.measureTimeMillis
 
 /**
  * Could not run these test as unit tests because they and the class under test
@@ -43,4 +47,64 @@ class PieTest {
         arguments(0f, 0f, 400f, 600f, Coordinates(200f, 300f)),
         arguments(-100f, -200f, 500f, 700f, Coordinates(50f, 250f)),
     )
+
+    @Test fun changePieAngleForInsideLabel() {
+        val slices = listOf(
+            PieChart.Slice(0.3f, Color.BLACK),
+            PieChart.Slice(0.1f, Color.BLACK),
+            PieChart.Slice(0.28f, Color.BLACK),
+            PieChart.Slice(0.32f, Color.BLACK)
+        )
+        val labelType = PieChart.LabelType.INSIDE
+        val width = 1000f
+        val height = 1000f
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val pie = Pie(context, width, height, null, null, 0, slices, 0f, labelType, 0f, 0, Typeface.DEFAULT, 0f, 0f, PieChart.IconPlacement.START, null, 0f, false, PieChart.DrawDirection.CLOCKWISE, 0f, 0f, PieChart.GradientType.SWEEP, 0f, null, 0f, PieChart.GapPosition.MIDDLE)
+
+        val duration = measureTimeMillis {
+            pie.setStartAngle(30)
+        }
+
+        assertThat(duration).isLessThan(15)
+    }
+
+    @Test fun changePieAngleForOutsideLabel() {
+        val slices = listOf(
+            PieChart.Slice(0.3f, Color.BLACK),
+            PieChart.Slice(0.1f, Color.BLACK),
+            PieChart.Slice(0.28f, Color.BLACK),
+            PieChart.Slice(0.32f, Color.BLACK)
+        )
+        val labelType = PieChart.LabelType.OUTSIDE
+        val width = 1000f
+        val height = 1000f
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val pie = Pie(context, width, height, null, null, 0, slices, 0f, labelType, 0f, 0, Typeface.DEFAULT, 0f, 0f, PieChart.IconPlacement.START, null, 0f, false, PieChart.DrawDirection.CLOCKWISE, 0f, 0f, PieChart.GradientType.SWEEP, 0f, null, 0f, PieChart.GapPosition.MIDDLE)
+
+        val duration = measureTimeMillis {
+            pie.setStartAngle(30)
+        }
+
+        assertThat(duration).isLessThan(15)
+    }
+
+    @Test fun changePieAngleForOutsideCircularLabel() {
+        val slices = listOf(
+            PieChart.Slice(0.3f, Color.BLACK),
+            PieChart.Slice(0.1f, Color.BLACK),
+            PieChart.Slice(0.28f, Color.BLACK),
+            PieChart.Slice(0.32f, Color.BLACK)
+        )
+        val labelType = PieChart.LabelType.OUTSIDE_CIRCULAR_OUTWARD
+        val width = 1000f
+        val height = 1000f
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val pie = Pie(context, width, height, null, null, 0, slices, 0f, labelType, 0f, 0, Typeface.DEFAULT, 0f, 0f, PieChart.IconPlacement.START, null, 0f, false, PieChart.DrawDirection.CLOCKWISE, 0f, 0f, PieChart.GradientType.SWEEP, 0f, null, 0f, PieChart.GapPosition.MIDDLE)
+
+        val duration = measureTimeMillis {
+            pie.setStartAngle(30)
+        }
+
+        assertThat(duration).isLessThan(15)
+    }
 }

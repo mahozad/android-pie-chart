@@ -246,19 +246,14 @@ class PieChart @JvmOverloads constructor(
     /**
      * Can be any integer number. It will be automatically normalized to range 0..360.
      */
-    var startAngle = DEFAULT_START_ANGLE
-        set(angle) {
-            field = normalizeAngle(angle)
-            // FIXME: Using reflection to check for variable initialization state
-            if (::pie.isInitialized) pie.startAngle = angle
+    var startAngle by Integer(DEFAULT_START_ANGLE, ::normalizeAngle) {
+        // FIXME: Using reflection to check for variable initialization state
+        if (::pie.isInitialized) {
+            pie.setStartAngle(it)
             invalidate()
         }
-    @IntegerRes
-    var startAngleResource = 0
-        set(resourceId) {
-            field = resourceId
-            startAngle = resources.getInteger(resourceId)
-        }
+    }
+    var startAngleResource by IntegerResource(0, ::startAngle)
     @FloatRange(from = 0.0, to = 1.0)
     var holeRatio = DEFAULT_HOLE_RATIO
         set(ratio) {

@@ -8,6 +8,30 @@ import kotlin.reflect.KProperty
 // https://youtu.be/6P20npkvcb8?t=489
 
 
+class Integer(
+    private var value: Int,
+    private val valueProcessor: ((Int) -> Int)? = null,
+    private val valueChangeHandler: ((Int) -> Unit)? = null
+) {
+    operator fun getValue(chart: PieChart, property: KProperty<*>) = value
+    operator fun setValue(chart: PieChart, property: KProperty<*>, newValue: Int) {
+        value = valueProcessor?.invoke(newValue) ?: newValue
+        valueChangeHandler?.invoke(newValue) ?: chart.invalidate()
+    }
+}
+
+class IntegerResource(
+    @IntegerRes
+    private var resId: Int,
+    private val backingProperty: KMutableProperty0<Int>
+) {
+    operator fun getValue(chart: PieChart, property: KProperty<*>) = resId
+    operator fun setValue(chart: PieChart, property: KProperty<*>, newResId: Int) {
+        resId = newResId
+        backingProperty.set(chart.resources.getInteger(resId))
+    }
+}
+
 class Fraction(
     @FloatRange(from = 0.0, to = 1.0)
     private var value: Float,

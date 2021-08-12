@@ -16,7 +16,7 @@ internal class Pie(
     override val height: Float,
     override val margins: Margins?,
     override val paddings: Paddings?,
-    var startAngle: Int,
+    private var startAngle: Int,
     var slices: List<PieChart.Slice>,
     val outsideLabelsMargin: Float,
     val labelType: PieChart.LabelType,
@@ -48,8 +48,14 @@ internal class Pie(
     lateinit var center: Coordinates
     private val pieEnclosingRect = RectF()
     private val labels = createLabelsMaker(context, labelType, shouldCenterPie)
+    private var top = 0f
+    private var start = 0f
+    private var drawDirection = DrawDirection.LTR
 
     override fun layOut(top: Float, start: Float, drawDirection: DrawDirection) {
+        this.top = top
+        this.start = start
+        this.drawDirection = drawDirection
         // TODO: Delete the following four lines of code and use
         //  totalDrawableRect = RectF(start, top, start + width, top + height)
         //  as a parameter of labels::layout and its following line.
@@ -158,5 +164,10 @@ internal class Pie(
         val centerX = pieStart + pieWidth / 2f
         val centerY = pieTop + pieHeight / 2f
         return Coordinates(centerX, centerY)
+    }
+
+    fun setStartAngle(newStartAngle: Int) {
+        this.startAngle = newStartAngle
+        layOut(top, start, drawDirection)
     }
 }
