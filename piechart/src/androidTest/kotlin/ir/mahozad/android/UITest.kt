@@ -13,6 +13,8 @@ import ir.mahozad.android.test.R
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable
+import org.junit.jupiter.api.condition.DisabledOnOs
 import org.junit.jupiter.api.extension.RegisterExtension
 
 /**
@@ -22,18 +24,17 @@ import org.junit.jupiter.api.extension.RegisterExtension
  * Make sure the device screen is on and unlocked for the activity to go to resumed state.
  *
  * NOTE: Because JUnit 5 is built on Java 8 from the ground up, its instrumentation tests
- *       will only run on devices running Android 8.0 (API 26) or newer. Older phones will
- *       skip the execution of these tests completely, marking them as "ignored".
+ *  will only run on devices running Android 8.0 (API 26) or newer. Older phones will
+ *  skip the execution of these tests completely, marking them as "ignored".
+ *
+ * NOTE: Because the tests are instrumented tests and run in the jvm of the emulator,
+ *  they cannot see the environment variables of the OS the emulator and the tests run in.
+ *  So, annotations like [DisabledOnOs] or [DisabledIfEnvironmentVariable] do not
+ *  see the OS environment variables and hence do not work as intended.
+ *  The [Disabled] annotation works correctly.
+ *  See [this](https://stackoverflow.com/q/42675547) and [this](https://stackoverflow.com/q/40156906) SO posts.
  */
-/*
-Didn't work:
-@DisabledIfEnvironmentVariable(
-    named = "CI",
-    matches = "true",
-    disabledReason = "Because failed on the emulator used in the GitHub action"
-)
-*/
-@Disabled
+@Disabled("Could not run in CI emulator")
 class UITest {
 
     @JvmField

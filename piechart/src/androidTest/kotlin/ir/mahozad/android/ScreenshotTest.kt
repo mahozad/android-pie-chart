@@ -3,6 +3,7 @@ package ir.mahozad.android
 import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
@@ -13,23 +14,47 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable
+import org.junit.jupiter.api.condition.DisabledOnOs
 import org.junit.jupiter.api.extension.RegisterExtension
 
 /**
- * These tests are used to just visually inspect the chart to avoid any regressions.
+ * These tests are used to visually inspect the chart to avoid any regressions.
+ * Also, they are used to test whether changing chart properties work as expected.
  * This is a kind of end-to-end testing.
  *
  * Make sure the device screen is on and unlocked for the activity to go to resumed state.
+ *
+ * NOTE: Because JUnit 5 is built on Java 8 from the ground up, its instrumentation tests
+ *  will only run on devices running Android 8.0 (API 26) or newer. Older phones will
+ *  skip the execution of these tests completely, marking them as "ignored".
+ *
+ * NOTE: The screenshot tests do not work the same on the GitHub emulator
+ *  (even though the emulator device defined in ci.yml is the same as our main local device).
+ *  So, we had to disable them on GitHub. Read on to see how.
+ *
+ * NOTE: Because the tests are instrumented tests and run in the JVM of the device,
+ *  they cannot see the environment variables of the OS the device and the tests run in.
+ *  So, annotations like [DisabledOnOs] or [DisabledIfEnvironmentVariable] do not
+ *  have access to the OS environment variables and hence do not work as intended.
+ *  The [Disabled] annotation works correctly.
+ *
+ *  We used a custom BuildConfig field to check if we are running on CI.
+ *  See the build script -> android -> buildTypes -> debug.
+ *
+ *  Another solution would be the following.
+ *  See [this](https://stackoverflow.com/q/42675547) and [this](https://stackoverflow.com/q/40156906) SO posts.
+ *  ```
+ *  buildTypes {
+ *      create("local") {
+ *          initWith(buildTypes["debug"])
+ *          buildConfigField("Boolean", "IS_CI", "${System.getenv("CI") == "true"}")
+ *          isDebuggable = true
+ *      }
+ *      testBuildType = "local"
+ *  ```
+ *  With this solution, do not forget to change the build variant to "local" in the IDE.
  */
-/*
-Didn't work:
-@DisabledIfEnvironmentVariable(
-    named = "CI",
-    matches = "true",
-    disabledReason = "Because failed on the emulator used in the GitHub action"
-)
-*/
-@Disabled
 class ScreenshotTest {
 
     @JvmField
@@ -45,45 +70,69 @@ class ScreenshotTest {
     }
 
     @Test fun theScreenshotsShouldBeTheSame(scenario: ActivityScenario<TestActivity>) {
-        // Get bitmap from a view
-        // val v = PieChart(context)
-        // val b = Bitmap.createBitmap(
-        //     v.getLayoutParams().width,
-        //     v.getLayoutParams().height,
-        //     Bitmap.Config.ARGB_8888
-        // )
-        // val c = Canvas(b)
-        // v.layout(v.getLeft(), v.getTop(), v.getRight(), v.getBottom())
-        // v.draw(c)
-        // return b
+        if (BuildConfig.IS_CI) return // See class docs for why
 
-        // Convert bitmap to PNG
-        // bitmap.compress(Bitmap.CompressFormat.PNG, quality, outStream);
-
-        val context = InstrumentationRegistry.getInstrumentation().targetContext
-        val resourceId = ir.mahozad.android.test.R.drawable.temp
-        val saved = BitmapFactory.decodeResource(context.resources, resourceId)
-        // OR (the file should be in assets directory; see https://stackoverflow.com/a/9899056)
-        // val saved = getInstrumentation().getTargetContext().getResources().getAssets().open(testFile);
-
-
+        val screenshotName = "screenshot-1"
+        val reference = loadReferenceScreenshot(screenshotName)
         scenario.onActivity { activity ->
             activity.configureChart { chart ->
-                chart.slices = emptyList()
+                // chart.slices = emptyList()
+                val bitmap = takeScreenshot(chart, screenshotName, shouldSave = false)
+                assertThat(bitmap.sameAs(reference)).isTrue()
             }
-            val bitmap = takeScreenshot(activity)
-            assertThat(bitmap.sameAs(saved)).isTrue()
         }
     }
 
     /**
      * Saving files on the device both requires WRITE permission in the manifest file and also
      * adb install options -g and -r. See the build script for more information.
+     *
+     * The [Screenshot.capture] method can accept an [Activity] and take a screenshot of it as well.
+     *
+     * To manually capture a screenshot of the view and save it on the device, do like this:
+     * ```
+     * val bitmap = Bitmap.createBitmap(
+     *     chart.width, /* chart.layoutParams.width */
+     *     chart.height, /* chart.layoutParams.height */
+     *     Bitmap.Config.ARGB_8888
+     * )
+     * val canvas = Canvas(bitmap)
+     * chart.layout(chart.left, chart.top, chart.right, chart.bottom)
+     * chart.draw(canvas)
+     *
+     * // Save the bitmap as PNG
+     * val context = InstrumentationRegistry.getInstrumentation().context
+     * val outputStream = File("${Environment.getExternalStorageDirectory()}/pic.png").outputStream()
+     * // OR val outputStream = File("${context.filesDir}/pic.png").outputStream()
+     * bitmap.compress(Bitmap.CompressFormat.PNG, 50, outputStream)
+     * ```
      */
-    private fun takeScreenshot(activity: Activity): Bitmap {
-        val screenCapture = Screenshot.capture(activity)
-        // screenCapture.name = "screenShotName"
-        // screenCapture.process() // Saves the screenshot on device
+    private fun takeScreenshot(view: View, name: String, shouldSave: Boolean): Bitmap {
+        val screenCapture = Screenshot.capture(view)
+        if (shouldSave) {
+            screenCapture.name = name
+            // Saves the screenshot in the device.
+            // The default processor will also append a UUID to the screenshot name.
+            screenCapture.process()
+        }
         return screenCapture.bitmap
+    }
+
+    /**
+     * NOTE: the *assets* directory was specified as an assets directory in the build script.
+     *
+     * Could also have saved the screenshots in *drawable* directory and loaded them like below.
+     * See [this post](https://stackoverflow.com/a/9899056).
+     * ```
+     * val resourceId = ir.mahozad.android.test.R.drawable.myDrawableName
+     * val reference = BitmapFactory.decodeResource(context.resources, resourceId)
+     * ```
+     */
+    private fun loadReferenceScreenshot(name: String): Bitmap {
+        val context = InstrumentationRegistry.getInstrumentation().context
+        val reference = context.resources.assets.open("$name.png").use {
+            BitmapFactory.decodeStream(it)
+        }
+        return reference
     }
 }

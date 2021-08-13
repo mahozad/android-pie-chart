@@ -28,6 +28,7 @@ android {
         get("release").java.srcDirs("src/release/kotlin")
         get("test").java.srcDirs("src/test/kotlin")
         get("androidTest").java.srcDirs("src/androidTest/kotlin")
+        get("debug").assets.srcDirs("src/test/assets")
     }
 
     // Since we are saving our screenshot tests on an external storage, we need to make sure that
@@ -73,6 +74,14 @@ android {
             isTestCoverageEnabled = true
             isMinifyEnabled = false
             isUseProguard = false
+
+            /*
+             * Refer to *ScreenshotTest* class documentations for more information.
+             * NOTE: All GitHub actions have the environment variable "CI" = "true".
+             */
+            val isCI = System.getenv("CI")?.toBoolean() ?: false
+            buildConfigField("Boolean", "IS_CI", "$isCI")
+            // buildConfigField("String", "NAME", """"value"""") // String example
         }
         getByName("release") {
             isTestCoverageEnabled = true

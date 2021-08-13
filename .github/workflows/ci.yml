@@ -25,7 +25,7 @@ jobs:
           api-level: 30
           target: google_apis
           arch: x86_64
-          profile: Nexus 6
+          profile: Nexus 5X # This is important for screenshot tests because of screen resolution and DPI
           script: ./gradlew :piechart:connectedAndroidTest --stacktrace
           disable-animations: false
       - name: Upload test reports
