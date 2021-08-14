@@ -168,6 +168,20 @@ class ScreenshotTest {
         }
     }
 
+    @Test fun changeStartAngle(scenario: ActivityScenario<ScreenshotTestActivity>) {
+        val screenshotName = "screenshot-6"
+        scenario.onActivity { activity ->
+            activity.configureChart { chart ->
+                chart.startAngle = 121
+                val bitmap = takeScreenshot(chart, screenshotName, shouldSave)
+                if (!shouldSave) {
+                    val reference = loadReferenceScreenshot(screenshotName)
+                    assertThat(bitmap.sameAs(reference)).isTrue()
+                }
+            }
+        }
+    }
+
     /**
      * Saving files on the device both requires WRITE permission in the manifest file and also
      * adb install options -g and -r. See the build script for more information.

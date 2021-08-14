@@ -59,6 +59,16 @@ class PieChartAPITest {
         assertThat(pieChart.startAngle).isEqualTo(expected)
     }
 
+    @Test fun changeStartAngleToAValueGreaterThan360() {
+        pieChart.startAngle = 409
+        assertThat(pieChart.startAngle).isEqualTo(49)
+    }
+
+    @Test fun changeStartAngleToAValueLessThanZero() {
+        pieChart.startAngle = -13
+        assertThat(pieChart.startAngle).isEqualTo(347)
+    }
+
     @Test fun changeHoleRatioResourceShouldChangeHoleRatioAsWell() {
         val resourceId = ir.mahozad.android.test.R.fraction.testHoleRatio
         val expected = resources.getFraction(resourceId, 1, 1)
