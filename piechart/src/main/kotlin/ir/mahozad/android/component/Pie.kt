@@ -133,6 +133,7 @@ internal class Pie(
             }
 
             mainPaint.shader = gradient
+            mainPaint.alpha = 255
 
             val slicePath = makeSlice(center, pieEnclosingRect, currentAngle, slice.fraction, pieDrawDirection, slice.pointer ?: slicesPointer)
             canvas.withClip(clip) {
