@@ -8,9 +8,9 @@
                    tools:ignore="ScopedStorage"
                    tools:remove="android:maxSdkVersion"/>
 
-  <application android:theme="@style/TestAppTheme"
+  <application android:theme="@style/ScreenshotTestAppTheme"
                android:requestLegacyExternalStorage="true">
-    <activity android:name=".TestActivity">
+    <activity android:name=".ScreenshotTestActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>

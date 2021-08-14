@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test
  * These tests are used to test the [PieChart] class and checking that changing its properties work.
  * This is a kind of end-to-end testing.
  */
-class PieChartTest {
+class PieChartAPITest {
 
     private lateinit var pieChart: PieChart
     private lateinit var context: Context
@@ -23,10 +23,10 @@ class PieChartTest {
         resources = context.resources
 
         val inflater = LayoutInflater.from(context)
-        val testLayout = inflater.inflate(ir.mahozad.android.test.R.layout.test_layout, null)
+        val testLayout = inflater.inflate(ir.mahozad.android.test.R.layout.api_test_layout, null)
         // OR val testLayout = View.inflate(context, ir.mahozad.android.test.R.layout.test_layout, null)
 
-        pieChart = testLayout.findViewById(ir.mahozad.android.test.R.id.testPieChart)
+        pieChart = testLayout.findViewById(ir.mahozad.android.test.R.id.apiTestPieChart)
         pieChart.layout(0, 0, 500, 500)
 
         /*
@@ -47,8 +47,8 @@ class PieChartTest {
     @Test fun ensureCanInstantiateTheViewFromLayout() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         val inflater = LayoutInflater.from(context)
-        val testLayout = inflater.inflate(ir.mahozad.android.test.R.layout.test_layout, null)
-        val pieChart = testLayout.findViewById<PieChart>(ir.mahozad.android.test.R.id.testPieChart)
+        val testLayout = inflater.inflate(ir.mahozad.android.test.R.layout.api_test_layout, null)
+        val pieChart = testLayout.findViewById<PieChart>(ir.mahozad.android.test.R.id.apiTestPieChart)
         assertThat(pieChart.slices).isNotEmpty()
     }
 

@@ -8,14 +8,14 @@ import android.os.Bundle
  *       that contains that class, resulted in conflicting versions of androidx:lifecycle dependency
  *       that could not be resolved (by, for example, forcing a specific version of it).
  */
-class TestActivity : Activity() {
+class ScreenshotTestActivity : Activity() {
 
     private lateinit var chart: PieChart
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(ir.mahozad.android.test.R.layout.test_layout)
-        chart = findViewById(ir.mahozad.android.test.R.id.testPieChart)
+        setContentView(ir.mahozad.android.test.R.layout.screenshot_test_layout)
+        chart = findViewById(ir.mahozad.android.test.R.id.screenshotTestPieChart)
     }
 
     fun configureChart(config: (chart: PieChart) -> Unit) = config(chart)

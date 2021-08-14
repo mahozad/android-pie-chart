@@ -1,20 +1,29 @@
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".TestActivity"
+    tools:context=".ScreenshotTestActivity"
+
+    android:orientation="vertical"
+    android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
   <ir.mahozad.android.PieChart
-      android:id="@+id/testPieChart"
+      android:id="@+id/screenshotTestPieChart"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      app:labelType="outside"
+      app:labelType="inside"
       app:startAngle="250"
       app:legendStatus="enabled"
-      app:centerBackgroundStatus="disabled"
-      app:centerBackgroundColor="#faf"
+      app:holeRatio="0.3"
+      app:overlayAlpha="0.2"
+      app:overlayColor="black"
+      app:overlayRatio="0.5"
+      app:labelsColor="#555"
+      app:legendsColor="#555"
+      app:legendsPercentageColor="#555"
+      app:legendsTitleColor="#555"
       app:legendsWrapping="wrap"
       app:legendPosition="bottom"
       app:legendArrangement="horizontal"
@@ -30,6 +39,12 @@
       app:legendBoxPadding="8dp"
       app:labelsSize="12sp"
       app:legendsSize="12sp"
+      app:labelIconsHeight="12sp"
+      app:legendIconsHeight="12sp"
+      app:legendBoxMargin="10dp"
+      app:labelIconsMargin="4dp"
+      app:outsideLabelsMargin="12dp"
+      app:legendLinesMargin="16dp"
       app:legendsPercentageSize="12sp"
       app:legendsMargin="16dp"
       app:legendBoxBorderStatus="disabled"
@@ -38,4 +53,4 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintEnd_toEndOf="parent"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

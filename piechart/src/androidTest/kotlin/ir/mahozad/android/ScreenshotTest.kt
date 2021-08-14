@@ -43,6 +43,9 @@ import org.junit.jupiter.api.extension.RegisterExtension
  *  We used a custom BuildConfig field to check if we are running on CI.
  *  See the build script -> android -> buildTypes -> debug.
  *
+ *  Another solution would be to use `InstrumentationRegistry.getArguments()`.
+ *  See [this post](https://stackoverflow.com/a/46183452).
+ *
  *  Another solution would be the following.
  *  See [this](https://stackoverflow.com/q/42675547) and [this](https://stackoverflow.com/q/40156906) SO posts.
  *  ```
@@ -61,9 +64,11 @@ class ScreenshotTest {
 
     @JvmField
     @RegisterExtension
-    val scenarioExtension = ActivityScenarioExtension.launch<TestActivity>()
-    lateinit var scenario: ActivityScenario<TestActivity>
+    val scenarioExtension = ActivityScenarioExtension.launch<ScreenshotTestActivity>()
+    lateinit var scenario: ActivityScenario<ScreenshotTestActivity>
     lateinit var device: UiDevice
+    // See https://stackoverflow.com/a/46183452
+    val shouldSave = InstrumentationRegistry.getArguments().getString("shouldSave", "false").toBoolean()
 
     @BeforeEach fun setUp() {
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
@@ -71,14 +76,15 @@ class ScreenshotTest {
         scenario.moveToState(Lifecycle.State.RESUMED)
     }
 
-    @Test fun theScreenshotsShouldBeTheSame(scenario: ActivityScenario<TestActivity>) {
+    @Test fun chartShouldBeDisplayed(scenario: ActivityScenario<ScreenshotTestActivity>) {
         val screenshotName = "screenshot-1"
-        val reference = loadReferenceScreenshot(screenshotName)
         scenario.onActivity { activity ->
             activity.configureChart { chart ->
-                // chart.slices = emptyList()
-                val bitmap = takeScreenshot(chart, screenshotName, shouldSave = false)
-                assertThat(bitmap.sameAs(reference)).isTrue()
+                val bitmap = takeScreenshot(chart, screenshotName, shouldSave)
+                if (!shouldSave) {
+                    val reference = loadReferenceScreenshot(screenshotName)
+                    assertThat(bitmap.sameAs(reference)).isTrue()
+                }
             }
         }
     }
@@ -111,7 +117,7 @@ class ScreenshotTest {
         val screenCapture = Screenshot.capture(view)
         if (shouldSave) {
             screenCapture.name = name
-            // Saves the screenshot in the device.
+            // Saves the screenshot in the device (in Pictures/Screenshots/).
             // The default processor will also append a UUID to the screenshot name.
             screenCapture.process()
         }

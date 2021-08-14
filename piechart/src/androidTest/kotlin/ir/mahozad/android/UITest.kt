@@ -39,8 +39,8 @@ class UITest {
 
     @JvmField
     @RegisterExtension
-    val scenarioExtension = ActivityScenarioExtension.launch<TestActivity>()
-    lateinit var scenario: ActivityScenario<TestActivity>
+    val scenarioExtension = ActivityScenarioExtension.launch<ScreenshotTestActivity>()
+    lateinit var scenario: ActivityScenario<ScreenshotTestActivity>
     lateinit var device: UiDevice
 
     @BeforeEach fun setUp() {
@@ -49,9 +49,9 @@ class UITest {
         scenario.moveToState(Lifecycle.State.RESUMED)
     }
 
-    @Test fun theChartShouldBeDisplayed(scenario: ActivityScenario<TestActivity>) {
+    @Test fun theChartShouldBeDisplayed(scenario: ActivityScenario<ScreenshotTestActivity>) {
         Espresso
-            .onView(withId(R.id.testPieChart))
+            .onView(withId(R.id.screenshotTestPieChart))
             .check(matches(ViewMatchers.isDisplayed()))
     }
 }
