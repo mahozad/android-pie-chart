@@ -10,7 +10,7 @@ import android.os.Bundle
  */
 class TestActivity : Activity() {
 
-    lateinit var chart: PieChart
+    private lateinit var chart: PieChart
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
