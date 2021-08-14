@@ -30,7 +30,7 @@ internal class Pie(
     val labelsOffset: Float,
     val shouldCenterPie: Boolean,
     val pieDrawDirection: PieChart.DrawDirection,
-    var overlayRatio: Float,
+    private var overlayRatio: Float,
     var overlayAlpha: Float,
     val gradientType: PieChart.GradientType,
     private var holeRatio: Float,
@@ -78,15 +78,16 @@ internal class Pie(
         val (pieTop, pieLeft, pieRight, pieBottom) = calculateBounds(center, radius)
         pieEnclosingRect.set(RectF(pieLeft, pieTop, pieRight, pieBottom))
 
-
-        pie.reset()
-        val overlayRadius = overlayRatio * radius
-        overlay.set(Path().apply { addCircle(center.x, center.y, overlayRadius, Path.Direction.CW) })
-
+        makeOverlay()
 
         gaps = makeGaps()
         hole = makeHole()
         makeClip(gaps, hole)
+    }
+
+    private fun makeOverlay() {
+        val overlayRadius = overlayRatio * radius
+        overlay.set(Path().apply { addCircle(center.x, center.y, overlayRadius, Path.Direction.CW) })
     }
 
     private fun makeClip(gaps: Path, hole: Path) {
@@ -184,5 +185,10 @@ internal class Pie(
         holeRatio = newHoleRatio
         hole = makeHole()
         makeClip(gaps, hole)
+    }
+
+    fun setOverlayRatio(newOverlayRatio: Float) {
+        overlayRatio = newOverlayRatio
+        makeOverlay()
     }
 }

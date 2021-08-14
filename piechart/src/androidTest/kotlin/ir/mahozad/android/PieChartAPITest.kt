@@ -86,6 +86,23 @@ class PieChartAPITest {
         assertThat(pieChart.holeRatio).isEqualTo(0f)
     }
 
+    @Test fun changeOverlayRatioResourceShouldChangeOverlayRatioAsWell() {
+        val resourceId = ir.mahozad.android.test.R.fraction.testOverlayRatio
+        val expected = resources.getFraction(resourceId, 1, 1)
+        pieChart.overlayRatioResource = resourceId
+        assertThat(pieChart.overlayRatio).isEqualTo(expected)
+    }
+
+    @Test fun changeOverlayRatioToAValueGreaterThanOne() {
+        pieChart.overlayRatio = 3.4f
+        assertThat(pieChart.overlayRatio).isEqualTo(1f)
+    }
+
+    @Test fun changeOverlayRatioToAValueLessThanZero() {
+        pieChart.overlayRatio = -3.4f
+        assertThat(pieChart.overlayRatio).isEqualTo(0f)
+    }
+
     @Test fun changeChartLabelOffsetResourceShouldChangeLabelOffsetAsWell() {
         val resourceId = ir.mahozad.android.test.R.fraction.testLabelsOffset
         val expected = resources.getFraction(resourceId, 1, 1)

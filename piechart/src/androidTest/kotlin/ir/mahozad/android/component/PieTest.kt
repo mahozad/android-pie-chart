@@ -127,4 +127,25 @@ class PieTest {
 
         assertThat(duration).isLessThan(15)
     }
+
+    @Test fun changeOverlayRatio() {
+        val slices = listOf(
+            PieChart.Slice(0.3f, Color.BLACK),
+            PieChart.Slice(0.1f, Color.BLACK),
+            PieChart.Slice(0.28f, Color.BLACK),
+            PieChart.Slice(0.32f, Color.BLACK)
+        )
+        val labelType = PieChart.LabelType.INSIDE
+        val overlayRatio = 0.49f
+        val width = 1000f
+        val height = 1000f
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val pie = Pie(context, width, height, null, null, 0, slices, 0f, labelType, 0f, 0, Typeface.DEFAULT, 0f, 0f, PieChart.IconPlacement.START, null, 0f, false, PieChart.DrawDirection.CLOCKWISE, overlayRatio, 0f, PieChart.GradientType.SWEEP, 0.3f, null, 0f, PieChart.GapPosition.MIDDLE)
+
+        val duration = measureTimeMillis {
+            pie.setOverlayRatio(0.567f)
+        }
+
+        assertThat(duration).isLessThan(15)
+    }
 }

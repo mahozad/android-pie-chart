@@ -239,6 +239,8 @@ class PieChart @JvmOverloads constructor(
     var slices by Property(defaultSlices) {
         onSizeChanged(width, height, width, height)
     }
+
+    var startAngleResource by IntegerResource(0, ::startAngle)
     /**
      * Can be any integer number. It will be automatically normalized to range 0..360.
      */
@@ -249,27 +251,23 @@ class PieChart @JvmOverloads constructor(
             invalidate()
         }
     }
-    var startAngleResource by IntegerResource(0, ::startAngle)
+
+    var holeRatioResource by FractionResource(0, ::holeRatio)
     var holeRatio by Property(DEFAULT_HOLE_RATIO, { it.coerceIn(0f, 1f) }) {
         if (::pie.isInitialized) {
             pie.setHoleRatio(it)
             invalidate()
         }
     }
-    var holeRatioResource by FractionResource(0, ::holeRatio)
-    @FloatRange(from = 0.0, to = 1.0)
-    var overlayRatio = DEFAULT_OVERLAY_RATIO
-        set(ratio) {
-            field = ratio.coerceIn(0f, 1f)
-            if (::pie.isInitialized) pie.overlayRatio = ratio
+
+    var overlayRatioResource by FractionResource(0, ::overlayRatio)
+    var overlayRatio by Property(DEFAULT_OVERLAY_RATIO, { it.coerceIn(0f, 1f) }) {
+        if (::pie.isInitialized) {
+            pie.setOverlayRatio(it)
             invalidate()
         }
-    @FractionRes
-    var overlayRatioResource = 0
-        set(resourceId) {
-            field = resourceId
-            overlayRatio = resources.getFraction(resourceId, 1, 1)
-        }
+    }
+
     @FloatRange(from = 0.0, to = 1.0)
     var overlayAlpha = DEFAULT_OVERLAY_ALPHA
         set(alpha) {
