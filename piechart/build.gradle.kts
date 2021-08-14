@@ -80,7 +80,7 @@ android {
              * NOTE: All GitHub actions have the environment variable "CI" = "true".
              */
             val isCI = System.getenv("CI")?.toBoolean() ?: false
-            buildConfigField("Boolean", "IS_CI", "$isCI")
+            buildConfigField("Boolean", "CI", "$isCI")
             // buildConfigField("String", "NAME", """"value"""") // String example
         }
         getByName("release") {

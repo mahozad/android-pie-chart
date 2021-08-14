@@ -10,6 +10,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.screenshot.Screenshot
 import androidx.test.uiautomator.UiDevice
 import de.mannodermaus.junit5.ActivityScenarioExtension
+import de.mannodermaus.junit5.condition.DisabledIfBuildConfigValue
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
@@ -48,13 +49,14 @@ import org.junit.jupiter.api.extension.RegisterExtension
  *  buildTypes {
  *      create("local") {
  *          initWith(buildTypes["debug"])
- *          buildConfigField("Boolean", "IS_CI", "${System.getenv("CI") == "true"}")
+ *          buildConfigField("Boolean", "CI", "${System.getenv("CI") == "true"}")
  *          isDebuggable = true
  *      }
  *      testBuildType = "local"
  *  ```
  *  With this solution, do not forget to change the build variant to "local" in the IDE.
  */
+@DisabledIfBuildConfigValue(named = "CI", matches = "true")
 class ScreenshotTest {
 
     @JvmField
@@ -70,8 +72,6 @@ class ScreenshotTest {
     }
 
     @Test fun theScreenshotsShouldBeTheSame(scenario: ActivityScenario<TestActivity>) {
-        if (BuildConfig.IS_CI) return // See class docs for why
-
         val screenshotName = "screenshot-1"
         val reference = loadReferenceScreenshot(screenshotName)
         scenario.onActivity { activity ->
