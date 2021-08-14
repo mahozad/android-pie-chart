@@ -39,7 +39,7 @@
       app:layout_constraintEnd_toEndOf="parent"/>
 
   <ImageView
-      android:id="@+id/screenCenter"
+      android:id="@+id/chartCenter"
       android:layout_width="20dp"
       android:layout_height="20dp"
       app:srcCompat="@drawable/ic_target"
