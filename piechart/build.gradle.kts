@@ -28,7 +28,7 @@ android {
         get("release").java.srcDirs("src/release/kotlin")
         get("test").java.srcDirs("src/test/kotlin")
         get("androidTest").java.srcDirs("src/androidTest/kotlin")
-        get("debug").assets.srcDirs("src/test/assets")
+        get("debug").assets.srcDirs("src/androidTest/assets")
     }
 
     // Since we are saving our screenshot tests on an external storage, we need to make sure that
