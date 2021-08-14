@@ -197,13 +197,6 @@ class PieChart @JvmOverloads constructor(
         @FloatRange(from = 0.0, to = 1.0) val scale: Float = 1f
     )
 
-    var slices = defaultSlices
-        set(list) {
-            field = list
-            pie.slices = list
-            invalidate()
-        }
-
     enum class DrawDirection { CLOCKWISE, COUNTER_CLOCKWISE }
     enum class IconPlacement { START, END, LEFT, RIGHT, TOP, BOTTOM }
     enum class GradientType { RADIAL, SWEEP }
@@ -243,6 +236,9 @@ class PieChart @JvmOverloads constructor(
         NO_ICON(R.drawable.ic_empty)
     }
 
+    var slices by Property(defaultSlices) {
+        onSizeChanged(width, height, width, height)
+    }
     /**
      * Can be any integer number. It will be automatically normalized to range 0..360.
      */
@@ -254,7 +250,7 @@ class PieChart @JvmOverloads constructor(
         }
     }
     var startAngleResource by IntegerResource(0, ::startAngle)
-    var holeRatio by Property(DEFAULT_HOLE_RATIO, {it.coerceIn(0f, 1f)}) {
+    var holeRatio by Property(DEFAULT_HOLE_RATIO, { it.coerceIn(0f, 1f) }) {
         if (::pie.isInitialized) {
             pie.setHoleRatio(it)
             invalidate()

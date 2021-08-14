@@ -5,7 +5,6 @@ import android.graphics.Typeface
 import androidx.test.platform.app.InstrumentationRegistry
 import ir.mahozad.android.Coordinates
 import ir.mahozad.android.PieChart
-import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.util.FloatComparator
 import org.junit.jupiter.api.DisplayName
@@ -33,7 +32,7 @@ class PieTest {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         val pie = Pie(context, width, height, null, null, 0, emptyList(), 0f, PieChart.LabelType.INSIDE, 0f, 0, Typeface.DEFAULT, 0f, 0f, PieChart.IconPlacement.START, null, 0f, false, PieChart.DrawDirection.CLOCKWISE, 0f, 0f, PieChart.GradientType.SWEEP, 0f, null, 0f, PieChart.GapPosition.MIDDLE)
         val center = pie.calculatePieCenter(top, start, width, height)
-        Assertions.assertThat(center)
+        assertThat(center)
             .usingRecursiveComparison()
             .withComparatorForFields(FloatComparator(0.01f), Coordinates::x.name, Coordinates::y.name)
             .isEqualTo(expectedCoordinates)
@@ -103,6 +102,27 @@ class PieTest {
 
         val duration = measureTimeMillis {
             pie.setStartAngle(30)
+        }
+
+        assertThat(duration).isLessThan(15)
+    }
+
+    @Test fun changePieHoleRatio() {
+        val slices = listOf(
+            PieChart.Slice(0.3f, Color.BLACK),
+            PieChart.Slice(0.1f, Color.BLACK),
+            PieChart.Slice(0.28f, Color.BLACK),
+            PieChart.Slice(0.32f, Color.BLACK)
+        )
+        val labelType = PieChart.LabelType.INSIDE
+        val holeRatio = 0.33f
+        val width = 1000f
+        val height = 1000f
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val pie = Pie(context, width, height, null, null, 0, slices, 0f, labelType, 0f, 0, Typeface.DEFAULT, 0f, 0f, PieChart.IconPlacement.START, null, 0f, false, PieChart.DrawDirection.CLOCKWISE, 0f, 0f, PieChart.GradientType.SWEEP, holeRatio, null, 0f, PieChart.GapPosition.MIDDLE)
+
+        val duration = measureTimeMillis {
+            pie.setHoleRatio(0.19f)
         }
 
         assertThat(duration).isLessThan(15)

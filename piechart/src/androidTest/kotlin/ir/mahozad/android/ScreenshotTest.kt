@@ -3,6 +3,7 @@ package ir.mahozad.android
 import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
@@ -11,6 +12,7 @@ import androidx.test.runner.screenshot.Screenshot
 import androidx.test.uiautomator.UiDevice
 import de.mannodermaus.junit5.ActivityScenarioExtension
 import de.mannodermaus.junit5.condition.DisabledIfBuildConfigValue
+import ir.mahozad.android.PieChart.Slice
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
@@ -80,6 +82,83 @@ class ScreenshotTest {
         val screenshotName = "screenshot-1"
         scenario.onActivity { activity ->
             activity.configureChart { chart ->
+                val bitmap = takeScreenshot(chart, screenshotName, shouldSave)
+                if (!shouldSave) {
+                    val reference = loadReferenceScreenshot(screenshotName)
+                    assertThat(bitmap.sameAs(reference)).isTrue()
+                }
+            }
+        }
+    }
+
+    @Test fun changeSlices(scenario: ActivityScenario<ScreenshotTestActivity>) {
+        val screenshotName = "screenshot-2"
+        scenario.onActivity { activity ->
+            activity.configureChart { chart ->
+                chart.slices = listOf(
+                    Slice(0.3f, Color.CYAN),
+                    Slice(0.2f, Color.YELLOW),
+                    Slice(0.5f, Color.GREEN),
+                )
+                val bitmap = takeScreenshot(chart, screenshotName, shouldSave)
+                if (!shouldSave) {
+                    val reference = loadReferenceScreenshot(screenshotName)
+                    assertThat(bitmap.sameAs(reference)).isTrue()
+                }
+            }
+        }
+    }
+
+    @Test fun changeSlicesSuchThatChartLayoutChanges(scenario: ActivityScenario<ScreenshotTestActivity>) {
+        val screenshotName = "screenshot-3"
+        scenario.onActivity { activity ->
+            activity.configureChart { chart ->
+                chart.slices = listOf(
+                    Slice(0.3f, Color.CYAN),
+                    Slice(0.2f, Color.YELLOW),
+                    Slice(0.1f, Color.GREEN),
+                    Slice(0.1f, Color.MAGENTA),
+                    Slice(0.1f, Color.WHITE),
+                    Slice(0.1f, Color.GRAY),
+                    Slice(0.1f, Color.LTGRAY)
+                )
+                val bitmap = takeScreenshot(chart, screenshotName, shouldSave)
+                if (!shouldSave) {
+                    val reference = loadReferenceScreenshot(screenshotName)
+                    assertThat(bitmap.sameAs(reference)).isTrue()
+                }
+            }
+        }
+    }
+
+    @Test fun changeSlicesTwice(scenario: ActivityScenario<ScreenshotTestActivity>) {
+        val screenshotName = "screenshot-4"
+        scenario.onActivity { activity ->
+            activity.configureChart { chart ->
+                chart.slices = listOf(
+                    Slice(0.3f, Color.CYAN),
+                    Slice(0.2f, Color.YELLOW),
+                    Slice(0.5f, Color.GREEN),
+                )
+                chart.slices = listOf(
+                    Slice(0.2f, Color.YELLOW),
+                    Slice(0.5f, Color.GREEN),
+                    Slice(0.3f, Color.CYAN),
+                )
+                val bitmap = takeScreenshot(chart, screenshotName, shouldSave)
+                if (!shouldSave) {
+                    val reference = loadReferenceScreenshot(screenshotName)
+                    assertThat(bitmap.sameAs(reference)).isTrue()
+                }
+            }
+        }
+    }
+
+    @Test fun changeHoleRatio(scenario: ActivityScenario<ScreenshotTestActivity>) {
+        val screenshotName = "screenshot-5"
+        scenario.onActivity { activity ->
+            activity.configureChart { chart ->
+                chart.holeRatio = 0.67f
                 val bitmap = takeScreenshot(chart, screenshotName, shouldSave)
                 if (!shouldSave) {
                     val reference = loadReferenceScreenshot(screenshotName)

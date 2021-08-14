@@ -17,7 +17,7 @@ internal class Pie(
     override val margins: Margins?,
     override val paddings: Paddings?,
     private var startAngle: Int,
-    var slices: List<PieChart.Slice>,
+    private val slices: List<PieChart.Slice>,
     val outsideLabelsMargin: Float,
     val labelType: PieChart.LabelType,
     var labelsSize: Float,
@@ -33,7 +33,7 @@ internal class Pie(
     var overlayRatio: Float,
     var overlayAlpha: Float,
     val gradientType: PieChart.GradientType,
-    var holeRatio: Float,
+    private var holeRatio: Float,
     val slicesPointer: PieChart.SlicePointer?,
     var gap:Float,
     val gapPosition: PieChart.GapPosition
@@ -41,11 +41,12 @@ internal class Pie(
 
     private val pie = Path()
     private val clip = Path()
+    private var gaps = Path()
+    private var hole = Path()
     private val overlay = Path()
-    private lateinit var gaps: Path
     private val mainPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
     var radius = 0f
-    lateinit var center: Coordinates
+    var center = Coordinates(0f, 0f)
     private val pieEnclosingRect = RectF()
     private val labels = createLabelsMaker(context, labelType, shouldCenterPie)
     private var top = 0f
@@ -83,14 +84,22 @@ internal class Pie(
         overlay.set(Path().apply { addCircle(center.x, center.y, overlayRadius, Path.Direction.CW) })
 
 
-        val rect = Path().apply { addRect(RectF(start, top, start + width, top + height), Path.Direction.CW) }
-        val holeRadius = holeRatio * radius
-        val hole = Path().apply { addCircle(center.x, center.y, holeRadius, Path.Direction.CW) }
         gaps = makeGaps()
+        hole = makeHole()
+        makeClip(gaps, hole)
+    }
+
+    private fun makeClip(gaps: Path, hole: Path) {
+        val rect = Path().apply { addRect(RectF(start, top, start + width, top + height), Path.Direction.CW) }
         // Could also have set the fillType to EVEN_ODD and just add the other paths to the clip
         // Or could abandon using clip path and do the operations on the pie itself
         // Clipping should be applied before drawing other things
         clip.set(rect - hole - gaps)
+    }
+
+    private fun makeHole(): Path {
+        val holeRadius = holeRatio * radius
+        return Path().apply { addCircle(center.x, center.y, holeRadius, Path.Direction.CW) }
     }
 
     private fun makeGaps(): Path {
@@ -107,7 +116,6 @@ internal class Pie(
         }
         return gaps
     }
-
 
     override fun draw(canvas: Canvas) {
         var currentAngle = startAngle.toFloat()
@@ -168,7 +176,13 @@ internal class Pie(
     }
 
     fun setStartAngle(newStartAngle: Int) {
-        this.startAngle = newStartAngle
+        startAngle = newStartAngle
         layOut(top, start, drawDirection)
+    }
+
+    fun setHoleRatio(newHoleRatio: Float) {
+        holeRatio = newHoleRatio
+        hole = makeHole()
+        makeClip(gaps, hole)
     }
 }

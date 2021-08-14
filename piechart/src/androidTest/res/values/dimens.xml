@@ -1,5 +1,6 @@
 <resources>
   <integer name="testStartAngle">88</integer>
+  <fraction name="testHoleRatio">43%</fraction>
   <fraction name="testLabelsOffset">37%</fraction>
   <fraction name="testCenterBackgroundRatio">39%</fraction>
   <fraction name="testCenterBackgroundAlpha">19%</fraction>
