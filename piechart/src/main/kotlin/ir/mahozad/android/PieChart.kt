@@ -246,7 +246,7 @@ class PieChart @JvmOverloads constructor(
     /**
      * Can be any integer number. It will be automatically normalized to range 0..360.
      */
-    var startAngle by Integer(DEFAULT_START_ANGLE, ::normalizeAngle) {
+    var startAngle by Property(DEFAULT_START_ANGLE, ::normalizeAngle) {
         // FIXME: Using reflection to check for variable initialization state
         if (::pie.isInitialized) {
             pie.setStartAngle(it)
@@ -254,19 +254,13 @@ class PieChart @JvmOverloads constructor(
         }
     }
     var startAngleResource by IntegerResource(0, ::startAngle)
-    @FloatRange(from = 0.0, to = 1.0)
-    var holeRatio = DEFAULT_HOLE_RATIO
-        set(ratio) {
-            field = ratio.coerceIn(0f, 1f)
-            if (::pie.isInitialized) pie.holeRatio = ratio
+    var holeRatio by Property(DEFAULT_HOLE_RATIO, {it.coerceIn(0f, 1f)}) {
+        if (::pie.isInitialized) {
+            pie.setHoleRatio(it)
             invalidate()
         }
-    @FractionRes
-    var holeRatioResource = 0
-        set(resourceId) {
-            field = resourceId
-            holeRatio = resources.getFraction(resourceId, 1, 1)
-        }
+    }
+    var holeRatioResource by FractionResource(0, ::holeRatio)
     @FloatRange(from = 0.0, to = 1.0)
     var overlayRatio = DEFAULT_OVERLAY_RATIO
         set(ratio) {
@@ -567,15 +561,15 @@ class PieChart @JvmOverloads constructor(
             invalidate()
         }
 
-    var isCenterBackgroundEnabled by Status(DEFAULT_CENTER_BACKGROUND_STATUS)
-    var isCenterBackgroundEnabledResource by StatusResource(0, ::isCenterBackgroundEnabled)
-    var centerBackgroundColor by Color(DEFAULT_CENTER_BACKGROUND_COLOR)
+    var isCenterBackgroundEnabled by Property(DEFAULT_CENTER_BACKGROUND_STATUS)
+    var isCenterBackgroundEnabledResource by BooleanResource(0, ::isCenterBackgroundEnabled)
+    var centerBackgroundColor by Property(DEFAULT_CENTER_BACKGROUND_COLOR)
     var centerBackgroundColorResource by ColorResource(0, ::centerBackgroundColor)
-    var centerBackgroundRatio by Fraction(DEFAULT_CENTER_BACKGROUND_RATIO)
+    var centerBackgroundRatio by Property(DEFAULT_CENTER_BACKGROUND_RATIO)
     var centerBackgroundRatioResource by FractionResource(0, ::centerBackgroundRatio)
-    var centerBackgroundAlpha by Fraction(DEFAULT_CENTER_BACKGROUND_ALPHA)
+    var centerBackgroundAlpha by Property(DEFAULT_CENTER_BACKGROUND_ALPHA)
     var centerBackgroundAlphaResource by FractionResource(0, ::centerBackgroundAlpha)
-    var labelsOffset by Fraction(DEFAULT_LABELS_OFFSET)
+    var labelsOffset by Property(DEFAULT_LABELS_OFFSET)
     var labelsOffsetResource by FractionResource(0, ::labelsOffset)
 
     var labelIconsHeight = spToPx(DEFAULT_LABEL_ICONS_HEIGHT)
