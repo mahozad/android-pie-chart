@@ -78,129 +78,81 @@ class ScreenshotTest {
         scenario.moveToState(Lifecycle.State.RESUMED)
     }
 
-    @Test fun chartShouldBeDisplayed(scenario: ActivityScenario<ScreenshotTestActivity>) {
-        val screenshotName = "screenshot-1"
-        scenario.onActivity { activity ->
-            activity.configureChart { chart ->
-                val bitmap = takeScreenshot(chart, screenshotName, shouldSave)
-                if (!shouldSave) {
-                    val reference = loadReferenceScreenshot(screenshotName)
-                    assertThat(bitmap.sameAs(reference)).isTrue()
-                }
-            }
+    @Test fun chartShouldBeDisplayed() {
+        compareScreenshots("screenshot-1") {}
+    }
+
+    @Test fun changeSlices() {
+        compareScreenshots("screenshot-2") { chart ->
+            chart.slices = listOf(
+                Slice(0.3f, Color.CYAN),
+                Slice(0.2f, Color.YELLOW),
+                Slice(0.5f, Color.GREEN),
+            )
         }
     }
 
-    @Test fun changeSlices(scenario: ActivityScenario<ScreenshotTestActivity>) {
-        val screenshotName = "screenshot-2"
-        scenario.onActivity { activity ->
-            activity.configureChart { chart ->
-                chart.slices = listOf(
-                    Slice(0.3f, Color.CYAN),
-                    Slice(0.2f, Color.YELLOW),
-                    Slice(0.5f, Color.GREEN),
-                )
-                val bitmap = takeScreenshot(chart, screenshotName, shouldSave)
-                if (!shouldSave) {
-                    val reference = loadReferenceScreenshot(screenshotName)
-                    assertThat(bitmap.sameAs(reference)).isTrue()
-                }
-            }
+    @Test fun changeSlicesSuchThatChartLayoutChanges() {
+        compareScreenshots("screenshot-3") { chart ->
+            chart.slices = listOf(
+                Slice(0.3f, Color.CYAN),
+                Slice(0.2f, Color.YELLOW),
+                Slice(0.1f, Color.GREEN),
+                Slice(0.1f, Color.MAGENTA),
+                Slice(0.1f, Color.WHITE),
+                Slice(0.1f, Color.GRAY),
+                Slice(0.1f, Color.LTGRAY)
+            )
         }
     }
 
-    @Test fun changeSlicesSuchThatChartLayoutChanges(scenario: ActivityScenario<ScreenshotTestActivity>) {
-        val screenshotName = "screenshot-3"
-        scenario.onActivity { activity ->
-            activity.configureChart { chart ->
-                chart.slices = listOf(
-                    Slice(0.3f, Color.CYAN),
-                    Slice(0.2f, Color.YELLOW),
-                    Slice(0.1f, Color.GREEN),
-                    Slice(0.1f, Color.MAGENTA),
-                    Slice(0.1f, Color.WHITE),
-                    Slice(0.1f, Color.GRAY),
-                    Slice(0.1f, Color.LTGRAY)
-                )
-                val bitmap = takeScreenshot(chart, screenshotName, shouldSave)
-                if (!shouldSave) {
-                    val reference = loadReferenceScreenshot(screenshotName)
-                    assertThat(bitmap.sameAs(reference)).isTrue()
-                }
-            }
+    @Test fun changeSlicesTwice() {
+        compareScreenshots("screenshot-4") { chart ->
+            chart.slices = listOf(
+                Slice(0.3f, Color.CYAN),
+                Slice(0.2f, Color.YELLOW),
+                Slice(0.5f, Color.GREEN)
+            )
+            chart.slices = listOf(
+                Slice(0.2f, Color.YELLOW),
+                Slice(0.5f, Color.GREEN),
+                Slice(0.3f, Color.CYAN)
+            )
         }
     }
 
-    @Test fun changeSlicesTwice(scenario: ActivityScenario<ScreenshotTestActivity>) {
-        val screenshotName = "screenshot-4"
-        scenario.onActivity { activity ->
-            activity.configureChart { chart ->
-                chart.slices = listOf(
-                    Slice(0.3f, Color.CYAN),
-                    Slice(0.2f, Color.YELLOW),
-                    Slice(0.5f, Color.GREEN),
-                )
-                chart.slices = listOf(
-                    Slice(0.2f, Color.YELLOW),
-                    Slice(0.5f, Color.GREEN),
-                    Slice(0.3f, Color.CYAN),
-                )
-                val bitmap = takeScreenshot(chart, screenshotName, shouldSave)
-                if (!shouldSave) {
-                    val reference = loadReferenceScreenshot(screenshotName)
-                    assertThat(bitmap.sameAs(reference)).isTrue()
-                }
-            }
+    @Test fun changeHoleRatio() {
+        compareScreenshots("screenshot-5") { chart ->
+            chart.holeRatio = 0.67f
         }
     }
 
-    @Test fun changeHoleRatio(scenario: ActivityScenario<ScreenshotTestActivity>) {
-        val screenshotName = "screenshot-5"
-        scenario.onActivity { activity ->
-            activity.configureChart { chart ->
-                chart.holeRatio = 0.67f
-                val bitmap = takeScreenshot(chart, screenshotName, shouldSave)
-                if (!shouldSave) {
-                    val reference = loadReferenceScreenshot(screenshotName)
-                    assertThat(bitmap.sameAs(reference)).isTrue()
-                }
-            }
+    @Test fun changeStartAngle() {
+        compareScreenshots("screenshot-6") { chart ->
+            chart.startAngle = 121
         }
     }
 
-    @Test fun changeStartAngle(scenario: ActivityScenario<ScreenshotTestActivity>) {
-        val screenshotName = "screenshot-6"
-        scenario.onActivity { activity ->
-            activity.configureChart { chart ->
-                chart.startAngle = 121
-                val bitmap = takeScreenshot(chart, screenshotName, shouldSave)
-                if (!shouldSave) {
-                    val reference = loadReferenceScreenshot(screenshotName)
-                    assertThat(bitmap.sameAs(reference)).isTrue()
-                }
-            }
+    @Test fun changeOverlayRatio() {
+        compareScreenshots("screenshot-7") { chart ->
+            chart.overlayRatio = 0.591f
         }
     }
 
-    @Test fun changeOverlayRatio(scenario: ActivityScenario<ScreenshotTestActivity>) {
-        val screenshotName = "screenshot-7"
-        scenario.onActivity { activity ->
-            activity.configureChart { chart ->
-                chart.overlayRatio = 0.591f
-                val bitmap = takeScreenshot(chart, screenshotName, shouldSave)
-                if (!shouldSave) {
-                    val reference = loadReferenceScreenshot(screenshotName)
-                    assertThat(bitmap.sameAs(reference)).isTrue()
-                }
-            }
+    @Test fun changeOverlayAlpha() {
+        compareScreenshots("screenshot-8") { chart ->
+            chart.overlayAlpha = 0.891f
         }
     }
 
-    @Test fun changeOverlayAlpha(scenario: ActivityScenario<ScreenshotTestActivity>) {
-        val screenshotName = "screenshot-8"
+    /**
+     * FIXME: the name of the function is misleading. It also works in a saving
+     *  mode in that it just saves the screenshot on device and skips the comparison.
+     */
+    private fun compareScreenshots(screenshotName: String, chartConfig: (chart: PieChart) -> Unit) {
         scenario.onActivity { activity ->
             activity.configureChart { chart ->
-                chart.overlayAlpha = 0.891f
+                chartConfig(chart)
                 val bitmap = takeScreenshot(chart, screenshotName, shouldSave)
                 if (!shouldSave) {
                     val reference = loadReferenceScreenshot(screenshotName)
