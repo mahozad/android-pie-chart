@@ -85,8 +85,8 @@ class ScreenshotTest {
     }
 
     @Test fun changeSlices() {
-        compareScreenshots("screenshot-2") { chart ->
-            chart.slices = listOf(
+        compareScreenshots("screenshot-2") {
+            slices = listOf(
                 Slice(0.3f, Color.CYAN),
                 Slice(0.2f, Color.YELLOW),
                 Slice(0.5f, Color.GREEN)
@@ -95,8 +95,8 @@ class ScreenshotTest {
     }
 
     @Test fun changeSlicesSuchThatChartLayoutChanges() {
-        compareScreenshots("screenshot-3") { chart ->
-            chart.slices = listOf(
+        compareScreenshots("screenshot-3") {
+            slices = listOf(
                 Slice(0.3f, Color.CYAN),
                 Slice(0.2f, Color.YELLOW),
                 Slice(0.1f, Color.GREEN),
@@ -109,13 +109,13 @@ class ScreenshotTest {
     }
 
     @Test fun changeSlicesTwice() {
-        compareScreenshots("screenshot-4") { chart ->
-            chart.slices = listOf(
+        compareScreenshots("screenshot-4") {
+            slices = listOf(
                 Slice(0.3f, Color.CYAN),
                 Slice(0.2f, Color.YELLOW),
                 Slice(0.5f, Color.GREEN)
             )
-            chart.slices = listOf(
+            slices = listOf(
                 Slice(0.2f, Color.YELLOW),
                 Slice(0.5f, Color.GREEN),
                 Slice(0.3f, Color.CYAN)
@@ -124,95 +124,75 @@ class ScreenshotTest {
     }
 
     @Test fun changeHoleRatio() {
-        compareScreenshots("screenshot-5") { chart ->
-            chart.holeRatio = 0.67f
-        }
+        compareScreenshots("screenshot-5") { holeRatio = 0.67f }
     }
 
     @Test fun changeStartAngle() {
-        compareScreenshots("screenshot-6") { chart ->
-            chart.startAngle = 121
-        }
+        compareScreenshots("screenshot-6") { startAngle = 121 }
     }
 
     @Test fun changeOverlayRatio() {
-        compareScreenshots("screenshot-7") { chart ->
-            chart.overlayRatio = 0.591f
-        }
+        compareScreenshots("screenshot-7") { overlayRatio = 0.591f }
     }
 
     @Test fun changeOverlayAlpha() {
-        compareScreenshots("screenshot-8") { chart ->
-            chart.overlayAlpha = 0.891f
-        }
+        compareScreenshots("screenshot-8") { overlayAlpha = 0.891f }
     }
 
     @Test fun changeGap() {
-        compareScreenshots("screenshot-9") { chart ->
-            chart.gap = 15.dp
-        }
+        compareScreenshots("screenshot-9") { gap = 15.dp }
     }
 
     @Test fun changeLabelsSize() {
-        compareScreenshots("screenshot-10") { chart ->
-            chart.labelsSize = 17.sp
-        }
+        compareScreenshots("screenshot-10") { labelsSize = 17.sp }
     }
 
     @Test fun changeLabelIconsHeight() {
-        compareScreenshots("screenshot-11") { chart ->
-            chart.slices = listOf(
+        compareScreenshots("screenshot-11") {
+            slices = listOf(
                 Slice(0.3f, Color.CYAN),
                 Slice(0.2f, Color.YELLOW, labelIcon = R.drawable.ic_circle),
                 Slice(0.5f, Color.GREEN)
             )
-            chart.labelIconsHeight = 27.dp
+            labelIconsHeight = 27.dp
         }
     }
 
     @Test fun disableLegends() {
-        compareScreenshots("screenshot-12") { chart ->
-            chart.isLegendEnabled = false
-        }
+        compareScreenshots("screenshot-12") { isLegendEnabled = false }
     }
 
     @Test fun enableLegends() {
-        compareScreenshots("screenshot-13") { chart ->
-            chart.isLegendEnabled = true
-        }
+        compareScreenshots("screenshot-13") { isLegendEnabled = true }
     }
 
     @Test fun changeLegendsSize() {
-        compareScreenshots("screenshot-14") { chart ->
-            chart.slices = listOf(
+        compareScreenshots("screenshot-14") {
+            slices = listOf(
                 Slice(0.3f, Color.CYAN),
                 Slice(0.2f, Color.YELLOW, legend = "Test"),
                 Slice(0.5f, Color.GREEN)
             )
-            chart.legendsSize = 20.sp
+            legendsSize = 20.sp
         }
     }
 
     @Test fun changeLegendsPercentageSize() {
-        compareScreenshots("screenshot-15") { chart ->
-            chart.legendsPercentageSize = 20.sp
-        }
+        compareScreenshots("screenshot-15") { legendsPercentageSize = 20.sp }
     }
 
     @Test fun changeLegendsIconHeight() {
-        compareScreenshots("screenshot-16") { chart ->
-            chart.legendIconsHeight = 20.dp
-        }
+        compareScreenshots("screenshot-16") { legendIconsHeight = 20.dp }
     }
 
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.
      */
-    private fun compareScreenshots(screenshotName: String, chartConfig: (chart: PieChart) -> Unit) {
+    private fun compareScreenshots(screenshotName: String, configure: PieChart.() -> Unit) {
         scenario.onActivity { activity ->
             activity.configureChart { chart ->
-                chartConfig(chart)
+                chart.configure()
                 val bitmap = takeScreenshot(chart, screenshotName, shouldSave)
                 if (!shouldSave) {
                     val reference = loadReferenceScreenshot(screenshotName)
