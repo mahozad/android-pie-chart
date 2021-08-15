@@ -170,6 +170,18 @@ class ScreenshotTest {
         }
     }
 
+    @Test fun disableLegends() {
+        compareScreenshots("screenshot-12") { chart ->
+            chart.isLegendEnabled = false
+        }
+    }
+
+    @Test fun enableLegends() {
+        compareScreenshots("screenshot-13") { chart ->
+            chart.isLegendEnabled = true
+        }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.

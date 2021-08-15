@@ -148,6 +148,13 @@ class PieChartAPITest {
         assertThat(pieChart.labelsOffset).isEqualTo(expected)
     }
 
+    @Test fun changeChartLegendEnabledResourceShouldChangeLegendEnabledAsWell() {
+        val resourceId = ir.mahozad.android.test.R.bool.testIsLegendEnabled
+        val expected = resources.getBoolean(resourceId)
+        pieChart.isLegendEnabledResource = resourceId
+        assertThat(pieChart.isLegendEnabled).isEqualTo(expected)
+    }
+
     @Test fun changeChartCenterBackgroundStatusResourceShouldChangeCenterBackgroundStatusAsWell() {
         val resourceId1 = ir.mahozad.android.test.R.bool.testCenterBackgroundEnabled
         val resourceId2 = ir.mahozad.android.test.R.bool.testCenterBackgroundDisabled

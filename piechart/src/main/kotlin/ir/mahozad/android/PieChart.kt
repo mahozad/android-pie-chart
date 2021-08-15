@@ -291,7 +291,6 @@ class PieChart @JvmOverloads constructor(
     }
 
     var labelsSizeResource by DimensionResource(::labelsSize)
-
     /**
      * Examples:
      *   - 4.px
@@ -304,18 +303,11 @@ class PieChart @JvmOverloads constructor(
         }
     }
 
-    var isLegendEnabled = DEFAULT_LEGEND_STATUS
-        set(shouldEnable) {
-            field = shouldEnable
-            invalidate()
-        }
+    var isLegendEnabledResource by BooleanResource(::isLegendEnabled)
+    var isLegendEnabled by Property(DEFAULT_LEGEND_STATUS) {
+        onSizeChanged(width, height, width, height)
+    }
 
-    @BoolRes
-    var isLegendEnabledResource = 0
-        set(resourceId) {
-            field = resourceId
-            isLegendEnabled = resources.getBoolean(resourceId)
-        }
     @Dimension(unit = PX)
     var legendsSize = spToPx(DEFAULT_LEGENDS_SIZE)
         set(size) {
