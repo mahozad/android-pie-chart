@@ -196,6 +196,20 @@ class ScreenshotTest {
         }
     }
 
+    @Test fun changeOverlayAlpha(scenario: ActivityScenario<ScreenshotTestActivity>) {
+        val screenshotName = "screenshot-8"
+        scenario.onActivity { activity ->
+            activity.configureChart { chart ->
+                chart.overlayAlpha = 0.891f
+                val bitmap = takeScreenshot(chart, screenshotName, shouldSave)
+                if (!shouldSave) {
+                    val reference = loadReferenceScreenshot(screenshotName)
+                    assertThat(bitmap.sameAs(reference)).isTrue()
+                }
+            }
+        }
+    }
+
     /**
      * Saving files on the device both requires WRITE permission in the manifest file and also
      * adb install options -g and -r. See the build script for more information.

@@ -268,19 +268,14 @@ class PieChart @JvmOverloads constructor(
         }
     }
 
-    @FloatRange(from = 0.0, to = 1.0)
-    var overlayAlpha = DEFAULT_OVERLAY_ALPHA
-        set(alpha) {
-            field = alpha.coerceIn(0f, 1f)
-            if (::pie.isInitialized) pie.overlayAlpha = alpha
+    var overlayAlphaResource by FractionResource(0, ::overlayAlpha)
+    var overlayAlpha by Property(DEFAULT_OVERLAY_ALPHA, { it.coerceIn(0f, 1f) }) {
+        if (::pie.isInitialized) {
+            pie.setOverlayAlpha(it)
             invalidate()
         }
-    @FractionRes
-    var overlayAlphaResource = 0
-        set(resourceId) {
-            field = resourceId
-            overlayAlpha = resources.getFraction(resourceId, 1, 1)
-        }
+    }
+
     @Dimension(unit = PX)
     var gap = dpToPx(DEFAULT_GAP)
         set(width) {

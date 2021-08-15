@@ -31,7 +31,7 @@ internal class Pie(
     val shouldCenterPie: Boolean,
     val pieDrawDirection: PieChart.DrawDirection,
     private var overlayRatio: Float,
-    var overlayAlpha: Float,
+    private var overlayAlpha: Float,
     val gradientType: PieChart.GradientType,
     private var holeRatio: Float,
     val slicesPointer: PieChart.SlicePointer?,
@@ -190,5 +190,9 @@ internal class Pie(
     fun setOverlayRatio(newOverlayRatio: Float) {
         overlayRatio = newOverlayRatio
         makeOverlay()
+    }
+
+    fun setOverlayAlpha(newOverlayAlpha: Float) {
+        overlayAlpha = newOverlayAlpha
     }
 }
