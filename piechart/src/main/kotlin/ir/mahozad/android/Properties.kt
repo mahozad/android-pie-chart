@@ -22,38 +22,34 @@ class Property<T>(
 }
 
 abstract class PropertyResource<T>(
-    protected var resId: Int,
-    private val backingProperty: KMutableProperty0<T>
+    private val mainProperty: KMutableProperty0<T>,
+    initialResId: Int = 0
 ) {
+    protected var resId = initialResId
     abstract fun resolveResourceValue(context: Context): T
     operator fun getValue(chart: PieChart, property: KProperty<*>) = resId
     operator fun setValue(chart: PieChart, property: KProperty<*>, newResId: Int) {
         resId = newResId
-        backingProperty.set(resolveResourceValue(chart.context))
+        mainProperty.set(resolveResourceValue(chart.context))
     }
 }
 
-class IntegerResource(backingProperty: KMutableProperty0<Int>) :
-    PropertyResource<Int>(0, backingProperty) {
+class IntegerResource(mainProperty: KMutableProperty0<Int>) : PropertyResource<Int>(mainProperty) {
     override fun resolveResourceValue(context: Context) = context.resources.getInteger(resId)
 }
 
-class FractionResource(backingProperty: KMutableProperty0<Float>) :
-    PropertyResource<Float>(0, backingProperty) {
+class FractionResource(mainProperty: KMutableProperty0<Float>) : PropertyResource<Float>(mainProperty) {
     override fun resolveResourceValue(context: Context) = context.resources.getFraction(resId, 1, 1)
 }
 
-class BooleanResource(backingProperty: KMutableProperty0<Boolean>) :
-    PropertyResource<Boolean>(0, backingProperty) {
+class BooleanResource(mainProperty: KMutableProperty0<Boolean>) : PropertyResource<Boolean>(mainProperty) {
     override fun resolveResourceValue(context: Context) = context.resources.getBoolean(resId)
 }
 
-class ColorResource(backingProperty: KMutableProperty0<Int>) :
-    PropertyResource<Int>(0, backingProperty) {
+class ColorResource(mainProperty: KMutableProperty0<Int>) : PropertyResource<Int>(mainProperty) {
     override fun resolveResourceValue(context: Context) = ContextCompat.getColor(context, resId)
 }
 
-class DimensionResource(backingProperty: KMutableProperty0<Dimension>) :
-    PropertyResource<Dimension>(0, backingProperty) {
+class DimensionResource(mainProperty: KMutableProperty0<Dimension>) : PropertyResource<Dimension>(mainProperty) {
     override fun resolveResourceValue(context: Context) = PX(context.resources.getDimension(resId))
 }
