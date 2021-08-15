@@ -120,7 +120,7 @@ class PieChartAPITest {
         assertThat(pieChart.overlayAlpha).isEqualTo(0f)
     }
 
-    @Test fun changeGapResourceShouldChangeGapAndGapDpAsWell() {
+    @Test fun changeGapResourceShouldChangeGapAsWell() {
         val resourceId = ir.mahozad.android.test.R.dimen.testGap
         val expected = resources.getDimension(resourceId)
         pieChart.gapResource = resourceId
