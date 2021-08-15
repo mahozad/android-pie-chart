@@ -182,6 +182,29 @@ class ScreenshotTest {
         }
     }
 
+    @Test fun changeLegendsSize() {
+        compareScreenshots("screenshot-14") { chart ->
+            chart.slices = listOf(
+                Slice(0.3f, Color.CYAN),
+                Slice(0.2f, Color.YELLOW, legend = "Test"),
+                Slice(0.5f, Color.GREEN)
+            )
+            chart.legendsSize = 20.sp
+        }
+    }
+
+    @Test fun changeLegendsPercentageSize() {
+        compareScreenshots("screenshot-15") { chart ->
+            chart.legendsPercentageSize = 20.sp
+        }
+    }
+
+    @Test fun changeLegendsIconHeight() {
+        compareScreenshots("screenshot-16") { chart ->
+            chart.legendIconsHeight = 20.dp
+        }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.

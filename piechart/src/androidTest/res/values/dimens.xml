@@ -2,6 +2,9 @@
   <dimen name="testGap">13px</dimen>
   <dimen name="testLabelsSize">19sp</dimen>
   <dimen name="testLabelIconsHeight">13dp</dimen>
+  <dimen name="testLegendsSize">23sp</dimen>
+  <dimen name="testLegendsPercentageSize">23sp</dimen>
+  <dimen name="testLegendIconsHeight">27dp</dimen>
   <integer name="testStartAngle">88</integer>
   <fraction name="testHoleRatio">43%</fraction>
   <fraction name="testOverlayRatio">73%</fraction>
