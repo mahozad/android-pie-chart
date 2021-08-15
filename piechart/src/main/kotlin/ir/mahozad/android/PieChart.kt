@@ -278,6 +278,11 @@ class PieChart @JvmOverloads constructor(
     }
 
     var gapResource by DimensionResource(::gap)
+    /**
+     * Examples:
+     *   - 4.px
+     *   - 13.6.dp
+     */
     var gap by Property(DEFAULT_GAP) {
         if (::pie.isInitialized) {
             pie.setGap(it.px)
