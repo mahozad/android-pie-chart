@@ -26,6 +26,7 @@ import ir.mahozad.android.PieChart.SlicePointer
 import ir.mahozad.android.component.*
 import ir.mahozad.android.component.DrawDirection.LTR
 import ir.mahozad.android.component.Icon
+import ir.mahozad.android.unit.Dimension.PX
 import ir.mahozad.android.unit.px
 import ir.mahozad.android.util.calculatePieDimensions
 import ir.mahozad.android.util.getColorArray
@@ -45,7 +46,7 @@ const val DEFAULT_CENTER_BACKGROUND_STATUS = DISABLED
 @FloatRange(from = 0.0, to = 1.0) const val DEFAULT_CENTER_BACKGROUND_RATIO = 0.5f
 @FloatRange(from = 0.0, to = 1.0) const val DEFAULT_CENTER_BACKGROUND_ALPHA = 1f
 val DEFAULT_GAP = 8.px
-@Dimension(unit = SP) const val DEFAULT_LABELS_SIZE = 18f
+val DEFAULT_LABELS_SIZE = 18.px
 const val DEFAULT_LEGEND_STATUS = DISABLED
 @Dimension(unit = SP) const val DEFAULT_LEGENDS_SIZE = 16f
 @Dimension(unit = DP) const val DEFAULT_LEGEND_BOX_MARGIN = 8f
@@ -64,8 +65,7 @@ const val DEFAULT_LEGENDS_PERCENTAGE_STATUS = DISABLED
 @Dimension(unit = DP) const val DEFAULT_LEGENDS_PERCENTAGE_MARGIN = 8f
 @Dimension(unit = SP) const val DEFAULT_LEGENDS_PERCENTAGE_SIZE = DEFAULT_LEGENDS_SIZE
 @Dimension(unit = DP) const val DEFAULT_LEGENDS_MARGIN = 4f
-/* sp so user can easily specify the same value for both label size and icon height to make them the same size */
-@Dimension(unit = SP) const val DEFAULT_LABEL_ICONS_HEIGHT = DEFAULT_LABELS_SIZE
+val DEFAULT_LABEL_ICONS_HEIGHT = DEFAULT_LABELS_SIZE
 @Dimension(unit = SP) const val DEFAULT_LEGEND_ICONS_HEIGHT = DEFAULT_LEGENDS_SIZE
 @Dimension(unit = DP) const val DEFAULT_LABEL_ICONS_MARGIN = 8f
 @FloatRange(from = 0.0, to = 1.0) const val DEFAULT_LABELS_OFFSET = 0.75f
@@ -290,30 +290,26 @@ class PieChart @JvmOverloads constructor(
         }
     }
 
-    @Dimension(unit = PX)
-    var labelsSize = spToPx(DEFAULT_LABELS_SIZE)
-        set(size) {
-            field = size
-            if (::pie.isInitialized) pie.labelsSize = size
+    var labelsSizeResource by DimensionResource(::labelsSize)
+
+    /**
+     * Examples:
+     *   - 4.px
+     *   - 13.6.dp
+     */
+    var labelsSize by Property(DEFAULT_LABELS_SIZE) {
+        if (::pie.isInitialized) {
+            pie.setLabelsSize(it.px)
             invalidate()
         }
-    @Dimension(unit = SP)
-    var labelsSizeSp = DEFAULT_LABELS_SIZE
-        set(sizeSp) {
-            field = sizeSp
-            labelsSize = spToPx(sizeSp)
-        }
-    @DimenRes
-    var labelsSizeResource = 0
-        set(resourceId) {
-            field = resourceId
-            labelsSize = resources.getDimension(resourceId)
-        }
+    }
+
     var isLegendEnabled = DEFAULT_LEGEND_STATUS
         set(shouldEnable) {
             field = shouldEnable
             invalidate()
         }
+
     @BoolRes
     var isLegendEnabledResource = 0
         set(resourceId) {
@@ -556,11 +552,14 @@ class PieChart @JvmOverloads constructor(
     var labelsOffset by Property(DEFAULT_LABELS_OFFSET)
     var labelsOffsetResource by FractionResource(::labelsOffset)
 
-    var labelIconsHeight = spToPx(DEFAULT_LABEL_ICONS_HEIGHT)
-        set(height /* px */) {
-            field = height
+    var labelIconsHeightResource by DimensionResource(::labelIconsHeight)
+    var labelIconsHeight by Property(DEFAULT_LABEL_ICONS_HEIGHT) {
+        if (::pie.isInitialized) {
+            pie.setLabelIconsHeight(it.px)
             invalidate()
         }
+    }
+
     var labelIconsMargin = dpToPx(DEFAULT_LABEL_ICONS_MARGIN)
         set(margin /* px */) {
             field = margin
@@ -679,8 +678,8 @@ class PieChart @JvmOverloads constructor(
             holeRatio = getFloat(R.styleable.PieChart_holeRatio, DEFAULT_HOLE_RATIO)
             overlayRatio = getFloat(R.styleable.PieChart_overlayRatio, DEFAULT_OVERLAY_RATIO)
             overlayAlpha = getFloat(R.styleable.PieChart_overlayAlpha, DEFAULT_OVERLAY_ALPHA)
-            gap = ir.mahozad.android.unit.Dimension.PX(getDimension(R.styleable.PieChart_gap, DEFAULT_GAP.px))
-            labelsSize = getDimension(R.styleable.PieChart_labelsSize, spToPx(DEFAULT_LABELS_SIZE))
+            gap = PX(getDimension(R.styleable.PieChart_gap, DEFAULT_GAP.px))
+            labelsSize = PX(getDimension(R.styleable.PieChart_labelsSize, DEFAULT_LABELS_SIZE.px))
             labelsOffset = getFloat(R.styleable.PieChart_labelsOffset, DEFAULT_LABELS_OFFSET)
             labelsColor = getColor(R.styleable.PieChart_labelsColor, DEFAULT_LABELS_COLOR)
             labelIconsTint = getIconTint(this, R.styleable.PieChart_labelIconsTint)
@@ -689,7 +688,7 @@ class PieChart @JvmOverloads constructor(
             centerLabelFont = getFont(this, R.styleable.PieChart_centerLabelFont, defaultCenterLabelFont)
             centerLabelIconAlpha = getFloat(R.styleable.PieChart_centerLabelIconAlpha, DEFAULT_CENTER_LABEL_ICON_ALPHA)
             centerLabelAlpha = getFloat(R.styleable.PieChart_centerLabelAlpha, DEFAULT_CENTER_LABEL_ALPHA)
-            labelIconsHeight = getDimension(R.styleable.PieChart_labelIconsHeight, spToPx(DEFAULT_LABEL_ICONS_HEIGHT))
+            labelIconsHeight = PX(getDimension(R.styleable.PieChart_labelIconsHeight, DEFAULT_LABEL_ICONS_HEIGHT.px))
             centerLabelIconHeight = getDimension(R.styleable.PieChart_centerLabelIconHeight, dpToPx(DEFAULT_CENTER_LABEL_ICON_HEIGHT))
             legendIconsHeight = getDimension(R.styleable.PieChart_legendIconsHeight, spToPx(DEFAULT_LEGEND_ICONS_HEIGHT))
             legendIconsMargin = getDimension(R.styleable.PieChart_legendIconsMargin, dpToPx(DEFAULT_LEGEND_ICONS_MARGIN))
@@ -809,7 +808,7 @@ class PieChart @JvmOverloads constructor(
 
         val legendBox = LegendBuilder().createLegendBox(context, maxAvailableWidthForLegendBox, maxAvailableHeightForLegendBox, slices,legendIconsTintArray, legendsTitle, legendsTitleSize, legendsTitleColor, legendTitleMargin, legendsTitleAlignment, legendsIcon, legendIconsHeight, legendIconsAlpha, legendsSize, legendsColor, legendIconsMargin, legendsPercentageMargin, isLegendsPercentageEnabled, legendsPercentageSize, legendsPercentageColor, legendsMargin, legendArrangement, legendsAlignment, legendBoxBackgroundColor, legendBoxPadding, legendBoxBorder, legendBoxBorderColor, legendBoxBorderAlpha, legendBoxBorderCornerRadius, legendBoxBorderType, legendBoxBorderDashArray, legendBoxMargin, legendPosition, legendLinesMargin, legendsWrapping, isLegendBoxBorderEnabled)
         val (pieWidth, pieHeight) = calculatePieDimensions(width, height, Paddings(paddingTop, paddingBottom, paddingStart, paddingEnd), isLegendEnabled, legendBoxMargin, legendPosition, legendBox.width, legendBox.height)
-        pie = Pie(context, pieWidth, pieHeight, null, null, startAngle, slices, outsideLabelsMargin, labelType, labelsSize, labelsColor, labelsFont, labelIconsHeight, labelIconsMargin, labelIconsPlacement, labelIconsTint, labelsOffset, shouldCenterPie, drawDirection, overlayRatio, overlayAlpha, gradientType, holeRatio, slicesPointer, gap.px, gapPosition)
+        pie = Pie(context, pieWidth, pieHeight, null, null, startAngle, slices, outsideLabelsMargin, labelType, labelsSize.px, labelsColor, labelsFont, labelIconsHeight.px, labelIconsMargin, labelIconsPlacement, labelIconsTint, labelsOffset, shouldCenterPie, drawDirection, overlayRatio, overlayAlpha, gradientType, holeRatio, slicesPointer, gap.px, gapPosition)
         val chartDirection = determineChartDirection(legendPosition)
         val chartComponents = makeChartComponentList(pie, isLegendEnabled, legendBox, legendPosition)
         chartBox = Container(chartComponents, width.toFloat(), height.toFloat(), chartDirection, legendBoxAlignment, paddings = Paddings(paddingTop, paddingBottom, paddingStart, paddingEnd))

@@ -20,10 +20,10 @@ internal class Pie(
     private val slices: List<PieChart.Slice>,
     val outsideLabelsMargin: Float,
     val labelType: PieChart.LabelType,
-    var labelsSize: Float,
+    private var labelsSize: Float,
     val labelsColor: Int,
     val labelsFont: Typeface,
-    val labelIconsHeight: Float,
+    private var labelIconsHeight: Float,
     val labelIconsMargin: Float,
     val labelIconsPlacement: PieChart.IconPlacement,
     val labelIconsTint: Int?,
@@ -198,6 +198,16 @@ internal class Pie(
 
     fun setGap(newGap: Float) {
         gap = newGap
+        layOut(top, start, drawDirection)
+    }
+
+    fun setLabelsSize(newLabelsSize: Float) {
+        labelsSize = newLabelsSize
+        layOut(top, start, drawDirection)
+    }
+
+    fun setLabelIconsHeight(newLabelIconsHeight: Float) {
+        labelIconsHeight = newLabelIconsHeight
         layOut(top, start, drawDirection)
     }
 }

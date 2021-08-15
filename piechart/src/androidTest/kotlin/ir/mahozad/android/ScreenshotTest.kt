@@ -14,6 +14,7 @@ import de.mannodermaus.junit5.ActivityScenarioExtension
 import de.mannodermaus.junit5.condition.DisabledIfBuildConfigValue
 import ir.mahozad.android.PieChart.Slice
 import ir.mahozad.android.unit.dp
+import ir.mahozad.android.unit.sp
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
@@ -88,7 +89,7 @@ class ScreenshotTest {
             chart.slices = listOf(
                 Slice(0.3f, Color.CYAN),
                 Slice(0.2f, Color.YELLOW),
-                Slice(0.5f, Color.GREEN),
+                Slice(0.5f, Color.GREEN)
             )
         }
     }
@@ -149,6 +150,23 @@ class ScreenshotTest {
     @Test fun changeGap() {
         compareScreenshots("screenshot-9") { chart ->
             chart.gap = 15.dp
+        }
+    }
+
+    @Test fun changeLabelsSize() {
+        compareScreenshots("screenshot-10") { chart ->
+            chart.labelsSize = 17.sp
+        }
+    }
+
+    @Test fun changeLabelIconsHeight() {
+        compareScreenshots("screenshot-11") { chart ->
+            chart.slices = listOf(
+                Slice(0.3f, Color.CYAN),
+                Slice(0.2f, Color.YELLOW, labelIcon = R.drawable.ic_circle),
+                Slice(0.5f, Color.GREEN)
+            )
+            chart.labelIconsHeight = 27.dp
         }
     }
 

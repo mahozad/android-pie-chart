@@ -127,6 +127,20 @@ class PieChartAPITest {
         assertThat(pieChart.gap.px).isEqualTo(expected)
     }
 
+    @Test fun changeLabelsSizeResourceShouldChangeLabelsSizeAsWell() {
+        val resourceId = ir.mahozad.android.test.R.dimen.testLabelsSize
+        val expected = resources.getDimension(resourceId)
+        pieChart.labelsSizeResource = resourceId
+        assertThat(pieChart.labelsSize.px).isEqualTo(expected)
+    }
+
+    @Test fun changeLabelIconHeightResourceShouldChangeLabelIconsHeightAsWell() {
+        val resourceId = ir.mahozad.android.test.R.dimen.testLabelIconsHeight
+        val expected = resources.getDimension(resourceId)
+        pieChart.labelIconsHeightResource = resourceId
+        assertThat(pieChart.labelIconsHeight.px).isEqualTo(expected)
+    }
+
     @Test fun changeChartLabelOffsetResourceShouldChangeLabelOffsetAsWell() {
         val resourceId = ir.mahozad.android.test.R.fraction.testLabelsOffset
         val expected = resources.getFraction(resourceId, 1, 1)
