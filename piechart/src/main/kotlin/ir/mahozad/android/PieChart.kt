@@ -11,7 +11,6 @@ import android.graphics.Typeface.DEFAULT
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.*
-import androidx.annotation.Dimension
 import androidx.annotation.Dimension.*
 import androidx.annotation.IntRange
 import androidx.core.content.res.ResourcesCompat
@@ -27,6 +26,7 @@ import ir.mahozad.android.PieChart.SlicePointer
 import ir.mahozad.android.component.*
 import ir.mahozad.android.component.DrawDirection.LTR
 import ir.mahozad.android.component.Icon
+import ir.mahozad.android.unit.px
 import ir.mahozad.android.util.calculatePieDimensions
 import ir.mahozad.android.util.getColorArray
 import ir.mahozad.android.util.getIconTint
@@ -674,7 +674,7 @@ class PieChart @JvmOverloads constructor(
             holeRatio = getFloat(R.styleable.PieChart_holeRatio, DEFAULT_HOLE_RATIO)
             overlayRatio = getFloat(R.styleable.PieChart_overlayRatio, DEFAULT_OVERLAY_RATIO)
             overlayAlpha = getFloat(R.styleable.PieChart_overlayAlpha, DEFAULT_OVERLAY_ALPHA)
-            gap = ir.mahozad.android.Dimension.PX(getDimension(R.styleable.PieChart_gap, DEFAULT_GAP.px))
+            gap = ir.mahozad.android.unit.Dimension.PX(getDimension(R.styleable.PieChart_gap, DEFAULT_GAP.px))
             labelsSize = getDimension(R.styleable.PieChart_labelsSize, spToPx(DEFAULT_LABELS_SIZE))
             labelsOffset = getFloat(R.styleable.PieChart_labelsOffset, DEFAULT_LABELS_OFFSET)
             labelsColor = getColor(R.styleable.PieChart_labelsColor, DEFAULT_LABELS_COLOR)

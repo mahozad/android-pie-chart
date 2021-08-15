@@ -13,6 +13,7 @@ import androidx.test.uiautomator.UiDevice
 import de.mannodermaus.junit5.ActivityScenarioExtension
 import de.mannodermaus.junit5.condition.DisabledIfBuildConfigValue
 import ir.mahozad.android.PieChart.Slice
+import ir.mahozad.android.unit.dp
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
