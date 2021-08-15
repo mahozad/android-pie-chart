@@ -33,23 +33,23 @@ abstract class PropertyResource<T>(
     }
 }
 
-class IntegerResource(resId: Int, backingProperty: KMutableProperty0<Int>) :
-    PropertyResource<Int>(resId, backingProperty) {
+class IntegerResource(backingProperty: KMutableProperty0<Int>) :
+    PropertyResource<Int>(0, backingProperty) {
     override fun resolveResourceValue(context: Context) = context.resources.getInteger(resId)
 }
 
-class FractionResource(resId: Int, backingProperty: KMutableProperty0<Float>) :
-    PropertyResource<Float>(resId, backingProperty) {
+class FractionResource(backingProperty: KMutableProperty0<Float>) :
+    PropertyResource<Float>(0, backingProperty) {
     override fun resolveResourceValue(context: Context) = context.resources.getFraction(resId, 1, 1)
 }
 
-class BooleanResource(resId: Int, backingProperty: KMutableProperty0<Boolean>) :
-    PropertyResource<Boolean>(resId, backingProperty) {
+class BooleanResource(backingProperty: KMutableProperty0<Boolean>) :
+    PropertyResource<Boolean>(0, backingProperty) {
     override fun resolveResourceValue(context: Context) = context.resources.getBoolean(resId)
 }
 
-class ColorResource(resId: Int, backingProperty: KMutableProperty0<Int>) :
-    PropertyResource<Int>(resId, backingProperty) {
+class ColorResource(backingProperty: KMutableProperty0<Int>) :
+    PropertyResource<Int>(0, backingProperty) {
     override fun resolveResourceValue(context: Context) = ContextCompat.getColor(context, resId)
 }
 
