@@ -145,6 +145,12 @@ class ScreenshotTest {
         }
     }
 
+    @Test fun changeGap() {
+        compareScreenshots("screenshot-9") { chart ->
+            chart.gap = 15.dp
+        }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.

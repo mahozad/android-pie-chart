@@ -1,4 +1,5 @@
 <resources>
+  <dimen name="testGap">13px</dimen>
   <integer name="testStartAngle">88</integer>
   <fraction name="testHoleRatio">43%</fraction>
   <fraction name="testOverlayRatio">73%</fraction>

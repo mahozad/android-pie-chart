@@ -169,4 +169,24 @@ class PieTest {
 
         assertThat(duration).isLessThan(15)
     }
+
+    @Test fun changeGap() {
+        val slices = listOf(
+            PieChart.Slice(0.3f, Color.BLACK),
+            PieChart.Slice(0.1f, Color.BLACK),
+            PieChart.Slice(0.28f, Color.BLACK),
+            PieChart.Slice(0.32f, Color.BLACK)
+        )
+        val labelType = PieChart.LabelType.INSIDE
+        val width = 1000f
+        val height = 1000f
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val pie = Pie(context, width, height, null, null, 0, slices, 0f, labelType, 0f, 0, Typeface.DEFAULT, 0f, 0f, PieChart.IconPlacement.START, null, 0f, false, PieChart.DrawDirection.CLOCKWISE, 0.34f, 0.34f, PieChart.GradientType.SWEEP, 0.3f, null, 3f, PieChart.GapPosition.MIDDLE)
+
+        val duration = measureTimeMillis {
+            pie.setGap(15f)
+        }
+
+        assertThat(duration).isLessThan(15)
+    }
 }
