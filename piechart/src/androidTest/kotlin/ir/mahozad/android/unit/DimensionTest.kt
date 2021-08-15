@@ -1,5 +1,7 @@
 package ir.mahozad.android.unit
 
+import de.mannodermaus.junit5.condition.DisabledIfBuildConfigValue
+import ir.mahozad.android.ScreenshotTest
 import ir.mahozad.android.unit.Dimension.*
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.util.FloatComparator
@@ -12,7 +14,9 @@ import org.junit.jupiter.params.provider.MethodSource
 
 /**
  * NOTE: The dimensions and the tests depend on the device and its display density.
+ *  So we disable these tests on CI. See [ScreenshotTest] class documentations for more information.
  */
+@DisabledIfBuildConfigValue(named = "CI", matches = "true")
 @TestInstance(PER_CLASS)
 class DimensionTest {
 
