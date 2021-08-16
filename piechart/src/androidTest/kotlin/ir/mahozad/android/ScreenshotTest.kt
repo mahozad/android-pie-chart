@@ -231,7 +231,7 @@ class ScreenshotTest {
                 if (!shouldSave) {
                     val reference = loadReferenceScreenshot(screenshotName)
                     assertThat(bitmap.sameAs(reference))
-                        .withFailMessage { "Screenshots are not the same" }
+                        .withFailMessage { "Screenshots are not the same: $screenshotName" }
                         .isTrue()
                 }
             }
