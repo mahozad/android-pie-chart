@@ -361,11 +361,11 @@ class PieChart @JvmOverloads constructor(
         onSizeChanged(width, height, width, height)
     }
 
-    var legendsColor = DEFAULT_LEGENDS_COLOR
-        set(color) {
-            field = color
-            invalidate()
-        }
+    var legendsColor by Property(DEFAULT_LEGENDS_COLOR) {
+        // TODO: No need to recalculate everything; provide a method in legend box for this
+        onSizeChanged(width, height, width, height)
+    }
+
     var legendBoxBackgroundColor = DEFAULT_LEGEND_BOX_BACKGROUND_COLOR
         set(color) {
             field = color

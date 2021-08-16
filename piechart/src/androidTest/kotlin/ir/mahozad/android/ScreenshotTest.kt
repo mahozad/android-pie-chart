@@ -223,6 +223,17 @@ class ScreenshotTest {
         compareScreenshots("screenshot-24") { legendsMargin = 53.dp }
     }
 
+    @Test fun changeLegendsColor() {
+        compareScreenshots("screenshot-25") {
+            slices = listOf(
+                Slice(0.3f, Color.CYAN),
+                Slice(0.2f, Color.YELLOW, legend = "Test"),
+                Slice(0.5f, Color.GREEN)
+            )
+            legendsColor = Color.rgb(221, 116, 101)
+        }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.
