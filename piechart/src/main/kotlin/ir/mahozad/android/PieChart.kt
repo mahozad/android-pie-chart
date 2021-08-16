@@ -310,11 +310,27 @@ class PieChart @JvmOverloads constructor(
         onSizeChanged(width, height, width, height)
     }
 
-    var legendsTitleAlignment = defaultLegendsTitleAlignment
-        set(alignment) {
-            field = alignment
-            invalidate()
-        }
+    /**
+     * Cannot define a resource version for enum properties (?).
+     *
+     * We could have accepted a style resource and then extract the
+     * attribute value related to this enum property but that was dirty:
+     * ```
+     * <style name="CustomLegendsTitleAlignmentStyle">
+     *   <item name="legendsTitleAlignment">start</item>
+     * </style>
+     * ```
+     * In addition, in the future we can define a property named chartStyle
+     * that accepts a style resource id and applies it to all the properties of
+     * the chart instead of just a single enum property.
+     *
+     * See the commented EnumResource class in Properties.kt file.
+     */
+    var legendsTitleAlignment by Property(defaultLegendsTitleAlignment) {
+        // FIXME: No need to recalculate everything; provide a method in legend box for this
+        onSizeChanged(width, height, width, height)
+    }
+
     var legendsAlignment = defaultLegendsAlignment
         set(alignment) {
             field = alignment

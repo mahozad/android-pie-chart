@@ -51,3 +51,17 @@ class ColorResource(override val mainProperty: KMutableProperty0<Int>) : Propert
 class DimensionResource(override val mainProperty: KMutableProperty0<Dimension>) : PropertyResource<Dimension>() {
     override fun resolveResourceValue(context: Context) = PX(context.resources.getDimension(resId))
 }
+
+// class EnumResource<T : Enum<T>>(override val mainProperty: KMutableProperty0<T>) : PropertyResource<T>() {
+//     override fun resolveResourceValue(context: Context): T {
+//         context.withStyledAttributes(resId, R.styleable.PieChart) {
+//             val mainPropertyClass = mainProperty.get()::class
+//             if (mainPropertyClass == Alignment::class) {
+//                 return getEnum(R.styleable.PieChart_legendsTitleAlignment, defaultLegendsTitleAlignment) as T
+//             } /*else if (mainPropertyClass == AnotherEnumClass) {
+//                 return getEnum(R.styleable.PieChart_anotherEnumAttribute, anotherEnumDefault) as T
+//             }*/
+//         }
+//         throw Exception("No enum class matched the type of the property")
+//     }
+// }

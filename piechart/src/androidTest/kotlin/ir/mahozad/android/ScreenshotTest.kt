@@ -13,8 +13,7 @@ import androidx.test.uiautomator.UiDevice
 import de.mannodermaus.junit5.ActivityScenarioExtension
 import de.mannodermaus.junit5.condition.DisabledIfBuildConfigValue
 import ir.mahozad.android.PieChart.Slice
-import ir.mahozad.android.unit.dp
-import ir.mahozad.android.unit.sp
+import ir.mahozad.android.component.Alignment
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
@@ -183,6 +182,10 @@ class ScreenshotTest {
 
     @Test fun changeLegendsIconHeight() {
         compareScreenshots("screenshot-16") { legendIconsHeight = 20.dp }
+    }
+
+    @Test fun changeLegendsTitleAlignment() {
+        compareScreenshots("screenshot-17") { legendsTitleAlignment = Alignment.START }
     }
 
     /**
