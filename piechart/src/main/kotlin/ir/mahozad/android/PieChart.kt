@@ -349,12 +349,10 @@ class PieChart @JvmOverloads constructor(
         onSizeChanged(width, height, width, height)
     }
 
-    var legendPosition = defaultLegendPosition
-        set(position) {
-            field = position
-            invalidate()
-            requestLayout()
-        }
+    var legendPosition by Property(defaultLegendPosition) {
+        onSizeChanged(width, height, width, height)
+    }
+
     var legendArrangement = defaultLegendArrangement
         set(arrangement) {
             field = arrangement
