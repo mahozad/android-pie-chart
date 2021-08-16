@@ -45,13 +45,3 @@ sealed class Dimension {
         override val sp = value
     }
 }
-
-inline val Int.dp: Dimension get() = Dimension.DP(this.toFloat())
-inline val Float.dp: Dimension get() = Dimension.DP(this)
-inline val Double.dp: Dimension get() = Dimension.DP(this.toFloat())
-inline val Int.sp: Dimension get() = Dimension.SP(this.toFloat())
-inline val Float.sp: Dimension get() = Dimension.SP(this)
-inline val Double.sp: Dimension get() = Dimension.SP(this.toFloat())
-inline val Int.px: Dimension get() = Dimension.PX(this.toFloat())
-inline val Float.px: Dimension get() = Dimension.PX(this)
-inline val Double.px: Dimension get() = Dimension.PX(this.toFloat())

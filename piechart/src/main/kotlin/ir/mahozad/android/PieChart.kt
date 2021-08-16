@@ -1,7 +1,6 @@
 package ir.mahozad.android
 
 import android.content.Context
-import android.content.res.TypedArray
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -13,7 +12,6 @@ import android.view.View
 import androidx.annotation.*
 import androidx.annotation.Dimension.*
 import androidx.annotation.IntRange
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.content.withStyledAttributes
 import ir.mahozad.android.PieChart.DefaultIcons.CIRCLE
 import ir.mahozad.android.PieChart.DrawDirection.CLOCKWISE
@@ -27,7 +25,6 @@ import ir.mahozad.android.component.*
 import ir.mahozad.android.component.DrawDirection.LTR
 import ir.mahozad.android.component.Icon
 import ir.mahozad.android.unit.Dimension.PX
-import ir.mahozad.android.unit.px
 import ir.mahozad.android.util.calculatePieDimensions
 import ir.mahozad.android.util.getColorArray
 import ir.mahozad.android.util.getIconTint
@@ -665,9 +662,9 @@ class PieChart @JvmOverloads constructor(
             labelsOffset = getFloat(R.styleable.PieChart_labelsOffset, DEFAULT_LABELS_OFFSET)
             labelsColor = getColor(R.styleable.PieChart_labelsColor, DEFAULT_LABELS_COLOR)
             labelIconsTint = getIconTint(this, R.styleable.PieChart_labelIconsTint)
-            labelsFont = getFont(this, R.styleable.PieChart_labelsFont, defaultLabelsFont)
+            labelsFont = getFont(context, R.styleable.PieChart_labelsFont, defaultLabelsFont)
             isCenterLabelEnabled = getInt(R.styleable.PieChart_centerLabelStatus, 0) == 1
-            centerLabelFont = getFont(this, R.styleable.PieChart_centerLabelFont, defaultCenterLabelFont)
+            centerLabelFont = getFont(context, R.styleable.PieChart_centerLabelFont, defaultCenterLabelFont)
             centerLabelIconAlpha = getFloat(R.styleable.PieChart_centerLabelIconAlpha, DEFAULT_CENTER_LABEL_ICON_ALPHA)
             centerLabelAlpha = getFloat(R.styleable.PieChart_centerLabelAlpha, DEFAULT_CENTER_LABEL_ALPHA)
             labelIconsHeight = PX(getDimension(R.styleable.PieChart_labelIconsHeight, DEFAULT_LABEL_ICONS_HEIGHT.px))
@@ -728,11 +725,6 @@ class PieChart @JvmOverloads constructor(
             gradientType = getEnum(R.styleable.PieChart_gradientType, defaultGradientType)
             drawDirection = getEnum(R.styleable.PieChart_drawDirection, defaultDrawDirection)
         }
-    }
-
-    private fun getFont(typedArray: TypedArray, @StyleableRes font: Int, defaultFont: Typeface): Typeface {
-        val fontId = typedArray.getResourceId(font, -1)
-        return if (fontId == -1) defaultFont else ResourcesCompat.getFont(context, fontId)!!
     }
 
     /**
