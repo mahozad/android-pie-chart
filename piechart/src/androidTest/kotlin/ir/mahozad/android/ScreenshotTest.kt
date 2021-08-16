@@ -195,6 +195,10 @@ class ScreenshotTest {
         }
     }
 
+    @Test fun changeLegendBoxAlignment() {
+        compareScreenshots("screenshot-19") { legendBoxAlignment = Alignment.END }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.

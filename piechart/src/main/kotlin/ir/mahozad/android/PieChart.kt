@@ -336,11 +336,10 @@ class PieChart @JvmOverloads constructor(
         onSizeChanged(width, height, width, height)
     }
 
-    var legendBoxAlignment  = defaultLegendBoxAlignment
-        set(alignment) {
-            field = alignment
-            invalidate()
-        }
+    var legendBoxAlignment  by Property(defaultLegendBoxAlignment) {
+        onSizeChanged(width, height, width, height)
+    }
+
     var legendsWrapping  = defaultLegendsWrapping
         set(wrapping) {
             field = wrapping
