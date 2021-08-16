@@ -52,6 +52,10 @@ class DimensionResource(override val mainProperty: KMutableProperty0<Dimension>)
     override fun resolveResourceValue(context: Context) = PX(context.resources.getDimension(resId))
 }
 
+class StringResource(override val mainProperty: KMutableProperty0<String>) : PropertyResource<String>() {
+    override fun resolveResourceValue(context: Context) = context.resources.getString(resId)
+}
+
 // class EnumResource<T : Enum<T>>(override val mainProperty: KMutableProperty0<T>) : PropertyResource<T>() {
 //     override fun resolveResourceValue(context: Context): T {
 //         context.withStyledAttributes(resId, R.styleable.PieChart) {

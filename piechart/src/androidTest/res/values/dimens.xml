@@ -5,6 +5,7 @@
   <dimen name="testLegendsSize">23sp</dimen>
   <dimen name="testLegendsPercentageSize">23sp</dimen>
   <dimen name="testLegendIconsHeight">27dp</dimen>
+  <dimen name="testLegendsMargin">31dp</dimen>
   <integer name="testStartAngle">88</integer>
   <fraction name="testHoleRatio">43%</fraction>
   <fraction name="testOverlayRatio">73%</fraction>

@@ -345,6 +345,7 @@ class PieChart @JvmOverloads constructor(
         onSizeChanged(width, height, width, height)
     }
 
+    var legendsTitleResource by StringResource(::legendsTitle)
     var legendsTitle by Property(DEFAULT_LEGENDS_TITLE) {
         onSizeChanged(width, height, width, height)
     }
@@ -357,10 +358,12 @@ class PieChart @JvmOverloads constructor(
         onSizeChanged(width, height, width, height)
     }
 
+    var legendsMarginResource by DimensionResource(::legendsMargin)
     var legendsMargin by Property(DEFAULT_LEGENDS_MARGIN) {
         onSizeChanged(width, height, width, height)
     }
 
+    var legendsColorResource by ColorResource(::legendsColor)
     var legendsColor by Property(DEFAULT_LEGENDS_COLOR) {
         // TODO: No need to recalculate everything; provide a method in legend box for this
         onSizeChanged(width, height, width, height)

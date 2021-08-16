@@ -176,6 +176,31 @@ class PieChartAPITest {
         assertThat(pieChart.legendIconsHeight.px).isEqualTo(expected)
     }
 
+    @Test fun changeLegendsTitleResourceShouldChangeLegendsTitleAsWell() {
+        val resourceId = ir.mahozad.android.test.R.string.testLegendsTitle
+        val expected = resources.getString(resourceId)
+        pieChart.legendsTitleResource = resourceId
+        assertThat(pieChart.legendsTitle).isEqualTo(expected)
+    }
+
+    @Test fun changeChartLegendsMarginResourceShouldChangeLegendsMarginAsWell() {
+        val resourceId = ir.mahozad.android.test.R.dimen.testLegendsMargin
+        val expected = resources.getDimension(resourceId)
+        pieChart.legendsMarginResource = resourceId
+        assertThat(pieChart.legendsMargin.px).isEqualTo(expected)
+    }
+
+    @Test fun changeChartLegendsColorResourceShouldChangeLegendsColorAsWell() {
+        val resourceId = ir.mahozad.android.test.R.color.testLegendsColor
+        val expected = resources.getColor(resourceId, null)
+        pieChart.legendsColorResource = resourceId
+        assertThat(pieChart.legendsColor).isEqualTo(expected)
+    }
+
+
+
+
+
     @Test fun changeChartCenterBackgroundStatusResourceShouldChangeCenterBackgroundStatusAsWell() {
         val resourceId1 = ir.mahozad.android.test.R.bool.testCenterBackgroundEnabled
         val resourceId2 = ir.mahozad.android.test.R.bool.testCenterBackgroundDisabled

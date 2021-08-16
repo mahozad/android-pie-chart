@@ -1,5 +1,6 @@
 <resources>
   <color name="testCenterBackgroundColor">#a38f02</color>
+  <color name="testLegendsColor">#669148</color>
   <color name="testColor">#f0f</color>
   <array name="testColorArray">
     <item>#ff00AE28</item>
