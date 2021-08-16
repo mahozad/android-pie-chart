@@ -654,6 +654,7 @@ class PieChart @JvmOverloads constructor(
     init {
         // Could also have used context.theme.obtainStyledAttributes(attrs, R.styleable.PieChart, 0, 0).use {...}
         //  TypedArray objects are a shared resource and must be recycled after use (thus the .use {} above)
+        // See https://stackoverflow.com/a/68803044/8583692
         context.withStyledAttributes(attrs, R.styleable.PieChart) {
             startAngle = normalizeAngle(getInt(R.styleable.PieChart_startAngle, DEFAULT_START_ANGLE))
             holeRatio = getFloat(R.styleable.PieChart_holeRatio, DEFAULT_HOLE_RATIO)
@@ -728,12 +729,6 @@ class PieChart @JvmOverloads constructor(
             drawDirection = getEnum(R.styleable.PieChart_drawDirection, defaultDrawDirection)
         }
     }
-
-    /**
-     * See https://stackoverflow.com/a/58815613
-     */
-    private inline fun <reified T : Enum<T>> TypedArray.getEnum(index: Int, default: T) =
-        getInt(index, -1).let { if (it >= 0) enumValues<T>()[it] else default }
 
     private fun getFont(typedArray: TypedArray, @StyleableRes font: Int, defaultFont: Typeface): Typeface {
         val fontId = typedArray.getResourceId(font, -1)
