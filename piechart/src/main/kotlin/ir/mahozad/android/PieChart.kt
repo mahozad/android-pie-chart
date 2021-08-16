@@ -712,50 +712,28 @@ class PieChart @JvmOverloads constructor(
             slicesPointer = if (slicesPointerLength <= 0 || slicesPointerWidth <= 0) defaultSlicesPointer else SlicePointer(slicesPointerLength, slicesPointerWidth, 0)
             isLegendsPercentageEnabled = getInt(R.styleable.PieChart_legendsPercentageStatus, 0) == 1
             isLegendBoxBorderEnabled = getInt(R.styleable.PieChart_legendBoxBorderStatus, 0) == 1
-            legendsTitleAlignment = Alignment.values()[
-                    getInt(R.styleable.PieChart_legendsTitleAlignment, defaultLegendsTitleAlignment.ordinal)
-            ]
-            legendsAlignment = Alignment.values()[
-                    getInt(R.styleable.PieChart_legendsAlignment, defaultLegendsAlignment.ordinal)
-            ]
-            legendBoxAlignment = Alignment.values()[
-                    getInt(R.styleable.PieChart_legendBoxAlignment, defaultLegendBoxAlignment.ordinal)
-            ]
-            legendsWrapping = Wrapping.values()[
-                    getInt(R.styleable.PieChart_legendsWrapping, defaultLegendsWrapping.ordinal)
-            ]
-            legendBoxBorderType = BorderType.values()[
-                    getInt(R.styleable.PieChart_legendBoxBorderType, defaultLegendBoxBorderType.ordinal)
-            ]
-            labelIconsPlacement = IconPlacement.values()[
-                    getInt(R.styleable.PieChart_labelIconsPlacement, defaultLabelIconsPlacement.ordinal)
-            ]
-            legendPosition = LegendPosition.values()[
-                    getInt(R.styleable.PieChart_legendPosition, defaultLegendPosition.ordinal)
-            ]
-            legendArrangement = LegendArrangement.values()[
-                    getInt(R.styleable.PieChart_legendArrangement, defaultLegendArrangement.ordinal)
-            ]
-            labelType = LabelType.values()[
-                    getInt(R.styleable.PieChart_labelType, defaultLabelType.ordinal)
-            ]
-            legendsIcon = DefaultIcons.values()[
-                    getInt(R.styleable.PieChart_legendsIcon, defaultLegendsIcon.ordinal)
-            ]
-            centerLabelIcon = DefaultIcons.values()[
-                    getInt(R.styleable.PieChart_centerLabelIcon, defaultCenterLabelIcon.ordinal)
-            ]
-            gapPosition = GapPosition.values()[
-                    getInt(R.styleable.PieChart_gapPosition, defaultGapPosition.ordinal)
-            ]
-            gradientType = GradientType.values()[
-                    getInt(R.styleable.PieChart_gradientType, defaultGradientType.ordinal)
-            ]
-            drawDirection = DrawDirection.values()[
-                    getInt(R.styleable.PieChart_drawDirection, defaultDrawDirection.ordinal)
-            ]
+            legendsTitleAlignment = getEnum(R.styleable.PieChart_legendsTitleAlignment, defaultLegendsTitleAlignment)
+            legendsAlignment = getEnum(R.styleable.PieChart_legendsAlignment, defaultLegendsAlignment)
+            legendBoxAlignment = getEnum(R.styleable.PieChart_legendBoxAlignment, defaultLegendBoxAlignment)
+            legendsWrapping = getEnum(R.styleable.PieChart_legendsWrapping, defaultLegendsWrapping)
+            legendBoxBorderType = getEnum(R.styleable.PieChart_legendBoxBorderType, defaultLegendBoxBorderType)
+            labelIconsPlacement = getEnum(R.styleable.PieChart_labelIconsPlacement, defaultLabelIconsPlacement)
+            legendPosition = getEnum(R.styleable.PieChart_legendPosition, defaultLegendPosition)
+            legendArrangement = getEnum(R.styleable.PieChart_legendArrangement, defaultLegendArrangement)
+            labelType = getEnum(R.styleable.PieChart_labelType, defaultLabelType)
+            legendsIcon = getEnum(R.styleable.PieChart_legendsIcon, defaultLegendsIcon)
+            centerLabelIcon = getEnum(R.styleable.PieChart_centerLabelIcon, defaultCenterLabelIcon)
+            gapPosition = getEnum(R.styleable.PieChart_gapPosition, defaultGapPosition)
+            gradientType = getEnum(R.styleable.PieChart_gradientType, defaultGradientType)
+            drawDirection = getEnum(R.styleable.PieChart_drawDirection, defaultDrawDirection)
         }
     }
+
+    /**
+     * See https://stackoverflow.com/a/58815613
+     */
+    private inline fun <reified T : Enum<T>> TypedArray.getEnum(index: Int, default: T) =
+        getInt(index, -1).let { if (it >= 0) enumValues<T>()[it] else default }
 
     private fun getFont(typedArray: TypedArray, @StyleableRes font: Int, defaultFont: Typeface): Typeface {
         val fontId = typedArray.getResourceId(font, -1)
