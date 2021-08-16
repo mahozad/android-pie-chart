@@ -215,6 +215,10 @@ class ScreenshotTest {
         compareScreenshots("screenshot-22") { legendPosition = PieChart.LegendPosition.TOP }
     }
 
+    @Test fun changeLegendArrangement() {
+        compareScreenshots("screenshot-23") { legendArrangement = PieChart.LegendArrangement.VERTICAL }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.

@@ -353,12 +353,10 @@ class PieChart @JvmOverloads constructor(
         onSizeChanged(width, height, width, height)
     }
 
-    var legendArrangement = defaultLegendArrangement
-        set(arrangement) {
-            field = arrangement
-            invalidate()
-            requestLayout()
-        }
+    var legendArrangement by Property(defaultLegendArrangement) {
+        onSizeChanged(width, height, width, height)
+    }
+
     var legendsMargin = dpToPx(DEFAULT_LEGENDS_MARGIN)
         set(margin /* px */) {
             field = margin
