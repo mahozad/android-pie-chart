@@ -14,6 +14,7 @@ import de.mannodermaus.junit5.ActivityScenarioExtension
 import de.mannodermaus.junit5.condition.DisabledIfBuildConfigValue
 import ir.mahozad.android.PieChart.Slice
 import ir.mahozad.android.component.Alignment
+import ir.mahozad.android.component.Wrapping
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
@@ -197,6 +198,13 @@ class ScreenshotTest {
 
     @Test fun changeLegendBoxAlignment() {
         compareScreenshots("screenshot-19") { legendBoxAlignment = Alignment.END }
+    }
+
+    @Test fun changeLegendsWrapping() {
+        compareScreenshots("screenshot-20") {
+            legendsMargin = 150f // So they constitute multiple lines
+            legendsWrapping = Wrapping.CLIP
+        }
     }
 
     /**
