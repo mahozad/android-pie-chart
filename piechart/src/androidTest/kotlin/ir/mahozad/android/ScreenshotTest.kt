@@ -191,7 +191,7 @@ class ScreenshotTest {
 
     @Test fun changeLegendsAlignment() {
         compareScreenshots("screenshot-18") {
-            legendsMargin = 100f // So they constitute multiple lines
+            legendsMargin = 50.dp // So they constitute multiple lines
             legendsAlignment = Alignment.END
         }
     }
@@ -202,7 +202,7 @@ class ScreenshotTest {
 
     @Test fun changeLegendsWrapping() {
         compareScreenshots("screenshot-20") {
-            legendsMargin = 150f // So they constitute multiple lines
+            legendsMargin = 50.dp // So they constitute multiple lines
             legendsWrapping = Wrapping.CLIP
         }
     }
@@ -217,6 +217,10 @@ class ScreenshotTest {
 
     @Test fun changeLegendArrangement() {
         compareScreenshots("screenshot-23") { legendArrangement = PieChart.LegendArrangement.VERTICAL }
+    }
+
+    @Test fun changeLegendsMargin() {
+        compareScreenshots("screenshot-24") { legendsMargin = 53.dp }
     }
 
     /**
