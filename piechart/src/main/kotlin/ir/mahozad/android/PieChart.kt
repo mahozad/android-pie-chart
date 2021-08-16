@@ -327,15 +327,15 @@ class PieChart @JvmOverloads constructor(
      * See the commented EnumResource class in Properties.kt file.
      */
     var legendsTitleAlignment by Property(defaultLegendsTitleAlignment) {
-        // FIXME: No need to recalculate everything; provide a method in legend box for this
+        // TODO: No need to recalculate everything; provide a method in legend box for this
         onSizeChanged(width, height, width, height)
     }
 
-    var legendsAlignment = defaultLegendsAlignment
-        set(alignment) {
-            field = alignment
-            invalidate()
-        }
+    var legendsAlignment by Property(defaultLegendsAlignment) {
+        // TODO: No need to recalculate everything; provide a method in legend box for this
+        onSizeChanged(width, height, width, height)
+    }
+
     var legendBoxAlignment  = defaultLegendBoxAlignment
         set(alignment) {
             field = alignment

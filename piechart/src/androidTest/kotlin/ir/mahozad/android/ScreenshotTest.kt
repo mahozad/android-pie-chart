@@ -188,6 +188,13 @@ class ScreenshotTest {
         compareScreenshots("screenshot-17") { legendsTitleAlignment = Alignment.START }
     }
 
+    @Test fun changeLegendsAlignment() {
+        compareScreenshots("screenshot-18") {
+            legendsMargin = 100f // So they constitute multiple lines
+            legendsAlignment = Alignment.END
+        }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.
