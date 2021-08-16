@@ -196,7 +196,9 @@ class ScreenshotTest {
                 val bitmap = takeScreenshot(chart, screenshotName, shouldSave)
                 if (!shouldSave) {
                     val reference = loadReferenceScreenshot(screenshotName)
-                    assertThat(bitmap.sameAs(reference)).isTrue()
+                    assertThat(bitmap.sameAs(reference))
+                        .withFailMessage { "Screenshots are not the same" }
+                        .isTrue()
                 }
             }
         }
