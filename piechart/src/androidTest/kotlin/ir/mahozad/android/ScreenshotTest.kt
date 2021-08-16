@@ -234,6 +234,12 @@ class ScreenshotTest {
         }
     }
 
+    @Test fun changeLegendBoxBackgroundColor() {
+        compareScreenshots("screenshot-26") {
+            legendBoxBackgroundColor = Color.rgb(217, 106, 109)
+        }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.

@@ -183,7 +183,7 @@ class PieChartAPITest {
         assertThat(pieChart.legendsTitle).isEqualTo(expected)
     }
 
-    @Test fun changeChartLegendsMarginResourceShouldChangeLegendsMarginAsWell() {
+    @Test fun changeLegendsMarginResourceShouldChangeLegendsMarginAsWell() {
         val resourceId = ir.mahozad.android.test.R.dimen.testLegendsMargin
         val expected = resources.getDimension(resourceId)
         pieChart.legendsMarginResource = resourceId
@@ -195,6 +195,13 @@ class PieChartAPITest {
         val expected = resources.getColor(resourceId, null)
         pieChart.legendsColorResource = resourceId
         assertThat(pieChart.legendsColor).isEqualTo(expected)
+    }
+
+    @Test fun changeLegendBoxBackgroundColorResourceShouldChangeLegendBoxBackgroundColorAsWell() {
+        val resourceId = ir.mahozad.android.test.R.color.testLegendBoxBackgroundColor
+        val expected = resources.getColor(resourceId, null)
+        pieChart.legendBoxBackgroundColorResource = resourceId
+        assertThat(pieChart.legendBoxBackgroundColor).isEqualTo(expected)
     }
 
 
