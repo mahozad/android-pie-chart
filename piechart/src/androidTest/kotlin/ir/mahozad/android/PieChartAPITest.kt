@@ -218,6 +218,13 @@ class PieChartAPITest {
         assertThat(pieChart.legendBoxPadding.px).isEqualTo(expected)
     }
 
+    @Test fun changeLegendBoxBorderResourceShouldChangeLegendBoxBorderAsWell() {
+        val resourceId = ir.mahozad.android.test.R.dimen.testLegendBoxBorder
+        val expected = resources.getDimension(resourceId)
+        pieChart.legendBoxBorderResource = resourceId
+        assertThat(pieChart.legendBoxBorder.px).isEqualTo(expected)
+    }
+
 
 
 

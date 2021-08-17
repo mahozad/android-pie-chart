@@ -248,6 +248,13 @@ class ScreenshotTest {
         compareScreenshots("screenshot-28") { legendBoxPadding = 43.dp }
     }
 
+    @Test fun changeLegendBoxBorder() {
+        compareScreenshots("screenshot-29") {
+            isLegendBoxBorderEnabled = true
+            legendBoxBorder = 17.dp
+        }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.
