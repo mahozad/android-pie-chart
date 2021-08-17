@@ -278,6 +278,14 @@ class ScreenshotTest {
         }
     }
 
+    @Test fun changeLegendBoxBorderType() {
+        compareScreenshots("screenshot-33") {
+            isLegendBoxBorderEnabled = true
+            legendBoxBorder = 4.dp
+            legendBoxBorderType = PieChart.BorderType.DASHED
+        }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.

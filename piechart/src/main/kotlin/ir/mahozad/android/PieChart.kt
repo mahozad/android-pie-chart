@@ -410,11 +410,11 @@ class PieChart @JvmOverloads constructor(
         onSizeChanged(width, height, width, height)
     }
 
-    var legendBoxBorderType = defaultLegendBoxBorderType
-        set(type) {
-            field = type
-            invalidate()
-        }
+    var legendBoxBorderType by Property(defaultLegendBoxBorderType) {
+        // TODO: No need to recalculate everything; provide a method in legend box for this
+        onSizeChanged(width, height, width, height)
+    }
+
     var legendBoxBorderDashArray = parseBorderDashArray(DEFAULT_LEGEND_BOX_BORDER_DASH_ARRAY).map { dpToPx(it) }
         set(@Dimension(unit = PX) array) {
             field = array
