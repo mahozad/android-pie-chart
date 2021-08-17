@@ -255,6 +255,13 @@ class ScreenshotTest {
         }
     }
 
+    @Test fun changeLegendBoxBorderCornerRadius() {
+        compareScreenshots("screenshot-30") {
+            isLegendBoxBorderEnabled = true
+            legendBoxBorderCornerRadius = 11.dp
+        }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.

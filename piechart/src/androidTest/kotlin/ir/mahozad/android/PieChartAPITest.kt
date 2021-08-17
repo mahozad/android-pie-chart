@@ -225,6 +225,13 @@ class PieChartAPITest {
         assertThat(pieChart.legendBoxBorder.px).isEqualTo(expected)
     }
 
+    @Test fun changeLegendBoxBorderCornerRadiusResourceShouldChangeLegendBoxBorderCornerRadiusAsWell() {
+        val resourceId = ir.mahozad.android.test.R.dimen.testLegendBoxBorderCornerRadius
+        val expected = resources.getDimension(resourceId)
+        pieChart.legendBoxBorderCornerRadiusResource = resourceId
+        assertThat(pieChart.legendBoxBorderCornerRadius.px).isEqualTo(expected)
+    }
+
 
 
 

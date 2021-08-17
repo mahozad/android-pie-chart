@@ -53,7 +53,7 @@ val DEFAULT_LEGEND_BOX_PADDING = 4.px
 val DEFAULT_LEGEND_BOX_BORDER = 2.px
 const val DEFAULT_LEGEND_BOX_BORDER_DASH_ARRAY = "4, 4" /* dp (each) */
 @FloatRange(from = 0.0, to = 1.0) const val DEFAULT_LEGEND_BOX_BORDER_ALPHA = 0.4f
-@Dimension(unit = DP) const val DEFAULT_LEGEND_BOX_BORDER_CORNER_RADIUS = 3f
+val DEFAULT_LEGEND_BOX_BORDER_CORNER_RADIUS = 3.px
 @Dimension(unit = SP) const val DEFAULT_LEGENDS_TITLE_SIZE = 18f
 @Dimension(unit = DP) const val DEFAULT_LEGEND_ICONS_MARGIN = 8f
 const val DEFAULT_LEGEND_ICONS_ALPHA = 1f
@@ -392,11 +392,12 @@ class PieChart @JvmOverloads constructor(
         onSizeChanged(width, height, width, height)
     }
 
-    var legendBoxBorderCornerRadius = dpToPx(DEFAULT_LEGEND_BOX_BORDER_CORNER_RADIUS)
-        set(radius /* px */) {
-            field = radius
-            invalidate()
-        }
+    var legendBoxBorderCornerRadiusResource by DimensionResource(::legendBoxBorderCornerRadius)
+    var legendBoxBorderCornerRadius by Property(DEFAULT_LEGEND_BOX_BORDER_CORNER_RADIUS) {
+        // TODO: No need to recalculate everything; provide a method in legend box for this
+        onSizeChanged(width, height, width, height)
+    }
+
     var legendBoxBorderColor = DEFAULT_LEGEND_BOX_BORDER_COLOR
         set(color) {
             field = color
@@ -712,7 +713,7 @@ class PieChart @JvmOverloads constructor(
             legendBoxPadding = PX(getDimension(R.styleable.PieChart_legendBoxPadding, DEFAULT_LEGEND_BOX_PADDING.px))
             legendsPercentageMargin = getDimension(R.styleable.PieChart_legendsPercentageMargin, dpToPx(DEFAULT_LEGENDS_PERCENTAGE_MARGIN))
             legendBoxBorder = PX(getDimension(R.styleable.PieChart_legendBoxBorder, DEFAULT_LEGEND_BOX_BORDER.px))
-            legendBoxBorderCornerRadius = getDimension(R.styleable.PieChart_legendBoxBorderCornerRadius, dpToPx(DEFAULT_LEGEND_BOX_BORDER_CORNER_RADIUS))
+            legendBoxBorderCornerRadius = PX(getDimension(R.styleable.PieChart_legendBoxBorderCornerRadius, DEFAULT_LEGEND_BOX_BORDER_CORNER_RADIUS.px))
             legendBoxBorderAlpha = getFloat(R.styleable.PieChart_legendBoxBorderAlpha, DEFAULT_LEGEND_BOX_BORDER_ALPHA)
             legendBoxBorderColor = getColor(R.styleable.PieChart_legendBoxBorderColor, DEFAULT_LEGEND_BOX_BORDER_COLOR)
             legendBoxBorderDashArray = parseBorderDashArray(getString(R.styleable.PieChart_legendBoxBorderDashArray) ?: DEFAULT_LEGEND_BOX_BORDER_DASH_ARRAY).map { num -> dpToPx(num) }
@@ -766,7 +767,7 @@ class PieChart @JvmOverloads constructor(
             else -> (height - paddingTop - paddingBottom).toFloat()
         }
 
-        val legendBox = LegendBuilder().createLegendBox(context, maxAvailableWidthForLegendBox, maxAvailableHeightForLegendBox, slices,legendIconsTintArray, legendsTitle, legendsTitleSize, legendsTitleColor, legendTitleMargin, legendsTitleAlignment, legendsIcon, legendIconsHeight.px, legendIconsAlpha, legendsSize.px, legendsColor, legendIconsMargin, legendsPercentageMargin, isLegendsPercentageEnabled, legendsPercentageSize.px, legendsPercentageColor, legendsMargin.px, legendArrangement, legendsAlignment, legendBoxBackgroundColor, legendBoxPadding.px, legendBoxBorder.px, legendBoxBorderColor, legendBoxBorderAlpha, legendBoxBorderCornerRadius, legendBoxBorderType, legendBoxBorderDashArray, legendBoxMargin.px, legendPosition, legendLinesMargin, legendsWrapping, isLegendBoxBorderEnabled)
+        val legendBox = LegendBuilder().createLegendBox(context, maxAvailableWidthForLegendBox, maxAvailableHeightForLegendBox, slices,legendIconsTintArray, legendsTitle, legendsTitleSize, legendsTitleColor, legendTitleMargin, legendsTitleAlignment, legendsIcon, legendIconsHeight.px, legendIconsAlpha, legendsSize.px, legendsColor, legendIconsMargin, legendsPercentageMargin, isLegendsPercentageEnabled, legendsPercentageSize.px, legendsPercentageColor, legendsMargin.px, legendArrangement, legendsAlignment, legendBoxBackgroundColor, legendBoxPadding.px, legendBoxBorder.px, legendBoxBorderColor, legendBoxBorderAlpha, legendBoxBorderCornerRadius.px, legendBoxBorderType, legendBoxBorderDashArray, legendBoxMargin.px, legendPosition, legendLinesMargin, legendsWrapping, isLegendBoxBorderEnabled)
         val (pieWidth, pieHeight) = calculatePieDimensions(width, height, Paddings(paddingTop, paddingBottom, paddingStart, paddingEnd), isLegendEnabled, legendBoxMargin.px, legendPosition, legendBox.width, legendBox.height)
         pie = Pie(context, pieWidth, pieHeight, null, null, startAngle, slices, outsideLabelsMargin, labelType, labelsSize.px, labelsColor, labelsFont, labelIconsHeight.px, labelIconsMargin, labelIconsPlacement, labelIconsTint, labelsOffset, shouldCenterPie, drawDirection, overlayRatio, overlayAlpha, gradientType, holeRatio, slicesPointer, gap.px, gapPosition)
         val chartDirection = determineChartDirection(legendPosition)
