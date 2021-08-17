@@ -204,6 +204,13 @@ class PieChartAPITest {
         assertThat(pieChart.legendBoxBackgroundColor).isEqualTo(expected)
     }
 
+    @Test fun changeLegendBoxMarginResourceShouldChangeLegendBoxMarginAsWell() {
+        val resourceId = ir.mahozad.android.test.R.dimen.testLegendBoxMargin
+        val expected = resources.getDimension(resourceId)
+        pieChart.legendBoxMarginResource = resourceId
+        assertThat(pieChart.legendBoxMargin.px).isEqualTo(expected)
+    }
+
 
 
 
