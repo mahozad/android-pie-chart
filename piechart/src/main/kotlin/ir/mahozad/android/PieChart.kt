@@ -404,11 +404,12 @@ class PieChart @JvmOverloads constructor(
         onSizeChanged(width, height, width, height)
     }
 
-    var legendBoxBorderAlpha = DEFAULT_LEGEND_BOX_BORDER_ALPHA
-        set(alpha) {
-            field = alpha
-            invalidate()
-        }
+    var legendBoxBorderAlphaResource by FractionResource(::legendBoxBorderAlpha)
+    var legendBoxBorderAlpha by Property(DEFAULT_LEGEND_BOX_BORDER_ALPHA) {
+        // TODO: No need to recalculate everything; provide a method in legend box for this
+        onSizeChanged(width, height, width, height)
+    }
+
     var legendBoxBorderType = defaultLegendBoxBorderType
         set(type) {
             field = type

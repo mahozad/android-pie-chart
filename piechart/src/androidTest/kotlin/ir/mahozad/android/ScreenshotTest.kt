@@ -270,6 +270,14 @@ class ScreenshotTest {
         }
     }
 
+    @Test fun changeLegendBoxBorderAlpha() {
+        compareScreenshots("screenshot-32") {
+            isLegendBoxBorderEnabled = true
+            legendBoxBorder = 10.dp
+            legendBoxBorderAlpha = 0.2f
+        }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.
