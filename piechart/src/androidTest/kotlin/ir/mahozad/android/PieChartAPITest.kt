@@ -232,6 +232,13 @@ class PieChartAPITest {
         assertThat(pieChart.legendBoxBorderCornerRadius.px).isEqualTo(expected)
     }
 
+    @Test fun changeLegendBoxBorderColorResourceShouldChangeLegendBoxBorderColorAsWell() {
+        val resourceId = ir.mahozad.android.test.R.color.testLegendBoxBorderColor
+        val expected = resources.getColor(resourceId, null)
+        pieChart.legendBoxBorderColorResource = resourceId
+        assertThat(pieChart.legendBoxBorderColor).isEqualTo(expected)
+    }
+
 
 
 

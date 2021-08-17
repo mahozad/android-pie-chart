@@ -398,11 +398,12 @@ class PieChart @JvmOverloads constructor(
         onSizeChanged(width, height, width, height)
     }
 
-    var legendBoxBorderColor = DEFAULT_LEGEND_BOX_BORDER_COLOR
-        set(color) {
-            field = color
-            invalidate()
-        }
+    var legendBoxBorderColorResource by ColorResource(::legendBoxBorderColor)
+    var legendBoxBorderColor by Property(DEFAULT_LEGEND_BOX_BORDER_COLOR) {
+        // TODO: No need to recalculate everything; provide a method in legend box for this
+        onSizeChanged(width, height, width, height)
+    }
+
     var legendBoxBorderAlpha = DEFAULT_LEGEND_BOX_BORDER_ALPHA
         set(alpha) {
             field = alpha
