@@ -289,10 +289,17 @@ class PieChartAPITest {
     }
 
     @Test fun changeLegendsPercentageMarginResourceShouldChangeLegendsPercentageMarginAsWell() {
-        val resourceId = ir.mahozad.android.test.R.dimen.testLegendPercentageMargin
+        val resourceId = ir.mahozad.android.test.R.dimen.testLegendsPercentageMargin
         val expected = resources.getDimension(resourceId)
         pieChart.legendsPercentageMarginResource = resourceId
         assertThat(pieChart.legendsPercentageMargin.px).isEqualTo(expected)
+    }
+
+    @Test fun changeLegendTitleMarginResourceShouldChangeLegendTitleMarginAsWell() {
+        val resourceId = ir.mahozad.android.test.R.dimen.testLegendTitleMargin
+        val expected = resources.getDimension(resourceId)
+        pieChart.legendTitleMarginResource = resourceId
+        assertThat(pieChart.legendTitleMargin.px).isEqualTo(expected)
     }
 
 
