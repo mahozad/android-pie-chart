@@ -450,12 +450,11 @@ class PieChart @JvmOverloads constructor(
         onSizeChanged(width, height, width, height)
     }
 
-    var isLegendsPercentageEnabled = DEFAULT_LEGENDS_PERCENTAGE_STATUS
-        set(shouldEnable) {
-            field = shouldEnable
-            invalidate()
-            requestLayout()
-        }
+    var isLegendsPercentageEnabledResource by BooleanResource(::isLegendsPercentageEnabled)
+    var isLegendsPercentageEnabled by Property(DEFAULT_LEGENDS_PERCENTAGE_STATUS) {
+        onSizeChanged(width, height, width, height)
+    }
+
     var isLegendBoxBorderEnabled = DEFAULT_LEGEND_BOX_BORDER_STATUS
         set(shouldEnable) {
             field = shouldEnable

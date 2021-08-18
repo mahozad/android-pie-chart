@@ -321,6 +321,12 @@ class ScreenshotTest {
         }
     }
 
+    @Test fun disableLegendsPercentage() {
+        compareScreenshots("screenshot-38") {
+            isLegendsPercentageEnabled = false
+        }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.

@@ -267,6 +267,13 @@ class PieChartAPITest {
         assertThat(pieChart.legendsTitleSize.px).isEqualTo(expected)
     }
 
+    @Test fun changeLegendsPercentageEnabledResourceShouldChangeLegendsPercentageEnabledAsWell() {
+        val resourceId = ir.mahozad.android.test.R.bool.testIsLegendsPercentageEnabled
+        val expected = resources.getBoolean(resourceId)
+        pieChart.isLegendsPercentageEnabledResource = resourceId
+        assertThat(pieChart.isLegendsPercentageEnabled).isEqualTo(expected)
+    }
+
 
 
 
