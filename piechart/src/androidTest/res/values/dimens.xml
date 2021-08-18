@@ -14,6 +14,7 @@
   <dimen name="testLegendsPercentageMargin">19dp</dimen>
   <dimen name="testLegendTitleMargin">29dp</dimen>
   <dimen name="testLegendLinesMargin">33dp</dimen>
+  <dimen name="testLegendIconsMargin">33dp</dimen>
   <integer name="testStartAngle">88</integer>
   <fraction name="testHoleRatio">43%</fraction>
   <fraction name="testOverlayRatio">73%</fraction>
