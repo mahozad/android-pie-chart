@@ -515,11 +515,14 @@ class PieChart @JvmOverloads constructor(
         }
     }
 
-    var centerLabelFont = defaultCenterLabelFont
-        set(font) {
-            field = font
+    var centerLabelFontResource by FontResource(::centerLabelFont)
+    var centerLabelFont by Property(defaultCenterLabelFont) {
+        if (::pie.isInitialized) {
+            createCenterLabel()
             invalidate()
         }
+    }
+
     var centerLabelIconHeight = DEFAULT_CENTER_LABEL_ICON_HEIGHT
         set(@Dimension(unit = PX) height) {
             field = height
@@ -786,11 +789,36 @@ class PieChart @JvmOverloads constructor(
         val chartComponents = makeChartComponentList(pie, isLegendEnabled, legendBox, legendPosition)
         chartBox = Container(chartComponents, width.toFloat(), height.toFloat(), chartDirection, legendBoxAlignment, paddings = Paddings(paddingTop, paddingBottom, paddingStart, paddingEnd))
         chartBox.layOut(0f, 0f, LTR)
+        createCenterLabel()
+    }
 
-        val centerLabelIcon = Icon(resources.getDrawable(centerLabelIcon.resId, null), centerLabelIconHeight, tint = centerLabelIconTint, alpha = centerLabelIconAlpha, margins = Margins(end = centerLabelIconMargin))
-        val centerLabelText = Text(centerLabel, size = centerLabelSize, color = centerLabelColor, font = centerLabelFont, alpha = centerLabelAlpha)
-        centerLabelBox = Container(listOf(centerLabelIcon, centerLabelText), width.toFloat()-paddingStart-paddingEnd, height.toFloat()-paddingTop - paddingBottom, childrenAlignment = Alignment.CENTER, layoutDirection = LayoutDirection.HORIZONTAL)
-        centerLabelBox.layOut(pie.center.y - centerLabelBox.height / 2f, pie.center.x - centerLabelBox.width / 2f, LTR)
+    private fun createCenterLabel() {
+        val centerLabelIcon = Icon(
+            resources.getDrawable(centerLabelIcon.resId, null),
+            centerLabelIconHeight,
+            tint = centerLabelIconTint,
+            alpha = centerLabelIconAlpha,
+            margins = Margins(end = centerLabelIconMargin)
+        )
+        val centerLabelText = Text(
+            centerLabel,
+            size = centerLabelSize,
+            color = centerLabelColor,
+            font = centerLabelFont,
+            alpha = centerLabelAlpha
+        )
+        centerLabelBox = Container(
+            listOf(centerLabelIcon, centerLabelText),
+            width.toFloat() - paddingStart - paddingEnd,
+            height.toFloat() - paddingTop - paddingBottom,
+            childrenAlignment = Alignment.CENTER,
+            layoutDirection = LayoutDirection.HORIZONTAL
+        )
+        centerLabelBox.layOut(
+            pie.center.y - centerLabelBox.height / 2f,
+            pie.center.x - centerLabelBox.width / 2f,
+            LTR
+        )
     }
 
     private fun makeChartComponentList(

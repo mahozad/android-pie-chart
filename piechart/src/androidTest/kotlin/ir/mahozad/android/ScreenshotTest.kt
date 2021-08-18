@@ -379,6 +379,15 @@ class ScreenshotTest {
         }
     }
 
+    @Test fun changeCenterLabelFont() {
+        compareScreenshots("screenshot-46") {
+            isCenterLabelEnabled = true
+            centerLabel = "Test center label"
+            val newFont = ResourcesCompat.getFont(context, ir.mahozad.android.test.R.font.lobster_regular)
+            centerLabelFont = newFont!!
+        }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.

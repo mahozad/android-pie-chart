@@ -324,6 +324,13 @@ class PieChartAPITest {
         assertThat(pieChart.labelsFont).isEqualTo(expected)
     }
 
+    @Test fun changeCenterLabelFontResourceShouldChangeCenterLabelFontAsWell() {
+        val resourceId = ir.mahozad.android.test.R.font.lobster_regular
+        val expected = ResourcesCompat.getFont(context, resourceId)!!
+        pieChart.centerLabelFontResource = resourceId
+        assertThat(pieChart.centerLabelFont).isEqualTo(expected)
+    }
+
 
 
 
