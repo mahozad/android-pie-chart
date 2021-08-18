@@ -302,6 +302,13 @@ class PieChartAPITest {
         assertThat(pieChart.legendTitleMargin.px).isEqualTo(expected)
     }
 
+    @Test fun changeLegendLinesMarginResourceShouldChangeLegendLinesMarginAsWell() {
+        val resourceId = ir.mahozad.android.test.R.dimen.testLegendLinesMargin
+        val expected = resources.getDimension(resourceId)
+        pieChart.legendLinesMarginResource = resourceId
+        assertThat(pieChart.legendLinesMargin.px).isEqualTo(expected)
+    }
+
 
 
 
