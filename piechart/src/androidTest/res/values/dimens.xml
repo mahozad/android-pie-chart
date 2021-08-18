@@ -18,4 +18,5 @@
   <fraction name="testCenterBackgroundRatio">39%</fraction>
   <fraction name="testCenterBackgroundAlpha">19%</fraction>
   <fraction name="testLegendBoxBorderAlpha">19%</fraction>
+  <fraction name="testLegendIconsAlpha">19%</fraction>
 </resources>

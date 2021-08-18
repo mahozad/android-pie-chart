@@ -17,6 +17,7 @@ internal class Icon(
 ) : Box {
 
     override val width = calculateLabelIconWidth(drawable, height)
+    private val drawableAlpha = (alpha * 255).toInt()
 
     override fun layOut(top: Float, start: Float, drawDirection: DrawDirection) {
         // TODO: Take into account the drawDirection parameter
@@ -24,10 +25,10 @@ internal class Icon(
         val bottom = top + if (width == 0f) 0f else height
         drawable?.bounds = Rect(start.toInt(), top.toInt(), right.toInt(), bottom.toInt())
         tint?.let { drawable?.setTint(it) }
-        drawable?.alpha = (alpha * 255).toInt() // Setting alpha should be *AFTER* setting the color/tint to override the color/tint alpha
     }
 
     override fun draw(canvas: Canvas) {
+        drawable?.alpha = drawableAlpha
         drawable?.draw(canvas)
     }
 }

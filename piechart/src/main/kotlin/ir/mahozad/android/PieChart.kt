@@ -428,11 +428,12 @@ class PieChart @JvmOverloads constructor(
         onSizeChanged(width, height, width, height)
     }
 
-    var legendIconsAlpha = DEFAULT_LEGEND_ICONS_ALPHA
-        set(alpha) {
-            field = alpha
-            invalidate()
-        }
+    var legendIconsAlphaResource by FractionResource(::legendIconsAlpha)
+    var legendIconsAlpha by Property(DEFAULT_LEGEND_ICONS_ALPHA) {
+        // TODO: No need to recalculate everything; provide a method in legend box for this
+        onSizeChanged(width, height, width, height)
+    }
+
     var legendsTitleColor = DEFAULT_LEGENDS_TITLE_COLOR
         set(color) {
             field = color

@@ -246,6 +246,13 @@ class PieChartAPITest {
         assertThat(pieChart.legendBoxBorderAlpha).isEqualTo(expected)
     }
 
+    @Test fun changeLegendIconsAlphaResourceShouldChangeLegendIconsAlphaAsWell() {
+        val resourceId = ir.mahozad.android.test.R.fraction.testLegendIconsAlpha
+        val expected = resources.getFraction(resourceId,1, 1)
+        pieChart.legendIconsAlphaResource = resourceId
+        assertThat(pieChart.legendIconsAlpha).isEqualTo(expected)
+    }
+
 
 
 

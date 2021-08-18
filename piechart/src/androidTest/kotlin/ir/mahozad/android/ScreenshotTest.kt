@@ -295,6 +295,16 @@ class ScreenshotTest {
         }
     }
 
+    @Test fun changeLegendIconsAlpha() {
+        compareScreenshots("screenshot-35") {
+            slices = listOf(
+                Slice(0.3f, Color.CYAN, legendIconAlpha = 0.2f),
+                Slice(0.2f, Color.YELLOW),
+                Slice(0.5f, Color.GREEN)
+            )
+        }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.
