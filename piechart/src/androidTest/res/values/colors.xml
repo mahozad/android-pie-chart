@@ -4,6 +4,7 @@
   <color name="testLegendBoxBackgroundColor">#0C8BCF</color>
   <color name="testLegendBoxBorderColor">#8D91E3</color>
   <color name="testColorArraySingle">#f0f</color>
+  <color name="testLegendsTitleColor">#3960BF</color>
   <array name="testColorArray">
     <item>#ff00AE28</item>
     <item>#5F00aE48</item>

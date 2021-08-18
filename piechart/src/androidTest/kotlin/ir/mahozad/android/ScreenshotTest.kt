@@ -305,6 +305,12 @@ class ScreenshotTest {
         }
     }
 
+    @Test fun changeLegendsTitleColor() {
+        compareScreenshots("screenshot-36") {
+            legendsTitleColor = Color.rgb(151, 109, 64)
+        }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.

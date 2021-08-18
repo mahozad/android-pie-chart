@@ -434,11 +434,12 @@ class PieChart @JvmOverloads constructor(
         onSizeChanged(width, height, width, height)
     }
 
-    var legendsTitleColor = DEFAULT_LEGENDS_TITLE_COLOR
-        set(color) {
-            field = color
-            invalidate()
-        }
+    var legendsTitleColorResource by ColorResource(::legendsTitleColor)
+    var legendsTitleColor by Property(DEFAULT_LEGENDS_TITLE_COLOR) {
+        // TODO: No need to recalculate everything; provide a method in legend box for this
+        onSizeChanged(width, height, width, height)
+    }
+
     var legendsTitleSize = spToPx(DEFAULT_LEGENDS_TITLE_SIZE)
         set(size /* px */) {
             field = size

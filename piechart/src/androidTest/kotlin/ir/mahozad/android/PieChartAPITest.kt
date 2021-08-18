@@ -253,6 +253,13 @@ class PieChartAPITest {
         assertThat(pieChart.legendIconsAlpha).isEqualTo(expected)
     }
 
+    @Test fun changeLegendsTitleColorResourceShouldChangeLegendsTitleColorAsWell() {
+        val resourceId = ir.mahozad.android.test.R.color.testLegendsTitleColor
+        val expected = resources.getColor(resourceId, null)
+        pieChart.legendsTitleColorResource = resourceId
+        assertThat(pieChart.legendsTitleColor).isEqualTo(expected)
+    }
+
 
 
 
