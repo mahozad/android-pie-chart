@@ -1,6 +1,10 @@
 package ir.mahozad.android.util
 
 import androidx.test.platform.app.InstrumentationRegistry
+import ir.mahozad.android.dp
+import ir.mahozad.android.px
+import ir.mahozad.android.sp
+import ir.mahozad.android.unit.Dimension
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestInstance
@@ -16,26 +20,28 @@ import org.junit.jupiter.params.provider.MethodSource
 class UtilitiesTest {
 
     @DisplayName("Parse border dash array")
-    @ParameterizedTest(name = "Test #{index} with String: {0}")
+    @ParameterizedTest(name = "#{index} with String: {0}")
     @MethodSource("argumentProvider")
-    fun parseBorderDashArrayFromTheGivenString(string: String?, expectedDashArray: List<Float>) {
+    fun parseBorderDashArrayFromTheGivenString(string: String?, expectedDashArray: List<Dimension>?) {
         val dashArray = parseBorderDashArray(string)
         assertThat(dashArray).isEqualTo(expectedDashArray)
     }
 
     private fun argumentProvider() = listOf(
-        arguments(null, emptyList<Float>()),
-        arguments("", emptyList<Float>()),
-        arguments(" ", emptyList<Float>()),
-        arguments(".1", listOf(0.1f)),
-        arguments(".1f", listOf(0.1f)),
-        arguments("0.1", listOf(0.1f)),
-        arguments("0.1f", listOf(0.1f)),
-        arguments("0.1f .2", listOf(0.1f, 0.2f)),
-        arguments("0.1f, .2", listOf(0.1f, 0.2f)),
-        arguments("0.1f; .2", listOf(0.1f, 0.2f)),
-        arguments("0.1f ; .2", listOf(0.1f, 0.2f)),
-        arguments("0.1f  ,.2", listOf(0.1f, 0.2f))
+        arguments(null, null),
+        arguments("", null),
+        arguments(" ", null),
+        arguments("1dp", listOf(1.dp)),
+        arguments(".1dp", listOf(0.1.dp)),
+        arguments("0.1dp", listOf(0.1.dp)),
+        arguments("0.1fdp", listOf(0.1.dp)),
+        arguments("0.1fdp .2dp", listOf(0.1.dp, 0.2.dp)),
+        arguments("0.1fdp, .2dp", listOf(0.1.dp, 0.2.dp)),
+        arguments("0.1fdp; .2dp", listOf(0.1.dp, 0.2.dp)),
+        arguments("0.1fdp ; .2dp", listOf(0.1.dp, 0.2.dp)),
+        arguments("0.1fdp  ,.2dp", listOf(0.1.dp, 0.2.dp)),
+        arguments("0.1fpx  ,.2dp", listOf(0.1.px, 0.2.dp)),
+        arguments("0.1fsp ; .2px", listOf(0.1.sp, 0.2.px)),
     )
 
     @DisplayName("Get array element in circular mode")
@@ -70,7 +76,7 @@ class UtilitiesTest {
         val testTheme = context.theme
         val typedArray = testTheme.obtainStyledAttributes(ir.mahozad.android.test.R.styleable.TestStyleable)
 
-        val array = getColorArray(typedArray, ir.mahozad.android.test.R.styleable.TestStyleable_testAttr1)
+        val array = getColorArray(typedArray, ir.mahozad.android.test.R.styleable.TestStyleable_testColorArrayAttr)
 
         assertThat(array).isEqualTo(expectedColorArray)
     }
@@ -79,8 +85,8 @@ class UtilitiesTest {
         arguments(ir.mahozad.android.test.R.style.TestStyleNotDefined, null),
         arguments(ir.mahozad.android.test.R.style.TestStyleEmptyAttribute, null),
         arguments(ir.mahozad.android.test.R.style.TestStyleAtNullAttribute, null),
-        arguments(ir.mahozad.android.test.R.style.TestStyleColorLiteral, intArrayOf(-256)),
-        arguments(ir.mahozad.android.test.R.style.TestStyleColorReference, intArrayOf(-65281)),
-        arguments(ir.mahozad.android.test.R.style.TestStyleColorArrayReference, intArrayOf(-16732632, 1593880136, -5363457, -15628033))
+        arguments(ir.mahozad.android.test.R.style.TestStyleLiteralValue, intArrayOf(-256)),
+        arguments(ir.mahozad.android.test.R.style.TestStyleSingleReference, intArrayOf(-65281)),
+        arguments(ir.mahozad.android.test.R.style.TestStyleArrayReference, intArrayOf(-16732632, 1593880136, -5363457, -15628033))
     )
 }

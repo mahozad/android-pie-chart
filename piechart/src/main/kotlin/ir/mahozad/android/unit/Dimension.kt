@@ -27,19 +27,19 @@ sealed class Dimension {
 
     override fun toString() = "${this::class.simpleName}: $value${this::class.simpleName?.lowercase()}"
 
-    class PX(override val value: Float) : Dimension() {
+    data class PX(override val value: Float) : Dimension() {
         override val px = value
         override val dp = value / Resources.getSystem().displayMetrics.density
         override val sp = value / Resources.getSystem().displayMetrics.scaledDensity
     }
 
-    class DP(override val value: Float) : Dimension() {
+    data class DP(override val value: Float) : Dimension() {
         override val px = value * Resources.getSystem().displayMetrics.density
         override val dp = value
         override val sp = PX(px).sp
     }
 
-    class SP(override val value: Float) : Dimension() {
+    data class SP(override val value: Float) : Dimension() {
         override val px = value * Resources.getSystem().displayMetrics.scaledDensity
         override val dp = PX(px).dp
         override val sp = value

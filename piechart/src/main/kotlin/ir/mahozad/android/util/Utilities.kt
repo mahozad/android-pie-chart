@@ -7,15 +7,10 @@ import androidx.annotation.StyleableRes
 import ir.mahozad.android.PieChart
 import ir.mahozad.android.PieChart.LegendPosition.*
 import ir.mahozad.android.component.Paddings
-
-internal fun parseBorderDashArray(string: String?): List<Float> {
-    if (string == null || string.isBlank()) return emptyList()
-    return string
-        .replace(Regex("""[,;]"""), " ")
-        .replace(Regex("""\s+"""), " ")
-        .split(" ")
-        .map { it.toFloat() }
-}
+import ir.mahozad.android.dp
+import ir.mahozad.android.px
+import ir.mahozad.android.sp
+import ir.mahozad.android.unit.Dimension
 
 internal fun calculatePieDimensions(
     viewWidth: Int,
@@ -70,3 +65,54 @@ internal fun getColorArray(typedArray: TypedArray, @StyleableRes attrName: Int):
         if (color != null) intArrayOf(color) else null
     }
 }
+
+internal fun parseBorderDashArray(string: String?): List<Dimension>? {
+    if (string == null || string.isBlank()) return null
+    return string
+        .replace(Regex("""[,;]"""), " ")
+        .replace(Regex("""\s+"""), " ")
+        .split(" ")
+        .map {
+            if (it.endsWith("dp")) {
+                it.removeSuffix("dp").toFloat().dp
+            } else if (it.endsWith("px")) {
+                it.removeSuffix("px").toFloat().px
+            } else if (it.endsWith("sp")) {
+                it.removeSuffix("sp").toFloat().sp
+            } else throw IllegalArgumentException("The specified dash array string is not valid.")
+        }
+}
+
+/**
+ * Gets an attribute of type *reference|string*.
+ *
+ * See https://developer.android.com/guide/topics/resources/more-resources#TypedArray.
+ *
+ * The attribute can be a reference to a dimension array,
+ * a reference to a string with the required format, or a string literal with the required format.
+ */
+// internal fun getDimensionArray(context: Context, @ArrayRes resId: Int): Array<Dimension>? {
+//     return try {
+//         // val arrayId = typedArray.getResourceId(attrName, -1)
+//         // val joinedDimensions = typedArray.resources.getIntArray(arrayId).joinToString()
+//         // parseBorderDashArray(joinedDimensions)?.toTypedArray()
+//
+//         /* OR */
+//
+//         val dimens = context.resources.obtainTypedArray(resId)
+//         dimens.use {
+//             val dimenStrings = mutableListOf<String>()
+//             val entryCount = it.length()
+//             for (i in 0 until entryCount) {
+//                 val dimen = it.getDimension(i, 0f)
+//                 dimenStrings.add(dimen.toString())
+//             }
+//             return parseBorderDashArray(dimenStrings.joinToString()).toTypedArray()
+//         }
+//     } catch (e: Resources.NotFoundException) {
+//         /* It was not an array; try as a string literal */
+//         val string = typedArray.getString(attrName)
+//         val dimensions = parseBorderDashArray(string)
+//         dimensions?.toTypedArray()
+//     }
+// }

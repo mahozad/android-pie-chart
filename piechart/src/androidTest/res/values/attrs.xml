@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <declare-styleable name="TestStyleable">
-    <attr name="testAttr1" format="reference|color"/>
+    <attr name="testColorArrayAttr" format="reference|color"/>
   </declare-styleable>
 </resources>
