@@ -3,4 +3,5 @@
   <bool name="testCenterBackgroundEnabled">true</bool>
   <bool name="testCenterBackgroundDisabled">false</bool>
   <bool name="testIsLegendsPercentageEnabled">false</bool>
+  <bool name="testIsLegendBoxBorderEnabled">true</bool>
 </resources>
