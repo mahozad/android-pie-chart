@@ -30,6 +30,10 @@ import org.junit.jupiter.api.extension.RegisterExtension
  *
  * Make sure the device screen is on and unlocked for the activity to go to resumed state.
  *
+ * NOTE: If the repository size gets big due to the history of screenshot files,
+ *  we can delete older versions of the screenshots from VCS.
+ *  See [this post](https://stackoverflow.com/q/26831494/).
+ *
  * NOTE: Because JUnit 5 is built on Java 8 from the ground up, its instrumentation tests
  *  will only run on devices running Android 8.0 (API 26) or newer. Older phones will
  *  skip the execution of these tests completely, marking them as "ignored".
