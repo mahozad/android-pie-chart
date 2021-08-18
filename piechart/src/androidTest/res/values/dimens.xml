@@ -10,6 +10,7 @@
   <dimen name="testLegendBoxPadding">29dp</dimen>
   <dimen name="testLegendBoxBorder">9dp</dimen>
   <dimen name="testLegendBoxBorderCornerRadius">17dp</dimen>
+  <dimen name="testLegendsTitleSize">27sp</dimen>
   <integer name="testStartAngle">88</integer>
   <fraction name="testHoleRatio">43%</fraction>
   <fraction name="testOverlayRatio">73%</fraction>

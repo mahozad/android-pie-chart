@@ -260,6 +260,13 @@ class PieChartAPITest {
         assertThat(pieChart.legendsTitleColor).isEqualTo(expected)
     }
 
+    @Test fun changeLegendsTitleSizeResourceShouldChangeLegendsTitleSizeAsWell() {
+        val resourceId = ir.mahozad.android.test.R.dimen.testLegendsTitleSize
+        val expected = resources.getDimension(resourceId)
+        pieChart.legendsTitleSizeResource = resourceId
+        assertThat(pieChart.legendsTitleSize.px).isEqualTo(expected)
+    }
+
 
 
 
