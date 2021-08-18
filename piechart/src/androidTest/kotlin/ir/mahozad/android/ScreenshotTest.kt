@@ -341,6 +341,17 @@ class ScreenshotTest {
         }
     }
 
+    @Test fun changeLegendsPercentageMargin() {
+        compareScreenshots("screenshot-41") {
+            slices = listOf(
+                Slice(0.3f, Color.CYAN, legend = "one"),
+                Slice(0.2f, Color.YELLOW, legend = "two"),
+                Slice(0.5f, Color.GREEN, legend = "three")
+            )
+            legendsPercentageMargin = 30.dp
+        }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.

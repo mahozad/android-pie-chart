@@ -288,6 +288,13 @@ class PieChartAPITest {
         assertThat(pieChart.legendsPercentageColor).isEqualTo(expected)
     }
 
+    @Test fun changeLegendsPercentageMarginResourceShouldChangeLegendsPercentageMarginAsWell() {
+        val resourceId = ir.mahozad.android.test.R.dimen.testLegendPercentageMargin
+        val expected = resources.getDimension(resourceId)
+        pieChart.legendsPercentageMarginResource = resourceId
+        assertThat(pieChart.legendsPercentageMargin.px).isEqualTo(expected)
+    }
+
 
 
 
