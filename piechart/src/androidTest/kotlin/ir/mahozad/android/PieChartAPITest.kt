@@ -3,6 +3,7 @@ package ir.mahozad.android
 import android.content.Context
 import android.content.res.Resources
 import android.view.LayoutInflater
+import androidx.core.content.res.ResourcesCompat
 import androidx.test.platform.app.InstrumentationRegistry
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -314,6 +315,13 @@ class PieChartAPITest {
         val expected = resources.getDimension(resourceId)
         pieChart.legendIconsMarginResource = resourceId
         assertThat(pieChart.legendIconsMargin.px).isEqualTo(expected)
+    }
+
+    @Test fun changeLabelsFontResourceShouldChangeLabelsFontAsWell() {
+        val resourceId = ir.mahozad.android.test.R.font.lobster_regular
+        val expected = ResourcesCompat.getFont(context, resourceId)!!
+        pieChart.labelsFontResource = resourceId
+        assertThat(pieChart.labelsFont).isEqualTo(expected)
     }
 
 

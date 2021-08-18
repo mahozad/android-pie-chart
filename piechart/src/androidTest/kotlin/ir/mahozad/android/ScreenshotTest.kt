@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.view.View
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
@@ -368,6 +369,13 @@ class ScreenshotTest {
     @Test fun changeLegendIconsMargin() {
         compareScreenshots("screenshot-44") {
             legendIconsMargin = 31.dp
+        }
+    }
+
+    @Test fun changeLabelsFont() {
+        compareScreenshots("screenshot-45") {
+            val newFont = ResourcesCompat.getFont(context, ir.mahozad.android.test.R.font.lobster_regular)
+            labelsFont = newFont!!
         }
     }
 

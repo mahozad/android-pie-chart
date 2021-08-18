@@ -506,11 +506,15 @@ class PieChart @JvmOverloads constructor(
             field = array
             invalidate()
         }
-    var labelsFont = defaultLabelsFont
-        set(font) {
-            field = font
+
+    var labelsFontResource by FontResource(::labelsFont)
+    var labelsFont by Property(defaultLabelsFont) {
+        if (::pie.isInitialized) {
+            pie.setLabelsFont(it)
             invalidate()
         }
+    }
+
     var centerLabelFont = defaultCenterLabelFont
         set(font) {
             field = font

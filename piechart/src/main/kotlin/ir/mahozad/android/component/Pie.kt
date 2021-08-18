@@ -22,7 +22,7 @@ internal class Pie(
     val labelType: PieChart.LabelType,
     private var labelsSize: Float,
     val labelsColor: Int,
-    val labelsFont: Typeface,
+    private var labelsFont: Typeface,
     private var labelIconsHeight: Float,
     val labelIconsMargin: Float,
     val labelIconsPlacement: PieChart.IconPlacement,
@@ -208,6 +208,11 @@ internal class Pie(
 
     fun setLabelIconsHeight(newLabelIconsHeight: Float) {
         labelIconsHeight = newLabelIconsHeight
+        layOut(top, start, drawDirection)
+    }
+
+    fun setLabelsFont(newLabelsFont: Typeface) {
+        labelsFont = newLabelsFont
         layOut(top, start, drawDirection)
     }
 }

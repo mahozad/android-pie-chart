@@ -1,7 +1,9 @@
 package ir.mahozad.android
 
 import android.content.Context
+import android.graphics.Typeface
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import ir.mahozad.android.unit.Dimension
 import ir.mahozad.android.unit.Dimension.PX
 import kotlin.reflect.KMutableProperty0
@@ -54,6 +56,10 @@ class DimensionResource(override val mainProperty: KMutableProperty0<Dimension>)
 
 class StringResource(override val mainProperty: KMutableProperty0<String>) : PropertyResource<String>() {
     override fun resolveResourceValue(context: Context) = context.resources.getString(resId)
+}
+
+class FontResource(override val mainProperty: KMutableProperty0<Typeface>) : PropertyResource<Typeface>() {
+    override fun resolveResourceValue(context: Context) = ResourcesCompat.getFont(context, resId)!!
 }
 
 // class EnumResource<T : Enum<T>>(override val mainProperty: KMutableProperty0<T>) : PropertyResource<T>() {
