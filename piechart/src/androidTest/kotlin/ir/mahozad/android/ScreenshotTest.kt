@@ -302,10 +302,11 @@ class ScreenshotTest {
     @Test fun changeLegendIconsAlpha() {
         compareScreenshots("screenshot-35") {
             slices = listOf(
-                Slice(0.3f, Color.CYAN, legendIconAlpha = 0.2f),
+                Slice(0.3f, Color.CYAN, legendIconAlpha = null),
                 Slice(0.2f, Color.YELLOW),
                 Slice(0.5f, Color.GREEN)
             )
+            legendIconsAlpha = 0.1f
         }
     }
 
@@ -331,6 +332,12 @@ class ScreenshotTest {
         compareScreenshots("screenshot-39") {
             legendBoxBorder = 5.dp
             isLegendBoxBorderEnabled = true
+        }
+    }
+
+    @Test fun changeLegendsPercentageColor() {
+        compareScreenshots("screenshot-40") {
+            legendsPercentageColor = Color.rgb(193, 224, 79)
         }
     }
 

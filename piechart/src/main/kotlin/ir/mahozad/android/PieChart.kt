@@ -460,11 +460,12 @@ class PieChart @JvmOverloads constructor(
         onSizeChanged(width, height, width, height)
     }
 
-    var legendsPercentageColor = DEFAULT_LEGENDS_PERCENTAGE_COLOR
-        set(color) {
-            field = color
-            invalidate()
-        }
+    var legendsPercentageColorResource by ColorResource(::legendsPercentageColor)
+    var legendsPercentageColor by Property(DEFAULT_LEGENDS_PERCENTAGE_COLOR) {
+        // TODO: No need to recalculate everything; provide a method in legend box for this
+        onSizeChanged(width, height, width, height)
+    }
+
     var legendsPercentageMargin = dpToPx(DEFAULT_LEGENDS_PERCENTAGE_MARGIN)
         set(margin /* px */) {
             field = margin

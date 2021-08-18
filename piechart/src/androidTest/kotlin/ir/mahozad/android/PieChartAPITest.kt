@@ -281,6 +281,13 @@ class PieChartAPITest {
         assertThat(pieChart.isLegendBoxBorderEnabled).isEqualTo(expected)
     }
 
+    @Test fun changeLegendsPercentageColorResourceShouldChangeLegendsPercentageColorAsWell() {
+        val resourceId = ir.mahozad.android.test.R.color.testLegendPercentageColor
+        val expected = resources.getColor(resourceId, null)
+        pieChart.legendsPercentageColorResource = resourceId
+        assertThat(pieChart.legendsPercentageColor).isEqualTo(expected)
+    }
+
 
 
 
