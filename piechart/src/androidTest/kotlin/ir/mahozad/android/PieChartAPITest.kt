@@ -393,10 +393,6 @@ class PieChartAPITest {
         assertThat(pieChart.centerLabelIconAlpha).isEqualTo(0f)
     }
 
-
-
-
-
     @Test fun changeChartCenterBackgroundStatusResourceShouldChangeCenterBackgroundStatusAsWell() {
         val resourceId1 = ir.mahozad.android.test.R.bool.testCenterBackgroundEnabled
         val resourceId2 = ir.mahozad.android.test.R.bool.testCenterBackgroundDisabled

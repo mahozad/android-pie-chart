@@ -440,6 +440,12 @@ class ScreenshotTest {
         }
     }
 
+    @Test fun enableCenterBackground() {
+        compareScreenshots("screenshot-53") {
+            isCenterBackgroundEnabled = true
+        }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.
