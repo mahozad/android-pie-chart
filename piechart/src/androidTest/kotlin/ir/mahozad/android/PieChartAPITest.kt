@@ -432,4 +432,11 @@ class PieChartAPITest {
         pieChart.labelIconsMarginResource = resourceId
         assertThat(pieChart.labelIconsMargin.px).isEqualTo(expected)
     }
+
+    @Test fun changeOutsideLabelsMarginResourceShouldChangeOutsideLabelsMarginAsWell() {
+        val resourceId = ir.mahozad.android.test.R.dimen.testOutsideLabelsMargin
+        val expected = resources.getDimension(resourceId)
+        pieChart.outsideLabelsMarginResource = resourceId
+        assertThat(pieChart.outsideLabelsMargin.px).isEqualTo(expected)
+    }
 }

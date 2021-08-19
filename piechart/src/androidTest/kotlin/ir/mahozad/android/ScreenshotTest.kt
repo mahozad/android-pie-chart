@@ -485,6 +485,19 @@ class ScreenshotTest {
         }
     }
 
+    @Test fun changeOutsideLabelsMargin() {
+        compareScreenshots("screenshot-59") {
+            labelType = PieChart.LabelType.OUTSIDE_CIRCULAR_OUTWARD
+            outsideLabelsMargin = 39.dp
+        }
+    }
+
+    @Test fun changeLabelType() {
+        compareScreenshots("screenshot-60") {
+            labelType = PieChart.LabelType.OUTSIDE
+        }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.

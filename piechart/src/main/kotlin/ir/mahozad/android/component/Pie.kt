@@ -18,8 +18,8 @@ internal class Pie(
     override val paddings: Paddings?,
     private var startAngle: Int,
     private val slices: List<PieChart.Slice>,
-    val outsideLabelsMargin: Float,
-    val labelType: PieChart.LabelType,
+    private var outsideLabelsMargin: Float,
+    private var labelType: PieChart.LabelType,
     private var labelsSize: Float,
     val labelsColor: Int,
     private var labelsFont: Typeface,
@@ -48,7 +48,7 @@ internal class Pie(
     var radius = 0f
     var center = Coordinates(0f, 0f)
     private val pieEnclosingRect = RectF()
-    private val labels = createLabelsMaker(context, labelType, shouldCenterPie)
+    private var labels = createLabelsMaker(context, labelType, shouldCenterPie)
     private var top = 0f
     private var start = 0f
     private var drawDirection = DrawDirection.LTR
@@ -213,6 +213,17 @@ internal class Pie(
 
     fun setLabelIconsMargin(newLabelIconsMargin: Float) {
         labelIconsMargin = newLabelIconsMargin
+        layOut(top, start, drawDirection)
+    }
+
+    fun setOutsideLabelsMargin(newOutsideLabelsMargin: Float) {
+        outsideLabelsMargin = newOutsideLabelsMargin
+        layOut(top, start, drawDirection)
+    }
+
+    fun setLabelType(newLabelType: PieChart.LabelType) {
+        labelType = newLabelType
+        labels = createLabelsMaker(context, labelType, shouldCenterPie)
         layOut(top, start, drawDirection)
     }
 
