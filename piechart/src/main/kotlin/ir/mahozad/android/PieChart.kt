@@ -558,11 +558,13 @@ class PieChart @JvmOverloads constructor(
         }
     }
 
-    var centerLabelIconAlpha = DEFAULT_CENTER_LABEL_ICON_ALPHA
-        set(@FloatRange(from = 0.0, to = 1.0) alpha) {
-            field = alpha.coerceIn(0f, 1f)
+    var centerLabelIconAlphaResource by FractionResource(::centerLabelIconAlpha)
+    var centerLabelIconAlpha by Property(DEFAULT_CENTER_LABEL_ICON_ALPHA, { it.coerceIn(0f, 1f) }) {
+        if (::pie.isInitialized) {
+            createCenterLabel()
             invalidate()
         }
+    }
 
     var isCenterBackgroundEnabled by Property(DEFAULT_CENTER_BACKGROUND_STATUS)
     var isCenterBackgroundEnabledResource by BooleanResource(::isCenterBackgroundEnabled)

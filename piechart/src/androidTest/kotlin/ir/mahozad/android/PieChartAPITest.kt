@@ -376,6 +376,23 @@ class PieChartAPITest {
         assertThat(pieChart.centerLabelAlpha).isEqualTo(0f)
     }
 
+    @Test fun changeCenterLabelIconAlphaResourceShouldChangeCenterLabelIconAlphaAsWell() {
+        val resourceId = ir.mahozad.android.test.R.fraction.testCenterLabelIconAlpha
+        val expected = resources.getFraction(resourceId, 1, 1)
+        pieChart.centerLabelIconAlphaResource = resourceId
+        assertThat(pieChart.centerLabelIconAlpha).isEqualTo(expected)
+    }
+
+    @Test fun changeCenterLabelIconAlphaToAValueGreaterThanOne() {
+        pieChart.centerLabelIconAlpha = 3.4f
+        assertThat(pieChart.centerLabelIconAlpha).isEqualTo(1f)
+    }
+
+    @Test fun changeCenterLabelIconAlphaToAValueLessThanZero() {
+        pieChart.centerLabelIconAlpha = -3.4f
+        assertThat(pieChart.centerLabelIconAlpha).isEqualTo(0f)
+    }
+
 
 
 
