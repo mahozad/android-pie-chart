@@ -581,8 +581,11 @@ class PieChart @JvmOverloads constructor(
         invalidate()
     }
 
-    var centerBackgroundAlpha by Property(DEFAULT_CENTER_BACKGROUND_ALPHA)
     var centerBackgroundAlphaResource by FractionResource(::centerBackgroundAlpha)
+    var centerBackgroundAlpha by Property(DEFAULT_CENTER_BACKGROUND_ALPHA, { it.coerceIn(0f, 1f) }) {
+        invalidate()
+    }
+
     var labelsOffset by Property(DEFAULT_LABELS_OFFSET)
     var labelsOffsetResource by FractionResource(::labelsOffset)
 
