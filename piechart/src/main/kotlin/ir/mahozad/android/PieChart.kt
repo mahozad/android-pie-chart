@@ -693,11 +693,13 @@ class PieChart @JvmOverloads constructor(
         }
     }
 
-    var centerLabel = DEFAULT_CENTER_LABEL
-        set(label) {
-            field = label
+    var centerLabelResource by StringResource(::centerLabel)
+    var centerLabel by Property(DEFAULT_CENTER_LABEL) {
+        if (::pie.isInitialized) {
+            createCenterLabel()
             invalidate()
         }
+    }
 
     var centerLabelSizeResource by DimensionResource(::centerLabelSize)
     var centerLabelSize by Property(DEFAULT_CENTER_LABEL_SIZE) {
