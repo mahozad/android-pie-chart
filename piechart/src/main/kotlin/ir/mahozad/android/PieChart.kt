@@ -202,7 +202,7 @@ class PieChart @JvmOverloads constructor(
     enum class BorderType {SOLID, DASHED}
     /* TODO: Rename inside to inner or internal and outside to outer or external (?) */
     enum class LabelType { NONE, INSIDE, OUTSIDE, INSIDE_CIRCULAR, OUTSIDE_CIRCULAR_INWARD, OUTSIDE_CIRCULAR_OUTWARD, OUTSIDE_WITH_LINES_ON_SIDES }
-    data class SlicePointer(val length: Float, val width: Float, val color: Int)
+    data class SlicePointer(val length: ir.mahozad.android.unit.Dimension, val width: ir.mahozad.android.unit.Dimension, val color: Int)
     enum class LegendArrangement { HORIZONTAL, VERTICAL }
     enum class LegendPosition { TOP, BOTTOM, CENTER /* AKA IN_HOLE */, START, END, LEFT, RIGHT }
 
@@ -647,11 +647,13 @@ class PieChart @JvmOverloads constructor(
         }
     }
 
-    var slicesPointer = defaultSlicesPointer
-        set(pointer) {
-            field = pointer
+    var slicesPointer by Property(defaultSlicesPointer) {
+        if (::pie.isInitialized) {
+            pie.setSlicesPointer(it)
             invalidate()
         }
+    }
+
     var labelIconsPlacement = defaultLabelIconsPlacement
         set(placement) {
             field = placement
@@ -786,9 +788,9 @@ class PieChart @JvmOverloads constructor(
             legendIconsAlpha = getFloat(R.styleable.PieChart_legendIconsAlpha, DEFAULT_LEGEND_ICONS_ALPHA)
             legendsTitleColor = getColor(R.styleable.PieChart_legendsTitleColor, DEFAULT_LEGENDS_TITLE_COLOR)
             shouldCenterPie = getBoolean(R.styleable.PieChart_shouldCenterPie, DEFAULT_SHOULD_CENTER_PIE)
-            val slicesPointerLength = getDimension(R.styleable.PieChart_slicesPointerLength, -1f)
-            val slicesPointerWidth = getDimension(R.styleable.PieChart_slicesPointerWidth, -1f)
-            slicesPointer = if (slicesPointerLength <= 0 || slicesPointerWidth <= 0) defaultSlicesPointer else SlicePointer(slicesPointerLength, slicesPointerWidth, 0)
+            val slicesPointerLength = getDimension(R.styleable.PieChart_slicesPointerLength, -1f).px
+            val slicesPointerWidth = getDimension(R.styleable.PieChart_slicesPointerWidth, -1f).px
+            slicesPointer = if (slicesPointerLength.px <= 0 || slicesPointerWidth.px <= 0) defaultSlicesPointer else SlicePointer(slicesPointerLength, slicesPointerWidth, 0)
             isLegendsPercentageEnabled = getInt(R.styleable.PieChart_legendsPercentageStatus, 0) == 1
             isLegendBoxBorderEnabled = getInt(R.styleable.PieChart_legendBoxBorderStatus, 0) == 1
             legendsTitleAlignment = getEnum(R.styleable.PieChart_legendsTitleAlignment, defaultLegendsTitleAlignment)

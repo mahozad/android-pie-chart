@@ -515,6 +515,12 @@ class ScreenshotTest {
         }
     }
 
+    @Test fun changeSlicesPointer() {
+        compareScreenshots("screenshot-63") {
+            slicesPointer = PieChart.SlicePointer(34.dp, 19.dp, 0)
+        }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.

@@ -34,7 +34,7 @@ internal class Pie(
     private var overlayAlpha: Float,
     val gradientType: PieChart.GradientType,
     private var holeRatio: Float,
-    val slicesPointer: PieChart.SlicePointer?,
+    private var slicesPointer: PieChart.SlicePointer?,
     private var gap:Float,
     val gapPosition: PieChart.GapPosition
 ) : Box {
@@ -245,5 +245,9 @@ internal class Pie(
     fun setLabelOffset(newLabelsOffset: Float) {
         labelsOffset = newLabelsOffset
         layOut(top, start, drawDirection)
+    }
+
+    fun setSlicesPointer(newSlicesPointer: PieChart.SlicePointer?) {
+        slicesPointer = newSlicesPointer
     }
 }

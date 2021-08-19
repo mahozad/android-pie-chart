@@ -1,7 +1,6 @@
 package ir.mahozad.android
 
 import android.graphics.*
-import android.graphics.Color
 import android.view.View
 import android.view.View.MeasureSpec.makeMeasureSpec
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
@@ -1319,7 +1318,7 @@ class SizeUtilInstrumentedTest {
         val pieEnclosingRect = RectF(0f, 0f, 1000f, 1000f)
         val sliceStartAngle = -90f
         val sliceFraction = 0.5f
-        val pointer = PieChart.SlicePointer(50f, 40f, 0)
+        val pointer = PieChart.SlicePointer(50.px, 40.px, 0)
         val drawDirection = CLOCKWISE
 
         val slice = makeSlice(center, pieEnclosingRect, sliceStartAngle, sliceFraction, drawDirection, pointer)
