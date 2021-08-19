@@ -352,6 +352,13 @@ class PieChartAPITest {
         assertThat(pieChart.centerLabelIconMargin.px).isEqualTo(expected)
     }
 
+    @Test fun changeCenterLabelIconTintResourceShouldChangeCenterLabelIconTintAsWell() {
+        val resourceId = ir.mahozad.android.test.R.color.testCenterLabelIconTint
+        val expected = resources.getColor(resourceId, null)
+        pieChart.centerLabelIconTintResource = resourceId
+        assertThat(pieChart.centerLabelIconTint).isEqualTo(expected)
+    }
+
 
 
 

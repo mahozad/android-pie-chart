@@ -50,6 +50,12 @@ class ColorResource(override val mainProperty: KMutableProperty0<Int>) : Propert
     override fun resolveResourceValue(context: Context) = ContextCompat.getColor(context, resId)
 }
 
+class TintResource(override val mainProperty: KMutableProperty0<Int?>) : PropertyResource<Int?>() {
+    override fun resolveResourceValue(context: Context): Int? {
+        return if (resId == 0) null else ContextCompat.getColor(context, resId)
+    }
+}
+
 class DimensionResource(override val mainProperty: KMutableProperty0<Dimension>) : PropertyResource<Dimension>() {
     override fun resolveResourceValue(context: Context) = PX(context.resources.getDimension(resId))
 }

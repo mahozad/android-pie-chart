@@ -539,11 +539,17 @@ class PieChart @JvmOverloads constructor(
         }
     }
 
-    var centerLabelIconTint = defaultCenterLabelIconTint
-        set(@ColorInt color) {
-            field = color
+    /**
+     * Set resource id to 0 to act like null.
+     */
+    var centerLabelIconTintResource by TintResource(::centerLabelIconTint)
+    var centerLabelIconTint by Property(defaultCenterLabelIconTint) {
+        if (::pie.isInitialized) {
+            createCenterLabel()
             invalidate()
         }
+    }
+
     var centerLabelAlpha = DEFAULT_CENTER_LABEL_ALPHA
         set(@FloatRange(from = 0.0, to = 1.0) alpha) {
             field = alpha.coerceIn(0f, 1f)
