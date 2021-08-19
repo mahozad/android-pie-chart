@@ -453,6 +453,13 @@ class ScreenshotTest {
         }
     }
 
+    @Test fun changeCenterBackgroundRatio() {
+        compareScreenshots("screenshot-55") {
+            isCenterBackgroundEnabled = true
+            centerBackgroundRatio = 0.638f
+        }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.
