@@ -717,16 +717,20 @@ class PieChart @JvmOverloads constructor(
         }
     }
 
-    var gapPosition = defaultGapPosition
-        set(position) {
-            field = position
+    var gapPosition by Property(defaultGapPosition) {
+        if (::pie.isInitialized) {
+            pie.setGapPosition(it)
             invalidate()
         }
-    var gradientType = defaultGradientType
-        set(type) {
-            field = type
+    }
+
+    var gradientType by Property(defaultGradientType) {
+        if (::pie.isInitialized) {
+            pie.setGradientType(it)
             invalidate()
         }
+    }
+
     var drawDirection = defaultDrawDirection
         set(direction) {
             field = direction

@@ -569,6 +569,23 @@ class ScreenshotTest {
         }
     }
 
+    @Test fun changeGapPosition() {
+        compareScreenshots("screenshot-70") {
+            gapPosition = PieChart.GapPosition.SUCCEEDING_SLICE
+        }
+    }
+
+    @Test fun changeGradientType() {
+        compareScreenshots("screenshot-71") {
+            slices = listOf(
+                Slice(0.3f, Color.CYAN, colorEnd = Color.BLUE),
+                Slice(0.2f, Color.YELLOW),
+                Slice(0.5f, Color.GREEN)
+            )
+            gradientType = PieChart.GradientType.SWEEP
+        }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.

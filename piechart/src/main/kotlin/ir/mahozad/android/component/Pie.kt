@@ -32,11 +32,11 @@ internal class Pie(
     val pieDrawDirection: PieChart.DrawDirection,
     private var overlayRatio: Float,
     private var overlayAlpha: Float,
-    val gradientType: PieChart.GradientType,
+    private var gradientType: PieChart.GradientType,
     private var holeRatio: Float,
     private var slicesPointer: PieChart.SlicePointer?,
     private var gap:Float,
-    val gapPosition: PieChart.GapPosition
+    private var gapPosition: PieChart.GapPosition
 ) : Box {
 
     private val pie = Path()
@@ -258,6 +258,16 @@ internal class Pie(
 
     fun setShouldCenterPie(newShouldCenterPie: Boolean) {
         shouldCenterPie = newShouldCenterPie
+        layOut(top, start, drawDirection)
+    }
+
+    fun setGapPosition(newGapPosition: PieChart.GapPosition) {
+        gapPosition = newGapPosition
+        layOut(top, start, drawDirection)
+    }
+
+    fun setGradientType(newGradientType: PieChart.GradientType) {
+        gradientType = newGradientType
         layOut(top, start, drawDirection)
     }
 }
