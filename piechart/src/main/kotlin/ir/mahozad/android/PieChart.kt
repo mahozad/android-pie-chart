@@ -666,11 +666,14 @@ class PieChart @JvmOverloads constructor(
      * the pie will always be centered on its canvas which may sacrifice
      * some space that could have been used to make the pie bigger.
      */
-    var shouldCenterPie = DEFAULT_SHOULD_CENTER_PIE
-        set(shouldCenter) {
-            field = shouldCenter
+    var shouldCenterPieResource by BooleanResource(::shouldCenterPie)
+    var shouldCenterPie by Property(DEFAULT_SHOULD_CENTER_PIE) {
+        if (::pie.isInitialized) {
+            pie.setShouldCenterPie(it)
             invalidate()
         }
+    }
+
     /**
      * Is overridden by icon of the slice if it is assigned a value other than *null*
      */

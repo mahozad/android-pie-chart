@@ -28,7 +28,7 @@ internal class Pie(
     private var labelIconsPlacement: PieChart.IconPlacement,
     private var labelIconsTint: Int?,
     private var labelsOffset: Float,
-    val shouldCenterPie: Boolean,
+    private var shouldCenterPie: Boolean,
     val pieDrawDirection: PieChart.DrawDirection,
     private var overlayRatio: Float,
     private var overlayAlpha: Float,
@@ -253,6 +253,11 @@ internal class Pie(
 
     fun setLabelIconsPlacement(newLabelIconsPlacement: PieChart.IconPlacement) {
         labelIconsPlacement = newLabelIconsPlacement
+        layOut(top, start, drawDirection)
+    }
+
+    fun setShouldCenterPie(newShouldCenterPie: Boolean) {
+        shouldCenterPie = newShouldCenterPie
         layOut(top, start, drawDirection)
     }
 }
