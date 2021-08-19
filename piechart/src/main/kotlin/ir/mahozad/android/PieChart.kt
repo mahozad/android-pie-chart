@@ -677,7 +677,9 @@ class PieChart @JvmOverloads constructor(
     /**
      * Is overridden by icon of the slice if it is assigned a value other than *null*
      */
-    var legendsIcon: Icon = defaultLegendsIcon
+    var legendsIcon: Icon by Property(defaultLegendsIcon) {
+        onSizeChanged(width, height, width, height)
+    }
 
     var isCenterLabelEnabledResource by BooleanResource(::isCenterLabelEnabled)
     var isCenterLabelEnabled by Property(DEFAULT_CENTER_LABEL_STATUS) {
