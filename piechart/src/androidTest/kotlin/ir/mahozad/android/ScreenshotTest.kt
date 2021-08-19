@@ -390,8 +390,8 @@ class ScreenshotTest {
 
     @Test fun changeCenterLabelIconHeight() {
         compareScreenshots("screenshot-47") {
-            centerLabelIcon = PieChart.DefaultIcons.CIRCLE
             isCenterLabelEnabled = true
+            centerLabelIcon = PieChart.DefaultIcons.CIRCLE
             centerLabel = "Test center label"
             centerLabelIconHeight = 33.dp
         }
@@ -402,6 +402,15 @@ class ScreenshotTest {
             isCenterLabelEnabled = true
             centerLabel = "Test center label"
             centerLabelSize = 23.dp
+        }
+    }
+
+    @Test fun changeCenterLabelIconMargin() {
+        compareScreenshots("screenshot-49") {
+            isCenterLabelEnabled = true
+            centerLabelIcon = PieChart.DefaultIcons.CIRCLE
+            centerLabel = "Test center label"
+            centerLabelIconMargin = 23.dp
         }
     }
 

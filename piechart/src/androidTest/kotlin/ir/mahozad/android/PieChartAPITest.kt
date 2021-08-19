@@ -345,6 +345,13 @@ class PieChartAPITest {
         assertThat(pieChart.centerLabelSize.px).isEqualTo(expected)
     }
 
+    @Test fun changeCenterLabelIconMarginResourceShouldChangeCenterLabelIconMarginAsWell() {
+        val resourceId = ir.mahozad.android.test.R.dimen.testCenterLabelIconMargin
+        val expected = resources.getDimension(resourceId)
+        pieChart.centerLabelIconMarginResource = resourceId
+        assertThat(pieChart.centerLabelIconMargin.px).isEqualTo(expected)
+    }
+
 
 
 

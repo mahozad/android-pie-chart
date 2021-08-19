@@ -11,7 +11,6 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.*
 import androidx.annotation.Dimension.DP
-import androidx.annotation.Dimension.PX
 import androidx.annotation.IntRange
 import androidx.core.content.withStyledAttributes
 import ir.mahozad.android.PieChart.DefaultIcons.CIRCLE
@@ -71,7 +70,7 @@ val DEFAULT_LEGEND_ICONS_HEIGHT = DEFAULT_LEGENDS_SIZE
 const val DEFAULT_CENTER_LABEL = ""
 val DEFAULT_CENTER_LABEL_SIZE = 16.sp
 val DEFAULT_CENTER_LABEL_ICON_HEIGHT = DEFAULT_CENTER_LABEL_SIZE
-@Dimension(unit = DP) const val DEFAULT_CENTER_LABEL_ICON_MARGIN = 8f
+val DEFAULT_CENTER_LABEL_ICON_MARGIN = 8.dp
 @FloatRange(from = 0.0, to = 1.0) const val DEFAULT_CENTER_LABEL_ALPHA = 1f
 @FloatRange(from = 0.0, to = 1.0) const val DEFAULT_CENTER_LABEL_ICON_ALPHA = 1f
 const val DEFAULT_LEGENDS_TITLE = ""
@@ -532,11 +531,14 @@ class PieChart @JvmOverloads constructor(
         }
     }
 
-    var centerLabelIconMargin = DEFAULT_CENTER_LABEL_ICON_MARGIN
-        set(@Dimension(unit = PX) margin) {
-            field = margin
+    var centerLabelIconMarginResource by DimensionResource(::centerLabelIconMargin)
+    var centerLabelIconMargin by Property(DEFAULT_CENTER_LABEL_ICON_MARGIN) {
+        if (::pie.isInitialized) {
+            createCenterLabel()
             invalidate()
         }
+    }
+
     var centerLabelIconTint = defaultCenterLabelIconTint
         set(@ColorInt color) {
             field = color
@@ -709,7 +711,7 @@ class PieChart @JvmOverloads constructor(
             centerLabelIconHeight = PX(getDimension(R.styleable.PieChart_centerLabelIconHeight, DEFAULT_CENTER_LABEL_ICON_HEIGHT.px))
             legendIconsHeight = PX(getDimension(R.styleable.PieChart_legendIconsHeight, DEFAULT_LEGEND_ICONS_HEIGHT.px))
             legendIconsMargin = PX(getDimension(R.styleable.PieChart_legendIconsMargin, DEFAULT_LEGEND_ICONS_MARGIN.px))
-            centerLabelIconMargin = getDimension(R.styleable.PieChart_centerLabelIconMargin, dpToPx(DEFAULT_CENTER_LABEL_ICON_MARGIN))
+            centerLabelIconMargin = PX(getDimension(R.styleable.PieChart_centerLabelIconMargin, DEFAULT_CENTER_LABEL_ICON_MARGIN.px))
             labelIconsMargin = getDimension(R.styleable.PieChart_labelIconsMargin, dpToPx(DEFAULT_LABEL_ICONS_MARGIN))
             outsideLabelsMargin = getDimension(R.styleable.PieChart_outsideLabelsMargin, dpToPx(DEFAULT_OUTSIDE_LABELS_MARGIN))
             centerLabel = getString(R.styleable.PieChart_centerLabel) ?: DEFAULT_CENTER_LABEL
@@ -806,7 +808,7 @@ class PieChart @JvmOverloads constructor(
             centerLabelIconHeight.px,
             tint = centerLabelIconTint,
             alpha = centerLabelIconAlpha,
-            margins = Margins(end = centerLabelIconMargin)
+            margins = Margins(end = centerLabelIconMargin.px)
         )
         val centerLabelText = Text(
             centerLabel,
