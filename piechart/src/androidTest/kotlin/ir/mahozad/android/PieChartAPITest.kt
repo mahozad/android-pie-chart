@@ -331,6 +331,20 @@ class PieChartAPITest {
         assertThat(pieChart.centerLabelFont).isEqualTo(expected)
     }
 
+    @Test fun changeCenterLabelIconHeightResourceShouldChangeCenterLabelIconHeightAsWell() {
+        val resourceId = ir.mahozad.android.test.R.dimen.testCenterLabelIconHeight
+        val expected = resources.getDimension(resourceId)
+        pieChart.centerLabelIconHeightResource = resourceId
+        assertThat(pieChart.centerLabelIconHeight.px).isEqualTo(expected)
+    }
+
+    @Test fun changeCenterLabelSizeResourceShouldChangeCenterLabelSizeAsWell() {
+        val resourceId = ir.mahozad.android.test.R.dimen.testCenterLabelSize
+        val expected = resources.getDimension(resourceId)
+        pieChart.centerLabelSizeResource = resourceId
+        assertThat(pieChart.centerLabelSize.px).isEqualTo(expected)
+    }
+
 
 
 
