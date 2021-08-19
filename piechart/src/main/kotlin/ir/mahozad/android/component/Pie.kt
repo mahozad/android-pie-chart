@@ -26,7 +26,7 @@ internal class Pie(
     private var labelIconsHeight: Float,
     private var labelIconsMargin: Float,
     val labelIconsPlacement: PieChart.IconPlacement,
-    val labelIconsTint: Int?,
+    private var labelIconsTint: Int?,
     private var labelsOffset: Float,
     val shouldCenterPie: Boolean,
     val pieDrawDirection: PieChart.DrawDirection,
@@ -229,6 +229,11 @@ internal class Pie(
 
     fun setLabelsColor(newLabelsColor: Int) {
         labelsColor = newLabelsColor
+        layOut(top, start, drawDirection)
+    }
+
+    fun setLabelIconsTint(newLabelIconsTint: Int?) {
+        labelIconsTint = newLabelIconsTint
         layOut(top, start, drawDirection)
     }
 

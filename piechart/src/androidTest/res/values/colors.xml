@@ -8,6 +8,7 @@
   <color name="testLegendPercentageColor">#61ECB3</color>
   <color name="testCenterLabelIconTint">#ECA261</color>
   <color name="testLabelsColor">#1F8741</color>
+  <color name="testLabelIconsTint">#BE45C3</color>
   <array name="testColorArray">
     <item>#ff00AE28</item>
     <item>#5F00aE48</item>

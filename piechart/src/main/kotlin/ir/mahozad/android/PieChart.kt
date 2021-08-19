@@ -639,11 +639,14 @@ class PieChart @JvmOverloads constructor(
     /**
      * Is overridden by color of the slice if it is assigned a value other than *null*
      */
-    var labelIconsTint = defaultLabelIconsTint
-        set(color) {
-            field = color
+    var labelIconsTintResource by TintResource(::labelIconsTint)
+    var labelIconsTint by Property(defaultLabelIconsTint) {
+        if (::pie.isInitialized) {
+            pie.setLabelIconsTint(it)
             invalidate()
         }
+    }
+
     var slicesPointer = defaultSlicesPointer
         set(pointer) {
             field = pointer

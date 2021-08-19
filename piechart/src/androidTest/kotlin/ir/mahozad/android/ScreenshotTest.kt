@@ -504,6 +504,17 @@ class ScreenshotTest {
         }
     }
 
+    @Test fun changeLabelIconsTint() {
+        compareScreenshots("screenshot-62") {
+            slices = listOf(
+                Slice(0.3f, Color.CYAN, labelIcon = R.drawable.ic_circle),
+                Slice(0.2f, Color.YELLOW, legend = "two"),
+                Slice(0.5f, Color.GREEN, legend = "three")
+            )
+            labelIconsTint = Color.rgb(79, 161, 205)
+        }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.
