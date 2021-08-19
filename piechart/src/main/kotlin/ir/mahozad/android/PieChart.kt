@@ -572,7 +572,9 @@ class PieChart @JvmOverloads constructor(
     }
 
     var centerBackgroundColorResource by ColorResource(::centerBackgroundColor)
-    var centerBackgroundColor by Property(DEFAULT_CENTER_BACKGROUND_COLOR)
+    var centerBackgroundColor by Property(DEFAULT_CENTER_BACKGROUND_COLOR) {
+        invalidate()
+    }
 
     var centerBackgroundRatio by Property(DEFAULT_CENTER_BACKGROUND_RATIO)
     var centerBackgroundRatioResource by FractionResource(::centerBackgroundRatio)

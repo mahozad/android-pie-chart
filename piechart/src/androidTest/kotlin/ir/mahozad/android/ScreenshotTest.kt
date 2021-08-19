@@ -446,6 +446,13 @@ class ScreenshotTest {
         }
     }
 
+    @Test fun changeCenterBackgroundColor() {
+        compareScreenshots("screenshot-54") {
+            isCenterBackgroundEnabled = true
+            centerBackgroundColor = Color.rgb(238, 131, 98)
+        }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.
