@@ -423,6 +423,14 @@ class ScreenshotTest {
         }
     }
 
+    @Test fun changeCenterLabelAlpha() {
+        compareScreenshots("screenshot-51") {
+            isCenterLabelEnabled = true
+            centerLabel = "Test center label"
+            centerLabelAlpha = 0.23f
+        }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.

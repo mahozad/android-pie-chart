@@ -429,7 +429,7 @@ class PieChart @JvmOverloads constructor(
     }
 
     var legendIconsAlphaResource by FractionResource(::legendIconsAlpha)
-    var legendIconsAlpha by Property(DEFAULT_LEGEND_ICONS_ALPHA) {
+    var legendIconsAlpha by Property(DEFAULT_LEGEND_ICONS_ALPHA, { it.coerceIn(0f, 1f) }) {
         // TODO: No need to recalculate everything; provide a method in legend box for this
         onSizeChanged(width, height, width, height)
     }
@@ -550,11 +550,14 @@ class PieChart @JvmOverloads constructor(
         }
     }
 
-    var centerLabelAlpha = DEFAULT_CENTER_LABEL_ALPHA
-        set(@FloatRange(from = 0.0, to = 1.0) alpha) {
-            field = alpha.coerceIn(0f, 1f)
+    var centerLabelAlphaResource by FractionResource(::centerLabelAlpha)
+    var centerLabelAlpha by Property(DEFAULT_CENTER_LABEL_ALPHA, { it.coerceIn(0f, 1f) }) {
+        if (::pie.isInitialized) {
+            createCenterLabel()
             invalidate()
         }
+    }
+
     var centerLabelIconAlpha = DEFAULT_CENTER_LABEL_ICON_ALPHA
         set(@FloatRange(from = 0.0, to = 1.0) alpha) {
             field = alpha.coerceIn(0f, 1f)
