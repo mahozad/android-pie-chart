@@ -586,8 +586,13 @@ class PieChart @JvmOverloads constructor(
         invalidate()
     }
 
-    var labelsOffset by Property(DEFAULT_LABELS_OFFSET)
     var labelsOffsetResource by FractionResource(::labelsOffset)
+    var labelsOffset by Property(DEFAULT_LABELS_OFFSET, { it.coerceIn(0f, 1f) }) {
+        if (::pie.isInitialized) {
+            pie.setLabelOffset(it)
+            invalidate()
+        }
+    }
 
     var labelIconsHeightResource by DimensionResource(::labelIconsHeight)
     var labelIconsHeight by Property(DEFAULT_LABEL_ICONS_HEIGHT) {

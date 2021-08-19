@@ -27,7 +27,7 @@ internal class Pie(
     val labelIconsMargin: Float,
     val labelIconsPlacement: PieChart.IconPlacement,
     val labelIconsTint: Int?,
-    val labelsOffset: Float,
+    private var labelsOffset: Float,
     val shouldCenterPie: Boolean,
     val pieDrawDirection: PieChart.DrawDirection,
     private var overlayRatio: Float,
@@ -213,6 +213,11 @@ internal class Pie(
 
     fun setLabelsFont(newLabelsFont: Typeface) {
         labelsFont = newLabelsFont
+        layOut(top, start, drawDirection)
+    }
+
+    fun setLabelOffset(newLabelsOffset: Float) {
+        labelsOffset = newLabelsOffset
         layOut(top, start, drawDirection)
     }
 }

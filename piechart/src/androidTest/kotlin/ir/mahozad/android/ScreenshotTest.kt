@@ -468,6 +468,12 @@ class ScreenshotTest {
         }
     }
 
+    @Test fun changeLabelsOffset() {
+        compareScreenshots("screenshot-57") {
+            labelsOffset = 0.817f
+        }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.
