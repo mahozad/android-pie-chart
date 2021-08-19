@@ -25,7 +25,7 @@ internal class Pie(
     private var labelsFont: Typeface,
     private var labelIconsHeight: Float,
     private var labelIconsMargin: Float,
-    val labelIconsPlacement: PieChart.IconPlacement,
+    private var labelIconsPlacement: PieChart.IconPlacement,
     private var labelIconsTint: Int?,
     private var labelsOffset: Float,
     val shouldCenterPie: Boolean,
@@ -249,5 +249,10 @@ internal class Pie(
 
     fun setSlicesPointer(newSlicesPointer: PieChart.SlicePointer?) {
         slicesPointer = newSlicesPointer
+    }
+
+    fun setLabelIconsPlacement(newLabelIconsPlacement: PieChart.IconPlacement) {
+        labelIconsPlacement = newLabelIconsPlacement
+        layOut(top, start, drawDirection)
     }
 }

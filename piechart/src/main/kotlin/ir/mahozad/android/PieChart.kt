@@ -654,11 +654,13 @@ class PieChart @JvmOverloads constructor(
         }
     }
 
-    var labelIconsPlacement = defaultLabelIconsPlacement
-        set(placement) {
-            field = placement
+    var labelIconsPlacement by Property(defaultLabelIconsPlacement) {
+        if (::pie.isInitialized) {
+            pie.setLabelIconsPlacement(it)
             invalidate()
         }
+    }
+
     /**
      * When using outside labels, if this is set to true,
      * the pie will always be centered on its canvas which may sacrifice
