@@ -498,6 +498,12 @@ class ScreenshotTest {
         }
     }
 
+    @Test fun changeLabelsColor() {
+        compareScreenshots("screenshot-61") {
+            labelsColor = Color.rgb(234, 197, 90)
+        }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.

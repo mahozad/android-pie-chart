@@ -439,4 +439,11 @@ class PieChartAPITest {
         pieChart.outsideLabelsMarginResource = resourceId
         assertThat(pieChart.outsideLabelsMargin.px).isEqualTo(expected)
     }
+
+    @Test fun changeLabelsColorResourceShouldChangeLabelsColorAsWell() {
+        val resourceId = ir.mahozad.android.test.R.color.testLabelsColor
+        val expected = resources.getColor(resourceId, null)
+        pieChart.labelsColorResource = resourceId
+        assertThat(pieChart.labelsColor).isEqualTo(expected)
+    }
 }

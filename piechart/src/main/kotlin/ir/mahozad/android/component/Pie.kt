@@ -21,7 +21,7 @@ internal class Pie(
     private var outsideLabelsMargin: Float,
     private var labelType: PieChart.LabelType,
     private var labelsSize: Float,
-    val labelsColor: Int,
+    private var labelsColor: Int,
     private var labelsFont: Typeface,
     private var labelIconsHeight: Float,
     private var labelIconsMargin: Float,
@@ -224,6 +224,11 @@ internal class Pie(
     fun setLabelType(newLabelType: PieChart.LabelType) {
         labelType = newLabelType
         labels = createLabelsMaker(context, labelType, shouldCenterPie)
+        layOut(top, start, drawDirection)
+    }
+
+    fun setLabelsColor(newLabelsColor: Int) {
+        labelsColor = newLabelsColor
         layOut(top, start, drawDirection)
     }
 

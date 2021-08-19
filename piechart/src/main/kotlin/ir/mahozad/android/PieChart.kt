@@ -628,11 +628,14 @@ class PieChart @JvmOverloads constructor(
     /**
      * Is overridden by color of the slice if it is assigned a value other than *null*
      */
-    var labelsColor = DEFAULT_LABELS_COLOR
-        set(color) {
-            field = color
+    var labelsColorResource by ColorResource(::labelsColor)
+    var labelsColor by Property(DEFAULT_LABELS_COLOR) {
+        if (::pie.isInitialized) {
+            pie.setLabelsColor(it)
             invalidate()
         }
+    }
+
     /**
      * Is overridden by color of the slice if it is assigned a value other than *null*
      */
