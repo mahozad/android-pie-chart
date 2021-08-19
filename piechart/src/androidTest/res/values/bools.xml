@@ -1,4 +1,6 @@
 <resources>
+  <bool name="testEnabled">true</bool>
+  <bool name="testDisabled">false</bool>
   <bool name="testIsLegendEnabled">false</bool>
   <bool name="testCenterBackgroundEnabled">true</bool>
   <bool name="testCenterBackgroundDisabled">false</bool>

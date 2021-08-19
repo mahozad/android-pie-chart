@@ -678,11 +678,12 @@ class PieChart @JvmOverloads constructor(
      * Is overridden by icon of the slice if it is assigned a value other than *null*
      */
     var legendsIcon: Icon = defaultLegendsIcon
-    var isCenterLabelEnabled = DEFAULT_CENTER_LABEL_STATUS
-        set(shouldEnable) {
-            field = shouldEnable
-            invalidate()
-        }
+
+    var isCenterLabelEnabledResource by BooleanResource(::isCenterLabelEnabled)
+    var isCenterLabelEnabled by Property(DEFAULT_CENTER_LABEL_STATUS) {
+        invalidate()
+    }
+
     var centerLabelIcon : Icon = defaultCenterLabelIcon
         set(icon) {
             field = icon
@@ -941,7 +942,9 @@ class PieChart @JvmOverloads constructor(
             canvas.drawCircle(pie.center.x, pie.center.y, backgroundRadius, paint)
         }
         chartBox.draw(canvas)
-        centerLabelBox.draw(canvas)
+        if (isCenterLabelEnabled) {
+            centerLabelBox.draw(canvas)
+        }
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

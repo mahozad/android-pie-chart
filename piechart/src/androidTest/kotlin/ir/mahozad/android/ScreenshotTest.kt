@@ -532,6 +532,14 @@ class ScreenshotTest {
         }
     }
 
+    @Test fun disableCenterLabel() {
+        compareScreenshots("screenshot-65") {
+            centerLabel = "abc"
+            centerLabelIcon = PieChart.DefaultIcons.CIRCLE
+            isCenterLabelEnabled = false
+        }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.

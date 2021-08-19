@@ -453,4 +453,16 @@ class PieChartAPITest {
         pieChart.labelIconsTintResource = resourceId
         assertThat(pieChart.labelIconsTint).isEqualTo(expected)
     }
+
+    @Test fun changeCenterLabelStatusResourceShouldChangeCenterLabelStatusAsWell() {
+        val resourceId1 = ir.mahozad.android.test.R.bool.testEnabled
+        val resourceId2 = ir.mahozad.android.test.R.bool.testDisabled
+        val expected1 = resources.getBoolean(resourceId1)
+        val expected2 = resources.getBoolean(resourceId2)
+
+        pieChart.isCenterLabelEnabledResource = resourceId1
+        assertThat(pieChart.isCenterLabelEnabled).isEqualTo(expected1)
+        pieChart.isCenterLabelEnabledResource = resourceId2
+        assertThat(pieChart.isCenterLabelEnabled).isEqualTo(expected2)
+    }
 }
