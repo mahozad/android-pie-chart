@@ -709,11 +709,14 @@ class PieChart @JvmOverloads constructor(
         }
     }
 
-    var centerLabelColor = DEFAULT_CENTER_LABEL_COLOR
-        set(color) {
-            field = color
+    var centerLabelColorResource by ColorResource(::centerLabelColor)
+    var centerLabelColor by Property(DEFAULT_CENTER_LABEL_COLOR) {
+        if (::pie.isInitialized) {
+            createCenterLabel()
             invalidate()
         }
+    }
+
     var gapPosition = defaultGapPosition
         set(position) {
             field = position

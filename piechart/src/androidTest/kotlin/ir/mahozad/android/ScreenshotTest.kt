@@ -561,6 +561,14 @@ class ScreenshotTest {
         }
     }
 
+    @Test fun changeCenterLabelColor() {
+        compareScreenshots("screenshot-69") {
+            isCenterLabelEnabled = true
+            centerLabel = "Test center label"
+            centerLabelColor = Color.rgb(234, 79, 105)
+        }
+    }
+
     /**
      * FIXME: the name of the function is misleading. It also works in a saving
      *  mode in that it just saves the screenshot on device and skips the comparison.
