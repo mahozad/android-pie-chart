@@ -18,6 +18,7 @@
   <dimen name="testCenterLabelIconHeight">35dp</dimen>
   <dimen name="testCenterLabelSize">37dp</dimen>
   <dimen name="testCenterLabelIconMargin">14dp</dimen>
+  <dimen name="testLabelIconsMargin">18dp</dimen>
   <integer name="testStartAngle">88</integer>
   <fraction name="testHoleRatio">43%</fraction>
   <fraction name="testOverlayRatio">73%</fraction>
