@@ -686,11 +686,13 @@ class PieChart @JvmOverloads constructor(
         invalidate()
     }
 
-    var centerLabelIcon : Icon = defaultCenterLabelIcon
-        set(icon) {
-            field = icon
+    var centerLabelIcon : Icon by Property(defaultCenterLabelIcon) {
+        if (::pie.isInitialized) {
+            createCenterLabel()
             invalidate()
         }
+    }
+
     var centerLabel = DEFAULT_CENTER_LABEL
         set(label) {
             field = label
