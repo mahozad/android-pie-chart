@@ -70,6 +70,7 @@ jobs:
           script: ./gradlew :piechart:connectedCheck --stacktrace
           disable-animations: false
       - name: Upload the test report
+        if: always() # Run even if the previous steps failed
         uses: actions/upload-artifact@v2
         with:
           name: instrumentation-test-report
