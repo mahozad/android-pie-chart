@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Create changelog for GitHub" type="KotlinStandaloneScriptRunConfigurationType">
+    <module name="Android_Pie_Chart" />
+    <shortenClasspath name="NONE" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/scripts" />
+    <option name="filePath" value="D:\Android\android-pie-chart\scripts\generate-github-changelog.main.kts" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
