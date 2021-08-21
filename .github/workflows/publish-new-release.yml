@@ -47,7 +47,7 @@ jobs:
       fail-fast: false
       matrix:
         # JUnit 5 tests are skipped on API 25 or lower (https://github.com/mannodermaus/android-junit5)
-        api-level: [ 21, 30 ]
+        api-level: [ 29, 30 ]
         target: [ default, google_apis ]
         arch: [ x86_64 ]
         exclude:
