@@ -5,21 +5,23 @@
 @file:Repository("https://jitpack.io")
 // @file:DependsOn("com.example:library:1.2.3")
 
+import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.stream.Collectors
 
-val versionLineRegex = Regex(""".*v\d+\.\d+\.\d+.* \(\d{4}-\d{2}-\d{2}\)""")
+val versionHeaderLineRegex = Regex(""".*v\d+\.\d+\.\d+.* \(\d{4}-\d{2}-\d{2}\)""")
+val commitReferenceRegex = Regex("""\[`[\da-f]{8}`]\(.+[\da-f]{8}\)""")
+val issueReferenceRegex = Regex("""\[#\d+]\(.+/[\d]+\)""")
 val outputPath: Path = Path.of("changelog.txt")
 
 val result = buildString {
     val releaseType = determineTypeOfThisRelease()
     val header = "This is a $releaseType release."
     val body = createReleaseBody()
-    val cleanedBody = cleanTheBody(body)
     appendLine(header)
     appendLine()
-    append(cleanedBody)
+    append(body)
 }
 
 Files.writeString(outputPath, result)
@@ -38,33 +40,34 @@ fun determineTypeOfThisRelease(): String {
 
 fun getLastTwoVersionTags() = Files
     .lines(Path.of("CHANGELOG.md"))
-    .filter { it.matches(versionLineRegex) }
+    .filter { it.matches(versionHeaderLineRegex) }
     .limit(2)
     .map { it.substringAfter("v") }
     .map { it.substringBefore(" ") }
     .collect(Collectors.toList())
 
-fun createReleaseBody() = Files
-    .lines(Path.of("CHANGELOG.md"))
-    .dropWhile { !it.matches(versionLineRegex) }
-    .dropWhile { it.matches(versionLineRegex) }
-    .takeWhile { !it.matches(versionLineRegex) }
-    .collect(Collectors.toList())
+fun createReleaseBody() = File("CHANGELOG.md")
+    .readLines()
+    .dropWhile { !it.matches(versionHeaderLineRegex) }
+    .dropWhile { it.matches(versionHeaderLineRegex) }
+    .takeWhile { !it.matches(versionHeaderLineRegex) }
     .joinToString(separator = "\n")
+    .cleanReferences()
 
 /**
- * Remove links for commit SHAs and issues and pull requests as GitHub
- * automatically converts them to links.
- * Note that the GitHub links are different in appearance and also in that,
- * when hovering over them with mouse, a popup shows the commit information.
- *
- * Also, re-insert the links to version diffs.
+ * Remove links for commit SHAs and issues and pull requests
+ * as GitHub automatically converts them to links.
+ * Note that the GitHub links are visually different and also,
+ * when hovering over them with mouse, a popup shows the commit/issue information.
  */
-fun cleanTheBody(body: String) = body
-    .replace(Regex("""\[[\da-f]{8}]""")) { it.value.removeSurrounding("[", "]") }
-    .replace(Regex("""\[#\d+]""")) { it.value.removeSurrounding("[", "]") }
-    .replace(Regex("""\[.*]""")) {
-        val (owner, repo) = System.getenv("GITHUB_REPOSITORY").split("/")
-        val (new, old) = getLastTwoVersionTags()
-        "${it.value}(https://github.com/$owner/$repo/compare/v$old...v$new)"
+fun String.cleanReferences(): String {
+    fun String.cleanCommitReferences() = replace(commitReferenceRegex) {
+        it.value.substringBetween("[`", "`]")
     }
+    fun String.cleanIssueReferences() = replace(issueReferenceRegex) {
+        it.value.substringBetween("[", "]")
+    }
+    return cleanCommitReferences().cleanIssueReferences()
+}
+
+fun String.substringBetween(start: String, end: String) = substringAfter(start).substringBefore(end)
