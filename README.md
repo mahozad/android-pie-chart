@@ -31,7 +31,7 @@ A Pie/Donut<sup id="ref-1">[1](#footnote-1)</sup>/Ring chart for Android.
 implementation("ir.mahozad.android:pie-chart:0.5.0")
 ```
 
-### layout.xml
+### XML layout
 ```xml
 <ir.mahozad.android.PieChart
     android:id="@+id/pieChart"
@@ -41,7 +41,7 @@ implementation("ir.mahozad.android:pie-chart:0.5.0")
     app:gap="8dp" />
 ```
 
-### activity.kt
+### Kotlin Activity
 ```kotlin
 val pieChart = findViewById<PieChart>(R.id.pieChart)
 pieChart.slices = listOf(
@@ -50,6 +50,30 @@ pieChart.slices = listOf(
     PieChart.Slice(0.3f, Color.YELLOW),
     PieChart.Slice(0.1f, Color.CYAN),
 )
+```
+
+### Jetpack Compose
+```kotlin
+@Composable
+fun PieChartView() {
+    AndroidView(
+        modifier = Modifier.fillMaxSize(),
+        factory = { context ->
+            PieChart(context).apply {
+                slices = listOf(
+                    PieChart.Slice(0.2f, Color.BLUE),
+                    PieChart.Slice(0.4f, Color.MAGENTA),
+                    PieChart.Slice(0.3f, Color.YELLOW),
+                    PieChart.Slice(0.1f, Color.CYAN),
+                )
+            }
+        },
+        update = { view ->
+            // View's been inflated or state read in this block has been updated
+            // Add logic here if necessary
+        }
+    )
+}
 ```
 
 ## Contributing
