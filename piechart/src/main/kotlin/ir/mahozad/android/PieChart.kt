@@ -10,7 +10,6 @@ import android.graphics.Typeface.DEFAULT
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.*
-import androidx.annotation.Dimension.DP
 import androidx.annotation.IntRange
 import androidx.core.content.withStyledAttributes
 import ir.mahozad.android.PieChart.DefaultIcons.CIRCLE
@@ -33,7 +32,7 @@ import java.text.NumberFormat
 
 const val ENABLED = true
 const val DISABLED = false
-@Dimension(unit = DP) const val DEFAULT_PIE_RADIUS = 256
+val DEFAULT_PIE_RADIUS = 256.dp
 @IntRange(from = -360, to = 360) const val DEFAULT_START_ANGLE = -90
 @FloatRange(from = 0.0, to = 1.0) const val DEFAULT_HOLE_RATIO = 0.25f
 @FloatRange(from = 0.0, to = 1.0) const val DEFAULT_OVERLAY_RATIO = 0.55f
