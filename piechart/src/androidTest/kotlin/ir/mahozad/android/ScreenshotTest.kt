@@ -9,6 +9,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.runner.screenshot.ScreenCaptureProcessor
 import androidx.test.runner.screenshot.Screenshot
 import androidx.test.uiautomator.UiDevice
 import de.mannodermaus.junit5.ActivityScenarioExtension
@@ -48,6 +49,11 @@ import org.junit.jupiter.api.extension.RegisterExtension
  *  So, annotations like [DisabledOnOs] or [DisabledIfEnvironmentVariable] do not
  *  have access to the OS environment variables and hence do not work as intended.
  *  The [Disabled] annotation works correctly.
+ *
+ *  NOTE: We can use the update-screenshots script in scripts/ directory to update
+ *  the screenshots. We could also have implemented a custom [ScreenCaptureProcessor]
+ *  in the [takeScreenshot] function to name the screenshots without the UUID; but then,
+ *  we could not copy the new screenshots to the assets directory to compare with the old ones.
  *
  *  We used a custom BuildConfig field to check if we are running on CI.
  *  See the build script -> android -> buildTypes -> debug.
