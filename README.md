@@ -48,7 +48,7 @@ pieChart.slices = listOf(
     PieChart.Slice(0.2f, Color.BLUE),
     PieChart.Slice(0.4f, Color.MAGENTA),
     PieChart.Slice(0.3f, Color.YELLOW),
-    PieChart.Slice(0.1f, Color.CYAN),
+    PieChart.Slice(0.1f, Color.CYAN)
 )
 ```
 
@@ -64,7 +64,7 @@ fun PieChartView() {
                     PieChart.Slice(0.2f, Color.BLUE),
                     PieChart.Slice(0.4f, Color.MAGENTA),
                     PieChart.Slice(0.3f, Color.YELLOW),
-                    PieChart.Slice(0.1f, Color.CYAN),
+                    PieChart.Slice(0.1f, Color.CYAN)
                 )
             }
         },
