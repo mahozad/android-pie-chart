@@ -1,5 +1,17 @@
 # History of notable changes introduced in each version
 
+## v0.6.0 (2021-08-21)
+#### New features
+  - Add resource version of properties ([`0885cf07`](https://github.com/mahozad/android-pie-chart/commit/0885cf07) and other commits)
+  - Add label offset property to *Slice* class ([`a8755a65`](https://github.com/mahozad/android-pie-chart/commit/a8755a65))
+#### Updates
+  - Changes to chart properties now work ([`e9420e85`](https://github.com/mahozad/android-pie-chart/commit/e9420e85))
+  - Update dimension properties to be of type *Dimension* ([`c7b1b5e5`](https://github.com/mahozad/android-pie-chart/commit/c7b1b5e5))
+#### Bug fixes
+  - Fix the bug with first slice of the pie ([`6e50d892`](https://github.com/mahozad/android-pie-chart/commit/6e50d892))
+
+[All commits since version 0.5.0](https://github.com/mahozad/android-pie-chart/compare/v0.5.0...v0.6.0)
+
 ## v0.5.0 (2021-08-01)
 #### New features
   - Legends ([`17d74f86`](https://github.com/mahozad/android-pie-chart/commit/17d74f86) and other commits)  
