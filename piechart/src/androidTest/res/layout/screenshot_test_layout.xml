@@ -15,6 +15,8 @@
       android:layout_height="wrap_content"
       app:labelType="inside"
       app:startAngle="250"
+      app:gap="3dp"
+      app:gapPosition="middle"
       app:legendStatus="enabled"
       app:holeRatio="0.3"
       app:overlayAlpha="0.2"
