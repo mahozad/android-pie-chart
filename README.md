@@ -22,9 +22,9 @@
 
 </div>
 
-A Pie/Donut<sup id="ref-1">[1](#footnote-1)</sup>/Ring chart for Android.
+## ⚠️ The chart does not yet support animations and interactions.
 
-# NOTE: The chart does not support animations and interactions yet.
+A Pie/Donut<sup id="ref-1">[1](#footnote-1)</sup>/Ring chart for Android.
 
 ### build.gradle[.kts]
 ```groovy
