@@ -3,11 +3,61 @@
 <head>
   <meta charset="UTF-8">
   <title>Android pie chart</title>
+  <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/atom-one-light.min.css">-->
+  <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/a11y-light.min.css">-->
+  <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/docco.min.css">-->
+  <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/foundation.min.css">-->
+  <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/github.min.css">-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/googlecode.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
 </head>
 <body>
 
-<h1>The library is still a work-in-progress...</h1>
+<h2>⚠️ The library does not yet support animations and interactions.</h2>
 <h2>Refer to the <a href="https://github.com/mahozad/android-pie-chart">GitHub repository</a> for more information.</h2>
+
+<h3>build.gradle[.kts]</h3>
+<pre><code>implementation("ir.mahozad.android:pie-chart:0.5.0")</code></pre>
+
+<h3>XML layout</h3>
+<pre><code class="language-xml">&lt;ir.mahozad.android.PieChart
+    android:id="@+id/pieChart"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:holeRatio="0.3"
+    app:gap="8dp" /&gt;</code></pre>
+
+<h3>Kotlin activity</h3>
+<pre><code class="language-kotlin">val pieChart = findViewById&lt;PieChart&gt;(R.id.pieChart)
+pieChart.slices = listOf(
+    PieChart.Slice(0.2f, Color.BLUE),
+    PieChart.Slice(0.4f, Color.MAGENTA),
+    PieChart.Slice(0.3f, Color.YELLOW),
+    PieChart.Slice(0.1f, Color.CYAN),
+)</code></pre>
+
+<h3>Jetpack Compose</h3>
+<pre><code>@Composable
+fun PieChartView() {
+    AndroidView(
+        modifier = Modifier.fillMaxSize(),
+        factory = { context ->
+            PieChart(context).apply {
+                slices = listOf(
+                    PieChart.Slice(0.2f, Color.BLUE),
+                    PieChart.Slice(0.4f, Color.MAGENTA),
+                    PieChart.Slice(0.3f, Color.YELLOW),
+                    PieChart.Slice(0.1f, Color.CYAN),
+                )
+            }
+        },
+        update = { view ->
+            // View's been inflated or state read in this block has been updated
+            // Add logic here if necessary
+        }
+    )
+}</code></pre>
 
 </body>
 </html>
