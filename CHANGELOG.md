@@ -1,5 +1,13 @@
 # History of notable changes introduced in each version
 
+## v0.6.1 (2021-08-22)
+#### Bug fixes
+  - Fix the bug with some properties change having no effect in the chart ([`eb17cf50`](https://github.com/mahozad/android-pie-chart/commit/eb17cf50))
+#### Other
+  - Migrate the showcase app to Jetpack Compose ([`66abcd04`](https://github.com/mahozad/android-pie-chart/commit/66abcd04))
+
+[All commits since version 0.6.0](https://github.com/mahozad/android-pie-chart/compare/v0.6.0...v0.6.1)
+
 ## v0.6.0 (2021-08-21)
 #### New features
   - Add resource version of properties ([`0885cf07`](https://github.com/mahozad/android-pie-chart/commit/0885cf07) and other commits)
