@@ -235,6 +235,7 @@ class PieChart @JvmOverloads constructor(
 
     var slices by Property(defaultSlices) {
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var startAngleResource by IntegerResource(::startAngle)
@@ -302,11 +303,13 @@ class PieChart @JvmOverloads constructor(
     var isLegendEnabledResource by BooleanResource(::isLegendEnabled)
     var isLegendEnabled by Property(DEFAULT_LEGEND_STATUS) {
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var legendsSizeResource by DimensionResource(::legendsSize)
     var legendsSize by Property(DEFAULT_LEGENDS_SIZE) {
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     /**
@@ -328,90 +331,107 @@ class PieChart @JvmOverloads constructor(
     var legendsTitleAlignment by Property(defaultLegendsTitleAlignment) {
         // TODO: No need to recalculate everything; provide a method in legend box for this
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var legendsAlignment by Property(defaultLegendsAlignment) {
         // TODO: No need to recalculate everything; provide a method in legend box for this
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var legendBoxAlignment by Property(defaultLegendBoxAlignment) {
         // TODO: No need to recalculate everything; provide a method in legend box for this
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var legendsWrapping by Property(defaultLegendsWrapping) {
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var legendsTitleResource by StringResource(::legendsTitle)
     var legendsTitle by Property(DEFAULT_LEGENDS_TITLE) {
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var legendPosition by Property(defaultLegendPosition) {
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var legendArrangement by Property(defaultLegendArrangement) {
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var legendsMarginResource by DimensionResource(::legendsMargin)
     var legendsMargin by Property(DEFAULT_LEGENDS_MARGIN) {
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var legendsColorResource by ColorResource(::legendsColor)
     var legendsColor by Property(DEFAULT_LEGENDS_COLOR) {
         // TODO: No need to recalculate everything; provide a method in legend box for this
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var legendBoxBackgroundColorResource by ColorResource(::legendBoxBackgroundColor)
     var legendBoxBackgroundColor by Property(DEFAULT_LEGEND_BOX_BACKGROUND_COLOR) {
         // TODO: No need to recalculate everything; provide a method in legend box for this
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     // FIXME: Changing these properties makes the legend box disappear
     var legendBoxMarginResource by DimensionResource(::legendBoxMargin)
     var legendBoxMargin by Property(DEFAULT_LEGEND_BOX_MARGIN) {
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var legendBoxPaddingResource by DimensionResource(::legendBoxPadding)
     var legendBoxPadding by Property(DEFAULT_LEGEND_BOX_PADDING) {
         // TODO: No need to recalculate everything; provide a method in legend box for this
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var legendBoxBorderResource by DimensionResource(::legendBoxBorder)
     var legendBoxBorder by Property(DEFAULT_LEGEND_BOX_BORDER) {
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var legendBoxBorderCornerRadiusResource by DimensionResource(::legendBoxBorderCornerRadius)
     var legendBoxBorderCornerRadius by Property(DEFAULT_LEGEND_BOX_BORDER_CORNER_RADIUS) {
         // TODO: No need to recalculate everything; provide a method in legend box for this
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var legendBoxBorderColorResource by ColorResource(::legendBoxBorderColor)
     var legendBoxBorderColor by Property(DEFAULT_LEGEND_BOX_BORDER_COLOR) {
         // TODO: No need to recalculate everything; provide a method in legend box for this
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var legendBoxBorderAlphaResource by FractionResource(::legendBoxBorderAlpha)
     var legendBoxBorderAlpha by Property(DEFAULT_LEGEND_BOX_BORDER_ALPHA) {
         // TODO: No need to recalculate everything; provide a method in legend box for this
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var legendBoxBorderType by Property(defaultLegendBoxBorderType) {
         // TODO: No need to recalculate everything; provide a method in legend box for this
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     /**
@@ -425,69 +445,82 @@ class PieChart @JvmOverloads constructor(
     var legendBoxBorderDashArray by Property(DEFAULT_LEGEND_BOX_BORDER_DASH_ARRAY) {
         // TODO: No need to recalculate everything; provide a method in legend box for this
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var legendIconsAlphaResource by FractionResource(::legendIconsAlpha)
     var legendIconsAlpha by Property(DEFAULT_LEGEND_ICONS_ALPHA, { it.coerceIn(0f, 1f) }) {
         // TODO: No need to recalculate everything; provide a method in legend box for this
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var legendsTitleColorResource by ColorResource(::legendsTitleColor)
     var legendsTitleColor by Property(DEFAULT_LEGENDS_TITLE_COLOR) {
         // TODO: No need to recalculate everything; provide a method in legend box for this
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var legendsTitleSizeResource by DimensionResource(::legendsTitleSize)
     var legendsTitleSize by Property(DEFAULT_LEGENDS_TITLE_SIZE) {
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var legendsPercentageSizeResource by DimensionResource(::legendsPercentageSize)
     var legendsPercentageSize by Property(DEFAULT_LEGENDS_PERCENTAGE_SIZE) {
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var isLegendsPercentageEnabledResource by BooleanResource(::isLegendsPercentageEnabled)
     var isLegendsPercentageEnabled by Property(DEFAULT_LEGENDS_PERCENTAGE_STATUS) {
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var isLegendBoxBorderEnabledResource by BooleanResource(::isLegendBoxBorderEnabled)
     var isLegendBoxBorderEnabled by Property(DEFAULT_LEGEND_BOX_BORDER_STATUS) {
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var legendsPercentageColorResource by ColorResource(::legendsPercentageColor)
     var legendsPercentageColor by Property(DEFAULT_LEGENDS_PERCENTAGE_COLOR) {
         // TODO: No need to recalculate everything; provide a method in legend box for this
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var legendsPercentageMarginResource by DimensionResource(::legendsPercentageMargin)
     var legendsPercentageMargin by Property(DEFAULT_LEGENDS_PERCENTAGE_MARGIN) {
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var legendTitleMarginResource by DimensionResource(::legendTitleMargin)
     var legendTitleMargin by Property(DEFAULT_LEGEND_TITLE_MARGIN) {
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var legendLinesMarginResource by DimensionResource(::legendLinesMargin)
     var legendLinesMargin by Property(DEFAULT_LEGEND_LINES_MARGIN) {
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var legendIconsHeightResource by DimensionResource(::legendIconsHeight)
     var legendIconsHeight by Property(DEFAULT_LEGEND_ICONS_HEIGHT) {
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var legendIconsMarginResource by DimensionResource(::legendIconsMargin)
     var legendIconsMargin by Property(DEFAULT_LEGEND_ICONS_MARGIN) {
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     /**
@@ -678,6 +711,7 @@ class PieChart @JvmOverloads constructor(
      */
     var legendsIcon: Icon by Property(defaultLegendsIcon) {
         onSizeChanged(width, height, width, height)
+        invalidate()
     }
 
     var isCenterLabelEnabledResource by BooleanResource(::isCenterLabelEnabled)

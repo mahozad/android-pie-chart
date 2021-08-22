@@ -81,7 +81,7 @@ class ScreenshotTest {
     @RegisterExtension
     val scenarioExtension = ActivityScenarioExtension.launch<ScreenshotTestActivity>()
     lateinit var scenario: ActivityScenario<ScreenshotTestActivity>
-    lateinit var device: UiDevice
+    lateinit var device: UiDevice // FIXME: This is not used (?)
     // See https://stackoverflow.com/a/46183452
     val shouldSave = InstrumentationRegistry.getArguments().getString("shouldSave", "false").toBoolean()
 
