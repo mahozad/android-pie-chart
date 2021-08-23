@@ -26,67 +26,72 @@ internal class Container(
     legendLinesMargin: Float = 0f
 ) : Box {
 
+    override val width by lazy { min(calculateWidth(), maxAvailableWidth) }
+    override val height by lazy { min(calculateHeight(), maxAvailableHeight) }
     private var internalChildren = children
     private var internalLayoutDirection = layoutDirection
+    private val bounds = RectF(0f, 0f, 0f, 0f)
+    private val borderBounds = RectF(0f, 0f, 0f, 0f)
+    private val paint = Paint(ANTI_ALIAS_FLAG)
 
     init {
-        if (wrapping == WRAP) {
-            if (children.size > 1 && layoutDirection == LayoutDirection.HORIZONTAL) {
+        if (wrapping == WRAP && children.size > 1) {
+            if (layoutDirection == LayoutDirection.HORIZONTAL) {
                 val width = calculateRowWidth(children, border, paddings)
-                if (width > maxAvailableWidth) {
+                if (width - maxAvailableWidth > 0.001) {
                     internalLayoutDirection = LayoutDirection.VERTICAL
                     val rows = mutableListOf<Box>()
                     val row = mutableListOf<Box>()
                     for (child in children) {
                         row.add(child)
                         val rowWidth = calculateRowWidth(row, border, paddings)
-                        if (rowWidth > maxAvailableWidth) {
+                        if (rowWidth - maxAvailableWidth > 0.001) {
                             if (row.size > 1) {
                                 val removed = row.removeLast()
-                                val container = Container(row.toList()/*clone*/, maxAvailableWidth, maxAvailableHeight, layoutDirection, childrenAlignment, wrapping, Margins(top = legendLinesMargin), paddings, background)
+                                val container = Container(row.toList()/*clone*/, maxAvailableWidth, maxAvailableHeight, layoutDirection, childrenAlignment, wrapping, Margins(bottom = legendLinesMargin))
                                 rows.add(container)
 
                                 row.clear()
                                 row.add(removed)
                             } else {
-                                val container = Container(row.toList()/*clone*/, maxAvailableWidth, maxAvailableHeight, layoutDirection, childrenAlignment, wrapping, Margins(top = legendLinesMargin), paddings, background)
+                                val container = Container(row.toList()/*clone*/, maxAvailableWidth, maxAvailableHeight, layoutDirection, childrenAlignment, wrapping, Margins(bottom= legendLinesMargin))
                                 rows.add(container)
                                 row.clear()
                             }
                         }
                     }
                     if (row.isNotEmpty()) {
-                        val container = Container(row, maxAvailableWidth, maxAvailableHeight, layoutDirection, childrenAlignment, wrapping, Margins(top = legendLinesMargin), paddings, background)
+                        val container = Container(row, maxAvailableWidth, maxAvailableHeight, layoutDirection, childrenAlignment, wrapping)
                         rows.add(container)
                     }
                     internalChildren = rows
                 }
-            } else if (children.size > 1 && layoutDirection == LayoutDirection.VERTICAL) {
+            } else if (layoutDirection == LayoutDirection.VERTICAL) {
                 val height = calculateColumnHeight(children, border, paddings)
-                if (height > maxAvailableHeight) {
+                if (height - maxAvailableHeight > 0.001) {
                     internalLayoutDirection = LayoutDirection.HORIZONTAL
                     val columns = mutableListOf<Box>()
                     val column = mutableListOf<Box>()
                     for (child in children) {
                         column.add(child)
                         val columnHeight = calculateColumnHeight(column, border, paddings)
-                        if (columnHeight > maxAvailableHeight) {
+                        if (columnHeight - maxAvailableHeight > 0.001) {
                             if (column.size > 1) {
                                 val removed = column.removeLast()
-                                val container = Container(column.toList()/*clone*/, maxAvailableWidth, maxAvailableHeight, layoutDirection, childrenAlignment, wrapping, Margins(top = legendLinesMargin), paddings, background)
+                                val container = Container(column.toList()/*clone*/, maxAvailableWidth, maxAvailableHeight, layoutDirection, childrenAlignment, wrapping, Margins(end = legendLinesMargin))
                                 columns.add(container)
 
                                 column.clear()
                                 column.add(removed)
                             } else {
-                                val container = Container(column.toList()/*clone*/, maxAvailableWidth, maxAvailableHeight, layoutDirection, childrenAlignment, wrapping, Margins(top = legendLinesMargin), paddings, background)
+                                val container = Container(column.toList()/*clone*/, maxAvailableWidth, maxAvailableHeight, layoutDirection, childrenAlignment, wrapping, Margins(end = legendLinesMargin))
                                 columns.add(container)
                                 column.clear()
                             }
                         }
                     }
                     if (column.isNotEmpty()) {
-                        val container = Container(column, maxAvailableWidth, maxAvailableHeight, layoutDirection, childrenAlignment, wrapping, Margins(top = legendLinesMargin), paddings, background)
+                        val container = Container(column, maxAvailableWidth, maxAvailableHeight, layoutDirection, childrenAlignment, wrapping)
                         columns.add(container)
                     }
                     internalChildren = columns
@@ -96,40 +101,37 @@ internal class Container(
         }
     }
 
-    override val width by lazy { min(calculateWidth(), maxAvailableWidth) }
-    override val height by lazy { min(calculateHeight(), maxAvailableHeight) }
-    private val bounds = RectF(0f, 0f, 0f, 0f)
-    private val borderBounds = RectF(0f, 0f, 0f, 0f)
-    private val paint = Paint(ANTI_ALIAS_FLAG)
-
-    private fun calculateWidth(): Float {
-        if (internalChildren.isEmpty()) {
-            return (border?.thickness ?: 0f) * 2 + (paddings?.horizontal ?: 0f)
-        }
-        return if (internalLayoutDirection == LayoutDirection.HORIZONTAL) {
-            internalChildren.sumOf { it.width.toDouble() }.toFloat() +
-                    (border?.thickness ?: 0f) * 2 +
-                    // Sum of all the collapsing margins between each pair of children
-                    internalChildren.zipWithNext { a, b -> max(a.margins?.end ?: 0f, b.margins?.start ?: 0f) }.sum() +
-                    max(paddings?.start ?: 0f, internalChildren.first().margins?.start ?: 0f) +
-                    max(paddings?.end ?: 0f, internalChildren.last().margins?.end ?: 0f)
+    private fun calculateWidth() =
+        if (internalLayoutDirection == LayoutDirection.HORIZONTAL) {
+            calculateRowWidth(internalChildren, border, paddings)
         } else {
-            internalChildren.maxOf {
+            internalChildren.maxOfOrNull {
                 it.width +
                         (border?.thickness ?: 0f) * 2 +
                         max(paddings?.start ?: 0f, it.margins?.start ?: 0f) +
                         max(paddings?.end ?: 0f, it.margins?.end ?: 0f)
-            }
+            } ?: ((border?.thickness ?: 0f) * 2 + (paddings?.horizontal ?: 0f))
         }
-    }
+
+    private fun calculateHeight() =
+        if (internalLayoutDirection == LayoutDirection.VERTICAL) {
+            calculateColumnHeight(internalChildren, border, paddings)
+        } else {
+            internalChildren.maxOfOrNull {
+                it.height +
+                        (border?.thickness ?: 0f) * 2 +
+                        max(paddings?.top ?: 0f, it.margins?.top ?: 0f) +
+                        max(paddings?.bottom ?: 0f, it.margins?.bottom ?: 0f)
+            } ?: ((border?.thickness ?: 0f) * 2 + (paddings?.vertical ?: 0f))
+        }
 
     private fun calculateRowWidth(row: List<Box>, border: Border?, paddings: Paddings?): Float {
         return row.sumOf { it.width.toDouble() }.toFloat() +
                 (border?.thickness ?: 0f) * 2 +
                 // Sum of all the collapsing margins between each pair of children
                 row.zipWithNext { a, b -> max(a.margins?.end ?: 0f, b.margins?.start ?: 0f) }.sum() +
-                max(paddings?.start ?: 0f, row.first().margins?.start ?: 0f) +
-                max(paddings?.end ?: 0f, row.last().margins?.end ?: 0f)
+                max(paddings?.start ?: 0f, row.firstOrNull()?.margins?.start ?: 0f) +
+                max(paddings?.end ?: 0f, row.lastOrNull()?.margins?.end ?: 0f)
     }
 
     private fun calculateColumnHeight(column: List<Box>, border: Border?, paddings: Paddings?): Float {
@@ -137,29 +139,8 @@ internal class Container(
                 (border?.thickness ?: 0f) * 2 +
                 // Sum of all the collapsing margins between each pair of children
                 column.zipWithNext { a, b -> max(a.margins?.bottom ?: 0f, b.margins?.top ?: 0f) }.sum() +
-                max(paddings?.top ?: 0f, column.first().margins?.top ?: 0f) +
-                max(paddings?.bottom ?: 0f, column.last().margins?.bottom ?: 0f)
-    }
-
-    private fun calculateHeight(): Float {
-        if (internalChildren.isEmpty()) {
-            return ((border?.thickness ?: 0f) * 2) + (paddings?.vertical ?: 0f)
-        }
-        return if (internalLayoutDirection == LayoutDirection.HORIZONTAL) {
-            internalChildren.maxOf {
-                it.height +
-                        (border?.thickness ?: 0f) * 2 +
-                        max(paddings?.top ?: 0f, it.margins?.top ?: 0f) +
-                        max(paddings?.bottom ?: 0f, it.margins?.bottom ?: 0f)
-            }
-        } else {
-            internalChildren.sumOf { it.height.toDouble() }.toFloat() +
-            (border?.thickness ?: 0f) * 2 +
-            // Sum of all the collapsing margins between each pair of children
-                    internalChildren.zipWithNext { a, b -> max(a.margins?.bottom ?: 0f, b.margins?.top ?: 0f) }.sum() +
-            max(paddings?.top ?: 0f, internalChildren.first().margins?.top ?: 0f) +
-            max(paddings?.bottom ?: 0f, internalChildren.last().margins?.bottom ?: 0f)
-        }
+                max(paddings?.top ?: 0f, column.firstOrNull()?.margins?.top ?: 0f) +
+                max(paddings?.bottom ?: 0f, column.lastOrNull()?.margins?.bottom ?: 0f)
     }
 
     override fun layOut(top: Float, start: Float, drawDirection: DrawDirection) {

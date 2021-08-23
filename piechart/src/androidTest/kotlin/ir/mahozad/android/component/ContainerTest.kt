@@ -2,13 +2,13 @@ package ir.mahozad.android.component
 
 import ir.mahozad.android.component.LayoutDirection.HORIZONTAL
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.util.FloatComparator
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments.arguments
 import org.junit.jupiter.params.provider.MethodSource
-import kotlin.math.absoluteValue
 
 /**
  * The *@TestInstance* annotation is used an an alternative to
@@ -36,12 +36,10 @@ class ContainerTest {
 
         val container = Container(children, maxAvailableWidth, maxAvailableHeight, layoutDirection, childrenAlignment, wrapping, border = border, paddings = paddings)
 
-        assertThat(container.width)
-            .usingComparator { f1, f2 -> if ((f1 - f2).absoluteValue < 0.001) 0 else 1 }
-            .isEqualTo(expectedWidth)
-        assertThat(container.height)
-            .usingComparator { f1, f2 -> if ((f1 - f2).absoluteValue < 0.001) 0 else 1 }
-            .isEqualTo(expectedHeight)
+        assertThat(Pair(container.width, container.height))
+            .usingRecursiveComparison()
+            .withComparatorForFields(FloatComparator(0.001f), Pair<Any, Any>::first.name, Pair<Any, Any>::second.name)
+            .isEqualTo(Pair(expectedWidth, expectedHeight))
     }
 
     @Suppress("unused")
@@ -106,8 +104,10 @@ class ContainerTest {
         arguments(listOf(MockBox(34f, 25f), MockBox(9f, 30f)), 100f, 84f, HORIZONTAL, Wrapping.WRAP, Paddings(10f, 8f, 10f, 15f), Border(14f), listOf(96f, 76f)),
         /* TWO child HORIZONTAL, WRAP, with ARBITRARY margin which is SMALLER than available width; ARBITRARY padding and ARBITRARY border */
         arguments(listOf(MockBox(34f, 25f, margins = Margins(top = 11f, bottom = 1f, start = 1f, end = 1f)), MockBox(9f, 25f, margins = Margins(2f))), 100f, 84f, HORIZONTAL, Wrapping.WRAP, Paddings(10f, 8f, 10f, 15f), Border(14f), listOf(98f, 72f)),
-        // /* TWO child HORIZONTAL, WRAP, with ARBITRARY margin which is LARGER than available width; ARBITRARY padding and ARBITRARY border */
-        // arguments(listOf(MockBox(34f, 25f, margins = Margins(top = 11f, bottom = 1f, start = 1f, end = 1f)), MockBox(12f, 24f, margins = Margins(2f))), 100f, 100f, HORIZONTAL, Wrapping.Wrap, Paddings(10f, 8f, 10f, 15f), Border(14f), listOf(87f, 96f)),
+        /* TWO child HORIZONTAL, WRAP, with ARBITRARY margin which is LARGER than available width; ARBITRARY padding and ARBITRARY border */
+        arguments(listOf(MockBox(34f, 25f, margins = Margins(top = 11f, bottom = 1f, start = 3f, end = 1f)), MockBox(12f, 24f, margins = Margins(2f))), 100f, 120f, HORIZONTAL, Wrapping.WRAP, Paddings(10f, 8f, 10f, 15f), Border(14f), listOf(91f, 111f)),
+        /* TWO child HORIZONTAL, WRAP, with ARBITRARY margin which is SAME SIZE as available width; ARBITRARY padding and ARBITRARY border */
+        arguments(listOf(MockBox(33f, 24f, margins = Margins(top = 11f, bottom = 1f, start = 1f, end = 1f)), MockBox(12f, 24f, margins = Margins(2f))), 100f, 120f, HORIZONTAL, Wrapping.WRAP, Paddings(10f, 8f, 10f, 15f), Border(14f), listOf(100f, 71f)),
         // /* THREE child HORIZONTAL, WRAP, with ARBITRARY margin which is SMALLER than available width; ARBITRARY padding and ARBITRARY border */
         // arguments(listOf(MockBox(4f, 25f, margins = Margins(1f)), MockBox(2f, 24f, margins = Margins(top = 9f, bottom = 10f, start = 9f, end = 9f)), MockBox(21f, 24f, margins = Margins(2f))), 100f, 84f, HORIZONTAL, Wrapping.Wrap, Paddings(10f, 8f, 10f, 15f), Border(14f), listOf(98f, 72f)),
         // /* THREE child HORIZONTAL, WRAP, with ARBITRARY margin which is LARGER than available width; ARBITRARY padding and ARBITRARY border */
