@@ -51,9 +51,12 @@ import org.junit.jupiter.api.extension.RegisterExtension
  *  The [Disabled] annotation works correctly.
  *
  *  NOTE: We can use the update-screenshots script in scripts/ directory to update
- *  the screenshots. We could also have implemented a custom [ScreenCaptureProcessor]
- *  in the [takeScreenshot] function to name the screenshots without the UUID; but then,
- *  we could not copy the new screenshots to the assets directory to compare with the old ones.
+ *   the screenshots. We could also have implemented a custom [ScreenCaptureProcessor]
+ *   in the [takeScreenshot] function to name the screenshots without the UUID; but then,
+ *   we could not copy the new screenshots to the assets directory to compare with the old ones.
+ *
+ * See [this article](https://medium.com/stepstone-tech/exploring-androidjunitrunner-filtering-options-df26d30b4f60)
+ * about Android instrumentation runner arguments.
  *
  *  We used a custom BuildConfig field to check if we are running on CI.
  *  See the build script -> android -> buildTypes -> debug.
