@@ -12,6 +12,8 @@
 [comment]: <> (![Lines of code]&#40;https://img.shields.io/tokei/lines/github/mahozad/android-pie-chart?color=%23efefef&#41;)
 [comment]: <> ([![Latest release]&#40;https://img.shields.io/github/v/release/mahozad/android-pie-chart&#41;]&#40;https://github.com/mahozad/android-pie-chart/releases/latest&#41;)
 
+[comment]: <> (!*†‡;)
+
 [![Release workflow](https://github.com/mahozad/android-pie-chart/actions/workflows/ci.yml/badge.svg)](https://github.com/mahozad/android-pie-chart/actions/workflows/test.yml)
 [![Codecov](https://codecov.io/gh/mahozad/android-pie-chart/branch/master/graph/badge.svg?token=ptnbmXaozw)](https://codecov.io/gh/mahozad/android-pie-chart)
 [![Latest Maven Central release](https://img.shields.io/maven-central/v/ir.mahozad.android/pie-chart?logo=android)](https://search.maven.org/artifact/ir.mahozad.android/pie-chart)
@@ -24,7 +26,7 @@
 
 ## ⚠️ The chart does not yet support animations and interactions.
 
-A Pie/Donut<sup id="ref-1">[1](#footnote-1)</sup>/Ring chart for Android, customizable to the most extent possible.
+A Pie/Donut<sup id="ref-1">[*](#footnote-1)</sup>/Ring chart for Android, customizable to the most extent possible.
 
 ### build.gradle[.kts]
 ```groovy
@@ -83,4 +85,4 @@ Any other contributions are welcome too.
 
 <br>
 
-<sub><b id="footnote-1">1.</b> Or *Doughnut* [↵](#ref-1)</sub>
+<sub><b id="footnote-1">*</b> Or *Doughnut* [↵](#ref-1)</sub>
