@@ -87,6 +87,7 @@ class ScreenshotTest {
     lateinit var device: UiDevice // FIXME: This is not used (?)
     // See https://stackoverflow.com/a/46183452
     val shouldSave = InstrumentationRegistry.getArguments().getString("shouldSave", "false").toBoolean()
+    val shouldAssert = InstrumentationRegistry.getArguments().getString("shouldAssert", "true").toBoolean()
 
     @BeforeEach fun setUp() {
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
@@ -604,7 +605,7 @@ class ScreenshotTest {
             activity.configureChart { chart ->
                 chart.configure()
                 val bitmap = takeScreenshot(chart, screenshotName, shouldSave)
-                if (!shouldSave) {
+                if (shouldAssert) {
                     val reference = loadReferenceScreenshot(screenshotName)
                     assertThat(bitmap.sameAs(reference))
                         .withFailMessage { "Screenshots are not the same: $screenshotName" }
