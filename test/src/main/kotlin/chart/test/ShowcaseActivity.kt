@@ -8,6 +8,9 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -70,14 +73,14 @@ class ShowcaseActivity : AppCompatActivity() {
     }
 
     @Composable
-    fun PieChartView(slicesState: List<PieChart.Slice>, onClick: () -> Unit) {
+    fun PieChartView(sliceItems: List<PieChart.Slice>, onClick: () -> Unit) {
         AndroidView(
             modifier = Modifier
                 .fillMaxSize()
                 .clickable { onClick() },
             factory = { context ->
                 PieChart(context).apply {
-                    slices = slicesState
+                    slices = sliceItems
                     labelType = PieChart.LabelType.INSIDE
                     legendsTitle = "Legends"
                     isLegendEnabled = true
@@ -88,7 +91,7 @@ class ShowcaseActivity : AppCompatActivity() {
             update = { chart ->
                 // View's been inflated or state read in this block has been updated
                 // Add logic here if necessary
-                chart.slices = slicesState
+                chart.slices = sliceItems
             }
         )
     }
