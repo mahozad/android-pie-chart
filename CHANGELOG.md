@@ -1,5 +1,14 @@
 # History of notable changes introduced in each version
 
+## v0.6.2 (2021-08-25)
+#### Bug fixes
+  - Fix the bug with single-slice pie not drawn ([`d79fdf15`](https://github.com/mahozad/android-pie-chart/commit/d79fdf15))
+  - Fix the problem with legend box border ([`3b9d942a`](https://github.com/mahozad/android-pie-chart/commit/3b9d942a))
+#### Other
+  - Update showcase app to show random charts on click ([`cbd2c212`](https://github.com/mahozad/android-pie-chart/commit/cbd2c212))
+
+[All commits since version 0.6.1](https://github.com/mahozad/android-pie-chart/compare/v0.6.1...v0.6.2)
+
 ## v0.6.1 (2021-08-22)
 #### Bug fixes
   - Fix the bug with some properties change having no effect in the chart ([`eb17cf50`](https://github.com/mahozad/android-pie-chart/commit/eb17cf50))
