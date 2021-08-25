@@ -144,7 +144,11 @@ internal class Pie(
             mainPaint.shader = gradient
             mainPaint.alpha = 255
 
-            val slicePath = makeSlice(center, pieEnclosingRect, currentAngle, slice.fraction, pieDrawDirection, slice.pointer ?: slicesPointer)
+            val slicePath = if (slice.fraction == 1f) {
+                Path().apply { addCircle(center.x, center.y, radius, Path.Direction.CW) }
+            } else {
+                makeSlice(center, pieEnclosingRect, currentAngle, slice.fraction, pieDrawDirection, slice.pointer ?: slicesPointer)
+            }
             canvas.withClip(clip) {
                 canvas.drawPath(slicePath, mainPaint)
             }
