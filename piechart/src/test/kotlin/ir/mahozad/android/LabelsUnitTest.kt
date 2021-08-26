@@ -6,7 +6,6 @@ import android.graphics.Typeface
 import ir.mahozad.android.PieChart.DrawDirection.CLOCKWISE
 import ir.mahozad.android.labels.*
 import org.assertj.core.api.Assertions.assertThat
-import org.assertj.core.util.FloatComparator
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -35,6 +34,7 @@ class LabelsUnitTest {
     @BeforeEach fun setUp() {
         // import org.mockito.Mockito.`when` as whenever
         // whenever(canvas.width).then { 123 }
+        // verify(canvas).drawText(any(String::class.java), any(Float::class.java), any(Float::class.java), any(Paint::class.java))
     }
 
     @DisplayName("Create the labels maker")
@@ -42,7 +42,8 @@ class LabelsUnitTest {
     @MethodSource("argumentProvider2")
     fun <T> factoryShouldCreateTheRightLabelsFromTheGivenLabelType(labelType: PieChart.LabelType, expectedType: Class<T>?) {
         val labels = createLabelsMaker(context, labelType, false)
-        labels?.let { assertThat(it::class.java).isEqualTo(expectedType) } ?: assertThat(expectedType).isNull()
+        labels?.let { assertThat(it::class.java).isEqualTo(expectedType) }
+            ?: assertThat(expectedType).isNull()
     }
 
     private fun argumentProvider2() = listOf(
@@ -62,7 +63,6 @@ class LabelsUnitTest {
         labels.layOut(availableBounds, slicesProperties, labelsProperties)
         labels.draw(canvas)
 
-        // verify(canvas).drawText(any(String::class.java), any(Float::class.java), any(Float::class.java), any(Paint::class.java))
         verifyNoInteractions(canvas)
         assertThat(canvas.saveCount).isEqualTo(0)
     }
@@ -81,10 +81,7 @@ class LabelsUnitTest {
 
         val bounds = labels.getRemainingBounds()
 
-        assertThat(bounds)
-            .usingRecursiveComparison()
-            .withComparatorForFields(FloatComparator(0.01f), Bounds::left.name, Bounds::top.name, Bounds::right.name, Bounds::bottom.name)
-            .isEqualTo(expectedRemainingBounds)
+        assertThat(bounds).isEqualToBounds(expectedRemainingBounds)
     }
 
     private fun argumentProvider() = listOf(
@@ -110,10 +107,7 @@ class LabelsUnitTest {
 
         val bounds = labels.getRemainingBounds()
 
-        assertThat(bounds)
-            .usingRecursiveComparison()
-            .withComparatorForFields(FloatComparator(0.01f), Bounds::left.name, Bounds::top.name, Bounds::right.name, Bounds::bottom.name)
-            .isEqualTo(expectedRemainingBounds)
+        assertThat(bounds).isEqualToBounds(expectedRemainingBounds)
     }
 
     private fun argumentProvider3() = listOf(
