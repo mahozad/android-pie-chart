@@ -18,9 +18,9 @@ import ir.mahozad.android.PieChart.Slice
 import ir.mahozad.android.component.Alignment
 import ir.mahozad.android.component.Wrapping
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Assumptions.assumeTrue
+import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable
 import org.junit.jupiter.api.condition.DisabledOnOs
 import org.junit.jupiter.api.extension.RegisterExtension
@@ -78,19 +78,25 @@ import org.junit.jupiter.api.extension.RegisterExtension
  *  With this solution, do not forget to change the build variant to "local" in the IDE.
  */
 @DisabledIfBuildConfigValue(named = "CI", matches = "true")
+@TestInstance(PER_CLASS)
 class ScreenshotTest {
 
     @JvmField
     @RegisterExtension
     val scenarioExtension = ActivityScenarioExtension.launch<ScreenshotTestActivity>()
     lateinit var scenario: ActivityScenario<ScreenshotTestActivity>
-    lateinit var device: UiDevice // FIXME: This is not used (?)
     // See https://stackoverflow.com/a/46183452
     val shouldSave = InstrumentationRegistry.getArguments().getString("shouldSave", "false").toBoolean()
     val shouldAssert = InstrumentationRegistry.getArguments().getString("shouldAssert", "true").toBoolean()
 
+    @BeforeAll fun checks() {
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
+        val locale = context.resources.configuration.locale
+        assumeTrue(locale.language == "en",
+                   "The numerals in the screenshots are Western Arabic")
+    }
+
     @BeforeEach fun setUp() {
-        device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
         scenario = scenarioExtension.scenario
         scenario.moveToState(Lifecycle.State.RESUMED)
     }
