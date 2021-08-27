@@ -42,27 +42,17 @@ internal class Container(
                     internalLayoutDirection = LayoutDirection.VERTICAL
                     val rows = mutableListOf<Box>()
                     val row = mutableListOf<Box>()
-                    for (child in children) {
+                    for ((i, child) in children.withIndex()) {
                         row.add(child)
-                        val rowWidth = calculateRowWidth(row, border, paddings)
-                        if (rowWidth - maxAvailableWidth > 0.001) {
-                            if (row.size > 1) {
-                                val removed = row.removeLast()
-                                val container = Container(row.toList()/*clone*/, maxAvailableWidth, maxAvailableHeight, layoutDirection, childrenAlignment, wrapping, Margins(bottom = legendLinesMargin))
-                                rows.add(container)
-
-                                row.clear()
-                                row.add(removed)
-                            } else {
-                                val container = Container(row.toList()/*clone*/, maxAvailableWidth, maxAvailableHeight, layoutDirection, childrenAlignment, wrapping, Margins(bottom= legendLinesMargin))
-                                rows.add(container)
-                                row.clear()
-                            }
+                        val next = children.getOrNull(i + 1)
+                        val rowWithNext = if (next != null) row + next else row
+                        val rowWidth = calculateRowWidth(rowWithNext, border, paddings)
+                        if (rowWidth - maxAvailableWidth > 0.001 || next == null) {
+                            val margins = if (next == null) null else Margins(bottom = legendLinesMargin)
+                            val container = Container(row.toList()/*clone*/, maxAvailableWidth, maxAvailableHeight, layoutDirection, childrenAlignment, wrapping, margins)
+                            rows.add(container)
+                            row.clear()
                         }
-                    }
-                    if (row.isNotEmpty()) {
-                        val container = Container(row, maxAvailableWidth, maxAvailableHeight, layoutDirection, childrenAlignment, wrapping)
-                        rows.add(container)
                     }
                     internalChildren = rows
                 }
@@ -72,32 +62,21 @@ internal class Container(
                     internalLayoutDirection = LayoutDirection.HORIZONTAL
                     val columns = mutableListOf<Box>()
                     val column = mutableListOf<Box>()
-                    for (child in children) {
+                    for ((i, child) in children.withIndex()) {
                         column.add(child)
-                        val columnHeight = calculateColumnHeight(column, border, paddings)
-                        if (columnHeight - maxAvailableHeight > 0.001) {
-                            if (column.size > 1) {
-                                val removed = column.removeLast()
-                                val container = Container(column.toList()/*clone*/, maxAvailableWidth, maxAvailableHeight, layoutDirection, childrenAlignment, wrapping, Margins(end = legendLinesMargin))
-                                columns.add(container)
-
-                                column.clear()
-                                column.add(removed)
-                            } else {
-                                val container = Container(column.toList()/*clone*/, maxAvailableWidth, maxAvailableHeight, layoutDirection, childrenAlignment, wrapping, Margins(end = legendLinesMargin))
-                                columns.add(container)
-                                column.clear()
-                            }
+                        val next = children.getOrNull(i + 1)
+                        val columnWithNext = if (next != null) column + next else column
+                        val columnHeight = calculateColumnHeight(columnWithNext, border, paddings)
+                        if (columnHeight - maxAvailableHeight > 0.001 || next == null) {
+                            val margins = if (next == null) null else Margins(end = legendLinesMargin)
+                            val container = Container(column.toList()/*clone*/, maxAvailableWidth, maxAvailableHeight, layoutDirection, childrenAlignment, wrapping, margins)
+                            columns.add(container)
+                            column.clear()
                         }
-                    }
-                    if (column.isNotEmpty()) {
-                        val container = Container(column, maxAvailableWidth, maxAvailableHeight, layoutDirection, childrenAlignment, wrapping)
-                        columns.add(container)
                     }
                     internalChildren = columns
                 }
             }
-
         }
     }
 
