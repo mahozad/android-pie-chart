@@ -24,8 +24,8 @@ internal fun createWrapper(
 
 internal sealed class Wrapper {
 
-    abstract val layoutDirection : LayoutDirection
     abstract val lineDirection: LayoutDirection
+    abstract val layoutDirection : LayoutDirection
     protected val wrapping = Wrapping.CLIP
     protected abstract val linesMargin: Float
     protected abstract val availableSize: Float
@@ -33,9 +33,9 @@ internal sealed class Wrapper {
     protected abstract val availableHeight: Float
     protected abstract val childrenAlignment: Alignment
 
-    abstract fun calculateLineSize(line: List<Box>) : Float
-    abstract fun calculateMargins(linesMargin: Float, nextChild: Box?): Margins?
-    fun isWrapNeeded(children: List<Box>) = (calculateLineSize(children) - availableSize) > 0.01
+    abstract fun measureLineSize(line: List<Box>) : Float
+    abstract fun makeMargins(nextChild: Box?): Margins?
+    fun isWrapNeeded(children: List<Box>) = measureLineSize(children) - availableSize > 0.01
 
     /**
      * Template method.
@@ -48,9 +48,9 @@ internal sealed class Wrapper {
             val nextChild = children.getOrNull(i + 1)
             val lineWithNext = if (nextChild != null) line + nextChild else line
             if (isWrapNeeded(lineWithNext) || nextChild == null) {
-                val margins = calculateMargins(linesMargin, nextChild)
+                val margins = makeMargins(nextChild)
                 val container = Container(
-                    line.toList() /* Clone */,
+                    line.toList(), // Clone the list
                     availableWidth,
                     availableHeight,
                     lineDirection,
@@ -74,10 +74,10 @@ internal sealed class Wrapper {
         override val linesMargin: Float,
     ) : Wrapper() {
         override val availableSize = availableWidth
-        override val layoutDirection = VERTICAL
         override val lineDirection = HORIZONTAL
-        override fun calculateLineSize(line: List<Box>) = calculateRowWidth(line, border, paddings)
-        override fun calculateMargins(linesMargin: Float, nextChild: Box?) = nextChild?.let { Margins(bottom = linesMargin) }
+        override val layoutDirection = VERTICAL
+        override fun measureLineSize(line: List<Box>) = calculateRowWidth(line, border, paddings)
+        override fun makeMargins(nextChild: Box?) = nextChild?.let { Margins(bottom = linesMargin) }
     }
 
     class VerticalWrapper(
@@ -89,10 +89,10 @@ internal sealed class Wrapper {
         override val linesMargin: Float
     ) : Wrapper() {
         override val availableSize = availableHeight
-        override val layoutDirection = HORIZONTAL
         override val lineDirection = VERTICAL
-        override fun calculateLineSize(line: List<Box>) = calculateColumnHeight(line, border, paddings)
-        override fun calculateMargins(linesMargin: Float, nextChild: Box?) = nextChild?.let { Margins(end = linesMargin) }
+        override val layoutDirection = HORIZONTAL
+        override fun measureLineSize(line: List<Box>) = calculateColumnHeight(line, border, paddings)
+        override fun makeMargins(nextChild: Box?) = nextChild?.let { Margins(end = linesMargin) }
     }
 }
 
