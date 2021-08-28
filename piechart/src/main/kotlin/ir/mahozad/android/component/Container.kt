@@ -8,6 +8,8 @@ import android.graphics.RectF
 import androidx.core.graphics.withClip
 import ir.mahozad.android.Coordinates
 import ir.mahozad.android.PieChart
+import ir.mahozad.android.component.LayoutDirection.HORIZONTAL
+import ir.mahozad.android.component.LayoutDirection.VERTICAL
 import ir.mahozad.android.component.Wrapping.WRAP
 import kotlin.math.max
 import kotlin.math.min
@@ -18,7 +20,7 @@ internal class Container(
     private val maxAvailableHeight: Float,
     layoutDirection: LayoutDirection,
     private val childrenAlignment: Alignment,
-    private val wrapping: Wrapping = WRAP,
+    wrapping: Wrapping = WRAP,
     override val margins: Margins? = null,
     override val paddings: Paddings? = null,
     private val background: Background? = null,
@@ -35,53 +37,25 @@ internal class Container(
     private val paint = Paint(ANTI_ALIAS_FLAG)
 
     init {
-        if (wrapping == WRAP && children.size > 1) {
-            if (layoutDirection == LayoutDirection.HORIZONTAL) {
-                val width = calculateRowWidth(children, border, paddings)
-                if (width - maxAvailableWidth > 0.001) {
-                    internalLayoutDirection = LayoutDirection.VERTICAL
-                    val rows = mutableListOf<Box>()
-                    val row = mutableListOf<Box>()
-                    for ((i, child) in children.withIndex()) {
-                        row.add(child)
-                        val next = children.getOrNull(i + 1)
-                        val rowWithNext = if (next != null) row + next else row
-                        val rowWidth = calculateRowWidth(rowWithNext, border, paddings)
-                        if (rowWidth - maxAvailableWidth > 0.001 || next == null) {
-                            val margins = if (next == null) null else Margins(bottom = legendLinesMargin)
-                            val container = Container(row.toList()/*clone*/, maxAvailableWidth, maxAvailableHeight, layoutDirection, childrenAlignment, wrapping, margins)
-                            rows.add(container)
-                            row.clear()
-                        }
-                    }
-                    internalChildren = rows
-                }
-            } else if (layoutDirection == LayoutDirection.VERTICAL) {
-                val height = calculateColumnHeight(children, border, paddings)
-                if (height - maxAvailableHeight > 0.001) {
-                    internalLayoutDirection = LayoutDirection.HORIZONTAL
-                    val columns = mutableListOf<Box>()
-                    val column = mutableListOf<Box>()
-                    for ((i, child) in children.withIndex()) {
-                        column.add(child)
-                        val next = children.getOrNull(i + 1)
-                        val columnWithNext = if (next != null) column + next else column
-                        val columnHeight = calculateColumnHeight(columnWithNext, border, paddings)
-                        if (columnHeight - maxAvailableHeight > 0.001 || next == null) {
-                            val margins = if (next == null) null else Margins(end = legendLinesMargin)
-                            val container = Container(column.toList()/*clone*/, maxAvailableWidth, maxAvailableHeight, layoutDirection, childrenAlignment, wrapping, margins)
-                            columns.add(container)
-                            column.clear()
-                        }
-                    }
-                    internalChildren = columns
-                }
+        if (wrapping == WRAP) {
+            val wrapper = createWrapper(
+                layoutDirection,
+                maxAvailableWidth,
+                maxAvailableHeight,
+                childrenAlignment,
+                legendLinesMargin,
+                paddings,
+                border
+            )
+            if (wrapper.isWrapNeeded(children)) {
+                internalChildren = wrapper.wrap(children)
+                internalLayoutDirection = wrapper.layoutDirection
             }
         }
     }
 
     private fun calculateWidth() =
-        if (internalLayoutDirection == LayoutDirection.HORIZONTAL) {
+        if (internalLayoutDirection == HORIZONTAL) {
             calculateRowWidth(internalChildren, border, paddings)
         } else {
             internalChildren.maxOfOrNull {
@@ -93,7 +67,7 @@ internal class Container(
         }
 
     private fun calculateHeight() =
-        if (internalLayoutDirection == LayoutDirection.VERTICAL) {
+        if (internalLayoutDirection == VERTICAL) {
             calculateColumnHeight(internalChildren, border, paddings)
         } else {
             internalChildren.maxOfOrNull {
@@ -103,24 +77,6 @@ internal class Container(
                         max(paddings?.bottom ?: 0f, it.margins?.bottom ?: 0f)
             } ?: ((border?.thickness ?: 0f) * 2 + (paddings?.vertical ?: 0f))
         }
-
-    private fun calculateRowWidth(row: List<Box>, border: Border?, paddings: Paddings?): Float {
-        return row.sumOf { it.width.toDouble() }.toFloat() +
-                (border?.thickness ?: 0f) * 2 +
-                // Sum of all the collapsing margins between each pair of children
-                row.zipWithNext { a, b -> max(a.margins?.end ?: 0f, b.margins?.start ?: 0f) }.sum() +
-                max(paddings?.start ?: 0f, row.firstOrNull()?.margins?.start ?: 0f) +
-                max(paddings?.end ?: 0f, row.lastOrNull()?.margins?.end ?: 0f)
-    }
-
-    private fun calculateColumnHeight(column: List<Box>, border: Border?, paddings: Paddings?): Float {
-        return column.sumOf { it.height.toDouble() }.toFloat() +
-                (border?.thickness ?: 0f) * 2 +
-                // Sum of all the collapsing margins between each pair of children
-                column.zipWithNext { a, b -> max(a.margins?.bottom ?: 0f, b.margins?.top ?: 0f) }.sum() +
-                max(paddings?.top ?: 0f, column.firstOrNull()?.margins?.top ?: 0f) +
-                max(paddings?.bottom ?: 0f, column.lastOrNull()?.margins?.bottom ?: 0f)
-    }
 
     override fun layOut(top: Float, start: Float, drawDirection: DrawDirection) {
         bounds.set(start, top, start + width, top + height) // Used to draw the background
