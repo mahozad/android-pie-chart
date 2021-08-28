@@ -29,11 +29,11 @@ internal class OutsideLabels(private val context: Context, var shouldCenterPie: 
         return remainingBounds
     }
 
-    override fun draw(canvas: Canvas) {
+    override fun draw(canvas: Canvas, animationFraction: Float) {
         val pieRadius = min(remainingBounds.width, remainingBounds.height) / 2f
         val pieCenter = Coordinates(remainingBounds.width / 2 + remainingBounds.left, remainingBounds.height / 2 + remainingBounds.top)
         for ((i, label) in labelsProperties.withIndex()) {
-            updatePaintForLabel(paint, label.size, label.color, label.font)
+            updatePaintForLabel(paint, label.size, label.color, label.font, animationFraction)
             val middleAngle = calculateMiddleAngle(slicesProperties[i].startAngle, slicesProperties[i].fraction, slicesProperties[i].drawDirection)
             val radius = slicesProperties[i].radius ?: pieRadius
             val center = slicesProperties[i].center ?: pieCenter
@@ -41,6 +41,7 @@ internal class OutsideLabels(private val context: Context, var shouldCenterPie: 
             label.icon?.let { iconId ->
                 labelIcon = context.resources.getDrawable(iconId, null)
                 label.iconTint?.let { tint -> labelIcon?.setTint(tint) }
+                labelIcon?.alpha = (animationFraction * 255).toInt()
             }
             val outsideLabelMargin = label.marginFromPie
             val iconPlacement = label.iconPlacement

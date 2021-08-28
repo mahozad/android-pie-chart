@@ -18,7 +18,7 @@ internal interface Labels {
      * Following command and query principle, [layOut] is command and this is query.
      */
     fun getRemainingBounds(): Bounds
-    fun draw(canvas: Canvas)
+    fun draw(canvas: Canvas, animationFraction: Float)
 }
 
 internal fun createLabelsMaker(context: Context, labelType: PieChart.LabelType, shouldCenterPie: Boolean) = when (labelType) {

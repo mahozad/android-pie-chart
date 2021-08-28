@@ -61,7 +61,7 @@ class LabelsUnitTest {
         val labels = InsideLabels(context)
 
         labels.layOut(availableBounds, slicesProperties, labelsProperties)
-        labels.draw(canvas)
+        labels.draw(canvas, 1f)
 
         verifyNoInteractions(canvas)
         assertThat(canvas.saveCount).isEqualTo(0)

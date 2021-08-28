@@ -156,7 +156,7 @@ internal open class Pie(
             currentAngle = calculateEndAngle(currentAngle, slice.fraction, pieDrawDirection)
         }
 
-        labels?.draw(canvas)
+        labels?.draw(canvas, animationFraction)
 
         canvas.withClip(clip) {
             mainPaint.shader = null
@@ -342,7 +342,7 @@ internal class AnimatedPie(
             currentAngle = calculateEndAngle(currentAngle, slice.fraction * animationFraction, pieDrawDirection)
         }
 
-        labels?.draw(canvas)
+        labels?.draw(canvas, animationFraction)
 
         canvas.withClip(clip) {
             mainPaint.shader = null
@@ -422,7 +422,7 @@ internal class AnimatedPie2(
             currentAngle = calculateEndAngle(currentAngle, slice.fraction, pieDrawDirection)
         }
 
-        labels?.draw(canvas)
+        labels?.draw(canvas, animationFraction)
 
         canvas.withClip(clip) {
             mainPaint.shader = null
