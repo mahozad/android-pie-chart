@@ -11,7 +11,7 @@ import ir.mahozad.android.labels.SliceProperties
 import ir.mahozad.android.labels.createLabelsMaker
 
 internal open class Pie(
-    open val context: Context,
+    val context: Context,
     override val width: Float,
     override val height: Float,
     override val margins: Margins?,
