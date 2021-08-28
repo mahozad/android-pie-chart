@@ -2,6 +2,8 @@ package ir.mahozad.android.component
 
 import ir.mahozad.android.component.LayoutDirection.HORIZONTAL
 import ir.mahozad.android.component.LayoutDirection.VERTICAL
+import ir.mahozad.android.component.Wrapper.HorizontalWrapper
+import ir.mahozad.android.component.Wrapper.VerticalWrapper
 import kotlin.math.max
 
 /**
@@ -9,32 +11,15 @@ import kotlin.math.max
  */
 internal fun createWrapper(
     layoutDirection: LayoutDirection,
-    maxAvailableWidth: Float,
-    maxAvailableHeight: Float,
+    availableWidth: Float,
+    availableHeight: Float,
     alignment: Alignment,
-    legendLinesMargin: Float,
+    linesMargin: Float,
     paddings: Paddings?,
     border: Border?
-): Wrapper {
-    return if (layoutDirection == HORIZONTAL) {
-        Wrapper.HorizontalWrapper(
-            maxAvailableWidth,
-            maxAvailableHeight,
-            alignment,
-            border,
-            paddings,
-            legendLinesMargin
-        )
-    } else {
-        Wrapper.VerticalWrapper(
-            maxAvailableWidth,
-            maxAvailableHeight,
-            alignment,
-            border,
-            paddings,
-            legendLinesMargin
-        )
-    }
+) = when (layoutDirection) {
+    VERTICAL -> VerticalWrapper(availableWidth, availableHeight, alignment, border, paddings, linesMargin)
+    else -> HorizontalWrapper(availableWidth, availableHeight, alignment, border, paddings, linesMargin)
 }
 
 internal sealed class Wrapper {
@@ -42,16 +27,15 @@ internal sealed class Wrapper {
     abstract val layoutDirection : LayoutDirection
     abstract val lineDirection: LayoutDirection
     protected val wrapping = Wrapping.CLIP
-    protected abstract val maxAvailableWidth: Float
-    protected abstract val maxAvailableHeight: Float
+    protected abstract val linesMargin: Float
+    protected abstract val availableSize: Float
+    protected abstract val availableWidth: Float
+    protected abstract val availableHeight: Float
     protected abstract val childrenAlignment: Alignment
-    protected abstract val legendLinesMargin: Float
-    protected abstract val maxAvailableSize: Float
 
     abstract fun calculateLineSize(line: List<Box>) : Float
     abstract fun calculateMargins(linesMargin: Float, nextChild: Box?): Margins?
-
-    fun isWrapNeeded(children: List<Box>) = (calculateLineSize(children) - maxAvailableSize) > 0.01
+    fun isWrapNeeded(children: List<Box>) = (calculateLineSize(children) - availableSize) > 0.01
 
     /**
      * Template method.
@@ -64,11 +48,11 @@ internal sealed class Wrapper {
             val nextChild = children.getOrNull(i + 1)
             val lineWithNext = if (nextChild != null) line + nextChild else line
             if (isWrapNeeded(lineWithNext) || nextChild == null) {
-                val margins = calculateMargins(legendLinesMargin, nextChild)
+                val margins = calculateMargins(linesMargin, nextChild)
                 val container = Container(
-                    line.toList()/*clone*/,
-                    maxAvailableWidth,
-                    maxAvailableHeight,
+                    line.toList() /* Clone */,
+                    availableWidth,
+                    availableHeight,
                     lineDirection,
                     childrenAlignment,
                     wrapping,
@@ -82,41 +66,33 @@ internal sealed class Wrapper {
     }
 
     class HorizontalWrapper(
-        override val maxAvailableWidth: Float,
-        override val maxAvailableHeight: Float,
+        override val availableWidth: Float,
+        override val availableHeight: Float,
         override val childrenAlignment: Alignment,
         private val border: Border?,
         private val paddings: Paddings?,
-        override val legendLinesMargin: Float,
+        override val linesMargin: Float,
     ) : Wrapper() {
-
-        override val maxAvailableSize = maxAvailableWidth
+        override val availableSize = availableWidth
         override val layoutDirection = VERTICAL
         override val lineDirection = HORIZONTAL
-
         override fun calculateLineSize(line: List<Box>) = calculateRowWidth(line, border, paddings)
-
-        override fun calculateMargins(linesMargin: Float, nextChild: Box?) =
-            if (nextChild == null) null else Margins(bottom = linesMargin)
+        override fun calculateMargins(linesMargin: Float, nextChild: Box?) = nextChild?.let { Margins(bottom = linesMargin) }
     }
 
     class VerticalWrapper(
-        override val maxAvailableWidth: Float,
-        override val maxAvailableHeight: Float,
+        override val availableWidth: Float,
+        override val availableHeight: Float,
         override val childrenAlignment: Alignment,
         private val border: Border?,
         private val paddings: Paddings?,
-        override val legendLinesMargin: Float
+        override val linesMargin: Float
     ) : Wrapper() {
-
-        override val maxAvailableSize = maxAvailableHeight
+        override val availableSize = availableHeight
         override val layoutDirection = HORIZONTAL
         override val lineDirection = VERTICAL
-
         override fun calculateLineSize(line: List<Box>) = calculateColumnHeight(line, border, paddings)
-
-        override fun calculateMargins(linesMargin: Float, nextChild: Box?) =
-            if (nextChild == null) null else Margins(end = linesMargin)
+        override fun calculateMargins(linesMargin: Float, nextChild: Box?) = nextChild?.let { Margins(end = linesMargin) }
     }
 }
 
