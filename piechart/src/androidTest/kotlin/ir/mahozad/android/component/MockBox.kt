@@ -9,5 +9,5 @@ internal class MockBox(
     override val paddings: Paddings? = null
 ) : Box {
     override fun layOut(top: Float, start: Float, drawDirection: DrawDirection) { /* Not needed */ }
-    override fun draw(canvas: Canvas) { /* Not needed */ }
+    override fun draw(canvas: Canvas, animationFraction: Float) { /* Not needed */ }
 }

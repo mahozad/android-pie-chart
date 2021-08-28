@@ -79,6 +79,7 @@ class ShowcaseActivity : AppCompatActivity() {
                     labelType = PieChart.LabelType.INSIDE
                     legendsTitle = "Legends"
                     isLegendEnabled = true
+                    isAnimationEnabled = true
                     isLegendsPercentageEnabled = true
                     legendPosition = PieChart.LegendPosition.BOTTOM
                 }

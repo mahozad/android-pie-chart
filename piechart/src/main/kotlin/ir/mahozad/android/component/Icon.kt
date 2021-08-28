@@ -27,7 +27,7 @@ internal class Icon(
         tint?.let { drawable?.setTint(it) }
     }
 
-    override fun draw(canvas: Canvas) {
+    override fun draw(canvas: Canvas, animationFraction: Float) {
         drawable?.alpha = drawableAlpha
         drawable?.draw(canvas)
     }

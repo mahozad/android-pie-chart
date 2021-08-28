@@ -32,7 +32,7 @@ internal interface Box {
     val paddings: Paddings?
     // Start is left or right corner depending on the draw direction
     fun layOut(top: Float, start: Float, drawDirection: DrawDirection)
-    fun draw(canvas: Canvas)
+    fun draw(canvas: Canvas, animationFraction: Float = 1f)
 }
 
 enum class Alignment { START, CENTER, END }
@@ -87,5 +87,5 @@ internal class EmptyBox(
     override val paddings: Paddings? = null
 ) : Box {
     override fun layOut(top: Float, start: Float, drawDirection: DrawDirection) = Unit
-    override fun draw(canvas: Canvas) = Unit
+    override fun draw(canvas: Canvas, animationFraction: Float) = Unit
 }

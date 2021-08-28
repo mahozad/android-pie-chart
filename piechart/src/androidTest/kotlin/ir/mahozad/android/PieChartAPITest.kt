@@ -53,6 +53,15 @@ class PieChartAPITest {
         assertThat(pieChart.slices).isNotEmpty()
     }
 
+    @Test fun changeAnimationEnabledResourceShouldChangeAnimationEnabledAsWell() {
+        val resourceId1 = ir.mahozad.android.test.R.bool.testEnabled
+        val resourceId2 = ir.mahozad.android.test.R.bool.testDisabled
+        pieChart.isAnimationEnabledResource = resourceId1
+        assertThat(pieChart.isAnimationEnabled).isEqualTo(true)
+        pieChart.isAnimationEnabledResource = resourceId2
+        assertThat(pieChart.isAnimationEnabled).isEqualTo(false)
+    }
+
     @Test fun changeChartStartAngleResourceShouldChangeStartAngleAsWell() {
         val resourceId = ir.mahozad.android.test.R.integer.testStartAngle
         val expected = resources.getInteger(resourceId)

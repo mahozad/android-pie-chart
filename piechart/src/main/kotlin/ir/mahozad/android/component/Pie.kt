@@ -10,14 +10,14 @@ import ir.mahozad.android.labels.LabelProperties
 import ir.mahozad.android.labels.SliceProperties
 import ir.mahozad.android.labels.createLabelsMaker
 
-internal class Pie(
-    val context: Context,
+internal open class Pie(
+    open val context: Context,
     override val width: Float,
     override val height: Float,
     override val margins: Margins?,
     override val paddings: Paddings?,
-    private var startAngle: Int,
-    private val slices: List<PieChart.Slice>,
+    protected var startAngle: Int,
+    protected var slices: List<PieChart.Slice>,
     private var outsideLabelsMargin: Float,
     private var labelType: PieChart.LabelType,
     private var labelsSize: Float,
@@ -29,26 +29,26 @@ internal class Pie(
     private var labelIconsTint: Int?,
     private var labelsOffset: Float,
     private var shouldCenterPie: Boolean,
-    val pieDrawDirection: PieChart.DrawDirection,
+    open val pieDrawDirection: PieChart.DrawDirection,
     private var overlayRatio: Float,
-    private var overlayAlpha: Float,
-    private var gradientType: PieChart.GradientType,
+    protected var overlayAlpha: Float,
+    protected var gradientType: PieChart.GradientType,
     private var holeRatio: Float,
-    private var slicesPointer: PieChart.SlicePointer?,
-    private var gap:Float,
+    protected var slicesPointer: PieChart.SlicePointer?,
+    private var gap: Float,
     private var gapPosition: PieChart.GapPosition
 ) : Box {
 
     private val pie = Path()
-    private val clip = Path()
+    protected val clip = Path()
     private var gaps = Path()
     private var hole = Path()
-    private val overlay = Path()
-    private val mainPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
+    protected val overlay = Path()
+    protected val mainPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
     var radius = 0f
     var center = Coordinates(0f, 0f)
-    private val pieEnclosingRect = RectF()
-    private var labels = createLabelsMaker(context, labelType, shouldCenterPie)
+    protected val pieEnclosingRect = RectF()
+    protected var labels = createLabelsMaker(context, labelType, shouldCenterPie)
     private var top = 0f
     private var start = 0f
     private var drawDirection = DrawDirection.LTR
@@ -118,7 +118,7 @@ internal class Pie(
         return gaps
     }
 
-    override fun draw(canvas: Canvas) {
+    override fun draw(canvas: Canvas, animationFraction: Float) {
         var currentAngle = startAngle.toFloat()
         for (slice in slices) {
 
@@ -180,7 +180,7 @@ internal class Pie(
         return Coordinates(centerX, centerY)
     }
 
-    fun setStartAngle(newStartAngle: Int) {
+    @JvmName("setStartAngle1") fun setStartAngle(newStartAngle: Int) {
         startAngle = newStartAngle
         layOut(top, start, drawDirection)
     }
@@ -196,7 +196,7 @@ internal class Pie(
         makeOverlay()
     }
 
-    fun setOverlayAlpha(newOverlayAlpha: Float) {
+    @JvmName("setOverlayAlpha1") fun setOverlayAlpha(newOverlayAlpha: Float) {
         overlayAlpha = newOverlayAlpha
     }
 
@@ -251,7 +251,7 @@ internal class Pie(
         layOut(top, start, drawDirection)
     }
 
-    fun setSlicesPointer(newSlicesPointer: PieChart.SlicePointer?) {
+    @JvmName("setSlicesPointer1") fun setSlicesPointer(newSlicesPointer: PieChart.SlicePointer?) {
         slicesPointer = newSlicesPointer
     }
 
@@ -270,8 +270,165 @@ internal class Pie(
         layOut(top, start, drawDirection)
     }
 
-    fun setGradientType(newGradientType: PieChart.GradientType) {
+    @JvmName("setGradientType1") fun setGradientType(newGradientType: PieChart.GradientType) {
         gradientType = newGradientType
         layOut(top, start, drawDirection)
+    }
+}
+
+internal class AnimatedPie(
+    context: Context,
+    width: Float,
+    height: Float,
+    margins: Margins?,
+    paddings: Paddings?,
+    startAngle: Int,
+    slices: List<PieChart.Slice>,
+    outsideLabelsMargin: Float,
+    labelType: PieChart.LabelType,
+    labelsSize: Float,
+    labelsColor: Int,
+    labelsFont: Typeface,
+    labelIconsHeight: Float,
+    labelIconsMargin: Float,
+    labelIconsPlacement: PieChart.IconPlacement,
+    labelIconsTint: Int?,
+    labelsOffset: Float,
+    shouldCenterPie: Boolean,
+    pieDrawDirection: PieChart.DrawDirection,
+    overlayRatio: Float,
+    overlayAlpha: Float,
+    gradientType: PieChart.GradientType,
+    holeRatio: Float,
+    slicesPointer: PieChart.SlicePointer?,
+    gap: Float,
+    gapPosition: PieChart.GapPosition
+) : Pie(context, width, height, margins, paddings, startAngle, slices, outsideLabelsMargin, labelType, labelsSize, labelsColor, labelsFont, labelIconsHeight, labelIconsMargin, labelIconsPlacement, labelIconsTint, labelsOffset, shouldCenterPie, pieDrawDirection, overlayRatio, overlayAlpha, gradientType, holeRatio, slicesPointer, gap, gapPosition) {
+    override fun draw(canvas: Canvas, animationFraction: Float) {
+        var currentAngle = startAngle.toFloat()
+        for (slice in slices) {
+
+            val gradient = if (gradientType == PieChart.GradientType.RADIAL) {
+                RadialGradient(center.x, center.y, radius, slice.color, slice.colorEnd, Shader.TileMode.MIRROR)
+            } else {
+                val colors = slices.map {  listOf(it.color, it.colorEnd) }.flatten().toIntArray()
+                val positions = slices.map { it.fraction }
+                    .scan(listOf(0f)) { acc, value -> listOf(acc.first() + value, acc.first() + value) }
+                    .flatten()
+                    .dropLast(1)
+                    .toFloatArray()
+                val sweepGradient = SweepGradient(center.x, center.y, colors, positions)
+                // Adjust the start angle
+                val sweepGradientDefaultStartAngle = 0f
+                val rotate = startAngle - sweepGradientDefaultStartAngle
+                val gradientMatrix = Matrix()
+                gradientMatrix.preRotate(rotate, center.x, center.y)
+                sweepGradient.setLocalMatrix(gradientMatrix)
+                sweepGradient
+            }
+
+            mainPaint.shader = gradient
+            mainPaint.alpha = 255
+
+            val slicePath = if (slice.fraction == 1f) {
+                Path().apply { addCircle(center.x, center.y, radius, Path.Direction.CW) }
+            } else {
+                makeSlice(center, pieEnclosingRect, currentAngle, slice.fraction * animationFraction, pieDrawDirection, slice.pointer ?: slicesPointer)
+            }
+            canvas.withClip(clip) {
+                canvas.drawPath(slicePath, mainPaint)
+            }
+
+            currentAngle = calculateEndAngle(currentAngle, slice.fraction * animationFraction, pieDrawDirection)
+        }
+
+        labels?.draw(canvas)
+
+        canvas.withClip(clip) {
+            mainPaint.shader = null
+            mainPaint.color = ContextCompat.getColor(context, android.R.color.black) // or better Color.BLACK
+            mainPaint.alpha = (overlayAlpha * 255).toInt()
+            canvas.drawPath(overlay, mainPaint)
+        }
+    }
+}
+
+/**
+ * Another animation variation for the pie.
+ */
+internal class AnimatedPie2(
+    context: Context,
+    width: Float,
+    height: Float,
+    margins: Margins?,
+    paddings: Paddings?,
+    startAngle: Int,
+    slices: List<PieChart.Slice>,
+    outsideLabelsMargin: Float,
+    labelType: PieChart.LabelType,
+    labelsSize: Float,
+    labelsColor: Int,
+    labelsFont: Typeface,
+    labelIconsHeight: Float,
+    labelIconsMargin: Float,
+    labelIconsPlacement: PieChart.IconPlacement,
+    labelIconsTint: Int?,
+    labelsOffset: Float,
+    shouldCenterPie: Boolean,
+    pieDrawDirection: PieChart.DrawDirection,
+    overlayRatio: Float,
+    overlayAlpha: Float,
+    gradientType: PieChart.GradientType,
+    holeRatio: Float,
+    slicesPointer: PieChart.SlicePointer?,
+    gap: Float,
+    gapPosition: PieChart.GapPosition
+) : Pie(context, width, height, margins, paddings, startAngle, slices, outsideLabelsMargin, labelType, labelsSize, labelsColor, labelsFont, labelIconsHeight, labelIconsMargin, labelIconsPlacement, labelIconsTint, labelsOffset, shouldCenterPie, pieDrawDirection, overlayRatio, overlayAlpha, gradientType, holeRatio, slicesPointer, gap, gapPosition) {
+    override fun draw(canvas: Canvas, animationFraction: Float) {
+        var currentAngle = startAngle.toFloat()
+        for (slice in slices) {
+
+            val gradient = if (gradientType == PieChart.GradientType.RADIAL) {
+                RadialGradient(center.x, center.y, radius, slice.color, slice.colorEnd, Shader.TileMode.MIRROR)
+            } else {
+                val colors = slices.map {  listOf(it.color, it.colorEnd) }.flatten().toIntArray()
+                val positions = slices.map { it.fraction }
+                    .scan(listOf(0f)) { acc, value -> listOf(acc.first() + value, acc.first() + value) }
+                    .flatten()
+                    .dropLast(1)
+                    .toFloatArray()
+                val sweepGradient = SweepGradient(center.x, center.y, colors, positions)
+                // Adjust the start angle
+                val sweepGradientDefaultStartAngle = 0f
+                val rotate = startAngle - sweepGradientDefaultStartAngle
+                val gradientMatrix = Matrix()
+                gradientMatrix.preRotate(rotate, center.x, center.y)
+                sweepGradient.setLocalMatrix(gradientMatrix)
+                sweepGradient
+            }
+
+            mainPaint.shader = gradient
+            mainPaint.alpha = 255
+
+            val slicePath = if (slice.fraction == 1f) {
+                Path().apply { addCircle(center.x, center.y, radius, Path.Direction.CW) }
+            } else {
+                makeSlice(center, pieEnclosingRect, currentAngle, slice.fraction * animationFraction, pieDrawDirection, slice.pointer ?: slicesPointer)
+            }
+            canvas.withClip(clip) {
+                canvas.drawPath(slicePath, mainPaint)
+            }
+
+            currentAngle = calculateEndAngle(currentAngle, slice.fraction, pieDrawDirection)
+        }
+
+        labels?.draw(canvas)
+
+        canvas.withClip(clip) {
+            mainPaint.shader = null
+            mainPaint.color = ContextCompat.getColor(context, android.R.color.black) // or better Color.BLACK
+            mainPaint.alpha = (overlayAlpha * 255).toInt()
+            canvas.drawPath(overlay, mainPaint)
+        }
     }
 }

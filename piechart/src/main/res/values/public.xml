@@ -37,6 +37,7 @@
   <public name="legendBoxAlignment" format="enum"/>
   <public name="legendsPercentageStatus" format="enum"/>
   <public name="legendBoxBorderStatus" format="enum"/>
+  <public name="animationStatus" format="enum"/>
   <public name="legendsPercentageMargin" format="dimension"/>
   <public name="legendsTitleSize" format="dimension"/>
   <public name="legendsMargin" format="dimension"/>

@@ -1,5 +1,6 @@
 package ir.mahozad.android
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -9,6 +10,7 @@ import android.graphics.Typeface
 import android.graphics.Typeface.DEFAULT
 import android.util.AttributeSet
 import android.view.View
+import android.view.animation.AccelerateInterpolator
 import androidx.annotation.*
 import androidx.annotation.IntRange
 import androidx.core.content.withStyledAttributes
@@ -58,6 +60,7 @@ val DEFAULT_LEGEND_ICONS_MARGIN = 8.dp
 const val DEFAULT_LEGEND_ICONS_ALPHA = 1f
 const val DEFAULT_LEGEND_BOX_BORDER_STATUS = DISABLED
 const val DEFAULT_LEGENDS_PERCENTAGE_STATUS = DISABLED
+const val DEFAULT_ANIMATION_STATUS = DISABLED
 val DEFAULT_LEGENDS_PERCENTAGE_MARGIN = 8.dp
 val DEFAULT_LEGENDS_PERCENTAGE_SIZE = DEFAULT_LEGENDS_SIZE
 val DEFAULT_LEGENDS_MARGIN = 4.dp
@@ -233,10 +236,22 @@ class PieChart @JvmOverloads constructor(
         NO_ICON(R.drawable.ic_empty)
     }
 
+    private val animator = ValueAnimator.ofInt(0, 1)
+
     var slices by Property(defaultSlices) {
+        if (isAnimationEnabled) {
+            // chart.animator.end()
+            animator.duration = 500
+            animator.interpolator = AccelerateInterpolator()
+            animator.addUpdateListener { invalidate() }
+            animator.start()
+        }
         onSizeChanged(width, height, width, height)
         invalidate()
     }
+
+    var isAnimationEnabledResource by BooleanResource(::isAnimationEnabled)
+    var isAnimationEnabled by Property(DEFAULT_ANIMATION_STATUS)
 
     var startAngleResource by IntegerResource(::startAngle)
     /**
@@ -844,6 +859,7 @@ class PieChart @JvmOverloads constructor(
             val slicesPointerWidth = getDimension(R.styleable.PieChart_slicesPointerWidth, -1f).px
             slicesPointer = if (slicesPointerLength.px <= 0 || slicesPointerWidth.px <= 0) defaultSlicesPointer else SlicePointer(slicesPointerLength, slicesPointerWidth, 0)
             isLegendsPercentageEnabled = getInt(R.styleable.PieChart_legendsPercentageStatus, 0) == 1
+            isAnimationEnabled = getInt(R.styleable.PieChart_animationStatus, 0) == 1
             isLegendBoxBorderEnabled = getInt(R.styleable.PieChart_legendBoxBorderStatus, 0) == 1
             legendsTitleAlignment = getEnum(R.styleable.PieChart_legendsTitleAlignment, defaultLegendsTitleAlignment)
             legendsAlignment = getEnum(R.styleable.PieChart_legendsAlignment, defaultLegendsAlignment)
@@ -889,7 +905,7 @@ class PieChart @JvmOverloads constructor(
 
         val legendBox = LegendBuilder().createLegendBox(context, maxAvailableWidthForLegendBox, maxAvailableHeightForLegendBox, slices,legendIconsTintArray, legendsTitle, legendsTitleSize.px, legendsTitleColor, legendTitleMargin.px, legendsTitleAlignment, legendsIcon, legendIconsHeight.px, legendIconsAlpha, legendsSize.px, legendsColor, legendIconsMargin.px, legendsPercentageMargin.px, isLegendsPercentageEnabled, legendsPercentageSize.px, legendsPercentageColor, legendsMargin.px, legendArrangement, legendsAlignment, legendBoxBackgroundColor, legendBoxPadding.px, legendBoxBorder.px, legendBoxBorderColor, legendBoxBorderAlpha, legendBoxBorderCornerRadius.px, legendBoxBorderType, legendBoxBorderDashArray.map { it.px }, legendBoxMargin.px, legendPosition, legendLinesMargin.px, legendsWrapping, isLegendBoxBorderEnabled)
         val (pieWidth, pieHeight) = calculatePieDimensions(width, height, Paddings(paddingTop, paddingBottom, paddingStart, paddingEnd), isLegendEnabled, legendBoxMargin.px, legendPosition, legendBox.width, legendBox.height)
-        pie = Pie(context, pieWidth, pieHeight, null, null, startAngle, slices, outsideLabelsMargin.px, labelType, labelsSize.px, labelsColor, labelsFont, labelIconsHeight.px, labelIconsMargin.px, labelIconsPlacement, labelIconsTint, labelsOffset, shouldCenterPie, drawDirection, overlayRatio, overlayAlpha, gradientType, holeRatio, slicesPointer, gap.px, gapPosition)
+        pie = AnimatedPie(context, pieWidth, pieHeight, null, null, startAngle, slices, outsideLabelsMargin.px, labelType, labelsSize.px, labelsColor, labelsFont, labelIconsHeight.px, labelIconsMargin.px, labelIconsPlacement, labelIconsTint, labelsOffset, shouldCenterPie, drawDirection, overlayRatio, overlayAlpha, gradientType, holeRatio, slicesPointer, gap.px, gapPosition)
         val chartDirection = determineChartDirection(legendPosition)
         val chartComponents = makeChartComponentList(pie, isLegendEnabled, legendBox, legendPosition)
         chartBox = Container(chartComponents, width.toFloat(), height.toFloat(), chartDirection, legendBoxAlignment, paddings = Paddings(paddingTop, paddingBottom, paddingStart, paddingEnd))
@@ -987,7 +1003,8 @@ class PieChart @JvmOverloads constructor(
             val backgroundRadius = centerBackgroundRatio * pie.radius
             canvas.drawCircle(pie.center.x, pie.center.y, backgroundRadius, paint)
         }
-        chartBox.draw(canvas)
+        val animationFraction = if (isAnimationEnabled) animator.animatedFraction else 1f
+        chartBox.draw(canvas, animationFraction)
         if (isCenterLabelEnabled) {
             centerLabelBox.draw(canvas)
         }

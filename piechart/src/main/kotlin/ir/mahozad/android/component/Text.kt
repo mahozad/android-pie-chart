@@ -35,7 +35,7 @@ internal class Text(
         bounds.set(start, top, start + width, top + height)
     }
 
-    override fun draw(canvas: Canvas) {
+    override fun draw(canvas: Canvas, animationFraction: Float) {
         // The x denotes the horizontal *center* of the text because it is center aligned
         val x = bounds.centerX()
         val y = bounds.bottom - descent

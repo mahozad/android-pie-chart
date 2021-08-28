@@ -91,12 +91,12 @@ internal class Container(
     /**
      * Border is drawn on top of the background. So call [drawBorder] after [drawBackground].
      */
-    override fun draw(canvas: Canvas) {
+    override fun draw(canvas: Canvas, animationFraction: Float) {
         canvas.withClip(bounds) {
             drawBackground(canvas)
             drawBorder(canvas)
             for (child in internalChildren) {
-                child.draw(canvas)
+                child.draw(canvas, animationFraction)
             }
         }
     }

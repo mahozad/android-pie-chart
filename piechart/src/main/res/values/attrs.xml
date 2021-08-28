@@ -115,6 +115,10 @@
       <enum name="disabled" value="0"/>
       <enum name="enabled" value="1"/>
     </attr>
+    <attr name="animationStatus" format="enum">
+      <enum name="disabled" value="0"/>
+      <enum name="enabled" value="1"/>
+    </attr>
     <attr name="legendBoxBorderStatus" format="enum">
       <enum name="disabled" value="0"/>
       <enum name="enabled" value="1"/>
