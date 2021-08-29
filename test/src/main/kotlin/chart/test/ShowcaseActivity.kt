@@ -10,10 +10,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import ir.mahozad.android.PieChart
+import ir.mahozad.android.PieChart.Slice
 
 class ShowcaseActivity : AppCompatActivity() {
 
@@ -21,17 +21,19 @@ class ShowcaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val sliceItems = listOf(
-            PieChart.Slice(0.4f, Color.MAGENTA, legend = "Legend A"),
-            PieChart.Slice(0.2f, Color.YELLOW, legend = "Legend B"),
-            PieChart.Slice(0.1f, Color.GREEN, legend = "Legend C"),
-            PieChart.Slice(0.3f, Color.BLUE, legend = "Legend D")
+            Slice(0.4f, Color.MAGENTA, legend = "Legend A"),
+            Slice(0.2f, Color.YELLOW, legend = "Legend B"),
+            Slice(0.1f, Color.GREEN, legend = "Legend C"),
+            Slice(0.3f, Color.BLUE, legend = "Legend D")
         )
 
         setContent {
             var slices by remember { mutableStateOf(sliceItems) }
             MaterialTheme {
                 PieChartView(slices) {
-                    slices = generateRandomNumbers().map { PieChart.Slice(it, generateRandomColor()) }
+                    slices = generateRandomNumbers().mapIndexed { i, fraction ->
+                        Slice(fraction, generateRandomColor(), legend = "Legend ${'A' + i}")
+                    }
                 }
             }
         }
@@ -68,7 +70,7 @@ class ShowcaseActivity : AppCompatActivity() {
     }
 
     @Composable
-    fun PieChartView(sliceItems: List<PieChart.Slice>, onClick: () -> Unit) {
+    fun PieChartView(sliceItems: List<Slice>, onClick: () -> Unit) {
         AndroidView(
             modifier = Modifier
                 .fillMaxSize()
