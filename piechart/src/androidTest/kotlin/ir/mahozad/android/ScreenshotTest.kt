@@ -24,6 +24,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable
 import org.junit.jupiter.api.condition.DisabledOnOs
 import org.junit.jupiter.api.extension.RegisterExtension
+import java.time.LocalTime
 
 /**
  * These tests are used to visually inspect the chart to avoid any regressions.
@@ -612,6 +613,140 @@ class ScreenshotTest {
         compareScreenshots("screenshot-73") {
             slices = listOf(Slice(1f, Color.rgb(133, 77, 206)))
             slicesPointer = PieChart.SlicePointer(20.dp, 30.dp, 0)
+        }
+    }
+
+    @Disabled
+    @Nested inner class OfficialScreenshots {
+
+        private lateinit var time: String
+
+        @BeforeAll fun setUp() {
+            val now = LocalTime.now()
+            time = "${now.hour}-${now.minute}-${now.second}"
+        }
+
+        @Test fun officialScreenshot1() {
+            compareScreenshots("XXX-1...$time...") {
+                slices = listOf(
+                    Slice(0.3f, Color.rgb(120, 181, 0), Color.rgb(149, 224, 0), legend = "Legend A"),
+                    Slice(0.2f, Color.rgb(204, 168, 0), Color.rgb(249, 228, 0), legend = "Legend B"),
+                    Slice(0.2f, Color.rgb(0, 162, 216), Color.rgb(31, 199, 255), legend = "Legend C"),
+                    Slice(0.17f, Color.rgb(255, 4, 4), Color.rgb(255, 72, 86), legend = "Legend D"),
+                    Slice(0.13f, Color.rgb(160, 165, 170), Color.rgb(175, 180, 185), legend = "Legend E")
+                )
+                gradientType = PieChart.GradientType.RADIAL
+                legendIconsMargin = 8.dp
+                legendTitleMargin = 14.dp
+                legendLinesMargin = 10.dp
+                legendsMargin = 20.dp
+                legendsPercentageMargin = 8.dp
+                legendsSize = 11.sp
+                legendsPercentageSize = 11.sp
+                legendsIcon = PieChart.DefaultIcons.SQUARE
+            }
+        }
+
+        @Test fun officialScreenshot2() {
+            compareScreenshots("XXX-2...$time...") {
+                slices = listOf(
+                    Slice(0.3f, Color.rgb(120, 181, 0), Color.rgb(149, 224, 0), legend = "Legend A"),
+                    Slice(0.2f, Color.rgb(204, 168, 0), Color.rgb(249, 228, 0), legend = "Legend B"),
+                    Slice(0.2f, Color.rgb(0, 162, 216), Color.rgb(31, 199, 255), legend = "Legend C"),
+                    Slice(0.17f, Color.rgb(255, 4, 4), Color.rgb(255, 72, 86), legend = "Legend D"),
+                    Slice(0.13f, Color.rgb(160, 165, 170), Color.rgb(175, 180, 185), legend = "Legend E")
+                )
+                startAngle = 0
+                labelType = PieChart.LabelType.OUTSIDE
+                slicesPointer = PieChart.SlicePointer(18.dp, 24.dp, 0)
+                outsideLabelsMargin = 8.dp
+                gradientType = PieChart.GradientType.RADIAL
+                legendPosition = PieChart.LegendPosition.END
+                legendBoxBorder = 2.dp
+                legendBoxBorderCornerRadius = 8.dp
+                legendTitleMargin = 14.dp
+                legendLinesMargin = 10.dp
+                legendsMargin = 20.dp
+                legendsPercentageMargin = 8.dp
+                legendsSize = 11.sp
+                legendsPercentageSize = 11.sp
+                legendsIcon = PieChart.DefaultIcons.RECTANGLE_HALLOW
+            }
+        }
+
+        @Test fun officialScreenshot3() {
+            compareScreenshots("XXX-3...$time...") {
+                slices = listOf(
+                    Slice(0.3f, Color.rgb(120, 181, 0), Color.rgb(149, 224, 0), legend = "Legend A", label = "Label A"),
+                    Slice(0.2f, Color.rgb(204, 168, 0), Color.rgb(249, 228, 0), legend = "Legend B", label = "Label B"),
+                    Slice(0.2f, Color.rgb(0, 162, 216), Color.rgb(31, 199, 255), legend = "Legend C", label = "Label C"),
+                    Slice(0.17f, Color.rgb(255, 4, 4), Color.rgb(255, 72, 86), legend = "Legend D", label = "Label D"),
+                    Slice(0.13f, Color.rgb(160, 165, 170), Color.rgb(175, 180, 185), legend = "Legend E", label = "Last Label")
+                )
+                startAngle = 0
+                labelType = PieChart.LabelType.OUTSIDE_CIRCULAR_INWARD
+                labelIconsPlacement = PieChart.IconPlacement.START
+                gradientType = PieChart.GradientType.RADIAL
+                legendPosition = PieChart.LegendPosition.TOP
+                legendArrangement = PieChart.LegendArrangement.VERTICAL
+                legendsWrapping = Wrapping.CLIP
+                isLegendBoxBorderEnabled = true
+                legendBoxBorder = 2.dp
+                legendBoxBorderCornerRadius = 8.dp
+                legendTitleMargin = 10.dp
+                legendsMargin = 8.dp
+                legendsPercentageMargin = 8.dp
+                legendsSize = 11.sp
+                legendsPercentageSize = 11.sp
+                legendsIcon = PieChart.DefaultIcons.SLICE2
+            }
+        }
+
+        @Test fun officialScreenshot4() {
+            compareScreenshots("XXX-4...$time...") {
+                slices = listOf(
+                    Slice(0.3f, Color.rgb(120, 181, 0), Color.rgb(149, 224, 0), legend = "Legend A", label = "Label A", labelIcon = R.drawable.ic_circle),
+                    Slice(0.2f, Color.rgb(204, 168, 0), Color.rgb(249, 228, 0), legend = "Legend B", label = "Label B", labelIcon = R.drawable.ic_square),
+                    Slice(0.2f, Color.rgb(0, 162, 216), Color.rgb(31, 199, 255), legend = "Legend C", label = "Label C", labelIcon = R.drawable.ic_rectangle_tall),
+                    Slice(0.17f, Color.rgb(255, 4, 4), Color.rgb(255, 72, 86), legend = "Legend D", label = "Label D", labelIcon = R.drawable.ic_triangle),
+                    Slice(0.13f, Color.rgb(160, 165, 170), Color.rgb(175, 180, 185), legend = "Legend E", label = "Last Label")
+                )
+                labelIconsTint = Color.rgb(136, 101, 206)
+                startAngle = -90
+                isLegendEnabled = false
+                labelType = PieChart.LabelType.OUTSIDE
+                labelIconsPlacement = PieChart.IconPlacement.TOP
+                gradientType = PieChart.GradientType.SWEEP
+                holeRatio = 0.15f
+                overlayRatio = 0.75f
+                gap = 8.dp
+            }
+        }
+
+        @Test fun officialScreenshot5() {
+            compareScreenshots("XXX-5...$time...") {
+                slices = listOf(
+                    Slice(0.3f, Color.rgb(120, 181, 0), legend = "Legend A", label = "Label A", labelIcon = R.drawable.ic_circle, labelSize = 18.dp.px),
+                    Slice(0.2f, Color.rgb(204, 168, 0), legend = "Legend B", label = "Label B", labelIcon = R.drawable.ic_square, labelIconTint = Color.CYAN, labelFont = context.resources.getFont(ir.mahozad.android.test.R.font.lobster_regular)),
+                    Slice(0.2f, Color.rgb(0, 162, 216), legend = "Legend C", label = "Label C", labelIcon = R.drawable.ic_rectangle_tall, labelColor = Color.RED),
+                    Slice(0.17f, Color.rgb(255, 4, 4), legend = "Legend D", label = "Label D", labelIcon = R.drawable.ic_triangle, labelIconHeight = 20.dp.px),
+                    Slice(0.13f, Color.rgb(160, 165, 170), legend = "Legend E", label = "Last Label")
+                )
+                startAngle = -90
+                isCenterLabelEnabled = true
+                centerLabel = "Center label"
+                legendsTitleColor = Color.MAGENTA
+                legendsAlignment = Alignment.START
+                centerLabelIcon = PieChart.DefaultIcons.SQUARE_HOLLOW
+                legendTitleMargin = 14.dp
+                legendsTitleSize = 16.sp
+                labelIconsTint = Color.BLACK
+                labelType = PieChart.LabelType.OUTSIDE
+                isLegendsPercentageEnabled = false
+                labelIconsPlacement = PieChart.IconPlacement.TOP
+                gradientType = PieChart.GradientType.SWEEP
+                holeRatio = 0.85f
+            }
         }
     }
 
