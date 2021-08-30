@@ -617,6 +617,7 @@ class ScreenshotTest {
     }
 
     @Disabled
+    @TestInstance(PER_CLASS)
     @Nested inner class OfficialScreenshots {
 
         private lateinit var time: String
