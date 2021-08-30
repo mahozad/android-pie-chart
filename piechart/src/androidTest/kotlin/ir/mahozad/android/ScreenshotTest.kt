@@ -718,7 +718,7 @@ class ScreenshotTest {
                 labelType = PieChart.LabelType.OUTSIDE
                 labelIconsPlacement = PieChart.IconPlacement.TOP
                 gradientType = PieChart.GradientType.SWEEP
-                holeRatio = 0.15f
+                holeRatio = 0f
                 overlayRatio = 0.75f
                 gap = 8.dp
             }
@@ -736,6 +736,8 @@ class ScreenshotTest {
                 startAngle = -90
                 isCenterLabelEnabled = true
                 centerLabel = "Center label"
+                centerLabelColor = Color.GRAY
+                centerLabelIconTint = Color.rgb(159, 181, 114)
                 legendsTitleColor = Color.MAGENTA
                 legendsAlignment = Alignment.START
                 centerLabelIcon = PieChart.DefaultIcons.SQUARE_HOLLOW
