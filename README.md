@@ -27,8 +27,6 @@
 
 </div>
 
-## ⚠️ The chart does not yet support animations and interactions.
-
 A Pie/Donut<sup id="ref-1">[*](#footnote-1)</sup>/Ring chart for Android, customizable to the most extent possible.
 
 ### build.gradle[.kts]
