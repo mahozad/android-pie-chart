@@ -14,6 +14,7 @@ import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.withPrecision
 import org.assertj.core.util.FloatComparator
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.params.ParameterizedTest
@@ -1283,47 +1284,46 @@ class SizeUtilInstrumentedTest {
 
     // region makeSlice
 
-    @Test fun makeSlice_WithNoPointer() {
-        val center = Coordinates(500f, 500f)
-        val pieEnclosingRect = RectF(0f, 0f, 1000f, 1000f)
-        val sliceStartAngle = -90f
-        val sliceFraction = 0.5f
-        val pointer: PieChart.SlicePointer? = null
-        val drawDirection = CLOCKWISE
+    @Nested inner class MakeSliceTest {
 
-        val slice = makeSlice(center, pieEnclosingRect, sliceStartAngle, sliceFraction, drawDirection, pointer)
+        private var center = Coordinates(500f, 500f)
+        private var pieEnclosingRect = RectF(0f, 0f, 1000f, 1000f)
+        private var sliceStartAngle = -90f
+        private var sliceFraction = 0.5f
+        private var pointer: PieChart.SlicePointer? = null
+        private var drawDirection = CLOCKWISE
 
-        assertThat(PathMeasure(slice, false).length).isEqualTo(2570.638f)
-    }
+        @Test fun makeSlice_WithNoPointer() {
+            val slice = makeSlice(center, pieEnclosingRect, sliceStartAngle, sliceFraction, drawDirection, pointer)
 
-    /**
-     * Path::reset should be called in the method to clear previous path object state.
-     */
-    @Test fun makeSlice_ThePathShouldBeResetBeforeEachCall() {
-        val center = Coordinates(500f, 500f)
-        val pieEnclosingRect = RectF(0f, 0f, 1000f, 1000f)
-        val sliceStartAngle = -90f
-        val sliceFraction = 0.5f
-        val pointer: PieChart.SlicePointer? = null
-        val drawDirection = CLOCKWISE
+            assertThat(PathMeasure(slice, false).length).isEqualTo(2570.638f)
+        }
 
-        makeSlice(center, pieEnclosingRect, sliceStartAngle, sliceFraction + 100f, drawDirection, pointer)
-        val slice = makeSlice(center, pieEnclosingRect, sliceStartAngle, sliceFraction, drawDirection, pointer)
+        /**
+         * Path::reset should be called in the method to clear previous path object state.
+         */
+        @Test fun makeSlice_ThePathShouldBeResetBeforeEachCall() {
+            makeSlice(center, pieEnclosingRect, sliceStartAngle, sliceFraction + 100f, drawDirection, pointer)
+            val slice = makeSlice(center, pieEnclosingRect, sliceStartAngle, sliceFraction, drawDirection, pointer)
 
-        assertThat(PathMeasure(slice, false).length).isEqualTo(2570.638f)
-    }
+            assertThat(PathMeasure(slice, false).length).isEqualTo(2570.638f)
+        }
 
-    @Test fun makeSlice_WithArbitraryPointer() {
-        val center = Coordinates(500f, 500f)
-        val pieEnclosingRect = RectF(0f, 0f, 1000f, 1000f)
-        val sliceStartAngle = -90f
-        val sliceFraction = 0.5f
-        val pointer = PieChart.SlicePointer(50.px, 40.px, 0)
-        val drawDirection = CLOCKWISE
+        @Test fun makeSlice_WithArbitraryPointer() {
+            pointer = PieChart.SlicePointer(50.px, 40.px, 0)
 
-        val slice = makeSlice(center, pieEnclosingRect, sliceStartAngle, sliceFraction, drawDirection, pointer)
+            val slice = makeSlice(center, pieEnclosingRect, sliceStartAngle, sliceFraction, drawDirection, pointer)
 
-        assertThat(PathMeasure(slice, false).length).isEqualTo(2381.9175f)
+            assertThat(PathMeasure(slice, false).length).isEqualTo(2381.9175f)
+        }
+
+        @Test fun makeSlice_aFullFraction() {
+            sliceFraction = 1f
+
+            val slice = makeSlice(center, pieEnclosingRect, sliceStartAngle, sliceFraction, drawDirection, pointer)
+
+            assertThat(PathMeasure(slice, false).length).isEqualTo(3141.2751f)
+        }
     }
 
     // endregion

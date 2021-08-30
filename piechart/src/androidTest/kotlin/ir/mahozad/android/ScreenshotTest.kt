@@ -602,9 +602,16 @@ class ScreenshotTest {
         }
     }
 
-    @Test fun chartWithASingleSlice() {
+    @Test fun chartWithAFullSingleSlice() {
         compareScreenshots("screenshot-72") {
             slices = listOf(Slice(1f, Color.rgb(133, 77, 206)))
+        }
+    }
+
+    @Test fun chartWithAFullSingleSliceAndPointer() {
+        compareScreenshots("screenshot-73") {
+            slices = listOf(Slice(1f, Color.rgb(133, 77, 206)))
+            slicesPointer = PieChart.SlicePointer(20.dp, 30.dp, 0)
         }
     }
 

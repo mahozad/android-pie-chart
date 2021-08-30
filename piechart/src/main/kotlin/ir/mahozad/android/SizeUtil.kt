@@ -686,38 +686,43 @@ private fun k(θ: Float, w: Float, h: Float): Float {
 
 internal fun makeSlice(
     center: Coordinates,
-    pieEnclosingRect: RectF,
-    sliceStartAngle: Float,
-    sliceFraction: Float,
+    enclosingRect: RectF,
+    startAngle: Float,
+    fraction: Float,
     drawDirection: DrawDirection,
     pointer: SlicePointer?
 ): Path {
-    val sliceSweep = calculateSweep(sliceFraction, drawDirection)
+    val sweepAngle = calculateSweep(fraction, drawDirection)
     path.reset()
     path.moveTo(center.x, center.y)
     if (pointer == null) {
-        path.arcTo(pieEnclosingRect, sliceStartAngle, sliceSweep)
+        // See https://stackoverflow.com/q/19383842
+        if (fraction == 1f) {
+            path.addCircle(center.x, center.y, enclosingRect.width() / 2, Path.Direction.CW)
+        } else {
+            path.arcTo(enclosingRect, startAngle, sweepAngle)
+        }
     } else {
         val radiusReduction = pointer.length.px
         val newEnclosingRect = RectF(
-            pieEnclosingRect.left + radiusReduction,
-            pieEnclosingRect.top + radiusReduction,
-            pieEnclosingRect.right - radiusReduction,
-            pieEnclosingRect.bottom - radiusReduction
+            enclosingRect.left + radiusReduction,
+            enclosingRect.top + radiusReduction,
+            enclosingRect.right - radiusReduction,
+            enclosingRect.bottom - radiusReduction
         )
-        val sliceMiddleAngle = calculateMiddleAngle(sliceStartAngle, sliceFraction, drawDirection)
+        val sliceMiddleAngle = calculateMiddleAngle(startAngle, fraction, drawDirection)
         val newRadius = newEnclosingRect.width() / 2f
         val pointerFraction = pointer.width.px / (2 * PI * newRadius).toFloat()
         val stop1Angle = calculateMiddleAngle(sliceMiddleAngle, -pointerFraction, drawDirection)
         val stop2Angle = calculateMiddleAngle(sliceMiddleAngle, pointerFraction, drawDirection)
-        val stopsSweepAngle = calculateAnglesDistance(sliceStartAngle, stop1Angle, drawDirection)
+        val stopsSweepAngle = calculateAnglesDistance(startAngle, stop1Angle, drawDirection)
         val stop2Coordinates = calculateCoordinatesOnCircumference(stop2Angle, center, newRadius)
         val (tipX, tipY) = calculateCoordinatesOnCircumference(sliceMiddleAngle, center, newRadius + pointer.length.px)
-        path.arcTo(newEnclosingRect, sliceStartAngle, stopsSweepAngle)
+        path.arcTo(newEnclosingRect, startAngle, stopsSweepAngle)
         path.lineTo(tipX, tipY)
         path.lineTo(stop2Coordinates.x, stop2Coordinates.y)
         path.arcTo(newEnclosingRect, stop2Angle, stopsSweepAngle)
     }
-    path.close()
+    path.close() // This call is not necessary regarding the shape; but semantically necessary
     return path
 }

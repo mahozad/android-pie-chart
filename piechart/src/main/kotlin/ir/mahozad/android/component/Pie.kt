@@ -144,11 +144,7 @@ internal open class Pie(
             mainPaint.shader = gradient
             mainPaint.alpha = 255
 
-            val slicePath = if (slice.fraction == 1f) {
-                Path().apply { addCircle(center.x, center.y, radius, Path.Direction.CW) }
-            } else {
-                makeSlice(center, pieEnclosingRect, currentAngle, slice.fraction, pieDrawDirection, slice.pointer ?: slicesPointer)
-            }
+            val slicePath = makeSlice(center, pieEnclosingRect, currentAngle, slice.fraction, pieDrawDirection, slice.pointer ?: slicesPointer)
             canvas.withClip(clip) {
                 canvas.drawPath(slicePath, mainPaint)
             }
@@ -330,11 +326,7 @@ internal class AnimatedPie(
             mainPaint.shader = gradient
             mainPaint.alpha = 255
 
-            val slicePath = if (slice.fraction == 1f) {
-                Path().apply { addCircle(center.x, center.y, radius, Path.Direction.CW) }
-            } else {
-                makeSlice(center, pieEnclosingRect, currentAngle, slice.fraction * animationFraction, pieDrawDirection, slice.pointer ?: slicesPointer)
-            }
+            val slicePath = makeSlice(center, pieEnclosingRect, currentAngle, slice.fraction * animationFraction, pieDrawDirection, slice.pointer ?: slicesPointer)
             canvas.withClip(clip) {
                 canvas.drawPath(slicePath, mainPaint)
             }
@@ -410,11 +402,7 @@ internal class AnimatedPie2(
             mainPaint.shader = gradient
             mainPaint.alpha = 255
 
-            val slicePath = if (slice.fraction == 1f) {
-                Path().apply { addCircle(center.x, center.y, radius, Path.Direction.CW) }
-            } else {
-                makeSlice(center, pieEnclosingRect, currentAngle, slice.fraction * animationFraction, pieDrawDirection, slice.pointer ?: slicesPointer)
-            }
+            val slicePath = makeSlice(center, pieEnclosingRect, currentAngle, slice.fraction * animationFraction, pieDrawDirection, slice.pointer ?: slicesPointer)
             canvas.withClip(clip) {
                 canvas.drawPath(slicePath, mainPaint)
             }
