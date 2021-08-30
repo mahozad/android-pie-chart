@@ -53,9 +53,6 @@ internal fun calculateWidthAndHeight(
     val widthSize = View.MeasureSpec.getSize(widthMeasureSpec)
     val heightSize = View.MeasureSpec.getSize(heightMeasureSpec)
     val min = min(widthSize, heightSize)
-    Log.d("SizeUtil", "width: ${View.MeasureSpec.toString(widthMeasureSpec)}")
-    Log.d("SizeUtil", "height: ${View.MeasureSpec.toString(heightMeasureSpec)}")
-    Log.d("SizeUtil", "min: $min")
     return Pair(min, min)
 }
 
