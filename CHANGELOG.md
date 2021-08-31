@@ -1,5 +1,15 @@
 # History of notable changes introduced in each version
 
+## v0.7.0 (2021-08-31)
+#### New features
+  - Add basic animation support ([`22f6af60`](https://github.com/mahozad/android-pie-chart/commit/22f6af60))
+#### Bug fixes
+  - Fix the bug with whole-fraction single-slice pie ([`0d25f282`](https://github.com/mahozad/android-pie-chart/commit/0d25f282))
+#### Other
+  - Improve the showcase app ([`e5dec1f7`](https://github.com/mahozad/android-pie-chart/commit/e5dec1f7))
+
+[All commits since version 0.6.2](https://github.com/mahozad/android-pie-chart/compare/v0.6.2...v0.7.0)
+
 ## v0.6.2 (2021-08-25)
 #### Bug fixes
   - Fix the bug with single-slice pie not drawn ([`d79fdf15`](https://github.com/mahozad/android-pie-chart/commit/d79fdf15))
