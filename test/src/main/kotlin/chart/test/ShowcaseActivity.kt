@@ -2,8 +2,6 @@ package chart.test
 
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.clickable
@@ -56,17 +54,6 @@ class ShowcaseActivity : AppCompatActivity() {
     private fun generateRandomColor(): Int {
         fun component() = (0..255).random()
         return Color.rgb(component(), component(), component())
-    }
-
-    private fun animateStartAngle(chart: PieChart) {
-        val handler = Handler(Looper.getMainLooper())
-        val runnable = object : Runnable {
-            override fun run() {
-                chart.startAngle = chart.startAngle + 1
-                handler.postDelayed(this, 15)
-            }
-        }
-        handler.postDelayed(runnable, 15)
     }
 
     @Composable
