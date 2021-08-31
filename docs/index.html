@@ -8,6 +8,7 @@
   <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/docco.min.css">-->
   <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/foundation.min.css">-->
   <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/github.min.css">-->
+  <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/googlecode.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
   <script>hljs.highlightAll();</script>
@@ -15,21 +16,27 @@
 </head>
 <body>
 
-<img src="screenshots-combined.svg" alt="Library Screenshots" width="100%">
+<main>
 
-<h2>Refer to the <a href="https://github.com/mahozad/android-pie-chart">GitHub repository</a> for more information.</h2>
+  <h1>Android pie chart</h1>
 
-<h3>build.gradle[.kts]</h3>
-<pre><code>implementation("ir.mahozad.android:pie-chart:&lt;version&gt;")</code></pre>
+  <p>An Android chart library that can be customized to the most extent possible.</p>
+  <p>Refer to the <a href="https://github.com/mahozad/android-pie-chart">GitHub repository</a> for more information.</p>
+  <p>Scroll below for <a href="#examples">examples</a>.</p>
 
-<h3>XML layout</h3>
-<pre><code class="language-xml">&lt;ir.mahozad.android.PieChart
+  <h2>Getting started</h2>
+
+  <h3>build.gradle[.kts]</h3>
+  <pre><code>implementation("ir.mahozad.android:pie-chart:&lt;version&gt;")</code></pre>
+
+  <h3>XML layout</h3>
+  <pre><code class="language-xml">&lt;ir.mahozad.android.PieChart
     android:id="@+id/pieChart"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" /&gt;</code></pre>
 
-<h3>Kotlin activity</h3>
-<pre><code class="language-kotlin">val pieChart = findViewById&lt;PieChart&gt;(R.id.pieChart)
+  <h3>Kotlin activity</h3>
+  <pre><code class="language-kotlin">val pieChart = findViewById&lt;PieChart&gt;(R.id.pieChart)
 pieChart.slices = listOf(
     PieChart.Slice(0.2f, Color.BLUE),
     PieChart.Slice(0.4f, Color.MAGENTA),
@@ -37,8 +44,8 @@ pieChart.slices = listOf(
     PieChart.Slice(0.1f, Color.CYAN)
 )</code></pre>
 
-<h3>Jetpack Compose</h3>
-<pre><code>@Composable
+  <h3>Jetpack Compose</h3>
+  <pre><code>@Composable
 fun PieChartView() {
     AndroidView(
         modifier = Modifier.fillMaxSize(),
@@ -59,5 +66,144 @@ fun PieChartView() {
     )
 }</code></pre>
 
+  <h2 id="examples">Examples</h2>
+  <table>
+    <tr>
+      <th>Code</th>
+      <th>Result</th>
+    </tr>
+    <tr>
+      <td>
+        <pre><code class="language-kotlin">pieChart.apply {
+    slices = listOf(
+        Slice(0.3f, Color.rgb(120, 181, 0), Color.rgb(149, 224, 0), legend = "Legend A"),
+        Slice(0.2f, Color.rgb(204, 168, 0), Color.rgb(249, 228, 0), legend = "Legend B"),
+        Slice(0.2f, Color.rgb(0, 162, 216), Color.rgb(31, 199, 255), legend = "Legend C"),
+        Slice(0.17f, Color.rgb(255, 4, 4), Color.rgb(255, 72, 86), legend = "Legend D"),
+        Slice(0.13f, Color.rgb(160, 165, 170), Color.rgb(175, 180, 185), legend = "Legend E")
+    )
+    gradientType = PieChart.GradientType.RADIAL
+    legendIconsMargin = 8.dp
+    legendTitleMargin = 14.dp
+    legendLinesMargin = 10.dp
+    legendsMargin = 20.dp
+    legendsPercentageMargin = 8.dp
+    legendsSize = 11.sp
+    legendsPercentageSize = 11.sp
+    legendsIcon = PieChart.DefaultIcons.SQUARE
+}</code></pre></td>
+      <td><img class="screenshot" src="https://raw.githubusercontent.com/mahozad/android-pie-chart/master/screenshots/screenshot-1.png" alt="Screenshot 1"></td>
+    </tr>
+    <tr>
+      <td>
+        <pre><code class="language-kotlin">pieChart.apply {
+    slices = listOf(
+        Slice(0.3f, Color.rgb(120, 181, 0), Color.rgb(149, 224, 0), legend = "Legend A"),
+        Slice(0.2f, Color.rgb(204, 168, 0), Color.rgb(249, 228, 0), legend = "Legend B"),
+        Slice(0.2f, Color.rgb(0, 162, 216), Color.rgb(31, 199, 255), legend = "Legend C"),
+        Slice(0.17f, Color.rgb(255, 4, 4), Color.rgb(255, 72, 86), legend = "Legend D"),
+        Slice(0.13f, Color.rgb(160, 165, 170), Color.rgb(175, 180, 185), legend = "Legend E")
+    )
+    startAngle = 0
+    labelType = PieChart.LabelType.OUTSIDE
+    slicesPointer = PieChart.SlicePointer(18.dp, 24.dp, 0)
+    outsideLabelsMargin = 8.dp
+    gradientType = PieChart.GradientType.RADIAL
+    legendPosition = PieChart.LegendPosition.END
+    legendBoxBorder = 2.dp
+    legendBoxBorderCornerRadius = 8.dp
+    legendTitleMargin = 14.dp
+    legendLinesMargin = 10.dp
+    legendsMargin = 20.dp
+    legendsPercentageMargin = 8.dp
+    legendsSize = 11.sp
+    legendsPercentageSize = 11.sp
+    legendsIcon = PieChart.DefaultIcons.RECTANGLE_HALLOW
+}</code></pre></td>
+      <td><img class="screenshot" src="https://raw.githubusercontent.com/mahozad/android-pie-chart/master/screenshots/screenshot-2.png" alt="Screenshot 2"></td>
+    </tr>
+    <tr>
+      <td>
+        <pre><code class="language-kotlin">pieChart.apply {
+    slices = listOf(
+        Slice(0.3f, Color.rgb(120, 181, 0), Color.rgb(149, 224, 0), legend = "Legend A", label = "Label A"),
+        Slice(0.2f, Color.rgb(204, 168, 0), Color.rgb(249, 228, 0), legend = "Legend B", label = "Label B"),
+        Slice(0.2f, Color.rgb(0, 162, 216), Color.rgb(31, 199, 255), legend = "Legend C", label = "Label C"),
+        Slice(0.17f, Color.rgb(255, 4, 4), Color.rgb(255, 72, 86), legend = "Legend D", label = "Label D"),
+        Slice(0.13f, Color.rgb(160, 165, 170), Color.rgb(175, 180, 185), legend = "Legend E", label = "Last Label")
+    )
+    startAngle = 0
+    labelType = PieChart.LabelType.OUTSIDE_CIRCULAR_INWARD
+    labelIconsPlacement = PieChart.IconPlacement.START
+    gradientType = PieChart.GradientType.RADIAL
+    legendPosition = PieChart.LegendPosition.TOP
+    legendArrangement = PieChart.LegendArrangement.VERTICAL
+    legendsWrapping = Wrapping.CLIP
+    isLegendBoxBorderEnabled = true
+    legendBoxBorder = 2.dp
+    legendBoxBorderCornerRadius = 8.dp
+    legendTitleMargin = 10.dp
+    legendsMargin = 8.dp
+    legendsPercentageMargin = 8.dp
+    legendsSize = 11.sp
+    legendsPercentageSize = 11.sp
+    legendsIcon = PieChart.DefaultIcons.SLICE2
+}</code></pre></td>
+      <td><img class="screenshot" src="https://raw.githubusercontent.com/mahozad/android-pie-chart/master/screenshots/screenshot-3.png" alt="Screenshot 3"></td>
+    </tr>
+    <tr>
+      <td>
+        <pre><code class="language-kotlin">pieChart.apply {
+    slices = listOf(
+        Slice(0.3f, Color.rgb(120, 181, 0), Color.rgb(149, 224, 0), legend = "Legend A", label = "Label A", labelIcon = R.drawable.ic_circle),
+        Slice(0.2f, Color.rgb(204, 168, 0), Color.rgb(249, 228, 0), legend = "Legend B", label = "Label B", labelIcon = R.drawable.ic_square),
+        Slice(0.2f, Color.rgb(0, 162, 216), Color.rgb(31, 199, 255), legend = "Legend C", label = "Label C", labelIcon = R.drawable.ic_rectangle_tall),
+        Slice(0.17f, Color.rgb(255, 4, 4), Color.rgb(255, 72, 86), legend = "Legend D", label = "Label D", labelIcon = R.drawable.ic_triangle),
+        Slice(0.13f, Color.rgb(160, 165, 170), Color.rgb(175, 180, 185), legend = "Legend E", label = "Last Label")
+    )
+    labelIconsTint = Color.rgb(136, 101, 206)
+    startAngle = -90
+    isLegendEnabled = false
+    labelType = PieChart.LabelType.OUTSIDE
+    labelIconsPlacement = PieChart.IconPlacement.TOP
+    gradientType = PieChart.GradientType.SWEEP
+    holeRatio = 0f
+    overlayRatio = 0.75f
+    gap = 8.dp
+}</code></pre></td>
+      <td><img class="screenshot" src="https://raw.githubusercontent.com/mahozad/android-pie-chart/master/screenshots/screenshot-4.png" alt="Screenshot 4"></td>
+    </tr>
+    <tr>
+      <td>
+        <pre><code class="language-kotlin">pieChart.apply {
+    slices = listOf(
+        Slice(0.3f, Color.rgb(120, 181, 0), legend = "Legend A", label = "Label A", labelIcon = R.drawable.ic_circle, labelSize = 18.dp.px),
+        Slice(0.2f, Color.rgb(204, 168, 0), legend = "Legend B", label = "Label B", labelIcon = R.drawable.ic_square, labelIconTint = Color.CYAN, labelFont = context.resources.getFont(ir.mahozad.android.test.R.font.lobster_regular)),
+        Slice(0.2f, Color.rgb(0, 162, 216), legend = "Legend C", label = "Label C", labelIcon = R.drawable.ic_rectangle_tall, labelColor = Color.RED),
+        Slice(0.17f, Color.rgb(255, 4, 4), legend = "Legend D", label = "Label D", labelIcon = R.drawable.ic_triangle, labelIconHeight = 20.dp.px),
+        Slice(0.13f, Color.rgb(160, 165, 170), legend = "Legend E", label = "Last Label")
+    )
+    startAngle = -90
+    isCenterLabelEnabled = true
+    centerLabel = "Center label"
+    centerLabelColor = Color.GRAY
+    centerLabelIconTint = Color.rgb(159, 181, 114)
+    legendsTitleColor = Color.MAGENTA
+    legendsAlignment = Alignment.START
+    centerLabelIcon = PieChart.DefaultIcons.SQUARE_HOLLOW
+    legendTitleMargin = 14.dp
+    legendsTitleSize = 16.sp
+    labelIconsTint = Color.BLACK
+    labelType = PieChart.LabelType.OUTSIDE
+    isLegendsPercentageEnabled = false
+    labelIconsPlacement = PieChart.IconPlacement.TOP
+    gradientType = PieChart.GradientType.SWEEP
+    holeRatio = 0.85f
+}</code></pre></td>
+      <td><img class="screenshot" src="https://raw.githubusercontent.com/mahozad/android-pie-chart/master/screenshots/screenshot-5.png" alt="Screenshot 5"></td>
+    </tr>
+  </table>
+
+</main>
 </body>
 </html>
