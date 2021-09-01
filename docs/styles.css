@@ -5,48 +5,58 @@ body {
 main {
   display: flex;
   flex-flow: column;
-  background: rgba(4, 4, 4, 0.03);
-  border: 2px solid rgba(20, 20, 20, 0.2);
+  font-family: "Roboto", sans-serif !important;
+  background: #fff;
+  border: 2px solid rgba(150, 150, 150, 0.2);
   border-radius: 10px;
   padding: 24px;
   width: 768px;
   margin: 0 auto;
 }
 
+.example {
+  display: flex;
+  flex-flow: column;
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  margin-block-start: 24px;
+  align-items: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+hr {
+  border: 1px dashed #eee;
+  width: 100%;
+  margin-block-start: 32px;
+}
+
+pre {
+  width: 100%;
+}
+
+code {
+  font-family: "JetBrains Mono", monospace !important;
+  font-size: 13px;
+  overflow: hidden !important;
+}
+
 p {
-  margin-block-start: 0px;
+  margin-block-start: 0;
   margin-block-end: 6px;
 }
 
 h2 {
   padding: 4px;
-  border: 1px solid #555;
+  border: 1px solid #aaa;
   border-radius: 50px;
   text-align: center;
 }
 
 h3 {
-  margin-block-end: 0px;
+  margin-block-end: 0;
 }
 
 .screenshot {
-  width: 300px;
-}
-
-table {
-  margin-block-start: 13px;
-  border-collapse: collapse;
-}
-
-th {
-  padding: 8px;
-}
-
-td:nth-child(2){
-  text-align: center;
-}
-
-td:nth-child(1) {
-  word-wrap: break-word;
-  max-width: 400px;
+  width: 40%;
 }
