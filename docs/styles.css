@@ -53,6 +53,7 @@ code {
   width: 100%;
 }
 
+// Example of popup for copy button: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_copy_clipboard2
 .copy {
   content: "copy";
   min-width: 32px;
