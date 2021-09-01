@@ -41,6 +41,32 @@ code {
   overflow: hidden !important;
 }
 
+.code {
+  position: relative;
+  width: 100%;
+}
+
+.copy {
+  content: "copy";
+  min-width: 32px;
+  min-height: 16px;
+  line-height: 16px;
+  font-size: 12px;
+  text-align: center;
+  padding: 4px;
+  cursor: pointer;
+  border: 1px solid #e0e0e0;
+  border-radius: 3px;
+  position: absolute;
+  top: 12px;
+  right: 0;
+  transition: all 100ms;
+}
+
+.copy:hover {
+  border: 1px solid #aaa;
+}
+
 p {
   margin-block-start: 0;
   margin-block-end: 6px;

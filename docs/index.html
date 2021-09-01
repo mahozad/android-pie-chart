@@ -16,6 +16,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
   <script>hljs.highlightAll();</script>
   <script src="update-version-placeholder.js" defer></script>
+  <script src="jquery-3.6.0.slim.min.js" defer></script>
+  <script src="copy-to-clipboard.js" defer></script>
 </head>
 <body>
 
@@ -30,25 +32,36 @@
   <h2>Getting started</h2>
 
   <h3>build.gradle[.kts]</h3>
-  <pre><code>implementation("ir.mahozad.android:pie-chart:&lt;version&gt;")</code></pre>
+  <div class="code">
+    <div class="copy">copy</div>
+    <pre><code>implementation("ir.mahozad.android:pie-chart:&lt;version&gt;")</code></pre>
+  </div>
 
   <h3>XML layout</h3>
-  <pre><code class="language-xml">&lt;ir.mahozad.android.PieChart
+  <div class="code">
+    <div class="copy">copy</div>
+    <pre><code class="language-xml">&lt;ir.mahozad.android.PieChart
     android:id="@+id/pieChart"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" /&gt;</code></pre>
+  </div>
 
   <h3>Kotlin activity</h3>
-  <pre><code class="language-kotlin">val pieChart = findViewById&lt;PieChart&gt;(R.id.pieChart)
+  <div class="code">
+    <div class="copy">copy</div>
+    <pre><code class="language-kotlin">val pieChart = findViewById&lt;PieChart&gt;(R.id.pieChart)
 pieChart.slices = listOf(
     PieChart.Slice(0.2f, Color.BLUE),
     PieChart.Slice(0.4f, Color.MAGENTA),
     PieChart.Slice(0.3f, Color.YELLOW),
     PieChart.Slice(0.1f, Color.CYAN)
 )</code></pre>
+  </div>
 
   <h3>Jetpack Compose</h3>
-  <pre><code>@Composable
+  <div class="code">
+    <div class="copy">copy</div>
+    <pre><code>@Composable
 fun PieChartView() {
     AndroidView(
         modifier = Modifier.fillMaxSize(),
@@ -68,12 +81,15 @@ fun PieChartView() {
         }
     )
 }</code></pre>
+  </div>
 
   <h2 id="examples">Examples</h2>
   <div class="example">
     <img class="screenshot" src="https://raw.githubusercontent.com/mahozad/android-pie-chart/master/screenshots/screenshot-1.png" alt="Screenshot 1">
     <hr>
-    <pre><code class="language-kotlin">pieChart.apply {
+    <div class="code">
+      <div class="copy">copy</div>
+      <pre><code class="language-kotlin">pieChart.apply {
     slices = listOf(
         Slice(0.3f, Color.rgb(120, 181, 0), Color.rgb(149, 224, 0), legend = "Legend A"),
         Slice(0.2f, Color.rgb(204, 168, 0), Color.rgb(249, 228, 0), legend = "Legend B"),
@@ -91,12 +107,15 @@ fun PieChartView() {
     legendsPercentageSize = 11.sp
     legendsIcon = PieChart.DefaultIcons.SQUARE
 }</code></pre>
+    </div>
   </div>
 
   <div class="example">
     <img class="screenshot" src="https://raw.githubusercontent.com/mahozad/android-pie-chart/master/screenshots/screenshot-2.png" alt="Screenshot 2">
     <hr>
-    <pre><code class="language-kotlin">pieChart.apply {
+    <div class="code">
+      <div class="copy">copy</div>
+      <pre><code class="language-kotlin">pieChart.apply {
     slices = listOf(
         Slice(0.3f, Color.rgb(120, 181, 0), Color.rgb(149, 224, 0), legend = "Legend A"),
         Slice(0.2f, Color.rgb(204, 168, 0), Color.rgb(249, 228, 0), legend = "Legend B"),
@@ -120,12 +139,15 @@ fun PieChartView() {
     legendsPercentageSize = 11.sp
     legendsIcon = PieChart.DefaultIcons.RECTANGLE_HALLOW
 }</code></pre>
+    </div>
   </div>
 
   <div class="example">
     <img class="screenshot" src="https://raw.githubusercontent.com/mahozad/android-pie-chart/master/screenshots/screenshot-3.png" alt="Screenshot 3">
     <hr>
-    <pre><code class="language-kotlin">pieChart.apply {
+    <div class="code">
+      <div class="copy">copy</div>
+      <pre><code class="language-kotlin">pieChart.apply {
     slices = listOf(
         Slice(0.3f, Color.rgb(120, 181, 0), Color.rgb(149, 224, 0), legend = "Legend A", label = "Label A"),
         Slice(0.2f, Color.rgb(204, 168, 0), Color.rgb(249, 228, 0), legend = "Legend B", label = "Label B"),
@@ -150,12 +172,15 @@ fun PieChartView() {
     legendsPercentageSize = 11.sp
     legendsIcon = PieChart.DefaultIcons.SLICE2
 }</code></pre>
+    </div>
   </div>
 
   <div class="example">
     <img class="screenshot" src="https://raw.githubusercontent.com/mahozad/android-pie-chart/master/screenshots/screenshot-4.png" alt="Screenshot 4">
     <hr>
-    <pre><code class="language-kotlin">pieChart.apply {
+    <div class="code">
+      <div class="copy">copy</div>
+      <pre><code class="language-kotlin">pieChart.apply {
     slices = listOf(
         Slice(0.3f, Color.rgb(120, 181, 0), Color.rgb(149, 224, 0), legend = "Legend A", label = "Label A", labelIcon = R.drawable.ic_circle),
         Slice(0.2f, Color.rgb(204, 168, 0), Color.rgb(249, 228, 0), legend = "Legend B", label = "Label B", labelIcon = R.drawable.ic_square),
@@ -173,12 +198,15 @@ fun PieChartView() {
     overlayRatio = 0.75f
     gap = 8.dp
 }</code></pre>
+    </div>
   </div>
 
   <div class="example">
     <img class="screenshot" src="https://raw.githubusercontent.com/mahozad/android-pie-chart/master/screenshots/screenshot-5.png" alt="Screenshot 5">
     <hr>
-    <pre><code class="language-kotlin">pieChart.apply {
+    <div class="code">
+      <div class="copy">copy</div>
+      <pre><code class="language-kotlin">pieChart.apply {
     val customFont = context.resources.getFont(R.font.myCustomFont)
     slices = listOf(
         Slice(0.3f, Color.rgb(120, 181, 0), legend = "Legend A", label = "Label A", labelIcon = R.drawable.ic_circle, labelSize = 18.dp.px),
@@ -204,6 +232,7 @@ fun PieChartView() {
     gradientType = PieChart.GradientType.SWEEP
     holeRatio = 0.85f
 }</code></pre>
+    </div>
   </div>
 
 </main>
