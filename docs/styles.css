@@ -58,8 +58,8 @@ code {
   border: 1px solid #e0e0e0;
   border-radius: 3px;
   position: absolute;
-  top: 12px;
-  right: 0;
+  inset-block-start: 12px;
+  inset-inline-end: 0;
   transition: all 100ms;
 }
 
@@ -69,7 +69,7 @@ code {
 
 p {
   margin-block-start: 0;
-  margin-block-end: 6px;
+  margin-block-end: 10px;
 }
 
 h2 {
