@@ -3,19 +3,19 @@ body {
 }
 
 main {
+  display: flex;
+  flex-flow: column;
   background: rgba(4, 4, 4, 0.03);
   border: 2px solid rgba(20, 20, 20, 0.2);
   border-radius: 10px;
   padding: 24px;
-  display: flex;
-  flex-flow: column;
   width: 768px;
   margin: 0 auto;
 }
 
 p {
-  margin-bottom: 6px;
-  margin-top: 0px;
+  margin-block-start: 0px;
+  margin-block-end: 6px;
 }
 
 h2 {
@@ -26,7 +26,7 @@ h2 {
 }
 
 h3 {
-  margin-bottom: 0px;
+  margin-block-end: 0px;
 }
 
 .screenshot {
@@ -34,7 +34,7 @@ h3 {
 }
 
 table {
-  margin-top: 13px;
+  margin-block-start: 13px;
   border-collapse: collapse;
 }
 
