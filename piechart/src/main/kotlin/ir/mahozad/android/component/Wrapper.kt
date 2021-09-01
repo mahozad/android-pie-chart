@@ -8,6 +8,28 @@ import kotlin.math.max
 
 /**
  * Factory method.
+ *
+ * We could have instead created a companion object in the [Wrapper] class like so:
+ *
+ * ```
+ * companion object {
+ *     fun createWrapper(
+ *         layoutDirection: LayoutDirection,
+ *         availableWidth: Float,
+ *         availableHeight: Float,
+ *         alignment: Alignment,
+ *         linesMargin: Float,
+ *         paddings: Paddings?,
+ *         border: Border?
+ *     ) = when (layoutDirection) {
+ *         VERTICAL -> VerticalWrapper(...)
+ *         else -> HorizontalWrapper(...)
+ *     }
+ * }
+ * ```
+ *
+ * and used it like this: `Wrapper.createWrapper(...)`.
+ * See [this post](https://stackoverflow.com/a/49977253/).
  */
 internal fun createWrapper(
     layoutDirection: LayoutDirection,
