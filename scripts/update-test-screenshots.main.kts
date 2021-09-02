@@ -4,14 +4,15 @@ import java.io.File
 // This script deletes the old version of the screenshots and renames the new ones.
 // Refer to ScreenshotTest.kt class documentations for more information.
 
-val screenshotsDirectory = "piechart/src/androidTest/assets"
+val screenshotsDirectory = File("piechart/src/androidTest/assets")
+val screenshotNameRegex = Regex("""screenshot-\d+\.png""")
 
-File(screenshotsDirectory)
+screenshotsDirectory
     .walk()
-    .filter { it.name.matches(Regex("""screenshot-\d+\.png""")) }
-    .forEach { it.delete() }
+    .filter { it.name matches screenshotNameRegex }
+    .forEach(File::delete)
 
-File(screenshotsDirectory)
+screenshotsDirectory
     .listFiles()
     ?.forEach {
         val screenshotNumber = it.name.substringAfter("screenshot-").substringBefore("-")

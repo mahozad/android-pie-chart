@@ -6,14 +6,12 @@
 // @file:DependsOn("com.example:library:1.2.3")
 
 import java.io.File
-import java.nio.file.Files
-import java.nio.file.Path
-import java.util.stream.Collectors
 
+val inputFile = File("CHANGELOG.md")
+val outputFile = File("changelog.txt")
 val versionHeaderLineRegex = Regex(""".*v\d+\.\d+\.\d+.* \(\d{4}-\d{2}-\d{2}\)""")
 val commitReferenceRegex = Regex("""\[`[\da-f]{8}`]\(.+[\da-f]{8}\)""")
 val issueReferenceRegex = Regex("""\[#\d+]\(.+/[\d]+\)""")
-val outputPath: Path = Path.of("changelog.txt")
 
 val result = buildString {
     val releaseType = determineTypeOfThisRelease()
@@ -24,7 +22,7 @@ val result = buildString {
     append(body)
 }
 
-Files.writeString(outputPath, result)
+outputFile.writeText(result)
 
 fun determineTypeOfThisRelease(): String {
     val (new, old) = getLastTwoVersionTags()
@@ -38,15 +36,13 @@ fun determineTypeOfThisRelease(): String {
     }
 }
 
-fun getLastTwoVersionTags() = Files
-    .lines(Path.of("CHANGELOG.md"))
-    .filter { it.matches(versionHeaderLineRegex) }
-    .limit(2)
-    .map { it.substringAfter("v") }
-    .map { it.substringBefore(" ") }
-    .collect(Collectors.toList())
+fun getLastTwoVersionTags() = inputFile
+    .readLines()
+    .filter { it matches versionHeaderLineRegex }
+    .take(2)
+    .map { it.substringBetween("v", " ") }
 
-fun createReleaseBody() = File("CHANGELOG.md")
+fun createReleaseBody() = inputFile
     .readLines()
     .dropWhile { !it.matches(versionHeaderLineRegex) }
     .dropWhile { it.matches(versionHeaderLineRegex) }
