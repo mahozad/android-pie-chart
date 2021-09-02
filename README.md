@@ -18,16 +18,10 @@
 [![Codecov](https://codecov.io/gh/mahozad/android-pie-chart/branch/master/graph/badge.svg?token=ptnbmXaozw)](https://codecov.io/gh/mahozad/android-pie-chart)
 [![Latest Maven Central release](https://img.shields.io/maven-central/v/ir.mahozad.android/pie-chart?logo=android)](https://search.maven.org/artifact/ir.mahozad.android/pie-chart)
 
-<div align="center">
-
-| Screenshot 1 | Screenshot 2 | Screenshot 3 | Screenshot 4 | Screenshot 5 |
-| ------------ | ------------ | ------------ | ------------ | ------------ |
-| ![Screenshot 2](screenshots/screenshot-2.png) | ![Screenshot 1](screenshots/screenshot-1.png) | ![Screenshot 3](screenshots/screenshot-3.png) | ![Screenshot 4](screenshots/screenshot-4.png) | ![Screenshot 5](screenshots/screenshot-5.png)
-
-</div>
+![Logo](logo-animated.svg)
 
 A Pie/Donut<sup id="ref-1">[*](#footnote-1)</sup>/Ring chart for Android, customizable to the most extent possible.  
-For advanced customizations like the screenshots above, refer to the [website](https://mahozad.ir/android-pie-chart/#examples).
+For tutorial and examples refer to the [website](https://mahozad.ir/android-pie-chart/#examples).
 
 ### build.gradle[.kts]
 ```groovy
@@ -76,6 +70,16 @@ fun PieChartView() {
     )
 }
 ```
+
+## Screenshots
+
+<div align="center">
+
+| Screenshot 1 | Screenshot 2 | Screenshot 3 | Screenshot 4 | Screenshot 5 |
+| ------------ | ------------ | ------------ | ------------ | ------------ |
+| ![Screenshot 2](screenshots/screenshot-2.png) | ![Screenshot 1](screenshots/screenshot-1.png) | ![Screenshot 3](screenshots/screenshot-3.png) | ![Screenshot 4](screenshots/screenshot-4.png) | ![Screenshot 5](screenshots/screenshot-5.png)
+
+</div>
 
 ## Contributing
 
