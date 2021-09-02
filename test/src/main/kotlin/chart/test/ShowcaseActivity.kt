@@ -1,6 +1,6 @@
 package chart.test
 
-import android.graphics.Color
+import android.graphics.Color.rgb
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
@@ -19,10 +19,11 @@ class ShowcaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val sliceItems = listOf(
-            Slice(0.4f, Color.MAGENTA, legend = "Legend A"),
-            Slice(0.2f, Color.YELLOW, legend = "Legend B"),
-            Slice(0.1f, Color.GREEN, legend = "Legend C"),
-            Slice(0.3f, Color.BLUE, legend = "Legend D")
+            Slice(0.30f, rgb(120, 181, 0), rgb(149, 224, 0), legend = "Legend A"),
+            Slice(0.20f, rgb(204, 168, 0), rgb(249, 228, 0), legend = "Legend B"),
+            Slice(0.20f, rgb(0, 162, 216), rgb(31, 199, 255), legend = "Legend C"),
+            Slice(0.17f, rgb(255, 4, 4), rgb(255, 72, 86), legend = "Legend D"),
+            Slice(0.13f, rgb(160, 165, 170), rgb(175, 180, 185), legend = "Legend E")
         )
 
         setContent {
@@ -35,25 +36,6 @@ class ShowcaseActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    /**
-     * Generate a list of random numbers that sum up to the base.
-     * Both the number of values and the values themselves are random.
-     *
-     * See [this post](https://stackoverflow.com/q/2640053).
-     */
-    private fun generateRandomNumbers(base: Int = 1): List<Float> {
-        val sizeRange = (1..8)
-        val numberRange = (1..50)
-        val selectedSize = sizeRange.random()
-        val randomNumbers = (1..selectedSize).map { numberRange.random() }
-        return randomNumbers.map { it.toFloat() / randomNumbers.sum() * base}
-    }
-
-    private fun generateRandomColor(): Int {
-        fun component() = (0..255).random()
-        return Color.rgb(component(), component(), component())
     }
 
     @Composable

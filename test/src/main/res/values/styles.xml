@@ -1,6 +1,6 @@
 <resources>
   <style name="TestAppTheme" parent="Theme.AppCompat">
-    <item name="android:windowBackground">#aaa</item>
-    <item name="android:colorBackground">#aaa</item>
+    <item name="android:windowBackground">#555</item>
+    <item name="android:colorBackground">#555</item>
   </style>
 </resources>
