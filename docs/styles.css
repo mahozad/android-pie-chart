@@ -66,7 +66,7 @@ code {
   border: 1px solid #e0e0e0;
   border-radius: 3px;
   position: absolute;
-  inset-block-start: 12px;
+  inset-block-start: 21px;
   inset-inline-end: 0;
   transition: all 100ms;
 }
