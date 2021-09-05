@@ -36,7 +36,7 @@
 
   <g id="logo">
     <!-- https://easings.net/ -->
-    <animateTransform id="scale1" attributeName="transform" begin="anim.begin" type="scale" dur="750ms" from="1" to="1.05"
+    <animateTransform id="scale1" attributeName="transform" begin="anim.begin - 100ms" type="scale" dur="750ms" from="1" to="1.05"
                       calcMode="spline"
                       keyTimes="0; 1"
                       keySplines="0.83, 0, 0.17, 1"
