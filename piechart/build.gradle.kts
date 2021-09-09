@@ -46,6 +46,8 @@ android {
     packagingOptions {
         exclude("META-INF/LICENSE*")
         exclude("META-INF/*.kotlin_module")
+        exclude("META-INF/AL2.0")
+        exclude("META-INF/LGPL2.1")
     }
 
     testOptions {
@@ -300,6 +302,20 @@ tasks.create("incrementVersion") {
 apply(from = "${rootProject.projectDir}/scripts/publish-module.gradle")
 
 dependencies {
+    // Integration with activities
+    implementation("androidx.activity:activity-compose:1.3.1")
+    // Compose Material Design
+    implementation("androidx.compose.material:material:1.0.2")
+    // Animations
+    implementation("androidx.compose.animation:animation:1.0.2")
+    // Tooling support (Previews, etc.)
+    implementation("androidx.compose.ui:ui-tooling:1.0.2")
+    // Integration with ViewModels
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07")
+    // UI Tests (or use androidx.compose.ui:ui-test)
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.0.2")
+
+
     /**
      * NOTE: Could not add *androidx:appcompat* library for androidTest configuration
      *    because it resulted in conflicting versions of androidx:lifecycle dependency
