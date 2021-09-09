@@ -202,9 +202,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: fwilhe2/setup-kotlin@main
-        with:
-          version: 1.5.0
+      # Refer to https://stackoverflow.com/a/69116750 for running Kotlin scripts
       - name: Generate the changelog
         run: kotlin scripts/generate-github-changelog.main.kts
       - name: Download the APK uploaded by previous job
