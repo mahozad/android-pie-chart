@@ -38,17 +38,20 @@ android {
     // -g is for granting permissions when installing the app (works on Marshmallow+ only) while -r is to allow reinstalling of the app.
     // These correspond to `adb shell pm install` options.
     // Just be aware that this does not work with Android Studio yet.
+    // "installation" block is the new name for the deprecated "adbOptions" block.
     //
     // See https://medium.com/stepstone-tech/how-to-capture-screenshots-for-failed-ui-tests-9927eea6e1e4
-    adbOptions {
+    installation {
         installOptions("-g", "-r")
     }
 
     packagingOptions {
-        exclude("META-INF/LICENSE*")
-        exclude("META-INF/*.kotlin_module")
-        exclude("META-INF/AL2.0")
-        exclude("META-INF/LGPL2.1")
+        resources {
+            excludes.add("META-INF/LICENSE*")
+            excludes.add("META-INF/*.kotlin_module")
+            excludes.add("META-INF/AL2.0")
+            excludes.add("META-INF/LGPL2.1")
+        }
     }
 
     buildFeatures {
@@ -63,20 +66,20 @@ android {
         unitTests.isIncludeAndroidResources = true
     }
 
-    lintOptions {
+    lint {
         isCheckReleaseBuilds = false
         isAbortOnError = false
     }
 
-    compileSdkVersion(30)
+    compileSdk = 30
 
     defaultConfig {
-        minSdkVersion(21)
-        targetSdkVersion(30)
-        // versionCode = 9
-        // versionName = project.version.toString()
+        // Note that versionCode and versionName properties cannot be specified (not applicable)
+        //  for Android library modules. See https://stackoverflow.com/a/67803541
+        minSdk = 21
+        targetSdk = 30
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArgument("runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder")
+        testInstrumentationRunnerArguments["runnerBuilder"] = "de.mannodermaus.junit5.AndroidJUnit5Builder"
         consumerProguardFiles("consumer-rules.pro")
     }
 
@@ -287,19 +290,11 @@ tasks.create("incrementVersion") {
             else    -> newPatch = (oldPatch.toInt() + 1).toString()
         }
         var newVersion = "$newMajor.$newMinor.$newPatch"
-        val newVersionCode = (android.defaultConfig.versionCode ?: 0) + 1
         properties["overrideVersion"]?.toString()?.let { newVersion = it }
         with(file("../README.md")) {
             writeText(
                 readText()
                 .replaceFirst(":$version", ":$newVersion"))
-        }
-        with(buildFile) {
-            writeText(
-                readText()
-                .replaceFirst(Regex("\"$version\""), "\"$newVersion\"")
-                .replaceFirst(Regex("versionCode = \\d+"), "versionCode = $newVersionCode")
-            )
         }
     }
 }
