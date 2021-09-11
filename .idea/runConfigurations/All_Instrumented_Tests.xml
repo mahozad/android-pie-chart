@@ -1,24 +1,53 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="All Instrumented Tests" type="GradleRunConfiguration" factoryName="Gradle">
-    <ExternalSystemSettings>
-      <option name="executionName" />
-      <option name="externalProjectPath" value="$PROJECT_DIR$" />
-      <option name="externalSystemIdString" value="GRADLE" />
-      <option name="scriptParameters" value=":piechart:connectedAndroidTest --stacktrace" />
-      <option name="taskDescriptions">
-        <list />
-      </option>
-      <option name="taskNames">
-        <list />
-      </option>
-      <option name="vmOptions" />
-    </ExternalSystemSettings>
-    <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-    <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-    <EXTENSION ID="com.intellij.execution.ExternalSystemRunConfigurationJavaExtension">
-      <extension name="coverage" sample_coverage="false" track_test_folders="true" runner="jacoco" />
-    </EXTENSION>
-    <DebugAllEnabled>false</DebugAllEnabled>
-    <method v="2" />
+  <configuration default="false" name="All Instrumented Tests" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests">
+    <module name="Android_Pie_Chart.piechart" />
+    <option name="TESTING_TYPE" value="1" />
+    <option name="METHOD_NAME" value="" />
+    <option name="CLASS_NAME" value="" />
+    <option name="PACKAGE_NAME" value="ir.mahozad.android" />
+    <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
+    <option name="EXTRA_OPTIONS" value="" />
+    <option name="INCLUDE_GRADLE_EXTRA_OPTIONS" value="true" />
+    <option name="CLEAR_LOGCAT" value="true" />
+    <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+    <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+    <option name="FORCE_STOP_RUNNING_APP" value="true" />
+    <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+    <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
+    <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+    <option name="DEBUGGER_TYPE" value="Java" />
+    <Auto>
+      <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+      <option name="SHOW_STATIC_VARS" value="true" />
+      <option name="WORKING_DIR" value="" />
+      <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+      <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+    </Auto>
+    <Hybrid>
+      <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+      <option name="SHOW_STATIC_VARS" value="true" />
+      <option name="WORKING_DIR" value="" />
+      <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+      <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+    </Hybrid>
+    <Java />
+    <Native>
+      <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+      <option name="SHOW_STATIC_VARS" value="true" />
+      <option name="WORKING_DIR" value="" />
+      <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+      <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+    </Native>
+    <Profilers>
+      <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+      <option name="STARTUP_PROFILING_ENABLED" value="false" />
+      <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+      <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Sample Java Methods" />
+      <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
+      <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
+    </Profilers>
+    <method v="2">
+      <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+    </method>
   </configuration>
 </component>
