@@ -3,6 +3,7 @@ import com.adarshr.gradle.testlogger.theme.ThemeType.STANDARD
 // Could also have used ${rootProject.extra["kotlinVersion"]}
 val kotlinVersion: String by rootProject.extra
 val jacocoVersion: String by rootProject.extra
+val composeVersion = "1.0.2"
 
 plugins {
     id("com.android.library")
@@ -50,6 +51,14 @@ android {
         exclude("META-INF/LGPL2.1")
     }
 
+    buildFeatures {
+        compose = true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = composeVersion
+    }
+
     testOptions {
         unitTests.isIncludeAndroidResources = true
     }
@@ -64,8 +73,8 @@ android {
     defaultConfig {
         minSdkVersion(21)
         targetSdkVersion(30)
-        versionCode = 9
-        versionName = project.version.toString()
+        // versionCode = 9
+        // versionName = project.version.toString()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArgument("runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder")
         consumerProguardFiles("consumer-rules.pro")
@@ -75,7 +84,7 @@ android {
         getByName("debug") {
             isTestCoverageEnabled = true
             isMinifyEnabled = false
-            isUseProguard = false
+            // isUseProguard = false
 
             /*
              * Refer to *ScreenshotTest* class documentations for more information.
@@ -103,11 +112,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
 }
 
@@ -305,15 +314,13 @@ dependencies {
     // Integration with activities
     implementation("androidx.activity:activity-compose:1.3.1")
     // Compose Material Design
-    implementation("androidx.compose.material:material:1.0.2")
+    implementation("androidx.compose.material:material:$composeVersion")
     // Animations
-    implementation("androidx.compose.animation:animation:1.0.2")
+    implementation("androidx.compose.animation:animation:$composeVersion")
     // Tooling support (Previews, etc.)
-    implementation("androidx.compose.ui:ui-tooling:1.0.2")
-    // Integration with ViewModels
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07")
+    implementation("androidx.compose.ui:ui-tooling:$composeVersion")
     // UI Tests (or use androidx.compose.ui:ui-test)
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.0.2")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
 
 
     /**
