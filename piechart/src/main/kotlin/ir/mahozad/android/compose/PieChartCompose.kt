@@ -31,8 +31,8 @@ fun PieChartCompose(
         transitionProgress.animateTo(1f, animationSpec = animation)
     }
 
-    DrawChart(
-        pieChartData = pieChartData,
+    Pie(
+        slices = pieChartData,
         modifier = modifier.fillMaxSize(),
         progress = transitionProgress.value,
         // sliceDrawer = sliceDrawer
@@ -40,15 +40,14 @@ fun PieChartCompose(
 }
 
 @Composable
-private fun DrawChart(
-    pieChartData: List<Slice2>,
+private fun Pie(
+    slices: List<Slice2>,
     modifier: Modifier,
     progress: Float,
     // sliceDrawer: SliceDrawer
 ) {
-    val slices = pieChartData
-
     Canvas(modifier = modifier) {
+        val radius = calculatePieRadius(size)
         drawIntoCanvas {
             var startArc = 0f
 
@@ -56,7 +55,7 @@ private fun DrawChart(
                 val angle = 100
 
                 // drawArc()
-                drawContext.canvas.drawCircle(center, 200f, AndroidPaint())
+                drawContext.canvas.drawCircle(center, radius, AndroidPaint())
 
                 startArc += angle
             }
