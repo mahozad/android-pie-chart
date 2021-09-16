@@ -18,11 +18,11 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.tooling.preview.Preview
 
-data class Slice2(val fraction: Float, val color: Color)
+data class SliceCompose(val fraction: Float, val color: Color)
 
 @Composable
 fun PieChartCompose(
-    pieChartData: List<Slice2>,
+    pieChartData: List<SliceCompose>,
     modifier: Modifier = Modifier,
     animation: AnimationSpec<Float> = TweenSpec(durationMillis = 500),
     // sliceDrawer: SliceDrawer = SimpleSliceDrawer()
@@ -46,7 +46,7 @@ fun PieChartCompose(
 
 @Composable
 private fun Pie(
-    slices: List<Slice2>,
+    slices: List<SliceCompose>,
     modifier: Modifier,
     progress: Float,
     holeRatio: Float,
@@ -92,5 +92,5 @@ private fun DrawScope.drawOverlay(pieRadius: Float, overlayRatio: Float, color: 
 
 @Preview
 @Composable fun PieChartPreview() {
-    PieChartCompose(pieChartData = listOf(Slice2(1f, Color.Black)), Modifier.aspectRatio(1f))
+    PieChartCompose(pieChartData = listOf(SliceCompose(1f, Color.Black)), Modifier.aspectRatio(1f))
 }
