@@ -316,7 +316,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling:$composeVersion")
     // UI Tests (or use androidx.compose.ui:ui-test)
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
-
+    // Required for screenshot tests. See https://stackoverflow.com/a/69176420
+    debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
 
     /**
      * NOTE: Could not add *androidx:appcompat* library for androidTest configuration

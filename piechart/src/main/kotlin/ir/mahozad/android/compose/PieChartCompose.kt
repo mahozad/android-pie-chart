@@ -4,6 +4,7 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -65,5 +66,5 @@ private fun DrawChart(
 
 @Preview
 @Composable fun PieChartPreview() {
-    PieChartCompose(pieChartData = listOf(Slice2(1f, Color.Black)))
+    PieChartCompose(pieChartData = listOf(Slice2(1f, Color.Black)), Modifier.aspectRatio(1f))
 }

@@ -1,8 +1,8 @@
 <resources>
 
   <style name="ScreenshotTestAppTheme" parent="Theme.AppCompat">
-    <item name="android:windowBackground">#aaa</item>
-    <item name="android:colorBackground">#aaa</item>
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <item name="android:colorBackground">@android:color/transparent</item>
   </style>
 
   <style name="TestStyleNotDefined">
