@@ -38,7 +38,8 @@ fun PieChartCompose(
         slices = pieChartData,
         modifier = modifier.fillMaxSize(),
         progress = transitionProgress.value,
-        holeRatio = 0.34f
+        holeRatio = 0.34f,
+        overlayRatio = 0.6f
         // sliceDrawer = sliceDrawer
     )
 }
@@ -49,6 +50,7 @@ private fun Pie(
     modifier: Modifier,
     progress: Float,
     holeRatio: Float,
+    overlayRatio: Float
     // sliceDrawer: SliceDrawer
 ) {
     Canvas(modifier = modifier) {
@@ -56,6 +58,7 @@ private fun Pie(
         val hole = makeHole(pieRadius, holeRatio)
         clipPath(hole, ClipOp.Difference) {
             drawArc(Color.Red, 0f, 110f, true)
+            drawOverlay(pieRadius, overlayRatio, Color(0, 0, 0, 100))
         }
 
         // OR
@@ -80,6 +83,11 @@ private fun Pie(
 private fun DrawScope.makeHole(pieRadius: Float, holeRatio: Float): Path {
     val holeRadius = holeRatio * pieRadius
     return Path().apply { addOval(Rect(center, holeRadius)) }
+}
+
+private fun DrawScope.drawOverlay(pieRadius: Float, overlayRatio: Float, color: Color) {
+    val overlayRadius = overlayRatio * pieRadius
+    drawCircle(color, overlayRadius)
 }
 
 @Preview
