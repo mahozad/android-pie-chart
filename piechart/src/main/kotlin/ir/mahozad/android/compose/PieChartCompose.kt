@@ -10,9 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.AndroidPaint
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.ClipOp
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.tooling.preview.Preview
 
 data class Slice2(val fraction: Float, val color: Color)
@@ -35,6 +38,7 @@ fun PieChartCompose(
         slices = pieChartData,
         modifier = modifier.fillMaxSize(),
         progress = transitionProgress.value,
+        holeRatio = 0.34f
         // sliceDrawer = sliceDrawer
     )
 }
@@ -44,23 +48,38 @@ private fun Pie(
     slices: List<Slice2>,
     modifier: Modifier,
     progress: Float,
+    holeRatio: Float,
     // sliceDrawer: SliceDrawer
 ) {
     Canvas(modifier = modifier) {
-        val radius = calculatePieRadius(size)
-        drawIntoCanvas {
-            var startArc = 0f
-
-            slices.forEach { slice ->
-                val angle = 100
-
-                // drawArc()
-                drawContext.canvas.drawCircle(center, radius, AndroidPaint())
-
-                startArc += angle
-            }
+        val pieRadius = calculatePieRadius(size)
+        val hole = makeHole(pieRadius, holeRatio)
+        clipPath(hole, ClipOp.Difference) {
+            drawArc(Color.Red, 0f, 110f, true)
         }
+
+        // OR
+        // drawIntoCanvas {
+        //     var startArc = 0f
+        //
+        //     slices.forEach { slice ->
+        //         val angle = 100
+        //
+        //         it.drawCircle(center, radius, AndroidPaint())
+        //         // OR drawArc()
+        //         // OR
+        //         // val radius = calculatePieRadius(size)
+        //         // drawContext.canvas.drawCircle(center, radius, AndroidPaint())
+        //
+        //         startArc += angle
+        //     }
+        // }
     }
+}
+
+private fun DrawScope.makeHole(pieRadius: Float, holeRatio: Float): Path {
+    val holeRadius = holeRatio * pieRadius
+    return Path().apply { addOval(Rect(center, holeRadius)) }
 }
 
 @Preview
