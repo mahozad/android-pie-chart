@@ -5,7 +5,6 @@ import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -17,6 +16,8 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.tooling.preview.Preview
+import ir.mahozad.android.DEFAULT_HOLE_RATIO
+import ir.mahozad.android.DEFAULT_OVERLAY_RATIO
 
 data class SliceCompose(val fraction: Float, val color: Color)
 
@@ -24,6 +25,8 @@ data class SliceCompose(val fraction: Float, val color: Color)
 fun PieChartCompose(
     pieChartData: List<SliceCompose>,
     modifier: Modifier = Modifier,
+    holeRatio: Float = DEFAULT_HOLE_RATIO,
+    overlayRatio: Float = DEFAULT_OVERLAY_RATIO,
     animation: AnimationSpec<Float> = TweenSpec(durationMillis = 500),
     // sliceDrawer: SliceDrawer = SimpleSliceDrawer()
 ) {
@@ -38,8 +41,8 @@ fun PieChartCompose(
         slices = pieChartData,
         modifier = modifier.fillMaxSize(),
         progress = transitionProgress.value,
-        holeRatio = 0.34f,
-        overlayRatio = 0.6f
+        holeRatio,
+        overlayRatio
         // sliceDrawer = sliceDrawer
     )
 }
@@ -57,7 +60,7 @@ private fun Pie(
         val pieRadius = calculatePieRadius(size)
         val hole = makeHole(pieRadius, holeRatio)
         clipPath(hole, ClipOp.Difference) {
-            drawArc(Color.Red, 0f, 110f, true)
+            drawArc(Color.Red, 0f, 360f, true)
             drawOverlay(pieRadius, overlayRatio, Color(0, 0, 0, 100))
         }
 
@@ -92,5 +95,8 @@ private fun DrawScope.drawOverlay(pieRadius: Float, overlayRatio: Float, color: 
 
 @Preview
 @Composable fun PieChartPreview() {
-    PieChartCompose(pieChartData = listOf(SliceCompose(1f, Color.Black)), Modifier.aspectRatio(1f))
+    PieChartCompose(
+        pieChartData = listOf(SliceCompose(1f, Color.Black)),
+        Modifier.aspectRatio(1f) /* OR .fillMaxSize() */,
+    )
 }
