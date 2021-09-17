@@ -1,5 +1,6 @@
 package ir.mahozad.android.compose
 
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -82,10 +83,55 @@ class ScreenshotTestCompose {
     val shouldSave = InstrumentationRegistry.getArguments().getString("shouldSave", "false").toBoolean()
     val shouldAssert = InstrumentationRegistry.getArguments().getString("shouldAssert", "true").toBoolean()
 
-    @Test fun first() {
-        val screenshotName = "screenshot"
+    @Test fun chartShouldBeDisplayed() {
+        val screenshotName = "screenshot-1"
+        composeTestRule.setContent {
+            PieChartCompose(pieChartData = listOf(SliceCompose(1f, Color.Red)))
+        }
+        val node = composeTestRule.onRoot()
+        val screenshot = node.captureToImage().asAndroidBitmap()
 
-        composeTestRule.setContent { PieChartPreview() }
+        if (shouldSave) {
+            saveScreenshot(screenshot, screenshotName)
+        }
+        if (shouldAssert) {
+            val reference = loadReferenceScreenshot(screenshotName)
+            assertThat(screenshot.sameAs(reference))
+                .withFailMessage { "Screenshots are not the same: $screenshotName.png" }
+                .isTrue()
+        }
+    }
+
+    @Test fun changeHoleRatio() {
+        val screenshotName = "screenshot-2"
+        composeTestRule.setContent {
+            PieChartCompose(
+                pieChartData = listOf(SliceCompose(1f, Color.Red)),
+                holeRatio = 0.11f
+            )
+        }
+        val node = composeTestRule.onRoot()
+        val screenshot = node.captureToImage().asAndroidBitmap()
+
+        if (shouldSave) {
+            saveScreenshot(screenshot, screenshotName)
+        }
+        if (shouldAssert) {
+            val reference = loadReferenceScreenshot(screenshotName)
+            assertThat(screenshot.sameAs(reference))
+                .withFailMessage { "Screenshots are not the same: $screenshotName.png" }
+                .isTrue()
+        }
+    }
+
+    @Test fun changeOverlayRatio() {
+        val screenshotName = "screenshot-3"
+        composeTestRule.setContent {
+            PieChartCompose(
+                pieChartData = listOf(SliceCompose(1f, Color.Red)),
+                overlayRatio = 0.37f
+            )
+        }
         val node = composeTestRule.onRoot()
         val screenshot = node.captureToImage().asAndroidBitmap()
 
