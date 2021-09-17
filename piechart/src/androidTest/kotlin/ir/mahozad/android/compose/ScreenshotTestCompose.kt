@@ -76,6 +76,7 @@ import java.io.File
  *  ```
  * With this solution, do not forget to change the build variant to "local" in the IDE.
  */
+@Suppress("UsePropertyAccessSyntax")
 @DisabledIfBuildConfigValue(named = "CI", matches = "true")
 @TestInstance(PER_CLASS)
 class ScreenshotTestCompose {
@@ -98,7 +99,7 @@ class ScreenshotTestCompose {
         if (shouldAssert) {
             val reference = loadReferenceScreenshot(screenshotName)
             assertThat(screenshot.sameAs(reference))
-                .withFailMessage { "Screenshots are not the same: $screenshotName" }
+                .withFailMessage { "Screenshots are not the same: $screenshotName.png" }
                 .isTrue()
         }
     }
