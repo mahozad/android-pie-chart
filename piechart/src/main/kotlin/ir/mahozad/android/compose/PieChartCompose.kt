@@ -39,7 +39,7 @@ fun PieChartCompose(
 
     Pie(
         slices = pieChartData,
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.aspectRatio(1f),
         progress = transitionProgress.value,
         holeRatio,
         overlayRatio
