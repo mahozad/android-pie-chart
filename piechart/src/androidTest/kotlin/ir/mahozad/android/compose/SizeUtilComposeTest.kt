@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-class SizeUtilTest {
+class SizeUtilComposeTest {
 
     @Nested inner class PieRadius {
         @Test fun calculatePieRadiusUnspecifiedSize() {
