@@ -320,10 +320,9 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
 
     /**
-     * NOTE: Could not add *androidx:appcompat* library for androidTest configuration
-     *    because it resulted in conflicting versions of androidx:lifecycle dependency
-     *    that could not be resolved (by, for example, forcing a specific version of it).
+     * NOTE: Watch for conflicting versions of androidx:lifecycle dependency when using appcompat library
      */
+    implementation("androidx.appcompat:appcompat:1.3.1")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     implementation("androidx.core:core-ktx:1.6.0")
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.2")
