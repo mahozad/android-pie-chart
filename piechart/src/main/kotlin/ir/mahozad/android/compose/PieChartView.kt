@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.core.content.withStyledAttributes
 import ir.mahozad.android.DEFAULT_HOLE_RATIO
+import ir.mahozad.android.DEFAULT_OVERLAY_RATIO
 import ir.mahozad.android.R
 
 /**
@@ -22,6 +23,10 @@ class PieChartView @JvmOverloads constructor(
     var holeRatioResource by FractionResource(::holeRatio)
     var holeRatio by Property(holeRatioState, { it.coerceIn(0f, 1f) })
 
+    private val overlayRatioState = mutableStateOf(DEFAULT_OVERLAY_RATIO)
+    var overlayRatioResource by FractionResource(::overlayRatio)
+    var overlayRatio by Property(overlayRatioState, { it.coerceIn(0f, 1f) })
+
     /**
      * Attributes are a powerful way of controlling the behavior and appearance of views,
      * but they can only be read when the view is initialized. To provide dynamic behavior,
@@ -36,6 +41,7 @@ class PieChartView @JvmOverloads constructor(
         // See https://stackoverflow.com/a/68803044
         context.withStyledAttributes(attrs, R.styleable.PieChart) {
             holeRatio = getFloat(R.styleable.PieChart_holeRatio, DEFAULT_HOLE_RATIO)
+            overlayRatio = getFloat(R.styleable.PieChart_overlayRatio, DEFAULT_OVERLAY_RATIO)
         }
     }
 
@@ -47,7 +53,7 @@ class PieChartView @JvmOverloads constructor(
                 .width(Dp(width.toFloat()))
                 .padding(),*/
             holeRatio = holeRatioState.value,
-            overlayRatio = 0.65f
+            overlayRatio = overlayRatioState.value
         )
     }
 }
