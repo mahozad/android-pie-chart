@@ -1,8 +1,5 @@
 package ir.mahozad.android.compose
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.os.Environment
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -17,7 +14,6 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable
 import org.junit.jupiter.api.condition.DisabledOnOs
-import java.io.File
 
 /**
  * These tests are used to visually inspect the chart to avoid any regressions.
@@ -102,39 +98,5 @@ class ScreenshotTestCompose {
                 .withFailMessage { "Screenshots are not the same: $screenshotName.png" }
                 .isTrue()
         }
-    }
-
-    /**
-     * The screenshots are saved in /Android/data/ir.mahozad.android.test/files/Pictures
-     * on the external storage of the device.
-     *
-     * Saving files on the device both requires WRITE permission in the manifest file and also
-     * adb install options -g and -r. See the build script for more information.
-     */
-    private fun saveScreenshot(screenshot: Bitmap, name: String) {
-        val context = InstrumentationRegistry.getInstrumentation().targetContext
-        val path = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        val file = File(path, "$name.png")
-        file.outputStream().use { stream ->
-            screenshot.compress(Bitmap.CompressFormat.PNG, 100, stream)
-        }
-    }
-
-    /**
-     * NOTE: the *assets* directory was specified as an assets directory in the build script.
-     *
-     * Could also have saved the screenshots in *drawable* directory and loaded them like below.
-     * See [this post](https://stackoverflow.com/a/9899056).
-     * ```
-     * val resourceId = ir.mahozad.android.test.R.drawable.myDrawableName
-     * val reference = BitmapFactory.decodeResource(context.resources, resourceId)
-     * ```
-     */
-    private fun loadReferenceScreenshot(name: String): Bitmap {
-        val context = InstrumentationRegistry.getInstrumentation().context
-        val reference = context.resources.assets.open("compose/$name.png").use {
-            BitmapFactory.decodeStream(it)
-        }
-        return reference
     }
 }
