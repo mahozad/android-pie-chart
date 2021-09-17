@@ -6,7 +6,7 @@
     <option name="CLASS_NAME" value="" />
     <option name="PACKAGE_NAME" value="ir.mahozad.android" />
     <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
-    <option name="EXTRA_OPTIONS" value="-e notClass ir.mahozad.android.ScreenshotTest,ir.mahozad.android.compose.ScreenshotTestCompose" />
+    <option name="EXTRA_OPTIONS" value="-e notClass ir.mahozad.android.ScreenshotTest,ir.mahozad.android.compose.ScreenshotTestCompose,ir.mahozad.android.compose.ScreenshotTestView" />
     <option name="INCLUDE_GRADLE_EXTRA_OPTIONS" value="true" />
     <option name="CLEAR_LOGCAT" value="true" />
     <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
