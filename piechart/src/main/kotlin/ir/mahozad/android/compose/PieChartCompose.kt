@@ -21,6 +21,10 @@ import ir.mahozad.android.DEFAULT_OVERLAY_RATIO
 
 data class SliceCompose(val fraction: Float, val color: Color)
 
+/**
+ * By default, the ani-alias is *ENABLED*. See [this post](https://stackoverflow.com/a/64689612).
+ */
+
 @Composable
 fun PieChartCompose(
     pieChartData: List<SliceCompose>,
