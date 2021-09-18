@@ -15,7 +15,7 @@ internal class Property<T>(
     operator fun getValue(chart: PieChartView, property: KProperty<*>) = state.value
     operator fun setValue(chart: PieChartView, property: KProperty<*>, newValue: T) {
         state.value = valueProcessor?.invoke(newValue) ?: newValue
-        valueChangeHandler?.invoke(state.value) ?: chart.invalidate()
+        valueChangeHandler?.invoke(state.value) /*?: chart.invalidate()*/
     }
 }
 
