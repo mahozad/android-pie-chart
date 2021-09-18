@@ -13,5 +13,5 @@ class ScreenshotComposeViewTestActivity : AppCompatActivity() {
         chart = findViewById(ir.mahozad.android.test.R.id.screenshotComposeViewTestPieChart)
     }
 
-    fun configureChart(config: (chart: PieChartView) -> Unit) = config(chart)
+    fun configureChart(config: PieChartView.() -> Unit) = chart.config()
 }

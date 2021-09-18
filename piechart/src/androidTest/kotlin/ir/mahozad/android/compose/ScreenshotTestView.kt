@@ -1,5 +1,6 @@
 package ir.mahozad.android.compose
 
+import androidx.compose.ui.graphics.Color
 import androidx.core.view.drawToBitmap
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
@@ -32,10 +33,10 @@ class ScreenshotTestView {
     }
 
     @Test fun viewShouldBeDisplayedCorrectly() {
-        val screenshotName = "screenshot-view"
+        val screenshotName = "screenshot-view-1"
         scenario.onActivity { activity ->
-            activity.configureChart { chart ->
-                val screenshot = chart.drawToBitmap()
+            activity.configureChart {
+                val screenshot = drawToBitmap()
                 if (shouldSave) {
                     saveScreenshot(screenshot, screenshotName)
                 }
@@ -46,6 +47,29 @@ class ScreenshotTestView {
                         .isTrue()
                 }
             }
+        }
+    }
+
+    @Test fun changeViewProperties() {
+        val screenshotName = "screenshot-view-2"
+        lateinit var chart: PieChartView
+        scenario.onActivity { activity ->
+            activity.configureChart {
+                chart = this
+                slices = listOf(SliceCompose(1f, Color.Red))
+                holeRatio = 0.19f
+            }
+        }
+        Thread.sleep(100) // FIXME: Because the below statement didn't capture the new state
+        val screenshot = chart.drawToBitmap()
+        if (shouldSave) {
+            saveScreenshot(screenshot, screenshotName)
+        }
+        if (shouldAssert) {
+            val reference = loadReferenceScreenshot(screenshotName)
+            assertThat(screenshot.sameAs(reference))
+                .withFailMessage { "Screenshots are not the same: $screenshotName.png" }
+                .isTrue()
         }
     }
 }

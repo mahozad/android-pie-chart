@@ -1,13 +1,10 @@
 package ir.mahozad.android.compose
 
-import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.TweenSpec
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.ClipOp
@@ -34,17 +31,17 @@ fun PieChartCompose(
     animation: AnimationSpec<Float> = TweenSpec(durationMillis = 500),
     // sliceDrawer: SliceDrawer = SimpleSliceDrawer()
 ) {
-    val transitionProgress = remember(pieChartData) { Animatable(initialValue = 0f) }
+    /*val transitionProgress = remember(pieChartData) { Animatable(initialValue = 0f) }
 
     // When slices value changes we want to re-animated the chart.
     LaunchedEffect(pieChartData) {
         transitionProgress.animateTo(1f, animationSpec = animation)
-    }
+    }*/
 
     Pie(
         slices = pieChartData,
         modifier = modifier.aspectRatio(1f),
-        progress = transitionProgress.value,
+        1f,/*progress = transitionProgress.value,*/
         holeRatio,
         overlayRatio
         // sliceDrawer = sliceDrawer
@@ -57,14 +54,21 @@ private fun Pie(
     modifier: Modifier,
     progress: Float,
     holeRatio: Float,
-    overlayRatio: Float
+    overlayRatio: Float,
     // sliceDrawer: SliceDrawer
 ) {
+    val startAngle = -90
+    val fractions = slices.map(SliceCompose::fraction)
+    val startAngles = calculateStartAngles(startAngle, fractions)
+
     Canvas(modifier = modifier) {
         val pieRadius = calculatePieRadius(size)
         val hole = makeHole(pieRadius, holeRatio)
         clipPath(hole, ClipOp.Difference) {
-            drawArc(Color.Red, 0f, 360f, true)
+            for ((i, angle) in startAngles.withIndex()) {
+                val sweepAngle = slices[i].fraction * 360
+                drawArc(slices[i].color, angle, sweepAngle, true)
+            }
             drawOverlay(pieRadius, overlayRatio, Color(0, 0, 0, 100))
         }
 
@@ -100,7 +104,13 @@ private fun DrawScope.drawOverlay(pieRadius: Float, overlayRatio: Float, color: 
 @Preview
 @Composable fun PieChartPreview() {
     PieChartCompose(
-        pieChartData = listOf(SliceCompose(1f, Color.Black)),
-        Modifier.aspectRatio(1f) /* OR .fillMaxSize() */,
+        pieChartData = listOf(
+            SliceCompose(0.3f, Color(120, 181, 0)),
+            SliceCompose(0.2f, Color(0, 162, 216)),
+            SliceCompose(0.2f, Color(204, 168, 0)),
+            SliceCompose(0.17f, Color(255, 4, 4)),
+            SliceCompose(0.13f, Color(160, 165, 170))
+        ),
+        Modifier.aspectRatio(1f), /* OR .fillMaxSize() */
     )
 }

@@ -38,4 +38,34 @@ class SizeUtilComposeTest {
             assertThat(radius).isEqualTo(29.5f)
         }
     }
+
+    @Nested inner class StartAngles {
+        @Test fun calculateStartAnglesWhenFractionListIsEmpty() {
+            val startAngle = -90
+            val fractions = listOf<Float>()
+            val startAngles = calculateStartAngles(startAngle, fractions)
+            assertThat(startAngles).isEqualTo(emptyList<Float>())
+        }
+
+        @Test fun calculateStartAnglesWith1SmallFraction() {
+            val startAngle = -90
+            val fractions = listOf(0.08f)
+            val startAngles = calculateStartAngles(startAngle, fractions)
+            assertThat(startAngles).isEqualTo(listOf(270f))
+        }
+
+        @Test fun calculateStartAnglesWith1LargeFraction() {
+            val startAngle = -90
+            val fractions = listOf(0.38f)
+            val startAngles = calculateStartAngles(startAngle, fractions)
+            assertThat(startAngles).isEqualTo(listOf(270f))
+        }
+
+        @Test fun calculateStartAnglesWith2Fractions() {
+            val startAngle = -90
+            val fractions = listOf(0.08f, 0.92f)
+            val startAngles = calculateStartAngles(startAngle, fractions)
+            assertThat(startAngles).isEqualTo(listOf(270f, 298.8f))
+        }
+    }
 }
