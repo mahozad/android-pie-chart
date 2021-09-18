@@ -2,13 +2,9 @@ package ir.mahozad.android.compose
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asAndroidBitmap
-import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onRoot
 import androidx.test.platform.app.InstrumentationRegistry
 import de.mannodermaus.junit5.condition.DisabledIfBuildConfigValue
-import org.assertj.core.api.Assertions.assertThat
 import org.junit.Rule
 import org.junit.Test
 import org.junit.jupiter.api.Disabled
@@ -72,7 +68,6 @@ import org.junit.jupiter.api.condition.DisabledOnOs
  *  ```
  * With this solution, do not forget to change the build variant to "local" in the IDE.
  */
-@Suppress("UsePropertyAccessSyntax")
 @DisabledIfBuildConfigValue(named = "CI", matches = "true")
 class ScreenshotTestCompose {
 
@@ -85,7 +80,7 @@ class ScreenshotTestCompose {
         val screenshotName = "screenshot-1"
         composeTestRule.setContent {
             PieChartCompose(
-                pieChartData = listOf(
+                listOf(
                     SliceCompose(0.3f, Color(120, 181, 0)/*, Color(149, 224, 0)*/),
                     SliceCompose(0.2f, Color(204, 168, 0)/*, Color(249, 228, 0)*/),
                     SliceCompose(0.2f, Color(0, 162, 216)/*, Color(31, 199, 255)*/),
@@ -94,51 +89,38 @@ class ScreenshotTestCompose {
                 )
             )
         }
-        val node = composeTestRule.onRoot()
-        val screenshot = node.captureToImage().asAndroidBitmap()
-
-        if (shouldSave) {
-            saveScreenshot(screenshot, screenshotName)
-        }
-        if (shouldAssert) {
-            val reference = loadReferenceScreenshot(screenshotName)
-            assertThat(screenshot.sameAs(reference))
-                .withFailMessage { "Screenshots are not the same: $screenshotName.png" }
-                .isTrue()
-        }
+        composeTestRule
+            .takeScreenshot()
+            .saveIfNeeded(shouldSave, screenshotName)
+            .assertIfNeeded(shouldAssert, screenshotName)
     }
 
     @Test fun changeSlices() {
         val screenshotName = "screenshot-2"
-        val slices = mutableStateOf(listOf(
-            SliceCompose(0.3f, Color(120, 181, 0)/*, Color(149, 224, 0)*/),
-            SliceCompose(0.2f, Color(204, 168, 0)/*, Color(249, 228, 0)*/),
-            SliceCompose(0.2f, Color(0, 162, 216)/*, Color(31, 199, 255)*/),
-            SliceCompose(0.17f, Color(255, 4, 4)/*, Color(255, 72, 86)*/),
-            SliceCompose(0.13f, Color(160, 165, 170)/*, Color(175, 180, 185)*/)
-        ))
-        composeTestRule.setContent { PieChartCompose(pieChartData = slices.value) }
+        val slices = mutableStateOf(
+            listOf(
+                SliceCompose(0.3f, Color(120, 181, 0)/*, Color(149, 224, 0)*/),
+                SliceCompose(0.2f, Color(204, 168, 0)/*, Color(249, 228, 0)*/),
+                SliceCompose(0.2f, Color(0, 162, 216)/*, Color(31, 199, 255)*/),
+                SliceCompose(0.17f, Color(255, 4, 4)/*, Color(255, 72, 86)*/),
+                SliceCompose(0.13f, Color(160, 165, 170)/*, Color(175, 180, 185)*/)
+            )
+        )
+
+        composeTestRule.setContent { PieChartCompose(slices.value) }
         slices.value = listOf(SliceCompose(1f, Color.Green))
 
-        val node = composeTestRule.onRoot()
-        val screenshot = node.captureToImage().asAndroidBitmap()
-
-        if (shouldSave) {
-            saveScreenshot(screenshot, screenshotName)
-        }
-        if (shouldAssert) {
-            val reference = loadReferenceScreenshot(screenshotName)
-            assertThat(screenshot.sameAs(reference))
-                .withFailMessage { "Screenshots are not the same: $screenshotName.png" }
-                .isTrue()
-        }
+        composeTestRule
+            .takeScreenshot()
+            .saveIfNeeded(shouldSave, screenshotName)
+            .assertIfNeeded(shouldAssert, screenshotName)
     }
 
     @Test fun changeHoleRatio() {
         val screenshotName = "screenshot-3"
         composeTestRule.setContent {
             PieChartCompose(
-                pieChartData = listOf(
+                listOf(
                     SliceCompose(0.3f, Color(120, 181, 0)/*, Color(149, 224, 0)*/),
                     SliceCompose(0.2f, Color(204, 168, 0)/*, Color(249, 228, 0)*/),
                     SliceCompose(0.2f, Color(0, 162, 216)/*, Color(31, 199, 255)*/),
@@ -148,25 +130,17 @@ class ScreenshotTestCompose {
                 holeRatio = 0.11f
             )
         }
-        val node = composeTestRule.onRoot()
-        val screenshot = node.captureToImage().asAndroidBitmap()
-
-        if (shouldSave) {
-            saveScreenshot(screenshot, screenshotName)
-        }
-        if (shouldAssert) {
-            val reference = loadReferenceScreenshot(screenshotName)
-            assertThat(screenshot.sameAs(reference))
-                .withFailMessage { "Screenshots are not the same: $screenshotName.png" }
-                .isTrue()
-        }
+        composeTestRule
+            .takeScreenshot()
+            .saveIfNeeded(shouldSave, screenshotName)
+            .assertIfNeeded(shouldAssert, screenshotName)
     }
 
     @Test fun changeOverlayRatio() {
         val screenshotName = "screenshot-4"
         composeTestRule.setContent {
             PieChartCompose(
-                pieChartData = listOf(
+                listOf(
                     SliceCompose(0.3f, Color(120, 181, 0)/*, Color(149, 224, 0)*/),
                     SliceCompose(0.2f, Color(204, 168, 0)/*, Color(249, 228, 0)*/),
                     SliceCompose(0.2f, Color(0, 162, 216)/*, Color(31, 199, 255)*/),
@@ -176,17 +150,9 @@ class ScreenshotTestCompose {
                 overlayRatio = 0.37f
             )
         }
-        val node = composeTestRule.onRoot()
-        val screenshot = node.captureToImage().asAndroidBitmap()
-
-        if (shouldSave) {
-            saveScreenshot(screenshot, screenshotName)
-        }
-        if (shouldAssert) {
-            val reference = loadReferenceScreenshot(screenshotName)
-            assertThat(screenshot.sameAs(reference))
-                .withFailMessage { "Screenshots are not the same: $screenshotName.png" }
-                .isTrue()
-        }
+        composeTestRule
+            .takeScreenshot()
+            .saveIfNeeded(shouldSave, screenshotName)
+            .assertIfNeeded(shouldAssert, screenshotName)
     }
 }
