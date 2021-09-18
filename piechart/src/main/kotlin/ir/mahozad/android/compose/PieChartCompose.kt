@@ -61,7 +61,7 @@ private fun Pie(
     val fractions = slices.map(SliceCompose::fraction)
     val startAngles = calculateStartAngles(startAngle, fractions)
 
-    val transitionData = updateTransitionData(AnimationState.STARTED, holeRatio)
+    val transitionData = updateTransitionData2(holeRatio)
 
     Canvas(modifier = modifier) {
         val pieRadius = calculatePieRadius(size)
