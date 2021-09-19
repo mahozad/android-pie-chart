@@ -11,6 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import ir.mahozad.android.DEFAULT_HOLE_RATIO
 import ir.mahozad.android.compose.PieChartCompose
 import ir.mahozad.android.compose.SliceCompose
 import ir.mahozad.android.compose.defaultSlices
@@ -18,13 +19,13 @@ import kotlin.random.Random
 
 class ShowcaseComposeActivity : ComponentActivity() {
 
-    private val random = Random(0 /* or System.currentTimeMillis */)
+    private val random = Random(0 /* OR System.currentTimeMillis */)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             var slices by remember { mutableStateOf(defaultSlices) }
-            var holeRatio by remember { mutableStateOf(0.4f) }
+            var holeRatio by remember { mutableStateOf(DEFAULT_HOLE_RATIO) }
             MaterialTheme {
                 PieChartCompose(
                     Modifier
@@ -33,10 +34,10 @@ class ShowcaseComposeActivity : ComponentActivity() {
                             slices = generateRandomNumbers().map { fraction ->
                                 SliceCompose(fraction, generateRandomColorCompose())
                             }
-                            holeRatio = 0.2f /* or random.nextFloat() */
+                            holeRatio = 0.2f /* OR random.nextFloat() */
                         },
                     slices,
-                    holeRatio = holeRatio,
+                    holeRatio,
                 )
             }
         }

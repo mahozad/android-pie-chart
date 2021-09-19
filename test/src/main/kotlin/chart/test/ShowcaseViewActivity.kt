@@ -14,6 +14,7 @@ class ShowcaseViewActivity: ComponentActivity() {
             chart.slices = generateRandomNumbers().map { fraction ->
                 SliceCompose(fraction, generateRandomColorCompose())
             }
+            chart.holeRatio = 0.2f
         }
     }
 }
