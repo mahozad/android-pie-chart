@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <color name="title_compose_color">#00BCD4</color>
+  <color name="title_view_color">#FF9800</color>
   <color name="sampleColor">#ff0</color>
   <array name="sampleColorArray">
     <item>#ff00AE28</item>

@@ -1,3 +1,4 @@
 <resources>
-
+  <string name="title_view" translatable="false">View</string>
+  <string name="title_compose" translatable="false">Compose</string>
 </resources>

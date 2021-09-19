@@ -1,7 +1,16 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:textColor="@color/title_view_color"
+      android:textSize="@dimen/title_view_size"
+      android:text="@string/title_view" />
 
   <ir.mahozad.android.compose.PieChartView
       android:id="@+id/pieChart"
