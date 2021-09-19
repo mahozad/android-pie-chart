@@ -56,11 +56,14 @@ class TransitionData(
 
 
 /**
+ * This approach does not animate smoothly when the value is changed while
+ * the previous value animation was still running.
+ *
  * On initialization, transition is set the value INITIALIZED and animation is run
  * so the if statement chooses the if branch and the holeRatio is set to value `0f` (without animation).
  * Next times, when the holeRatio is updated (and the function is recomposed),
  * the target state is assigned the same literal (`RECOMPOSED`) and so the conditional always
- * runs the else block and thus it animates to the targetHoleRatio.
+ * runs the else block and thus the holeRatio animates to the targetHoleRatio.
  */
 @Composable fun updateTransitionData2(
     targetHoleRatio: Float
@@ -72,7 +75,7 @@ class TransitionData(
     val holeRatio = transition.animateFloat(
         label = "hole-animation",
         transitionSpec = {
-            tween(durationMillis = 500, delayMillis = 0, easing = FastOutSlowInEasing)
+            tween(durationMillis = 1500, delayMillis = 0, easing = FastOutSlowInEasing)
         }) { if (it == AnimationState.INITIALIZED) 0f else targetHoleRatio }
 
     return remember(transition) { TransitionData2(holeRatio) }
@@ -92,19 +95,51 @@ class TransitionData2(
 
 
 
-
 @Composable fun updateTransitionData3(
     targetHoleRatio: Float
 ): TransitionData3 {
+    /*
+    // Reinitialize animation value when targetHoleRatio changes
+    val holeRatioAnimation = remember(targetHoleRatio) { Animatable(0f) }
+    val holeRatioAnimationProgress by holeRatioAnimation.asState()
+    LaunchedEffect (targetHoleRatio) {
+        holeRatioAnimation.animateTo(1f)
+    }
+    */
+
+    val holeRatio = animateFloatAsState(
+        targetValue = targetHoleRatio,
+        animationSpec = tween(durationMillis = 1500, delayMillis = 0, easing = FastOutSlowInEasing)
+    )
+
+    return remember { TransitionData3(holeRatio) }
+}
+
+class TransitionData3(
+    holeRatio: State<Float>
+) {
+    val holeRatio by holeRatio
+}
+
+
+
+
+
+
+
+
+@Composable fun updateTransitionData4(
+    targetHoleRatio: Float
+): TransitionData4 {
     val mutableState = remember { MutableTransitionState(AnimationState.INITIALIZED) }
     mutableState.targetState = AnimationState.RECOMPOSED
     val transition = updateTransition(mutableState, label = "main-animation")
     val animation = remember { SimpleAnimation }
     animation.Animation(transition, targetHoleRatio)
-    return remember { TransitionData3(animation.holeRatio) }
+    return remember { TransitionData4(animation.holeRatio) }
 }
 
-class TransitionData3(
+class TransitionData4(
     holeRatio: State<Float>
 ) {
     val holeRatio by holeRatio
