@@ -58,18 +58,19 @@ private fun Pie(
     // sliceDrawer: SliceDrawer
 ) {
     val startAngle = -90
-    val fractions = slices.map(SliceCompose::fraction)
+
+    val transitionData = updateTransitionData2(slices, holeRatio)
+    val fractions = transitionData.slices.map { it.fraction.value }
     val startAngles = calculateStartAngles(startAngle, fractions)
 
-    val transitionData = updateTransitionData2(holeRatio)
 
     Canvas(modifier = modifier) {
         val pieRadius = calculatePieRadius(size)
         val hole = makeHole(pieRadius, transitionData.holeRatio)
         clipPath(hole, ClipOp.Difference) {
             for ((i, angle) in startAngles.withIndex()) {
-                val sweepAngle = slices[i].fraction * 360
-                drawArc(slices[i].color, angle, sweepAngle, true)
+                val sweepAngle = transitionData.slices[i].fraction.value * 360
+                drawSlice(transitionData.slices[i].color.value, angle, sweepAngle)
             }
             drawOverlay(pieRadius, overlayRatio, Color(0, 0, 0, 100))
         }
@@ -101,6 +102,10 @@ private fun DrawScope.makeHole(pieRadius: Float, holeRatio: Float): Path {
 private fun DrawScope.drawOverlay(pieRadius: Float, overlayRatio: Float, color: Color) {
     val overlayRadius = overlayRatio * pieRadius
     drawCircle(color, overlayRadius)
+}
+
+private fun DrawScope.drawSlice(color: Color, startAngle: Float, sweepAngle: Float) {
+    drawArc(color, startAngle, sweepAngle, true)
 }
 
 @Preview
