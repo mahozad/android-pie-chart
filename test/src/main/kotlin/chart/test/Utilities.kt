@@ -1,6 +1,6 @@
 package chart.test
 
-import android.graphics.Color
+import androidx.compose.ui.graphics.Color
 
 /**
  * Generate a list of random numbers that sum up to the base.
@@ -24,5 +24,10 @@ internal fun generateRandomNumbers(
 
 internal fun generateRandomColor(): Int {
     fun component() = (0..255).random()
-    return Color.rgb(component(), component(), component())
+    return android.graphics.Color.rgb(component(), component(), component())
+}
+
+internal fun generateRandomColorCompose(): Color {
+    fun component() = (0..255).random()
+    return Color(component(), component(), component())
 }

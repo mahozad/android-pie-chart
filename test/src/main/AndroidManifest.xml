@@ -3,12 +3,14 @@
           package="chart.test">
 
   <application android:theme="@style/TestAppTheme">
-    <activity android:name="chart.test.ShowcaseActivity">
+    <activity android:name="chart.test.ShowCaseMainActivity" android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
+    <activity android:name=".ShowcaseComposeActivity" />
+    <activity android:name=".ShowcaseViewActivity" />
   </application>
 
 </manifest>
