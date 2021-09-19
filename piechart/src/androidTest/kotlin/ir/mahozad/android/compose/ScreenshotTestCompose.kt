@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.compose.runtime.*
 import de.mannodermaus.junit5.condition.DisabledIfBuildConfigValue
 import org.junit.Rule
 import org.junit.Test
@@ -78,17 +79,7 @@ class ScreenshotTestCompose {
 
     @Test fun chartShouldBeDisplayed() {
         val screenshotName = "screenshot-1"
-        composeTestRule.setContent {
-            PieChartCompose(
-                listOf(
-                    SliceCompose(0.3f, Color(120, 181, 0)/*, Color(149, 224, 0)*/),
-                    SliceCompose(0.2f, Color(204, 168, 0)/*, Color(249, 228, 0)*/),
-                    SliceCompose(0.2f, Color(0, 162, 216)/*, Color(31, 199, 255)*/),
-                    SliceCompose(0.17f, Color(255, 4, 4)/*, Color(255, 72, 86)*/),
-                    SliceCompose(0.13f, Color(160, 165, 170)/*, Color(175, 180, 185)*/)
-                )
-            )
-        }
+        composeTestRule.setContent { PieChartCompose() }
         composeTestRule
             .takeScreenshot()
             .saveIfNeeded(shouldSave, screenshotName)
@@ -97,18 +88,10 @@ class ScreenshotTestCompose {
 
     @Test fun changeSlices() {
         val screenshotName = "screenshot-2"
-        val slices = mutableStateOf(
-            listOf(
-                SliceCompose(0.3f, Color(120, 181, 0)/*, Color(149, 224, 0)*/),
-                SliceCompose(0.2f, Color(204, 168, 0)/*, Color(249, 228, 0)*/),
-                SliceCompose(0.2f, Color(0, 162, 216)/*, Color(31, 199, 255)*/),
-                SliceCompose(0.17f, Color(255, 4, 4)/*, Color(255, 72, 86)*/),
-                SliceCompose(0.13f, Color(160, 165, 170)/*, Color(175, 180, 185)*/)
-            )
-        )
+        var slices by mutableStateOf(defaultSlices)
+        composeTestRule.setContent { PieChartCompose(pieChartData = slices) }
 
-        composeTestRule.setContent { PieChartCompose(slices.value) }
-        slices.value = listOf(SliceCompose(1f, Color.Green))
+        slices = listOf(SliceCompose(1f, Color.Green))
 
         composeTestRule
             .takeScreenshot()
@@ -118,18 +101,7 @@ class ScreenshotTestCompose {
 
     @Test fun changeHoleRatio() {
         val screenshotName = "screenshot-3"
-        composeTestRule.setContent {
-            PieChartCompose(
-                listOf(
-                    SliceCompose(0.3f, Color(120, 181, 0)/*, Color(149, 224, 0)*/),
-                    SliceCompose(0.2f, Color(204, 168, 0)/*, Color(249, 228, 0)*/),
-                    SliceCompose(0.2f, Color(0, 162, 216)/*, Color(31, 199, 255)*/),
-                    SliceCompose(0.17f, Color(255, 4, 4)/*, Color(255, 72, 86)*/),
-                    SliceCompose(0.13f, Color(160, 165, 170)/*, Color(175, 180, 185)*/)
-                ),
-                holeRatio = 0.11f
-            )
-        }
+        composeTestRule.setContent { PieChartCompose(holeRatio = 0.11f) }
         composeTestRule
             .takeScreenshot()
             .saveIfNeeded(shouldSave, screenshotName)
@@ -138,18 +110,7 @@ class ScreenshotTestCompose {
 
     @Test fun changeOverlayRatio() {
         val screenshotName = "screenshot-4"
-        composeTestRule.setContent {
-            PieChartCompose(
-                listOf(
-                    SliceCompose(0.3f, Color(120, 181, 0)/*, Color(149, 224, 0)*/),
-                    SliceCompose(0.2f, Color(204, 168, 0)/*, Color(249, 228, 0)*/),
-                    SliceCompose(0.2f, Color(0, 162, 216)/*, Color(31, 199, 255)*/),
-                    SliceCompose(0.17f, Color(255, 4, 4)/*, Color(255, 72, 86)*/),
-                    SliceCompose(0.13f, Color(160, 165, 170)/*, Color(175, 180, 185)*/)
-                ),
-                overlayRatio = 0.37f
-            )
-        }
+        composeTestRule.setContent { PieChartCompose(overlayRatio = 0.37f) }
         composeTestRule
             .takeScreenshot()
             .saveIfNeeded(shouldSave, screenshotName)

@@ -18,14 +18,22 @@ import ir.mahozad.android.DEFAULT_OVERLAY_RATIO
 
 data class SliceCompose(val fraction: Float, val color: Color)
 
+val defaultSlices = listOf(
+    SliceCompose(0.3f, Color(120, 181, 0)),
+    SliceCompose(0.2f, Color(0, 162, 216)),
+    SliceCompose(0.2f, Color(204, 168, 0)),
+    SliceCompose(0.17f, Color(255, 4, 4)),
+    SliceCompose(0.13f, Color(160, 165, 170))
+)
+
 /**
  * By default, the ani-alias is *ENABLED*. See [this post](https://stackoverflow.com/a/64689612).
  */
 
 @Composable
 fun PieChartCompose(
-    pieChartData: List<SliceCompose>,
     modifier: Modifier = Modifier,
+    pieChartData: List<SliceCompose> = defaultSlices,
     holeRatio: Float = DEFAULT_HOLE_RATIO,
     overlayRatio: Float = DEFAULT_OVERLAY_RATIO,
     animation: AnimationSpec<Float> = TweenSpec(durationMillis = 500),
@@ -110,14 +118,5 @@ private fun DrawScope.drawSlice(color: Color, startAngle: Float, sweepAngle: Flo
 
 @Preview
 @Composable fun PieChartPreview() {
-    PieChartCompose(
-        pieChartData = listOf(
-            SliceCompose(0.3f, Color(120, 181, 0)),
-            SliceCompose(0.2f, Color(0, 162, 216)),
-            SliceCompose(0.2f, Color(204, 168, 0)),
-            SliceCompose(0.17f, Color(255, 4, 4)),
-            SliceCompose(0.13f, Color(160, 165, 170))
-        ),
-        Modifier.aspectRatio(1f), /* OR .fillMaxSize() */
-    )
+    PieChartCompose(Modifier.aspectRatio(1f) /* OR .fillMaxSize() */)
 }
