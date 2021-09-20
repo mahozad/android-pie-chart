@@ -31,6 +31,11 @@ class ScreenshotTestView {
     }
 
     @Test fun viewShouldBeDisplayedCorrectly() {
+        // FIXME: Because of the animation, the screenshot was not of the new state
+        // InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+        // Espresso.onIdle()
+        Thread.sleep(1510)
+
         val screenshotName = "screenshot-view-1"
         scenario.onActivity { activity ->
             activity.configureChart {
@@ -51,7 +56,10 @@ class ScreenshotTestView {
                 holeRatio = 0.19f
             }
         }
-        Thread.sleep(100) // FIXME: Because the below statement didn't capture the new state
+
+        // FIXME: Because of the animation, the screenshot was not of the new state
+        Thread.sleep(1010)
+
         chart.takeScreenshot()
             .saveIfNeeded(shouldSave, screenshotName)
             .assertIfNeeded(shouldAssert, screenshotName)
