@@ -10,6 +10,7 @@
       </intent-filter>
     </activity>
     <activity android:name=".ShowcaseComposeActivity" />
+    <activity android:name=".ShowcaseLegacyActivity" />
     <activity android:name=".ShowcaseViewActivity" />
   </application>
 

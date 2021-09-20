@@ -1,4 +1,8 @@
 <resources>
-  <string name="title_view" translatable="false">View</string>
   <string name="title_compose" translatable="false">Compose</string>
+  <string name="title_legacy" translatable="false">Legacy</string>
+  <string name="title_view" translatable="false">View</string>
+  <string name="button_compose_title" translatable="false">Compose Showcase</string>
+  <string name="button_legacy_title" translatable="false">Legacy</string>
+  <string name="button_view_title" translatable="false">View Showcase</string>
 </resources>

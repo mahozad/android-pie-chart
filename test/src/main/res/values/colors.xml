@@ -1,11 +1,8 @@
 <resources>
   <color name="title_compose_color">#00BCD4</color>
-  <color name="title_view_color">#FF9800</color>
-  <color name="sampleColor">#ff0</color>
-  <array name="sampleColorArray">
-    <item>#ff00AE28</item>
-    <item>#5F00aE48</item>
-    <item>#AE28ff</item>
-    <item>#18f</item>
-  </array>
+  <color name="title_legacy_color">#828282</color>
+  <color name="title_view_color">#FF7043</color>
+  <color name="button_compose_color">@color/title_compose_color</color>
+  <color name="button_legacy_color">@color/title_legacy_color</color>
+  <color name="button_view_color">@color/title_view_color</color>
 </resources>

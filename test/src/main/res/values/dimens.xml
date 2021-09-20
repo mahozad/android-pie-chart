@@ -1,4 +1,5 @@
 <resources>
   <dimen name="title_compose_size">20sp</dimen>
+  <dimen name="title_legacy_size">@dimen/title_compose_size</dimen>
   <dimen name="title_view_size">@dimen/title_compose_size</dimen>
 </resources>
