@@ -32,7 +32,7 @@ class ShowcaseComposeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            // To disable click ripple effect. See https://stackoverflow.com/q/66703448
+            // Used to disable click ripple effect. See https://stackoverflow.com/q/66703448
             val interactionSource = remember { MutableInteractionSource() }
             var slices by remember { mutableStateOf(defaultSlices) }
             var holeRatio by remember { mutableStateOf(DEFAULT_HOLE_RATIO) }
