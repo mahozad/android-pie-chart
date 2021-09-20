@@ -60,8 +60,7 @@ private fun Bitmap.assert(screenshotName: String) {
 private fun loadReferenceScreenshot(name: String): Bitmap {
     val context = InstrumentationRegistry.getInstrumentation().context
     val assets = context.resources.assets
-    val reference = assets.open("compose/$name.png").use { stream ->
+    return assets.open("compose/$name.png").use { stream ->
         BitmapFactory.decodeStream(stream)
     }
-    return reference
 }
