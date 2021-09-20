@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -30,31 +31,37 @@ class ShowcaseMainActivity : ComponentActivity() {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Button(
-                    onClick = { context.start(ShowcaseComposeActivity::class) },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.button_compose_color))
-                ) {
-                    Text(stringResource(id = R.string.button_compose_title))
-                }
+                ComposeButton(context)
                 Spacer(Modifier.height(24.dp))
-                Button(
-                    onClick = { context.start(ShowcaseViewActivity::class) },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.button_view_color))
-                ) {
-                    Text(stringResource(id = R.string.button_view_title))
-                }
+                ViewButton(context)
                 Spacer(Modifier.height(24.dp))
-                Button(
-                    onClick = { context.start(ShowcaseLegacyActivity::class) },
-                    colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.button_legacy_color))
-                ) {
-                    Text(
-                        stringResource(id = R.string.button_legacy_title),
-                        textDecoration = TextDecoration.LineThrough
-                    )
-                }
+                LegacyButton(context)
             }
         }
+    }
+
+    @Composable fun ComposeButton(context: Context) = Button(
+        onClick = { context.start(ShowcaseComposeActivity::class) },
+        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.button_compose_color))
+    ) {
+        Text(stringResource(id = R.string.button_compose_title))
+    }
+
+    @Composable fun ViewButton(context: Context) = Button(
+        onClick = { context.start(ShowcaseViewActivity::class) },
+        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.button_view_color))
+    ) {
+        Text(stringResource(id = R.string.button_view_title))
+    }
+
+    @Composable fun LegacyButton(context: Context) = Button(
+        onClick = { context.start(ShowcaseLegacyActivity::class) },
+        colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.button_legacy_color))
+    ) {
+        Text(
+            stringResource(id = R.string.button_legacy_title),
+            textDecoration = TextDecoration.LineThrough
+        )
     }
 
     private fun <T : Activity> Context.start(kClass: KClass<T>) =
