@@ -1,17 +1,18 @@
 package ir.mahozad.android.compose
 
 import android.content.Context
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty
 
 // https://youtu.be/6P20npkvcb8?t=489
 
 internal class Property<T>(
-    private val state: MutableState<T>,
+    value: T,
     private val valueProcessor: ((T) -> T)? = null,
     private val valueChangeHandler: ((T) -> Unit)? = null
 ) {
+    private val state = mutableStateOf(value)
     operator fun getValue(chart: PieChartView, property: KProperty<*>) = state.value
     operator fun setValue(chart: PieChartView, property: KProperty<*>, newValue: T) {
         state.value = valueProcessor?.invoke(newValue) ?: newValue

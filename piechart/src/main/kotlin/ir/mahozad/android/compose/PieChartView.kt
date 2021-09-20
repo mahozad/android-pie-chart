@@ -3,7 +3,6 @@ package ir.mahozad.android.compose
 import android.content.Context
 import android.util.AttributeSet
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.core.content.withStyledAttributes
 import ir.mahozad.android.DEFAULT_HOLE_RATIO
@@ -19,16 +18,13 @@ class PieChartView @JvmOverloads constructor(
     defStyle: Int = 0
 ) : AbstractComposeView(context, attrs, defStyle) {
 
-    private val slicesState = mutableStateOf(defaultSlices)
-    var slices by Property(slicesState)
+    var slices by Property(defaultSlices)
 
-    private val holeRatioState = mutableStateOf(DEFAULT_HOLE_RATIO)
+    var holeRatio by Property(DEFAULT_HOLE_RATIO, { it.coerceIn(0f, 1f) })
     var holeRatioResource by FractionResource(::holeRatio)
-    var holeRatio by Property(holeRatioState, { it.coerceIn(0f, 1f) })
 
-    private val overlayRatioState = mutableStateOf(DEFAULT_OVERLAY_RATIO)
+    var overlayRatio by Property(DEFAULT_OVERLAY_RATIO, { it.coerceIn(0f, 1f) })
     var overlayRatioResource by FractionResource(::overlayRatio)
-    var overlayRatio by Property(overlayRatioState, { it.coerceIn(0f, 1f) })
 
     /**
      * Attributes are a powerful way of controlling the behavior and appearance of views,
@@ -50,13 +46,13 @@ class PieChartView @JvmOverloads constructor(
 
     @Composable override fun Content() {
         PieChartCompose(
-            pieChartData = slicesState.value,
             /*Modifier
                 .height(Dp(height.toFloat()))
                 .width(Dp(width.toFloat()))
                 .padding(),*/
-            holeRatio = holeRatioState.value,
-            overlayRatio = overlayRatioState.value
+            pieChartData = slices,
+            holeRatio = holeRatio,
+            overlayRatio = overlayRatio
         )
     }
 }
