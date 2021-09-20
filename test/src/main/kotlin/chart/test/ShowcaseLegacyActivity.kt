@@ -25,10 +25,10 @@ class ShowcaseLegacyActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         legacyViewAsComposable()
         /* OR */
-        // legacyView()
+        // legacyViewFromXML()
     }
 
-    private fun legacyView() {
+    private fun legacyViewFromXML() {
         setContentView(R.layout.showcase_legacy_view_activity)
         val chart = findViewById<PieChart>(R.id.pieChart)
         chart.setOnClickListener {
