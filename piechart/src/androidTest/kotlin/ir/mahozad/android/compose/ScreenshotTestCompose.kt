@@ -1,10 +1,11 @@
 package ir.mahozad.android.compose
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.platform.app.InstrumentationRegistry
-import androidx.compose.runtime.*
 import de.mannodermaus.junit5.condition.DisabledIfBuildConfigValue
 import org.junit.Rule
 import org.junit.Test
@@ -29,6 +30,9 @@ import org.junit.jupiter.api.condition.DisabledOnOs
  *
  * NOTE: We are using JUnit 4 tests because of the need for [createComposeRule].
  *  These tests can be run along with other JUnit 5 test classes with no problem.
+ *
+ * NOTE: By default `composeTestRule.mainClock.autoAdvance` is `true` so the
+ *  screenshots are captured when the animations are finished and the compose is idle.
  *
  * NOTE: Because JUnit 5 is built on Java 8 from the ground up, its instrumentation tests
  *  will only run on devices running Android 8.0 (API 26) or newer. Older phones will
