@@ -18,8 +18,9 @@ import org.junit.jupiter.api.condition.DisabledOnOs
  * Also, they are used to test whether changing chart properties work as expected.
  * This is a kind of end-to-end testing.
  *
- * See [this post](https://stackoverflow.com/a/69176420) for setup and how-to
- * of doing screenshot test for a composable.
+ * For a complete and detailed answer about how to setup screenshot tests see
+ * [this post](https://stackoverflow.com/a/69259011) for View and
+ * [this post](https://stackoverflow.com/a/69176420) for Compose.
  *
  * See [this article](https://medium.com/stepstone-tech/exploring-androidjunitrunner-filtering-options-df26d30b4f60)
  * which explains Android instrumentation runner arguments and how to use them.

@@ -13,6 +13,9 @@ import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
 import org.junit.jupiter.api.extension.RegisterExtension
 import androidx.core.view.drawToBitmap as takeScreenshot
 
+/**
+ * Refer to documentations of [ScreenshotTestCompose] class.
+ */
 @DisabledIfBuildConfigValue(named = "CI", matches = "true")
 @TestInstance(PER_CLASS)
 class ScreenshotTestView {
