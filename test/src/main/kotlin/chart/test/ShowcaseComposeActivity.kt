@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,8 +32,11 @@ class ShowcaseComposeActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            // To disable click ripple effect. See https://stackoverflow.com/q/66703448
+            val interactionSource = remember { MutableInteractionSource() }
             var slices by remember { mutableStateOf(defaultSlices) }
             var holeRatio by remember { mutableStateOf(DEFAULT_HOLE_RATIO) }
+
             Box(Modifier.fillMaxWidth(), Alignment.Center) {
                 Text(
                     text = stringResource(id = R.string.title_compose),
@@ -43,7 +47,7 @@ class ShowcaseComposeActivity : ComponentActivity() {
             PieChartCompose(
                 Modifier
                     .fillMaxSize()
-                    .clickable {
+                    .clickable(interactionSource = interactionSource, indication = null) {
                         slices = generateRandomNumbers().map { fraction ->
                             SliceCompose(fraction, generateRandomColorCompose())
                         }
