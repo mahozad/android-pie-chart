@@ -3,7 +3,7 @@ package chart.test
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import ir.mahozad.android.compose.PieChartView
-import ir.mahozad.android.compose.SliceCompose
+import ir.mahozad.android.compose.Slice
 
 class ShowcaseViewActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -12,7 +12,7 @@ class ShowcaseViewActivity: ComponentActivity() {
         val chart = findViewById<PieChartView>(R.id.pieChart)
         chart.setOnClickListener {
             chart.slices = generateRandomNumbers().map { fraction ->
-                SliceCompose(fraction, generateRandomColorCompose())
+                Slice(fraction, generateRandomColorCompose())
             }
             chart.holeRatio = 0.2f
         }

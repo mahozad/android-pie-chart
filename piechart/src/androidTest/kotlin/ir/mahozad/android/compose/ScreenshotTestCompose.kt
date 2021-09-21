@@ -96,7 +96,7 @@ class ScreenshotTestCompose {
         var slices by mutableStateOf(defaultSlices)
         composeTestRule.setContent { PieChartCompose(pieChartData = slices) }
 
-        slices = listOf(SliceCompose(1f, Color.Green))
+        slices = listOf(Slice(1f, Color.Green))
 
         composeTestRule
             .takeScreenshot()

@@ -55,7 +55,7 @@ class ScreenshotTestView {
         scenario.onActivity { activity ->
             activity.configureChart {
                 chart = this
-                slices = listOf(SliceCompose(1f, Color.Red))
+                slices = listOf(Slice(1f, Color.Red))
                 holeRatio = 0.19f
             }
         }

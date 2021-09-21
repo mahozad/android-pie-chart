@@ -16,14 +16,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import ir.mahozad.android.DEFAULT_HOLE_RATIO
 import ir.mahozad.android.DEFAULT_OVERLAY_RATIO
 
-data class SliceCompose(val fraction: Float, val color: Color)
+data class Slice(val fraction: Float, val color: Color)
 
 val defaultSlices = listOf(
-    SliceCompose(0.3f, Color(120, 181, 0)),
-    SliceCompose(0.2f, Color(0, 162, 216)),
-    SliceCompose(0.2f, Color(204, 168, 0)),
-    SliceCompose(0.17f, Color(255, 4, 4)),
-    SliceCompose(0.13f, Color(160, 165, 170))
+    Slice(0.3f, Color(120, 181, 0)),
+    Slice(0.2f, Color(0, 162, 216)),
+    Slice(0.2f, Color(204, 168, 0)),
+    Slice(0.17f, Color(255, 4, 4)),
+    Slice(0.13f, Color(160, 165, 170))
 )
 
 /**
@@ -33,7 +33,7 @@ val defaultSlices = listOf(
 @Composable
 fun PieChartCompose(
     modifier: Modifier = Modifier,
-    pieChartData: List<SliceCompose> = defaultSlices,
+    pieChartData: List<Slice> = defaultSlices,
     holeRatio: Float = DEFAULT_HOLE_RATIO,
     overlayRatio: Float = DEFAULT_OVERLAY_RATIO,
     animation: AnimationSpec<Float> = TweenSpec(durationMillis = 500),
@@ -58,7 +58,7 @@ fun PieChartCompose(
 
 @Composable
 private fun Pie(
-    slices: List<SliceCompose>,
+    slices: List<Slice>,
     modifier: Modifier,
     progress: Float,
     holeRatio: Float,

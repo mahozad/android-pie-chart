@@ -21,7 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import ir.mahozad.android.DEFAULT_HOLE_RATIO
 import ir.mahozad.android.compose.PieChartCompose
-import ir.mahozad.android.compose.SliceCompose
+import ir.mahozad.android.compose.Slice
 import ir.mahozad.android.compose.defaultSlices
 import kotlin.random.Random
 
@@ -49,7 +49,7 @@ class ShowcaseComposeActivity : ComponentActivity() {
                     .fillMaxSize()
                     .clickable(interactionSource = interactionSource, indication = null) {
                         slices = generateRandomNumbers().map { fraction ->
-                            SliceCompose(fraction, generateRandomColorCompose())
+                            Slice(fraction, generateRandomColorCompose())
                         }
                         holeRatio = 0.2f /* OR random.nextFloat() */
                     },
