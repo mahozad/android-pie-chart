@@ -107,8 +107,8 @@ class TransitionData(
     val fraction8 = animateFloatAsState(targetValue = targetSlices.getOrNull(8)?.fraction ?: 0f, animationSpec = tween(500))
     val fraction9 = animateFloatAsState(targetValue = targetSlices.getOrNull(9)?.fraction ?: 0f, animationSpec = tween(500))
 
-    val slices by remember { mutableStateOf(
-        listOf(
+    val slices = remember {
+        mutableStateListOf(
             InternalSlice(fraction0, color0),
             InternalSlice(fraction1, color1),
             InternalSlice(fraction2, color2),
@@ -120,7 +120,7 @@ class TransitionData(
             InternalSlice(fraction8, color8),
             InternalSlice(fraction9, color9),
         )
-    )  }
+    }
 
     // val slices = listOf(
     //     remember { mutableStateOf(InternalSlice(fractionStates[0], colorStates[0])) },
