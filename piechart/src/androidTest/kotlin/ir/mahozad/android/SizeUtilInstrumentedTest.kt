@@ -548,8 +548,8 @@ class SizeUtilInstrumentedTest {
         )
         val arguments = mutableListOf<Arguments>()
         for (position in expectedCoordinatesByPosition) {
-            arguments += position.value.mapIndexed { i, list ->
-                arguments(angles[i], position.key, list)
+            arguments += position.value.zip(angles).map { (coordinates, angle) ->
+                arguments(angle, position.key, coordinates)
             }
         }
         return arguments
@@ -801,7 +801,7 @@ class SizeUtilInstrumentedTest {
             LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, 0f, 0f, iconPlacement)
         )
         val startAngles = fractions.runningFold(startAngle) { angle, fraction -> calculateEndAngle(angle, fraction, drawDirection) }
-        val slicesProperties = fractions.mapIndexed { i, fraction -> SliceProperties(fraction, startAngles[i], drawDirection) }
+        val slicesProperties = fractions.zip(startAngles).map { SliceProperties(it.first, it.second, drawDirection) }
 
         val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, labelsProperties, slicesProperties, shouldCenterPie)
 
@@ -829,7 +829,7 @@ class SizeUtilInstrumentedTest {
             LabelProperties("3%", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
         )
         val startAngles = fractions.runningFold(startAngle) { angle, fraction -> calculateEndAngle(angle, fraction, drawDirection) }
-        val slicesProperties = fractions.mapIndexed { i, fraction -> SliceProperties(fraction, startAngles[i], drawDirection) }
+        val slicesProperties = fractions.zip(startAngles).map { SliceProperties(it.first, it.second, drawDirection) }
 
         val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, labelsProperties, slicesProperties, shouldCenterPie)
 
@@ -860,7 +860,7 @@ class SizeUtilInstrumentedTest {
             LabelProperties("long label", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
         )
         val startAngles = fractions.runningFold(startAngle) { angle, fraction -> calculateEndAngle(angle, fraction, drawDirection) }
-        val slicesProperties = fractions.mapIndexed { i, fraction -> SliceProperties(fraction, startAngles[i], drawDirection) }
+        val slicesProperties = fractions.zip(startAngles).map { SliceProperties(it.first, it.second, drawDirection) }
 
         val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, labelsProperties, slicesProperties, shouldCenterPie)
 
@@ -893,7 +893,7 @@ class SizeUtilInstrumentedTest {
             LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
         )
         val startAngles = fractions.runningFold(startAngle) { angle, fraction -> calculateEndAngle(angle, fraction, drawDirection) }
-        val slicesProperties = fractions.mapIndexed { i, fraction -> SliceProperties(fraction, startAngles[i], drawDirection) }
+        val slicesProperties = fractions.zip(startAngles).map { SliceProperties(it.first, it.second, drawDirection) }
 
         val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, labelsProperties, slicesProperties, shouldCenterPie)
 
@@ -924,7 +924,7 @@ class SizeUtilInstrumentedTest {
             LabelProperties("long label", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
         )
         val startAngles = fractions.runningFold(startAngle) { angle, fraction -> calculateEndAngle(angle, fraction, drawDirection) }
-        val slicesProperties = fractions.mapIndexed { i, fraction -> SliceProperties(fraction, startAngles[i], drawDirection) }
+        val slicesProperties = fractions.zip(startAngles).map { SliceProperties(it.first, it.second, drawDirection) }
 
         val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, labelsProperties, slicesProperties, shouldCenterPie)
 
@@ -953,7 +953,7 @@ class SizeUtilInstrumentedTest {
             LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
         )
         val startAngles = fractions.runningFold(startAngle) { angle, fraction -> calculateEndAngle(angle, fraction, drawDirection) }
-        val slicesProperties = fractions.mapIndexed { i, fraction -> SliceProperties(fraction, startAngles[i], drawDirection) }
+        val slicesProperties = fractions.zip(startAngles).map { SliceProperties(it.first, it.second, drawDirection) }
 
         val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, labelsProperties, slicesProperties, shouldCenterPie)
 
@@ -982,7 +982,7 @@ class SizeUtilInstrumentedTest {
             LabelProperties("", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
         )
         val startAngles = fractions.runningFold(startAngle) { angle, fraction -> calculateEndAngle(angle, fraction, drawDirection) }
-        val slicesProperties = fractions.mapIndexed { i, fraction -> SliceProperties(fraction, startAngles[i], drawDirection) }
+        val slicesProperties = fractions.zip(startAngles).map { SliceProperties(it.first, it.second, drawDirection) }
 
         val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, labelsProperties, slicesProperties, shouldCenterPie)
 
@@ -1014,7 +1014,7 @@ class SizeUtilInstrumentedTest {
             LabelProperties("3%", 0f, outsideLabelsMargin, labelsSize, Color.BLACK, labelsTypeface, null, null, iconsHeight, iconsMargin, iconPlacement),
         )
         val startAngles = fractions.runningFold(startAngle) { angle, fraction -> calculateEndAngle(angle, fraction, drawDirection) }
-        val slicesProperties = fractions.mapIndexed { i, fraction -> SliceProperties(fraction, startAngles[i], drawDirection) }
+        val slicesProperties = fractions.zip(startAngles).map { SliceProperties(it.first, it.second, drawDirection) }
 
         val bounds = calculatePieNewBoundsForOutsideLabel(context, currentBounds, labelsProperties, slicesProperties, shouldCenterPie)
 
@@ -1052,7 +1052,7 @@ class SizeUtilInstrumentedTest {
             359.9f, 0f, 0.1f, 50f, 89.9f, 90f, 90.1f, 140f, 179.9f, 180f, 180.1f,
             230f, 269.9f, 270f, 270.1f, 320f, 359.9f, 0f, 0.1f, 10f, 90f
         )
-        return angles.mapIndexed { i, angle -> arguments(angle, expectedAngles[i]) }
+        return angles.zip(expectedAngles).map { arguments(it.first, it.second) }
     }
 
     // endregion
@@ -1277,7 +1277,7 @@ class SizeUtilInstrumentedTest {
             RectF(930f, 450f, 1092f, 550f),
             RectF(820.38f, 786.80f, 982.38f, 886.80f)
         )
-        return angles.mapIndexed { i, angle -> arguments(angle, expectedCoordinates[i]) }
+        return angles.zip(expectedCoordinates).map { arguments(it.first, it.second) }
     }
 
     // endregion

@@ -69,7 +69,9 @@ internal open class Pie(
 
 
         val startAngles = slices.runningFold(startAngle.toFloat()) { angle, slice -> calculateEndAngle(angle, slice.fraction, PieChart.DrawDirection.CLOCKWISE)}
-        val slicesProperties = slices.mapIndexed {i, slice -> SliceProperties(slice.fraction, startAngles[i], PieChart.DrawDirection.CLOCKWISE) }
+        val slicesProperties = slices.zip(startAngles).map { (slice, startAngle) ->
+            SliceProperties(slice.fraction, startAngle, PieChart.DrawDirection.CLOCKWISE)
+        }
         val labelsProperties = slices.map { LabelProperties(it.label, it.labelOffset ?: labelsOffset, it.outsideLabelMargin ?: outsideLabelsMargin, it.labelSize ?: labelsSize, it.labelColor ?: labelsColor, it.labelFont ?: labelsFont, it.labelIcon, it.labelIconTint ?: labelIconsTint, it.labelIconHeight ?: labelIconsHeight, it.labelIconMargin?: labelIconsMargin, it.labelIconPlacement ?: labelIconsPlacement) }
         labels?.layOut(Bounds(pieEnclosingRect), slicesProperties, labelsProperties)
         val remainingBounds = labels?.getRemainingBounds() ?: Bounds(pieEnclosingRect)
