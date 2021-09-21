@@ -111,10 +111,11 @@ class TransitionData(
         animateFloatAsState(targetValue = targetSlices.getOrNull(9)?.fraction ?: 0f, animationSpec = tween(500))
     )
 
-    val slices = remember {
-        mutableStateListOf<InternalSlice>().apply {
-            addAll(fractions.zip(colors).map { InternalSlice(it.first, it.second) })
-        }
+    val internalSlices = remember {
+        fractions
+            .zip(colors)
+            .map { InternalSlice(it.first, it.second) }
+            .toMutableStateList()
     }
 
 
@@ -161,14 +162,13 @@ class TransitionData(
             tween(durationMillis = 1500, delayMillis = 0, easing = FastOutSlowInEasing)
         }) { if (it == ChartState.INITIALIZED) 0f else targetHoleRatio }
 
-    return remember(transition) { TransitionData2(slices, holeRatio) }
+    return remember(transition) { TransitionData2(internalSlices, holeRatio) }
 }
 
 class TransitionData2(
-    slices: List<InternalSlice>,
+    val slices: List<InternalSlice>,
     holeRatio: State<Float>
 ) {
-    val slices = slices
     val holeRatio by holeRatio
 }
 
