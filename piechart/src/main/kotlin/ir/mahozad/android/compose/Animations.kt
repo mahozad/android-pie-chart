@@ -85,75 +85,37 @@ class TransitionData(
 
 
 
-    val color0 = animateColorAsState(targetValue = targetSlices.getOrNull(0)?.color ?: Color.Transparent, animationSpec = tween(500))
-    val color1 = animateColorAsState(targetValue = targetSlices.getOrNull(1)?.color ?: Color.Transparent, animationSpec = tween(500))
-    val color2 = animateColorAsState(targetValue = targetSlices.getOrNull(2)?.color ?: Color.Transparent, animationSpec = tween(500))
-    val color3 = animateColorAsState(targetValue = targetSlices.getOrNull(3)?.color ?: Color.Transparent, animationSpec = tween(500))
-    val color4 = animateColorAsState(targetValue = targetSlices.getOrNull(4)?.color ?: Color.Transparent, animationSpec = tween(500))
-    val color5 = animateColorAsState(targetValue = targetSlices.getOrNull(5)?.color ?: Color.Transparent, animationSpec = tween(500))
-    val color6 = animateColorAsState(targetValue = targetSlices.getOrNull(6)?.color ?: Color.Transparent, animationSpec = tween(500))
-    val color7 = animateColorAsState(targetValue = targetSlices.getOrNull(7)?.color ?: Color.Transparent, animationSpec = tween(500))
-    val color8 = animateColorAsState(targetValue = targetSlices.getOrNull(8)?.color ?: Color.Transparent, animationSpec = tween(500))
-    val color9 = animateColorAsState(targetValue = targetSlices.getOrNull(9)?.color ?: Color.Transparent, animationSpec = tween(500))
+    val colors = listOf(
+        animateColorAsState(targetValue = targetSlices.getOrNull(0)?.color ?: Color.Transparent, animationSpec = tween(500)),
+        animateColorAsState(targetValue = targetSlices.getOrNull(1)?.color ?: Color.Transparent, animationSpec = tween(500)),
+        animateColorAsState(targetValue = targetSlices.getOrNull(2)?.color ?: Color.Transparent, animationSpec = tween(500)),
+        animateColorAsState(targetValue = targetSlices.getOrNull(3)?.color ?: Color.Transparent, animationSpec = tween(500)),
+        animateColorAsState(targetValue = targetSlices.getOrNull(4)?.color ?: Color.Transparent, animationSpec = tween(500)),
+        animateColorAsState(targetValue = targetSlices.getOrNull(5)?.color ?: Color.Transparent, animationSpec = tween(500)),
+        animateColorAsState(targetValue = targetSlices.getOrNull(6)?.color ?: Color.Transparent, animationSpec = tween(500)),
+        animateColorAsState(targetValue = targetSlices.getOrNull(7)?.color ?: Color.Transparent, animationSpec = tween(500)),
+        animateColorAsState(targetValue = targetSlices.getOrNull(8)?.color ?: Color.Transparent, animationSpec = tween(500)),
+        animateColorAsState(targetValue = targetSlices.getOrNull(9)?.color ?: Color.Transparent, animationSpec = tween(500))
+    )
 
-    val fraction0 = animateFloatAsState(targetValue = targetSlices.getOrNull(0)?.fraction ?: 0f, animationSpec = tween(500))
-    val fraction1 = animateFloatAsState(targetValue = targetSlices.getOrNull(1)?.fraction ?: 0f, animationSpec = tween(500))
-    val fraction2 = animateFloatAsState(targetValue = targetSlices.getOrNull(2)?.fraction ?: 0f, animationSpec = tween(500))
-    val fraction3 = animateFloatAsState(targetValue = targetSlices.getOrNull(3)?.fraction ?: 0f, animationSpec = tween(500))
-    val fraction4 = animateFloatAsState(targetValue = targetSlices.getOrNull(4)?.fraction ?: 0f, animationSpec = tween(500))
-    val fraction5 = animateFloatAsState(targetValue = targetSlices.getOrNull(5)?.fraction ?: 0f, animationSpec = tween(500))
-    val fraction6 = animateFloatAsState(targetValue = targetSlices.getOrNull(6)?.fraction ?: 0f, animationSpec = tween(500))
-    val fraction7 = animateFloatAsState(targetValue = targetSlices.getOrNull(7)?.fraction ?: 0f, animationSpec = tween(500))
-    val fraction8 = animateFloatAsState(targetValue = targetSlices.getOrNull(8)?.fraction ?: 0f, animationSpec = tween(500))
-    val fraction9 = animateFloatAsState(targetValue = targetSlices.getOrNull(9)?.fraction ?: 0f, animationSpec = tween(500))
+    val fractions = listOf(
+        animateFloatAsState(targetValue = targetSlices.getOrNull(0)?.fraction ?: 0f, animationSpec = tween(500)),
+        animateFloatAsState(targetValue = targetSlices.getOrNull(1)?.fraction ?: 0f, animationSpec = tween(500)),
+        animateFloatAsState(targetValue = targetSlices.getOrNull(2)?.fraction ?: 0f, animationSpec = tween(500)),
+        animateFloatAsState(targetValue = targetSlices.getOrNull(3)?.fraction ?: 0f, animationSpec = tween(500)),
+        animateFloatAsState(targetValue = targetSlices.getOrNull(4)?.fraction ?: 0f, animationSpec = tween(500)),
+        animateFloatAsState(targetValue = targetSlices.getOrNull(5)?.fraction ?: 0f, animationSpec = tween(500)),
+        animateFloatAsState(targetValue = targetSlices.getOrNull(6)?.fraction ?: 0f, animationSpec = tween(500)),
+        animateFloatAsState(targetValue = targetSlices.getOrNull(7)?.fraction ?: 0f, animationSpec = tween(500)),
+        animateFloatAsState(targetValue = targetSlices.getOrNull(8)?.fraction ?: 0f, animationSpec = tween(500)),
+        animateFloatAsState(targetValue = targetSlices.getOrNull(9)?.fraction ?: 0f, animationSpec = tween(500))
+    )
 
     val slices = remember {
-        mutableStateListOf(
-            InternalSlice(fraction0, color0),
-            InternalSlice(fraction1, color1),
-            InternalSlice(fraction2, color2),
-            InternalSlice(fraction3, color3),
-            InternalSlice(fraction4, color4),
-            InternalSlice(fraction5, color5),
-            InternalSlice(fraction6, color6),
-            InternalSlice(fraction7, color7),
-            InternalSlice(fraction8, color8),
-            InternalSlice(fraction9, color9),
-        )
+        mutableStateListOf<InternalSlice>().apply {
+            addAll(fractions.zip(colors).map { InternalSlice(it.first, it.second) })
+        }
     }
-
-    // val slices = listOf(
-    //     remember { mutableStateOf(InternalSlice(fractionStates[0], colorStates[0])) },
-    //     remember { mutableStateOf(InternalSlice(fractionStates[1], colorStates[1])) },
-    //     remember { mutableStateOf(InternalSlice(fractionStates[2], colorStates[2])) },
-    //     remember { mutableStateOf(InternalSlice(fractionStates[3], colorStates[3])) },
-    //     remember { mutableStateOf(InternalSlice(fractionStates[4], colorStates[4])) },
-    //     remember { mutableStateOf(InternalSlice(fractionStates[5], colorStates[5])) },
-    //     remember { mutableStateOf(InternalSlice(fractionStates[6], colorStates[6])) },
-    //     remember { mutableStateOf(InternalSlice(fractionStates[7], colorStates[7])) },
-    //     remember { mutableStateOf(InternalSlice(fractionStates[8], colorStates[8])) },
-    //     remember { mutableStateOf(InternalSlice(fractionStates[9], colorStates[9])) },
-    // )
-    // val slices = remember {
-    //     for (index in targetSlices.indices) {
-    //
-    //     }
-    //     if (targetSlices.size < slices.size)
-    // }
-    //
-    // val slices = remember { mutableStateListOf<SliceCompose>() }
-    // if (targetSlices.size < slices.size) {
-    //     for (i in (targetSlices.size..slices.size)) {
-    //         slices.removeAt(i)
-    //     }
-    // } else if (targetSlices.size > slices.size) {
-    //     for (i in (slices.size..targetSlices.size)) {
-    //         slices.add(sliceStates[i].value)
-    //     }
-    // }
-    // for ((i,targetSlice) in targetSlices.withIndex()) {
-    //     slices[i] = animateColorAsState(targetValue = targetSlice.color)
-    // }
 
 
     // var previousSlices by remember { mutableStateOf(emptyList<SliceCompose>()) }
