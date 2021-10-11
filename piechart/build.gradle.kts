@@ -156,6 +156,20 @@ tasks.withType(Test::class) {
 
 /**
  * Uploading to a Maven repository requires sources and javadoc files as well.
+ * TODO: Replace the following block with the below code;
+ *  it requires Android Studio Bumblebee or IntelliJ Android plugin 2021.1
+ *  and Android Gradle Plugin version 7.1.
+ * ```kotlin
+ * publishing {
+ *   singleVariant("release") {
+ *     withSourcesJar()
+ *     withJavadocJar()
+ *   }
+ * }
+ * ```
+ */
+/**
+ * Uploading to a Maven repository requires sources and javadoc files as well.
  *
  * See [this gist](https://gist.github.com/kibotu/994c9cc65fe623b76b76fedfac74b34b) for groovy version.
  */
