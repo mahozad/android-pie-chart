@@ -70,6 +70,20 @@ class TransitionData(
     mutableState.targetState = AnimationState.RECOMPOSED
     val transition = updateTransition(mutableState, label = "main-animation")
 
+    /**
+     *
+     * Next, you can think of
+     * mutableStateListOf as an observable list where updates to this variable will redraw all
+     * the composable functions that access it. We don't need to explicitly subscribe at all. Any
+     * composable that reads the value of deletedPersonList will be recomposed any time the value
+     * changes. This ensures that only the composables that depend on this will be redrawn while the
+     * rest remain unchanged. This ensures efficiency and is a performance optimization. It
+     * is inspired from existing frameworks like React.
+     *
+     */
+
+
+
 
     val color0 = animateColorAsState(targetValue = targetSlices.getOrNull(0)?.color ?: Color.Transparent, animationSpec = tween(500))
     val color1 = animateColorAsState(targetValue = targetSlices.getOrNull(1)?.color ?: Color.Transparent, animationSpec = tween(500))

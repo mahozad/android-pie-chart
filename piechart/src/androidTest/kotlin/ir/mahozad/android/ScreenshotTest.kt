@@ -11,7 +11,6 @@ import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.screenshot.ScreenCaptureProcessor
 import androidx.test.runner.screenshot.Screenshot
-import androidx.test.uiautomator.UiDevice
 import de.mannodermaus.junit5.ActivityScenarioExtension
 import de.mannodermaus.junit5.condition.DisabledIfBuildConfigValue
 import ir.mahozad.android.PieChart.Slice
@@ -27,6 +26,16 @@ import org.junit.jupiter.api.extension.RegisterExtension
 import java.time.LocalTime
 
 /**
+
+
+New Features in androidx.test.core-ktx version 1.4.1:
+  Add new experimental APIs for screenshots:
+    View.captureToBitmap extension function
+    Window.captureRegionToBitmap extension function
+    takeScreenshot()
+  Add experimental Bitmap.writeToTestStorage API
+
+
  * These tests are used to visually inspect the chart to avoid any regressions.
  * Also, they are used to test whether changing chart properties work as expected.
  * This is a kind of end-to-end testing.

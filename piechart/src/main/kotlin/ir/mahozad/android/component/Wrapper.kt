@@ -7,8 +7,8 @@ import ir.mahozad.android.component.Wrapper.VerticalWrapper
 import kotlin.math.max
 
 /**
- * Factory method.
- *
+ * Factory function.
+ * Refer to [this video](https://youtu.be/0GWTTSMatO8?t=703) for how to improve this factory function.
  * We could have instead created a companion object in the [Wrapper] class like so:
  *
  * ```
