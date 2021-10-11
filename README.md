@@ -14,14 +14,14 @@
 
 [comment]: <> (!*†‡;)
 
-[![Release workflow](https://github.com/mahozad/android-pie-chart/actions/workflows/ci.yml/badge.svg)](https://github.com/mahozad/android-pie-chart/actions/workflows/test.yml)
-[![Codecov](https://codecov.io/gh/mahozad/android-pie-chart/branch/master/graph/badge.svg?token=ptnbmXaozw)](https://codecov.io/gh/mahozad/android-pie-chart)
-[![Latest Maven Central release](https://img.shields.io/maven-central/v/ir.mahozad.android/pie-chart?logo=android)](https://search.maven.org/artifact/ir.mahozad.android/pie-chart)
+[![Release workflow]](https://github.com/mahozad/android-pie-chart/actions/workflows/test.yml)
+[![Codecov]](https://codecov.io/gh/mahozad/android-pie-chart)
+[![Latest Maven Central release]](https://search.maven.org/artifact/ir.mahozad.android/pie-chart)
 
-![Logo](logo-animated.svg)
+![Logo]
 
-A Pie/Donut<sup id="ref-1">[*](#footnote-1)</sup>/Ring chart for Android, customizable to the most extent possible.  
-For tutorial and examples refer to the [website](https://mahozad.ir/android-pie-chart/#examples).
+A Pie/Donut<sup id="ref-1">[*]</sup>/Ring chart for Android, customizable to the most extent possible.  
+For tutorial and examples refer to the [website].
 
 ### build.gradle[.kts]
 ```groovy
@@ -77,15 +77,29 @@ fun PieChartView() {
 
 | Screenshot 1 | Screenshot 2 | Screenshot 3 | Screenshot 4 | Screenshot 5 |
 | ------------ | ------------ | ------------ | ------------ | ------------ |
-| ![Screenshot 2](screenshots/screenshot-2.png) | ![Screenshot 1](screenshots/screenshot-1.png) | ![Screenshot 3](screenshots/screenshot-3.png) | ![Screenshot 4](screenshots/screenshot-4.png) | ![Screenshot 5](screenshots/screenshot-5.png)
+| ![Screenshot 2] | ![Screenshot 1] | ![Screenshot 3] | ![Screenshot 4] | ![Screenshot 5] |
 
 </div>
 
 ## Contributing
 
-Please help improve the library by fixing [the issues that I couldn't tackle myself](https://github.com/mahozad/android-pie-chart/issues?q=is%3Aissue+is%3Aopen+label%3Acontribution-needed).  
-Any other contributions are welcome too.
+Please help improve the library by fixing [the issues that I couldn't tackle myself].  
+Any other contributions are also welcome.
 
 <br>
 
-<sub><b id="footnote-1">*</b> Or *Doughnut* [↵](#ref-1)</sub>
+<sub><b id="footnote-1">*</b> Or *Doughnut* [↵]</sub>
+
+  [*]: #footnote-1
+  [↵]: #ref-1
+  [Logo]: logo-animated.svg
+  [website]: https://mahozad.ir/android-pie-chart/#examples
+  [Codecov]: https://codecov.io/gh/mahozad/android-pie-chart/branch/master/graph/badge.svg?token=ptnbmXaozw
+  [Release workflow]: https://github.com/mahozad/android-pie-chart/actions/workflows/ci.yml/badge.svg
+  [Latest Maven Central release]: https://img.shields.io/maven-central/v/ir.mahozad.android/pie-chart?logo=android
+  [the issues that I couldn't tackle myself]: https://github.com/mahozad/android-pie-chart/issues?q=is%3Aissue+is%3Aopen+label%3Acontribution-needed
+  [Screenshot 1]: screenshots/screenshot-1.png
+  [Screenshot 2]: screenshots/screenshot-2.png
+  [Screenshot 3]: screenshots/screenshot-3.png
+  [Screenshot 4]: screenshots/screenshot-4.png
+  [Screenshot 5]: screenshots/screenshot-5.png
