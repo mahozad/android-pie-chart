@@ -17,6 +17,7 @@
 [![Release workflow]](https://github.com/mahozad/android-pie-chart/actions/workflows/test.yml)
 [![Codecov]](https://codecov.io/gh/mahozad/android-pie-chart)
 [![Latest Maven Central release]](https://search.maven.org/artifact/ir.mahozad.android/pie-chart)
+![kotlin]
 
 ![Logo]
 
@@ -93,6 +94,7 @@ Any other contributions are also welcome.
   [*]: #footnote-1
   [↵]: #ref-1
   [Logo]: logo-animated.svg
+  [kotlin]: https://img.shields.io/badge/kotlin-1.5.30-555.svg?labelColor=555&logo=data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAxOC45MyAxOC45MiIgd2lkdGg9IjE4IiBoZWlnaHQ9IjE4IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxyYWRpYWxHcmFkaWVudCBpZD0iZ3JhZGllbnQiIHI9IjIxLjY3OSIgY3g9IjIyLjQzMiIgY3k9IjMuNDkzIiBncmFkaWVudFRyYW5zZm9ybT0ibWF0cml4KDEgMCAwIDEgLTQuMTMgLTIuNzE4KSIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgPHN0b3Agc3RvcC1jb2xvcj0iI2U0NDg1NyIgb2Zmc2V0PSIuMDAzIi8+CiAgICA8c3RvcCBzdG9wLWNvbG9yPSIjYzcxMWUxIiBvZmZzZXQ9Ii40NjkiLz4KICAgIDxzdG9wIHN0b3AtY29sb3I9IiM3ZjUyZmYiIG9mZnNldD0iMSIvPgogIDwvcmFkaWFsR3JhZGllbnQ+CiAgPHBhdGggZmlsbD0idXJsKCNncmFkaWVudCkiIGQ9Ik0gMTguOTMsMTguOTIgSCAwIFYgMCBIIDE4LjkzIEwgOS4yNyw5LjMyIFoiLz4KPC9zdmc+Cg==
   [website]: https://mahozad.ir/android-pie-chart/#examples
   [Codecov]: https://codecov.io/gh/mahozad/android-pie-chart/branch/master/graph/badge.svg?token=ptnbmXaozw
   [Release workflow]: https://github.com/mahozad/android-pie-chart/actions/workflows/ci.yml/badge.svg
