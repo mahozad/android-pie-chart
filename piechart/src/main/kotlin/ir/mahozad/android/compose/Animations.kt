@@ -12,6 +12,7 @@ enum class ChartState { INITIALIZED, RECOMPOSED }
 
 
 
+// https://dev.to/zachklipp/introduction-to-the-compose-snapshot-system-19cn
 
 
 
@@ -187,9 +188,10 @@ data class InternalSlice(val fraction: State<Float>, val color: State<Color>)
 
 val random = Random(1)
 
-
-
-
+/**
+ * https://stackoverflow.com/q/69538128
+ * https://stackoverflow.com/q/67801939
+ */
 @Composable fun updateTransitionDataNew(
     targetSlices: List<Slice>,
     targetHoleRatio: Float
@@ -202,50 +204,60 @@ val random = Random(1)
 
     val listOfFractions = remember { mutableStateListOf<MutableState<Float>>() }
     Log.i("aabbcc", "listOfFractions: ${listOfFractions.map { it.value }}")
-    // val listOfAnimatedFractions = remember { SnapshotStateList<State<Float>>() }
     for (index in targetSlices.indices) {
-        if (index in listOfFractions.indices) {
-            listOfFractions[index].value = targetSlices[index].fraction
-        } else {
+        if (index !in listOfFractions.indices) {
             listOfFractions.add(mutableStateOf(0.0f))
-            // listOfAnimatedFractions.add(
-            //     transition.animateFloat(label = "fraction-$index-animation", transitionSpec = {
-            //         tween(durationMillis = 500, delayMillis = 0, easing = FastOutSlowInEasing)
-            //     }) { state -> if (state == ChartState.INITIALIZED) {
-            //         Log.i("aabbcc", "in animateFloat lambda INITIALIZED; listOfFractions[$index]: ${listOfFractions[index]}")
-            //         derivedStateOf { listOfFractions[index].value }.value
-            //     } else /*0.2f*/{
-            //         Log.i("aabbcc", "in animateFloat lambda RECOMPOSED; listOfFractions[$index]: ${listOfFractions[index]}")
-            //         listOfFractions[index].value
-            //     }
-            //     }
-            // )
-            listOfFractions[index].value = targetSlices[index].fraction
         }
+        listOfFractions[index].value = targetSlices[index].fraction
     }
     for (i in targetSlices.size until listOfFractions.size) {
         listOfFractions[i].value = 0f // OR listOfFractions.removeAt(i)
-        // listOfAnimatedFractions.removeAt(i)
     }
 
 
-    val animatedFraction2 = listOfFractions.mapIndexed { index, fraction ->
+    val listOfColors = remember { mutableStateListOf<MutableState<Color>>() }
+    for (index in targetSlices.indices) {
+        if (index !in listOfColors.indices) {
+            listOfColors.add(mutableStateOf(Color.Transparent))
+        }
+        listOfColors[index].value = targetSlices[index].color
+    }
+    for (i in targetSlices.size until listOfColors.size) {
+        listOfColors[i].value = Color.Transparent // OR listOfColors.removeAt(i)
+    }
+
+    val animatedFractions = listOfFractions.mapIndexed { index, fraction ->
         transition.animateFloat(label = "fraction-$index-animation", transitionSpec = {
-            tween(durationMillis = 500, delayMillis = 0, easing = FastOutSlowInEasing)
-        }) { state -> if (state == ChartState.INITIALIZED) {
-            Log.i("aabbcc", "in animateFloat lambda INITIALIZED; listOfFractions[$index]: ${listOfFractions[index]}")
-            fraction.value
-        } else /*0.2f*/{
-            Log.i("aabbcc", "in animateFloat lambda RECOMPOSED; listOfFractions[$index]: ${listOfFractions[index]}")
-            fraction.value
-        }
+            tween(durationMillis = 1500, delayMillis = 0, easing = FastOutSlowInEasing)
+        }) { state ->
+            if (state == ChartState.INITIALIZED) {
+                Log.i("aabbcc", "in animateFloat lambda INITIALIZED; listOfFractions[$index]: ${listOfFractions[index]}")
+                fraction.value
+            } else /*0.2f*/ {
+                Log.i("aabbcc", "in animateFloat lambda RECOMPOSED; listOfFractions[$index]: ${listOfFractions[index]}")
+                fraction.value
+            }
         }
     }
 
-    val internalSlices = remember(animatedFraction2.size) {
-        animatedFraction2
-            // .zip(animatedColors)
-            .map { InternalSliceNew(it, mutableStateOf(Color(random.nextFloat(), random.nextFloat(), random.nextFloat()))) }
+    val animatedColors = listOfColors.mapIndexed { index, color ->
+        transition.animateColor(label = "color-$index-animation", transitionSpec = {
+            tween(durationMillis = 1500, delayMillis = 0, easing = FastOutSlowInEasing)
+        }) { state ->
+            if (state == ChartState.INITIALIZED) {
+                Log.i("aabbcc", "in animateFloat lambda INITIALIZED; listOfFractions[$index]: ${listOfFractions[index]}")
+                color.value
+            } else /*0.2f*/ {
+                Log.i("aabbcc", "in animateFloat lambda RECOMPOSED; listOfFractions[$index]: ${listOfFractions[index]}")
+                color.value
+            }
+        }
+    }
+
+    val internalSlices = remember(animatedFractions.size) {
+        animatedFractions
+            .zip(animatedColors)
+            .map { InternalSliceNew(it.first, it.second) }
         // .toMutableStateList()
     }
 
@@ -257,7 +269,7 @@ val random = Random(1)
 
     Log.i("aabbcc", "holeRatio: ${holeRatio.value}")
 
-    return remember(animatedFraction2) { TransitionDataNew(internalSlices, holeRatio) }
+    return remember(animatedFractions) { TransitionDataNew(internalSlices, holeRatio) }
 }
 
 class TransitionDataNew(
