@@ -67,7 +67,7 @@ private fun Pie(
 ) {
     val startAngle = -90
 
-    val transitionData = updateTransitionData2(slices, holeRatio)
+    val transitionData = updateTransitionDataNew(slices, holeRatio)
     val fractions = transitionData.slices.map { it.fraction.value }
     val startAngles = calculateStartAngles(startAngle, fractions)
 
