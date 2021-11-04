@@ -1,6 +1,14 @@
 package chart.test
 
 import androidx.compose.ui.graphics.Color
+import kotlin.random.Random
+import kotlin.random.nextInt
+
+/**
+ * Using [Random] class instead of [IntRange.random]
+ * so we can control the random generation by giving a desired seed.
+ */
+val random = Random(1)
 
 /**
  * Generate a list of random numbers that sum up to the base.
@@ -17,8 +25,8 @@ internal fun generateRandomNumbers(
     maxSize: Int = 8,
     diversity: Int = 30
 ): List<Float> {
-    val size = (1..maxSize).random()
-    val numbers = (1..size).map { (1..diversity).random() }
+    val size = random.nextInt(1..maxSize)
+    val numbers = (1..size).map { random.nextInt(1..diversity) }
     return numbers.map { it.toFloat() / numbers.sum() * base }
 }
 
