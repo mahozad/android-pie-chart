@@ -1,4 +1,5 @@
 /* See https://medium.com/@ranjeetsinha/jacoco-with-kotlin-dsl-f1f067e42cd0 */
+/* TODO: migrate to kover https://github.com/Kotlin/kotlinx-kover */
 
 val minimumRequiredCoverage = 0.80
 
