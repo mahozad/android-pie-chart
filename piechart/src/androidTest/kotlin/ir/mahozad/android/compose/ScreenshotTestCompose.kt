@@ -121,4 +121,26 @@ class ScreenshotTestCompose {
             .saveIfNeeded(shouldSave, screenshotName)
             .assertIfNeeded(shouldAssert, screenshotName)
     }
+
+    @Test fun changeSlicesAnimation() {
+        var slices = listOf(
+            Slice(0.3f, Color.Green),
+            Slice(0.7f, Color.Red),
+        )
+        composeTestRule.setContent { PieChartCompose(overlayRatio = 0.37f, holeRatio = 0f, pieChartData = slices) }
+        slices = listOf(Slice(1f, Color.Green))
+        // var slices by mutableStateOf(
+        //     listOf(
+        //         Slice(0.3f, Color.Green),
+        //         Slice(0.7f, Color.Red),
+        //     )
+        // )
+        // composeTestRule.setContent { PieChartCompose(overlayRatio = 0.37f, holeRatio = 0f, pieChartData = slices) }
+        // composeTestRule.mainClock.autoAdvance = false
+        // slices = listOf(Slice(1f, Color.Green))
+        // for (i in 1..30) {
+        //     composeTestRule.mainClock.advanceTimeBy(15)
+        //     composeTestRule.takeScreenshot().saveIfNeeded(true, "/anim/frame$i")
+        // }
+    }
 }
