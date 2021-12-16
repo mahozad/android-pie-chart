@@ -8,6 +8,6 @@ $(document).on("click", ".copy", function () {
           button.text("✔️");
           window.setTimeout(() => button.text("copy"), 750);
       },
-            () => alert("Failure to copy. Check for clipboard permissions")
+            () => alert("Failed to copy! Check for clipboard permissions.")
       );
 });
