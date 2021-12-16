@@ -99,7 +99,7 @@ Any other contributions are also welcome.
   [Codecov]: https://img.shields.io/codecov/c/github/mahozad/android-pie-chart?logo=codecov&logoColor=FF50A1&labelColor=303030&token=ptnbmXaozw
   [CI workflow]: https://img.shields.io/github/workflow/status/mahozad/android-pie-chart/CI?logo=github&labelColor=303030
   [Latest Maven Central release]: https://img.shields.io/maven-central/v/ir.mahozad.android/pie-chart?logo=android&labelColor=303030
-  [the issues that I couldn't tackle myself]: https://github.com/mahozad/android-pie-chart/issues?q=is%3Aissue+is%3Aopen+label%3Acontribution-needed
+  [the issues that I couldn't tackle myself]: https://github.com/mahozad/android-pie-chart/issues?q=is%3Aissue+is%3Aopen+label%3Ahelp-wanted
   [Screenshot 1]: screenshots/screenshot-1.png
   [Screenshot 2]: screenshots/screenshot-2.png
   [Screenshot 3]: screenshots/screenshot-3.png
