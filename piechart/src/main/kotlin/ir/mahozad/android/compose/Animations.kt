@@ -6,7 +6,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
-import kotlin.random.Random
+import java.util.*
 
 enum class ChartState { INITIALIZED, RECOMPOSED }
 
@@ -90,7 +90,13 @@ class TransitionData(
 
 
     val colors = listOf(
-        animateColorAsState(targetValue = targetSlices.getOrNull(0)?.color ?: Color.Transparent, animationSpec = tween(500)),
+        transition.animateColor(label = "color-0-animation", transitionSpec = { tween(500) }) {
+           if (it == ChartState.INITIALIZED)
+               targetSlices.getOrNull(0)?.color ?: Color.Transparent
+            else
+                targetSlices.getOrNull(0)?.color ?: Color.Transparent
+        },
+        // animateColorAsState(targetValue = targetSlices.getOrNull(0)?.color ?: Color.Transparent, animationSpec = tween(500)),
         animateColorAsState(targetValue = targetSlices.getOrNull(1)?.color ?: Color.Transparent, animationSpec = tween(500)),
         animateColorAsState(targetValue = targetSlices.getOrNull(2)?.color ?: Color.Transparent, animationSpec = tween(500)),
         animateColorAsState(targetValue = targetSlices.getOrNull(3)?.color ?: Color.Transparent, animationSpec = tween(500)),
@@ -103,7 +109,13 @@ class TransitionData(
     )
 
     val fractions = listOf(
-        animateFloatAsState(targetValue = targetSlices.getOrNull(0)?.fraction ?: 0f, animationSpec = tween(500)),
+        transition.animateFloat(label = "fraction-0-animation", transitionSpec = { tween(500) }) {
+            if (it == ChartState.INITIALIZED)
+                0f
+            else
+                targetSlices.getOrNull(0)?.fraction ?: 0f
+        },
+        // animateFloatAsState(targetValue = targetSlices.getOrNull(0)?.fraction ?: 0f, animationSpec = tween(500)),
         animateFloatAsState(targetValue = targetSlices.getOrNull(1)?.fraction ?: 0f, animationSpec = tween(500)),
         animateFloatAsState(targetValue = targetSlices.getOrNull(2)?.fraction ?: 0f, animationSpec = tween(500)),
         animateFloatAsState(targetValue = targetSlices.getOrNull(3)?.fraction ?: 0f, animationSpec = tween(500)),
@@ -119,7 +131,7 @@ class TransitionData(
         fractions
             .zip(colors)
             .map { InternalSlice(it.first, it.second) }
-            .toMutableStateList()
+            // .toMutableStateList()
     }
 
 
@@ -200,11 +212,10 @@ val random = Random(1)
     slicesMutableState.targetState = ChartState.RECOMPOSED
     val transition = updateTransition(slicesMutableState, label = "main-animation")
 
-
-
     val listOfFractions = remember { mutableStateListOf<MutableState<Float>>() }
     Log.i("aabbcc", "listOfFractions: ${listOfFractions.map { it.value }}")
     for (index in targetSlices.indices) {
+        Log.i("aabbcc", "in the for loop")
         if (index !in listOfFractions.indices) {
             listOfFractions.add(mutableStateOf(0.0f))
         }
@@ -213,7 +224,6 @@ val random = Random(1)
     for (i in targetSlices.size until listOfFractions.size) {
         listOfFractions[i].value = 0f // OR listOfFractions.removeAt(i)
     }
-
 
     val listOfColors = remember { mutableStateListOf<MutableState<Color>>() }
     for (index in targetSlices.indices) {
@@ -232,14 +242,13 @@ val random = Random(1)
         }) { state ->
             if (state == ChartState.INITIALIZED) {
                 Log.i("aabbcc", "in animateFloat lambda INITIALIZED; listOfFractions[$index]: ${listOfFractions[index]}")
-                fraction.value
+                0f
             } else /*0.2f*/ {
                 Log.i("aabbcc", "in animateFloat lambda RECOMPOSED; listOfFractions[$index]: ${listOfFractions[index]}")
                 fraction.value
             }
         }
     }
-
     val animatedColors = listOfColors.mapIndexed { index, color ->
         transition.animateColor(label = "color-$index-animation", transitionSpec = {
             tween(durationMillis = 1500, delayMillis = 0, easing = FastOutSlowInEasing)
@@ -254,22 +263,27 @@ val random = Random(1)
         }
     }
 
-    val internalSlices = remember(animatedFractions.size) {
-        animatedFractions
-            .zip(animatedColors)
-            .map { InternalSliceNew(it.first, it.second) }
-        // .toMutableStateList()
-    }
-
-    internalSlices.forEachIndexed { i, slice -> Log.i("aabbcc", "internalSlice[$i].fraction: ${slice.fraction.value}") }
-
     val holeRatio = transition.animateFloat(label = "hole-animation", transitionSpec = {
         tween(durationMillis = 500, delayMillis = 0, easing = FastOutSlowInEasing)
     }) { if (it == ChartState.INITIALIZED) 0f else targetHoleRatio }
 
-    Log.i("aabbcc", "holeRatio: ${holeRatio.value}")
+    val slices = remember { mutableStateListOf<InternalSliceNew>() }
 
-    return remember(animatedFractions) { TransitionDataNew(internalSlices, holeRatio) }
+    // val internalSlices = remember { ArrayList<InternalSliceNew>(50) }
+    val transitionData = remember { TransitionDataNew(slices, holeRatio) }
+
+    for (i in slices.size until listOfFractions.size) {
+        slices.add(InternalSliceNew(animatedFractions[i], animatedColors[i]))
+    }
+
+    // listOfFractions.size never gets smaller unlike targetSlices.size that may get smaller and trigger the recalculation unnecessarily
+    val internalSlices = remember(listOfFractions.size) {
+        (animatedFractions zip animatedColors).map { InternalSliceNew(it.first, it.second) }
+        // .toMutableStateList()
+    }
+
+    // return remember(transition/*listOfFractions.size*/) { TransitionDataNew(internalSlices, holeRatio) }
+    return transitionData
 }
 
 class TransitionDataNew(
