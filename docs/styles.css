@@ -10,6 +10,7 @@ html {
 
 body {
   background: radial-gradient(circle, #C1C3C630, #DFEDEB40);
+  padding: 8px 0 16px 0;
 }
 
 main {
@@ -22,6 +23,14 @@ main {
   padding: 24px;
   width: 768px;
   margin: 0 auto;
+}
+
+a {
+  color: #0091D8;
+}
+
+a:visited {
+  color: #EB5BA5;
 }
 
 .example-header {
@@ -103,4 +112,27 @@ h3 {
 
 .screenshot {
   width: 40%;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: radial-gradient(circle, #111215, #141517)
+  }
+  main {
+    background: #1d1f21;
+    box-shadow: rgb(0 0 0 / 18%) 0px 2px 4px;
+    color: #e3e5ef;
+  }
+  .copy {
+    color: #eee;
+    border-color: #ccc;
+  }
+  .example {
+    background: transparent;
+  }
+  .example-header {
+    background-image: linear-gradient(to right, #b5bfc0e0, transparent);
+    color: #141414;
+    border-radius: 50px;
+  }
 }
