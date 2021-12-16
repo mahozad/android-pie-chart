@@ -1,5 +1,3 @@
-hljs.highlightAll();
-
 if (window.matchMedia) {
   // If media queries are supported...
   updateCodeSnippetsTheme();
@@ -19,3 +17,5 @@ function updateCodeSnippetsTheme() {
     lightStyleLink.removeAttribute("disabled");
   }
 }
+
+hljs.highlightAll(); // Highlight the code snippets

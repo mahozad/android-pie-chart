@@ -1,5 +1,5 @@
-// https://stackoverflow.com/q/43262121/
-// https://stackoverflow.com/q/36975619
+// See https://stackoverflow.com/q/43262121/
+// and https://stackoverflow.com/q/36975619
 
 const URL = "https://api.github.com/repos/mahozad/android-pie-chart/releases/latest"
 
