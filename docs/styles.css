@@ -11,6 +11,50 @@ html {
 body {
   background: radial-gradient(circle, #C1C3C630, #DFEDEB40);
   padding: 8px 0 16px 0;
+  display: flex;
+  gap: 16px;
+  flex-direction: row;
+  align-items: start;
+  justify-content: center;
+}
+
+aside {
+  position: sticky;
+  display: flex;
+  flex-direction: column;
+  margin-block-start: 180px;
+  inset-block-start: 16px;
+  border-radius: 8px;
+  padding: 8px;
+  gap: 8px;
+  background: #fff;
+  width: 40px;
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+  box-shadow: rgb(0 0 0 / 18%) 0 2px 4px;
+  transition: all 300ms;
+}
+
+aside:hover {
+  width: 116px;
+}
+
+.side-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.side-item img {
+  width: 24px;
+  height: 24px;
+  margin-inline-end: 10px;
+  transition: all 250ms;
+}
+
+aside:hover .side-item img {
+  margin-inline-end: 3px;
 }
 
 main {
@@ -22,7 +66,6 @@ main {
   border-radius: 10px;
   padding: 24px;
   width: 768px;
-  margin: 0 auto;
 }
 
 a {
