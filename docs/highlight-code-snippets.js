@@ -1,5 +1,5 @@
+// If media queries are supported...
 if (window.matchMedia) {
-  // If media queries are supported...
   updateCodeSnippetsTheme();
   window
       .matchMedia("(prefers-color-scheme: dark)")
