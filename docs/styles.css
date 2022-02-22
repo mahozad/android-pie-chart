@@ -33,8 +33,44 @@ aside {
 
 .side-item {
   display: flex;
+  position: relative; /* So the tooltip can be positioned absolutely */
   flex-direction: row;
   align-items: center;
+}
+
+.tooltip {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  inset-inline-end: 44px;
+  width: max-content;
+  font-family: Roboto, sans-serif;
+  font-size: 12px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.68);
+  padding: 8px;
+  border-radius: 4px;
+  /*box-shadow: rgb(0 0 0 / 18%) 0 2px 4px;*/
+  transition: 200ms;
+}
+
+.tooltip:after {
+  position: absolute;
+  width: 0;
+  height: 0;
+  inset-block-start: 50%;
+  inset-inline-end: -12px;
+  transform: translate(0, -50%);
+  border-width: 6px;
+  border-color: transparent transparent transparent rgba(0, 0, 0, 0.68);
+  border-style: solid;
+  content: "";
+}
+
+.side-item img:hover + .tooltip {
+  inset-inline-end: 44px;
+  visibility: visible;
+  opacity: 1;
 }
 
 .side-item img {
