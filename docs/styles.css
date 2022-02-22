@@ -45,6 +45,8 @@ aside {
   position: relative; /* So the tooltip can be positioned absolutely */
   flex-direction: row;
   align-items: center;
+  width: 24px;
+  height: 24px;
 }
 
 .tooltip {
@@ -80,11 +82,6 @@ aside {
   inset-inline-end: 44px;
   visibility: visible;
   opacity: 1;
-}
-
-.side-item img {
-  width: 24px;
-  height: 24px;
 }
 
 main {
