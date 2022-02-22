@@ -78,7 +78,16 @@ aside {
   content: "";
 }
 
-.side-item img:hover + .tooltip {
+.side-item .icon {
+  fill: #000;
+  transition: 100ms;
+}
+
+.side-item:hover .icon {
+  fill: var(--link-color);
+}
+
+.side-item .icon:hover + .tooltip {
   inset-inline-end: 44px;
   visibility: visible;
   opacity: 1;
