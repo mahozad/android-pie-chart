@@ -13,6 +13,10 @@ html {
   scroll-behavior: smooth;
 }
 
+/* To center the main content in the page regardless of the sidebar
+ * see https://stackoverflow.com/q/32378953
+ * and https://stackoverflow.com/q/37891839
+ */
 body {
   background: radial-gradient(circle, #C1C3C630, #DFEDEB40);
   padding: 8px 0 16px 0;
