@@ -7,6 +7,7 @@
 * {
   --link-color: #0091D8;
   --link-visited-color: #EB5BA5;
+  --tooltip-on-dark-bg-color: rgba(255, 255, 255, 0.85);
 }
 
 html {
@@ -196,6 +197,19 @@ h3 {
 @media (prefers-color-scheme: dark) {
   body {
     background: radial-gradient(circle, #111215, #141517)
+  }
+  aside {
+    background: #1d1f21;
+  }
+  .side-item .icon {
+    fill: #fefefe;
+  }
+  .tooltip {
+    background: var(--tooltip-on-dark-bg-color);
+    color: #000
+  }
+  .tooltip:after {
+    border-color: transparent transparent transparent var(--tooltip-on-dark-bg-color);
   }
   main {
     background: #1d1f21;
