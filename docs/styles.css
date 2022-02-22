@@ -4,6 +4,11 @@
   See https://www.w3schools.com/css/css_font_google.asp.
 */
 
+* {
+  --link-color: #0091D8;
+  --link-visited-color: #EB5BA5;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -90,11 +95,11 @@ main {
 }
 
 a {
-  color: #0091D8;
+  color: var(--link-color);
 }
 
 a:visited {
-  color: #EB5BA5;
+  color: var(--link-visited-color);
 }
 
 .example-header {
