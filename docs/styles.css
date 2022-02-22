@@ -1,8 +1,8 @@
 /*
-  The Roboto and Jetbrains Mono fonts are downloaded from Google Fonts.
-  They are included as <link> elements in the HTML page.
-  See https://www.w3schools.com/css/css_font_google.asp.
-*/
+ * The Roboto and Jetbrains Mono fonts are downloaded from Google Fonts.
+ * They are included as <link> elements in the HTML page.
+ * See https://www.w3schools.com/css/css_font_google.asp.
+ */
 
 * {
   --link-color: #0091D8;
