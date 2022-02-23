@@ -69,9 +69,10 @@ function animateButtonIconToDark() {
 
 function onDocumentReady() {
     setThemeButtonInitialIcon();
-    const toggleButton = document.getElementById("theme-switch");
+    let toggleButton = document.getElementById("theme-switch");
     toggleButton.style.visibility = "visible";
-    toggleButton.addEventListener("click", toggleTheme);
+    // NOTE: Setting click listener here sometimes did not work on browsers.
+    //  The onclick is set on the element in the HTML.
 }
 
 function setThemeButtonInitialIcon() {
