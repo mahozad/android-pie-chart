@@ -37,21 +37,21 @@ function toggleTheme() {
     if (currentTheme.mode === "auto") {
         currentTheme.mode = "custom";
         currentTheme.name = "light";
-        document.getElementById("anim6").beginElement()
-        document.getElementById("anim7").beginElement()
-        document.getElementById("anim8").beginElement()
-        document.getElementById("anim9").beginElement()
+        document.getElementById("letter-anim-hide").beginElement()
+        document.getElementById("core-anim-shrink").beginElement()
+        document.getElementById("rays-anim-show").beginElement()
+        document.getElementById("rays-anim-rotate").beginElement()
     } else if (currentTheme.name === "dark") {
         currentTheme.mode = "auto";
         currentTheme.name = "-";
-        document.getElementById("anim4").beginElement()
-        document.getElementById("anim5").beginElement()
+        document.getElementById("eclipse-anim-go").beginElement()
+        document.getElementById("letter-anim-show").beginElement()
     } else {
         currentTheme.mode = "custom";
         currentTheme.name = "dark";
-        document.getElementById("anim1").beginElement()
-        document.getElementById("anim2").beginElement()
-        document.getElementById("anim3").beginElement()
+        document.getElementById("core-anim-enlarge").beginElement()
+        document.getElementById("rays-anim-hide").beginElement()
+        document.getElementById("eclipse-anim-come").beginElement()
     }
     localStorage.setItem("theme", currentTheme.mode === "auto" ? "auto" : currentTheme.name);
     updateTheme();
