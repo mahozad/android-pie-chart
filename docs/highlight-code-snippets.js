@@ -1,21 +1,17 @@
-// If media queries are supported...
-if (window.matchMedia) {
-  updateCodeSnippetsTheme();
-  window
-      .matchMedia("(prefers-color-scheme: dark)")
-      .addEventListener("change", updateCodeSnippetsTheme);
-}
+hljs.highlightAll(); // Highlight the code snippets
+updateCodeSnippetsThemeIfNecessary();
 
-function updateCodeSnippetsTheme() {
+/* Check the theme and if it is changed, enable the proper style */
+function updateCodeSnippetsThemeIfNecessary() {
+  let currentTheme = detectTheme();
   let darkStyleLink = document.querySelector(`link[title="dark-code"]`);
   let lightStyleLink = document.querySelector(`link[title="light-code"]`);
-  if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+  if (currentTheme.name === "dark") {
     darkStyleLink.removeAttribute("disabled");
     lightStyleLink.setAttribute("disabled", "disabled");
   } else {
     darkStyleLink.setAttribute("disabled", "disabled");
     lightStyleLink.removeAttribute("disabled");
   }
+  setTimeout(updateCodeSnippetsThemeIfNecessary, 100);
 }
-
-hljs.highlightAll(); // Highlight the code snippets
