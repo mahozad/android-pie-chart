@@ -83,7 +83,10 @@ code, body, main, aside {
   box-shadow: #0000002D 0 2px 4px;
 }
 
-#theme-switch #visible-content {
+/* Only change the color of the core and not rays
+ * as it seems to make a better animation in terms of visuals
+ */
+#circle {
   fill: var(--theme-switch-icon-color);
   stroke: var(--theme-switch-icon-color);
 }
