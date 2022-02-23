@@ -3,12 +3,11 @@ const THEME_ATTR = "data-theme";
 const THEME_DARK = "dark";
 const THEME_AUTO = "auto";
 const THEME_LIGHT = "light";
+const COLOR_SCHEME_QUERY = "(prefers-color-scheme: dark)"
 
 updateTheme();
-// Wait for the document to be ready: https://stackoverflow.com/a/800010
 document.addEventListener("DOMContentLoaded", onDocumentReady);
-window
-    .matchMedia("(prefers-color-scheme: dark)")
+window.matchMedia(COLOR_SCHEME_QUERY)
     .addEventListener("change", updateTheme);
 
 function updateTheme() {
@@ -24,28 +23,42 @@ function getUserThemeSelection() {
 }
 
 function getSystemTheme() {
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-        return THEME_DARK;
-    } else {
-        return THEME_LIGHT;
+    const isDark = window.matchMedia(COLOR_SCHEME_QUERY).matches;
+    return isDark ? THEME_DARK : THEME_LIGHT;
+}
+
+function onDocumentReady() {
+    setThemeButtonInitialIcon();
+    let toggleButton = document.getElementById("theme-switch");
+    toggleButton.style.visibility = "visible";
+    // NOTE: Setting click listener here sometimes did not work on browsers.
+    //  The onclick is set on the element in the HTML.
+}
+
+function setThemeButtonInitialIcon() {
+    let theme = getUserThemeSelection();
+    if (theme === THEME_AUTO) {
+        setThemeButtonIconToAuto();
+    } else if (theme === THEME_DARK) {
+        setThemeButtonIconToDark();
+    } else /* if (theme === THEME_LIGHT) */ {
+        // Do nothing and show the icon as is
     }
 }
 
 // See https://stackoverflow.com/q/48316611
 function toggleTheme() {
-    let oldTheme = getUserThemeSelection();
-    let newTheme;
-    if (oldTheme === THEME_AUTO) {
-        newTheme = THEME_LIGHT;
+    let theme = getUserThemeSelection();
+    if (theme === THEME_AUTO) {
+        localStorage.setItem(THEME_KEY, THEME_LIGHT);
         animateButtonIconToLight();
-    } else if (oldTheme === THEME_DARK) {
-        newTheme = THEME_AUTO;
+    } else if (theme === THEME_DARK) {
+        localStorage.setItem(THEME_KEY, THEME_AUTO);
         animateButtonIconToAuto();
     } else /* if (theme === THEME_LIGHT) */ {
-        newTheme = THEME_DARK;
+        localStorage.setItem(THEME_KEY, THEME_DARK);
         animateButtonIconToDark();
     }
-    localStorage.setItem(THEME_KEY, newTheme);
     updateTheme();
 }
 
@@ -67,25 +80,14 @@ function animateButtonIconToDark() {
     document.getElementById("eclipse-anim-come").beginElement();
 }
 
-function onDocumentReady() {
-    setThemeButtonInitialIcon();
-    let toggleButton = document.getElementById("theme-switch");
-    toggleButton.style.visibility = "visible";
-    // NOTE: Setting click listener here sometimes did not work on browsers.
-    //  The onclick is set on the element in the HTML.
+function setThemeButtonIconToAuto() {
+    document.getElementById("circle").setAttribute("r", "10");
+    document.getElementById("rays").setAttribute("opacity", "0");
+    document.getElementById("letter").setAttribute("opacity", "1");
 }
 
-function setThemeButtonInitialIcon() {
-    let theme = getUserThemeSelection();
-    if (theme === THEME_AUTO) {
-        document.getElementById("circle").setAttribute("r", "10");
-        document.getElementById("rays").setAttribute("opacity", "0");
-        document.getElementById("letter").setAttribute("opacity", "1");
-    } else if (theme === THEME_DARK) {
-        document.getElementById("circle").setAttribute("r", "10");
-        document.getElementById("rays").setAttribute("opacity", "0");
-        document.getElementById("eclipse").setAttribute("cx", "20");
-    } else /* if (theme === THEME_LIGHT) */ {
-        // Do nothing and show the icon as is
-    }
+function setThemeButtonIconToDark() {
+    document.getElementById("circle").setAttribute("r", "10");
+    document.getElementById("rays").setAttribute("opacity", "0");
+    document.getElementById("eclipse").setAttribute("cx", "20");
 }
