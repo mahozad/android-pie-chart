@@ -1,9 +1,9 @@
 const THEME_KEY = "theme";
-const THEME_ATTR = "data-theme";
-const THEME_DARK = "dark";
 const THEME_AUTO = "auto";
+const THEME_DARK = "dark";
 const THEME_LIGHT = "light";
-const COLOR_SCHEME_QUERY = "(prefers-color-scheme: dark)"
+const THEME_ATTRIBUTE = "data-theme";
+const COLOR_SCHEME_QUERY = "(prefers-color-scheme: dark)";
 
 updateTheme();
 document.addEventListener("DOMContentLoaded", onDocumentReady);
@@ -13,7 +13,7 @@ window.matchMedia(COLOR_SCHEME_QUERY)
 function updateTheme() {
     let theme = getUserThemeSelection();
     if (theme === THEME_AUTO) theme = getSystemTheme();
-    document.documentElement.setAttribute(THEME_ATTR, theme);
+    document.documentElement.setAttribute(THEME_ATTRIBUTE, theme);
 }
 
 function getUserThemeSelection() {
@@ -31,8 +31,8 @@ function onDocumentReady() {
     setThemeButtonInitialIcon();
     let toggleButton = document.getElementById("theme-switch");
     toggleButton.style.visibility = "visible";
-    // NOTE: Setting click listener here sometimes did not work on browsers.
-    //  The onclick is set on the element in the HTML.
+    // NOTE: Setting click listener here sometimes did not work in browsers.
+    //  So, the onclick attribute is set on the element in the HTML.
 }
 
 function setThemeButtonInitialIcon() {
@@ -51,30 +51,30 @@ function toggleTheme() {
     let theme = getUserThemeSelection();
     if (theme === THEME_AUTO) {
         localStorage.setItem(THEME_KEY, THEME_LIGHT);
-        animateButtonIconToLight();
+        animateThemeButtonIconToLight();
     } else if (theme === THEME_DARK) {
         localStorage.setItem(THEME_KEY, THEME_AUTO);
-        animateButtonIconToAuto();
+        animateThemeButtonIconToAuto();
     } else /* if (theme === THEME_LIGHT) */ {
         localStorage.setItem(THEME_KEY, THEME_DARK);
-        animateButtonIconToDark();
+        animateThemeButtonIconToDark();
     }
     updateTheme();
 }
 
-function animateButtonIconToLight() {
+function animateThemeButtonIconToLight() {
     document.getElementById("letter-anim-hide").beginElement();
     document.getElementById("core-anim-shrink").beginElement();
     document.getElementById("rays-anim-show").beginElement();
     document.getElementById("rays-anim-rotate").beginElement();
 }
 
-function animateButtonIconToAuto() {
+function animateThemeButtonIconToAuto() {
     document.getElementById("eclipse-anim-go").beginElement();
     document.getElementById("letter-anim-show").beginElement();
 }
 
-function animateButtonIconToDark() {
+function animateThemeButtonIconToDark() {
     document.getElementById("core-anim-enlarge").beginElement();
     document.getElementById("rays-anim-hide").beginElement();
     document.getElementById("eclipse-anim-come").beginElement();
