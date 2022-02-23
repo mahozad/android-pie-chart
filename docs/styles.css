@@ -4,13 +4,46 @@
  * See https://www.w3schools.com/css/css_font_google.asp.
  */
 
-* {
+:root {
   --color-primary: #0091D8;
   --color-secondary: #EB5BA5;
   --link-color: var(--color-primary);
   --link-visited-color: var(--color-primary);
-  --tooltip-on-light-bg-color: #000000AD;
-  --tooltip-on-dark-bg-color: #FFFFFFDD;
+  --body-grad-first-color: #C1C3C630;
+  --body-grad-second-color: #DFEDEB40;
+  --main-bg-color: #fff;
+  --main-text-color: #000;
+  --sidebar-bg-color: #fff;
+  --sidebar-icon-color: #000;
+  --tooltip-bg-color: #000000AD;
+  --tooltip-text-color: #fff;
+  --copy-button-text-color: #000;
+  --copy-button-border-color: #e0e0e0;
+  --example-bg-color: #fff;
+  --example-header-text-color: #000;
+  --example-header-grad-first-color: #EBEDEFFF;
+  --example-header-grad-second-color: #FFFFFF00;
+  --theme-switch-icon-color: #000;
+  --theme-switch-bg-color: #fff;
+}
+
+[data-theme="dark"] {
+  --body-grad-first-color: #111215;
+  --body-grad-second-color: #141517;
+  --main-bg-color: #1d1f21;
+  --main-text-color: #e3e5ef;
+  --sidebar-bg-color: #1d1f21;
+  --sidebar-icon-color: #fefefe;
+  --tooltip-bg-color: #FFFFFFDD;
+  --tooltip-text-color: #000;
+  --copy-button-text-color: #eee;
+  --copy-button-border-color: #ccc;
+  --example-bg-color: transparent;
+  --example-header-text-color: #141414;
+  --example-header-grad-first-color: #b5bfc0e0;
+  --example-header-grad-second-color: transparent;
+  --theme-switch-icon-color: #fefefe;
+  --theme-switch-bg-color: #1d1f21;
 }
 
 html {
@@ -22,13 +55,37 @@ html {
  * and https://stackoverflow.com/q/37891839
  */
 body {
-  background: radial-gradient(circle, #C1C3C630, #DFEDEB40);
+  background: radial-gradient(circle, var(--body-grad-first-color), var(--body-grad-second-color));
   padding: 8px 0 16px 0;
   display: flex;
   gap: 16px;
   flex-direction: row;
   align-items: start;
   justify-content: center;
+}
+
+/* Animate the transition of light/dark theme */
+code, body, main, aside {
+  transition: background-color 200ms;
+}
+
+#theme-switch {
+  visibility: hidden;
+  position: absolute;
+  padding: 8px;
+  border: none;
+  inset-inline-start: -56px;
+  inset-block-start: 0;
+  display: flex;
+  cursor: pointer;
+  border-radius: 8px;
+  background: var(--theme-switch-bg-color);
+  box-shadow: #0000002D 0 2px 4px;
+}
+
+#theme-switch #visible-content {
+  fill: var(--theme-switch-icon-color);
+  stroke: var(--theme-switch-icon-color);
 }
 
 aside {
@@ -40,7 +97,7 @@ aside {
   border-radius: 8px;
   padding: 8px;
   gap: 16px;
-  background: #fff;
+  background: var(--sidebar-bg-color);
   box-shadow: #0000002D 0 2px 4px;
 }
 
@@ -61,8 +118,8 @@ aside {
   width: max-content;
   font-family: Roboto, sans-serif;
   font-size: 12px;
-  color: #fff;
-  background: var(--tooltip-on-light-bg-color);
+  color: var(--tooltip-text-color);
+  background: var(--tooltip-bg-color);
   padding: 8px;
   border-radius: 4px;
   /* box-shadow: #0000002D 0 2px 4px; */
@@ -77,13 +134,13 @@ aside {
   inset-inline-end: -12px;
   transform: translate(0, -50%);
   border-width: 6px;
-  border-color: transparent transparent transparent var(--tooltip-on-light-bg-color);
+  border-color: transparent transparent transparent var(--tooltip-bg-color);
   border-style: solid;
   content: "";
 }
 
 .side-item .icon {
-  fill: #000;
+  fill: var(--sidebar-icon-color);
   transition: 100ms;
 }
 
@@ -99,9 +156,11 @@ aside {
 
 main {
   display: flex;
+  position: relative; /* For the theme button to be positioned absolutely */
   flex-flow: column;
   font-family: "Roboto", sans-serif !important;
-  background: #fff;
+  color: var(--main-text-color);
+  background: var(--main-bg-color);
   box-shadow: #0000002D 0px 2px 4px;
   border-radius: 10px;
   padding: 24px;
@@ -118,15 +177,16 @@ a:visited {
 
 .example-header {
   padding-block: 4px;
+  color: var(--example-header-text-color);
   padding-inline: 16px;
-  background-image: linear-gradient(to right, #EBEDEFFF, #FFFFFF00);
+  background-image: linear-gradient(to right, var(--example-header-grad-first-color), var(--example-header-grad-second-color));
   border-radius: 50px;
 }
 
 .example {
   display: flex;
   flex-flow: column;
-  background: #fff;
+  background: var(--example-bg-color);
   border-radius: 8px;
   padding: 16px;
   margin-block-start: 24px;
@@ -165,7 +225,8 @@ code {
   text-align: center;
   padding: 4px;
   cursor: pointer;
-  border: 1px solid #e0e0e0;
+  color: var(--copy-button-text-color);
+  border: 1px solid var(--copy-button-border-color);
   border-radius: 3px;
   position: absolute;
   inset-block-start: 21px;
@@ -195,39 +256,4 @@ h3 {
 
 .screenshot {
   width: 40%;
-}
-
-@media (prefers-color-scheme: dark) {
-  body {
-    background: radial-gradient(circle, #111215, #141517)
-  }
-  aside {
-    background: #1d1f21;
-  }
-  .side-item .icon {
-    fill: #fefefe;
-  }
-  .tooltip {
-    background: var(--tooltip-on-dark-bg-color);
-    color: #000
-  }
-  .tooltip:after {
-    border-color: transparent transparent transparent var(--tooltip-on-dark-bg-color);
-  }
-  main {
-    background: #1d1f21;
-    color: #e3e5ef;
-  }
-  .copy {
-    color: #eee;
-    border-color: #ccc;
-  }
-  .example {
-    background: transparent;
-  }
-  .example-header {
-    background-image: linear-gradient(to right, #b5bfc0e0, transparent);
-    color: #141414;
-    border-radius: 50px;
-  }
 }

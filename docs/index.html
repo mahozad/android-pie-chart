@@ -5,6 +5,10 @@
   <title>Android pie chart</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" type="image/x-icon" href="favicon.ico">
+  <!-- We support both dark and light color schemes. Using this breaks background colors (why?) -->
+  <!--<meta name="color-scheme" content="dark light">-->
+  <!-- Load the theme as soon as possible to prevent white flash -->
+  <script src="update-theme.js"></script>
   <link rel="stylesheet" href="styles.css">
   <!-- https://developers.google.com/fonts/docs/css2 -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
@@ -47,6 +51,43 @@
 </aside>
 
 <main>
+  <!-- https://stackoverflow.com/q/34393465 -->
+  <button id="theme-switch">
+    <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <mask id="mask">
+          <rect width="24" height="24" fill="#fff"/>
+          <circle id="eclipse" r="10" cx="33" cy="6">
+            <animate id="anim3" fill="freeze" attributeName="cx" to="20" dur="200ms" begin="indefinite"/>
+            <animate id="anim4" fill="freeze" attributeName="cx" to="33" dur="100ms" begin="indefinite"/>
+          </circle>
+          <path id="letter" opacity="0" fill="none" stroke="#000" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" d="m9 14.5h6m-7 2 4-9 4 9">
+            <animate id="anim5" fill="freeze" attributeName="opacity" to="1" dur="200ms" begin="indefinite"/>
+            <animate id="anim6" fill="freeze" attributeName="opacity" to="0" dur="200ms" begin="indefinite"/>
+          </path>
+        </mask>
+      </defs>
+      <g id="visible-content" mask="url(#mask)">
+        <circle id="circle" r="5" cx="12" cy="12">
+          <animate id="anim1" fill="freeze" attributeName="r" to="10" dur="200ms" begin="indefinite"/>
+          <animate id="anim7" fill="freeze" attributeName="r" to="5" dur="200ms" begin="indefinite"/>
+        </circle>
+        <g id="rays" fill="none" stroke="#000" stroke-width="2" stroke-linecap="round">
+          <animate id="anim2" fill="freeze" attributeName="opacity" to="0" dur="100ms" begin="indefinite"/>
+          <animate id="anim8" fill="freeze" attributeName="opacity" to="1" dur="200ms" begin="indefinite"/>
+          <animateTransform id="anim9" attributeName="transform" attributeType="XML" type="rotate" from="0 12 12" to="45 12 12" dur="200ms" begin="indefinite"/>
+          <path d="m12 1v3"/>
+          <path d="m23 12h-3"/>
+          <path d="m19.778 4.2218-2.121 2.1213"/>
+          <path d="m19.778 19.778-2.121-2.121"/>
+          <path d="m4.222 19.778 2.121-2.121"/>
+          <path d="m4.222 4.222 2.121 2.121"/>
+          <path d="m4 12h-3"/>
+          <path d="m12 20v3"/>
+        </g>
+      </g>
+    </svg>
+  </button>
 
   <img src="logo-animated.svg" alt="Logo" height="128px">
   <h1>Android pie chart</h1>
