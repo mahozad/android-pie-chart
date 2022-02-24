@@ -166,7 +166,7 @@ main {
   font-family: "Roboto", sans-serif !important;
   color: var(--main-text-color);
   background: var(--main-bg-color);
-  box-shadow: #0000002D 0px 2px 4px;
+  box-shadow: #0000002D 0 2px 4px;
   border-radius: 10px;
   padding: 24px;
   width: 768px;
