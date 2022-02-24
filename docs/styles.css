@@ -7,6 +7,7 @@
 :root {
   --color-primary: #0091D8;
   --color-secondary: #EB5BA5;
+  --surface-color: #fff;
   --link-color: var(--color-primary);
   --link-visited-color: var(--color-primary);
   --body-grad-first-color: #C1C3C630;
@@ -28,11 +29,12 @@
 }
 
 [data-theme="dark"] {
+  --surface-color: #1d1f21;
   --body-grad-first-color: #111215;
   --body-grad-second-color: #141517;
-  --main-bg-color: #1d1f21;
+  --main-bg-color: var(--surface-color);
   --main-text-color: #e3e5ef;
-  --sidebar-bg-color: #1d1f21;
+  --sidebar-bg-color: var(--surface-color);
   --sidebar-icon-color: #fefefe;
   --tooltip-bg-color: #FFFFFFDD;
   --tooltip-text-color: #000;
@@ -43,7 +45,7 @@
   --example-header-grad-first-color: #b5bfc0e0;
   --example-header-grad-second-color: transparent;
   --theme-switch-icon-color: #fefefe;
-  --theme-switch-bg-color: #1d1f21;
+  --theme-switch-bg-color: var(--surface-color);
 }
 
 html {
