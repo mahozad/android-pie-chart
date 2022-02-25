@@ -16,7 +16,8 @@
   --main-text-color: #000;
   --sidebar-bg-color: #fff;
   --sidebar-icon-color: #000;
-  --tooltip-bg-color: #000000AD;
+  /* Use opaque color so if the tip overlaps, the overlap color is not changed */
+  --tooltip-bg-color: #4F5050;
   --tooltip-text-color: #fff;
   --copy-button-text-color: #000;
   --copy-button-border-color: #e0e0e0;
@@ -36,7 +37,8 @@
   --main-text-color: #e3e5ef;
   --sidebar-bg-color: var(--surface-color);
   --sidebar-icon-color: #fefefe;
-  --tooltip-bg-color: #FFFFFFDD;
+  /* Use opaque color so if the tip overlaps, the overlap color is not changed */
+  --tooltip-bg-color: #E0E0E0;
   --tooltip-text-color: #000;
   --copy-button-text-color: #eee;
   --copy-button-border-color: #ccc;
