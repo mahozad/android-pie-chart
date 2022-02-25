@@ -138,7 +138,7 @@ aside {
   width: 0;
   height: 0;
   inset-block-start: 50%;
-  inset-inline-end: -12px;
+  inset-inline-end: -11px;
   transform: translate(0, -50%);
   border-width: 6px;
   border-color: transparent transparent transparent var(--tooltip-bg-color);
