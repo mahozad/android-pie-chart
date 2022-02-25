@@ -222,6 +222,11 @@ code {
   width: 100%;
 }
 
+.hljs {
+  /* This slso makes theme transition smooth */
+  background: transparent !important;
+}
+
 /* Example of popup for copy button: https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_copy_clipboard2 */
 .copy {
   content: "copy";
