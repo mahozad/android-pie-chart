@@ -83,7 +83,7 @@ function animateThemeButtonIconToDark() {
 function setThemeButtonIconToAuto() {
     document.getElementById("circle").setAttribute("r", "10");
     document.getElementById("rays").setAttribute("opacity", "0");
-    document.getElementById("letter").setAttribute("opacity", "1");
+    document.getElementById("letter").setAttribute("stroke-dashoffset", "0");
 }
 
 function setThemeButtonIconToDark() {
