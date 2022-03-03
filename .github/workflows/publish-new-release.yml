@@ -159,7 +159,8 @@ jobs:
       # GITHUB_ACTOR: automatically set by GitHub (https://docs.github.com/en/actions/reference/environment-variables#default-environment-variables)
     name: Publish the artifacts to GitHub Packages and Maven Central
     runs-on: ubuntu-latest
-    # https://docs.github.com/en/actions/reference/authentication-in-a-workflow
+    # See https://docs.github.com/en/actions/using-jobs/assigning-permissions-to-jobs
+    # and https://docs.github.com/en/actions/reference/authentication-in-a-workflow
     permissions:
       contents: read
       packages: write
