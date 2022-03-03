@@ -1,3 +1,10 @@
+const THEME_KEY = "theme";
+const THEME_AUTO = "auto";
+const THEME_DARK = "dark";
+const THEME_LIGHT = "light";
+const THEME_DEFAULT = THEME_LIGHT;
+const COLOR_SCHEME_DARK = "(prefers-color-scheme: dark)";
+
 hljs.highlightAll(); // Highlight the code snippets
 updateCodeSnippetsThemeIfNecessary();
 
@@ -15,4 +22,14 @@ function updateCodeSnippetsThemeIfNecessary() {
     lightStyleLink.removeAttribute("disabled");
   }
   setTimeout(updateCodeSnippetsThemeIfNecessary, 100);
+}
+
+function getUserThemeSelection() {
+  const userSelection = localStorage.getItem(THEME_KEY);
+  return userSelection === null ? THEME_DEFAULT : userSelection;
+}
+
+function getSystemTheme() {
+  const isDark = window.matchMedia(COLOR_SCHEME_DARK).matches;
+  return isDark ? THEME_DARK : THEME_LIGHT;
 }
