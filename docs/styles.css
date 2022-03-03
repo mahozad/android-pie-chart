@@ -1,8 +1,11 @@
 /*
  * The Roboto and Jetbrains Mono fonts are downloaded from Google Fonts.
  * They are included as <link> elements in the HTML page.
- * See https://www.w3schools.com/css/css_font_google.asp.
+ * See https://www.w3schools.com/css/css_font_google.asp
+ * and https://developers.google.com/fonts/docs/css2
  */
+@import url(https://fonts.googleapis.com/css2?family=Roboto);
+@import url(https://fonts.googleapis.com/css2?family=JetBrains+Mono);
 
 :root {
   --color-primary: #0091D8;
