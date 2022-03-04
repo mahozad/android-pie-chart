@@ -73,7 +73,9 @@ body {
 
 /* Animate the transition of light/dark theme */
 code, body, main, aside {
-  transition: background-color 200ms;
+  /* FIXME: The body gradient background is not animated
+   * See https://stackoverflow.com/a/63848864/8583692 */
+  transition: background-color 100ms;
 }
 
 theme-switch {
