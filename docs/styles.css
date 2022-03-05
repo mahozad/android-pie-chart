@@ -13,8 +13,7 @@
   --surface-color: #fff;
   --link-color: var(--color-primary);
   --link-visited-color: var(--color-primary);
-  --body-grad-first-color: #C1C3C630;
-  --body-grad-second-color: #DFEDEB40;
+  --body-bg-color: #f6f9f9;
   --main-bg-color: #fff;
   --main-text-color: #000;
   --sidebar-bg-color: #fff;
@@ -34,8 +33,7 @@
 
 [data-theme="dark"] {
   --surface-color: #1d1f21;
-  --body-grad-first-color: #111215;
-  --body-grad-second-color: #141517;
+  --body-bg-color: #111215;
   --main-bg-color: var(--surface-color);
   --main-text-color: #e3e5ef;
   --sidebar-bg-color: var(--surface-color);
@@ -62,7 +60,7 @@ html {
  * and https://stackoverflow.com/q/37891839
  */
 body {
-  background: radial-gradient(circle, var(--body-grad-first-color), var(--body-grad-second-color));
+  background: var(--body-bg-color);
   padding: 8px 0 16px 0;
   display: flex;
   gap: 16px;
