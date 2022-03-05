@@ -73,7 +73,7 @@ body {
 code, body, main, aside, theme-switch, .copy, code * {
   /* NOTE: The gradient background cannot be animated
    * See https://stackoverflow.com/a/63848864/8583692 */
-  transition: background-color 100ms;
+  transition: background-color 300ms ease, color 300ms ease;
 }
 
 theme-switch {
