@@ -10,8 +10,8 @@ import java.io.File
 val inputFile = File("CHANGELOG.md")
 val outputFile = File("changelog.txt")
 val versionHeaderLineRegex = Regex(""".*v\d+\.\d+\.\d+.* \(\d{4}-\d{2}-\d{2}\)""")
-val commitReferenceRegex = Regex("""\[`[\da-f]{8}`]\(.+[\da-f]{8}\)""")
-val issueReferenceRegex = Regex("""\[#\d+]\(.+/[\d]+\)""")
+val commitReferenceRegex = Regex("""\[`[\da-f]{8}`]\([^(]+[\da-f]{8}\)""")
+val issueReferenceRegex = Regex("""\[#\d+]\([^(]+/[\d]+\)""")
 
 val result = buildString {
     val releaseType = determineTypeOfThisRelease()
