@@ -43,8 +43,8 @@ as in GitHub workflows).
      Usage: ```gradlew incrementVersion [-P[mode=major|minor|patch]|[overrideVersion=x]]```
   5. Commit the changes with message "Increment ..."
   6. Create a Git tag on the new commit with the new version string
-  7. Merge the master branch into *prod* branch
-  8. Make sure to checkout and return to the master branch again
+  7. Merge the *main* branch into *prod* branch
+  8. Make sure to checkout and return to the *main* branch again
   9. Publish on Maven Central
      1. Run the Gradle task
      *publish<NAME_OF_THE_PUBLISH_DEFINED_IN_BUILD_SCRIPT>PublicationToSonatypeRepository*

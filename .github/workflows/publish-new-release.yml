@@ -102,7 +102,7 @@ jobs:
         with:
           name: code-coverage-report
           path: piechart/build/reports/coverage/debug/
-      # NOTE: No need to send coverage report to Codcov because we just send coverage report of the master branch and it is sent by the test workflow
+      # NOTE: No need to send coverage report to Codcov because we just send coverage report of the main branch and it is sent by the test workflow
       # Either this way...
       # - uses: codecov/codecov-action@v1
       #   with:
@@ -136,7 +136,7 @@ jobs:
 
   merge-into-prod:
     needs: [ run-unit-tests, run-instrumentation-tests ]
-    name: Rebase (fast forward) the prod branch onto the master
+    name: Rebase (fast forward) the prod branch onto the main
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
