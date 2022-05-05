@@ -10,8 +10,8 @@ import java.io.File
 val inputFile = File("CHANGELOG.md")
 val outputFile = File("changelog.txt")
 val versionHeaderLineRegex = Regex(""".*v\d+\.\d+\.\d+.* \(\d{4}-\d{2}-\d{2}\)""")
-val commitReferenceRegex = Regex("""\[`[\da-f]{8}`]\([^(]+[\da-f]{8}\)""")
-val issueReferenceRegex = Regex("""\[#\d+]\([^(]+/[\d]+\)""")
+val commitReferenceRegex = Regex("""\[`(?<hash>[\da-f]{8})`]\([^(]+\k<hash>/?\)""")
+val issueReferenceRegex = Regex("""\[#(?<number>\d+)]\([^(]+/\k<number>/?\)""")
 
 val result = buildString {
     val releaseType = determineTypeOfThisRelease()
@@ -56,14 +56,16 @@ fun createReleaseBody() = inputFile
  * Note that the GitHub links are visually different and also,
  * when hovering over them with mouse, a popup shows the commit/issue information.
  */
-fun String.cleanReferences(): String {
-    fun String.cleanCommitReferences() = replace(commitReferenceRegex) {
-        it.value.substringBetween("[`", "`]")
+fun String.cleanReferences() = this
+    .replace(commitReferenceRegex) { matchResult ->
+        // FIXME: Replace with the following in Kotlin 1.7 and higher:
+        //  matchResult.groups["hash"]?.value ?: error("Regex group not found")
+        matchResult.groupValues[1]
     }
-    fun String.cleanIssueReferences() = replace(issueReferenceRegex) {
-        it.value.substringBetween("[", "]")
+    .replace(issueReferenceRegex) { matchResult ->
+        // FIXME: Replace with the following in Kotlin 1.7 and higher:
+        //  matchResult.groups["number"]?.value ?: error("Regex group not found")
+        "#${matchResult.groupValues[1]}"
     }
-    return cleanCommitReferences().cleanIssueReferences()
-}
 
 fun String.substringBetween(start: String, end: String) = substringAfter(start).substringBefore(end)
