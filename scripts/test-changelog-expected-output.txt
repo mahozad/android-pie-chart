@@ -1,0 +1,7 @@
+This is a patch release.
+
+#### Other
+- Add some code refactorings (0a2aab86, 3d5573a2, 7fc2b960)
+- Fix three minor issues (#54, #3, #16)
+
+[All commits since version 1.2.0](https://github.com/mahozad/theme-switch/compare/v1.2.0...v1.2.1)
