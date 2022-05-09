@@ -10,6 +10,12 @@ import java.io.File
 val inputFile = File("CHANGELOG.md")
 val outputFile = File("changelog.txt")
 val versionHeaderLineRegex = Regex(""".*v\d+\.\d+\.\d+.* \(\d{4}-\d{2}-\d{2}\)""")
+/**
+ * The `?<hash>` is called a named capture group and the `\k<hash>` is called a back-reference.
+ * See [this Stack Overflow post](https://stackoverflow.com/a/72177157/8583692)
+ * and https://github.com/tc39/proposal-regexp-named-groups
+ * and the javadoc of the Java class [Pattern] for more information.
+ */
 val commitReferenceRegex = Regex("""\[`(?<hash>[\da-f]{8})`]\([^(]+\k<hash>/?\)""")
 val issueReferenceRegex = Regex("""\[#(?<number>\d+)]\([^(]+/\k<number>/?\)""")
 
