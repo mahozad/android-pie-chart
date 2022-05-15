@@ -28,7 +28,7 @@ import kotlin.math.absoluteValue
  * Could not run these test as unit tests because they and the class under test
  * use android features (*View::MeasureSpec*)
  *
- * The *@TestInstance* annotation is used an an alternative to
+ * The *@TestInstance* annotation is used as an alternative to
  * making the argument provider method for *@MethodSource* static.
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
