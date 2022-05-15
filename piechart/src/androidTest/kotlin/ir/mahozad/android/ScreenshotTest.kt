@@ -36,6 +36,48 @@ New Features in androidx.test.core-ktx version 1.4.1:
   Add experimental Bitmap.writeToTestStorage API
 
 
+
+
+
+
+
+
+ New features in Compose UI: v1.2.0-beta01:
+   Introduced new experimental, platform independent, test API: an interface ComposeUiTest and a fun runComposeUiTest(block: ComposeUiTest.() -> Unit), that can be used to run Compose Ui tests without the need for a TestRule. To run a test without a ComposeTestRule, pass the test as a lambda to runComposeUiTest, and use the methods and members in the receiver scope ComposeUiTest, which are the same ones as in ComposeContentTestRule.
+   The Android specific interface AndroidComposeUiTest and fun runAndroidComposeUiTest(block: AndroidComposeUiTest.() -> Unit) are added to provide access to the underlying Activity, similar to AndroidComposeTestRule. For even more control, you can instantiate a class AndroidComposeUiTestEnvironment yourself.
+   The Desktop implementation is the class DesktopComposeUiTest, but no Desktop specific run functions are offered at the moment.
+   Migrating a test from a ComposeTestRule to ComposeUiTest can be done like this (Android example). From:
+
+   @RunWith(AndroidJUnit4::class)
+   class MyTest {
+       @get:Rule val rule = createComposeRule()
+       @Test
+       fun test() {
+           rule.setContent {
+               Text("Hello Compose!")
+           }
+           rule.onNodeWithText("Hello Compose!").assertExists()
+       }
+   }
+
+   To:
+
+   @RunWith(AndroidJUnit4::class)
+   class MyTest {
+       @Test
+       @OptIn(ExperimentalTestApi::class)
+       fun test() = runComposeUiTest {
+           setContent {
+               Text("Hello Compose!")
+           }
+           onNodeWithText("Hello Compose!").assertExists()
+       }
+   }
+
+
+
+
+
  * These tests are used to visually inspect the chart to avoid any regressions.
  * Also, they are used to test whether changing chart properties work as expected.
  * This is a kind of end-to-end testing.
