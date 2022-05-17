@@ -8,7 +8,7 @@ val composeVersion = "1.0.2"
 plugins {
     id("com.android.library")
     id("kotlin-android")
-    id("org.jetbrains.dokka") version "1.4.32"
+    id("org.jetbrains.dokka") version "1.6.21"
     id("jacoco")
     id("maven-publish")
     // To generate signature and checksum files for each artifact
