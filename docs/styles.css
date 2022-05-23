@@ -23,6 +23,7 @@
   --tooltip-text-color: #fff;
   --copy-button-text-color: #000;
   --copy-button-border-color: #e0e0e0;
+  --example-divider-color: #eee;
   --example-bg-color: #fff;
   --example-header-bg-color: #f0f0f0;
   --example-header-number-bg-color: #f2f1f0;
@@ -43,6 +44,7 @@
   --tooltip-text-color: #000;
   --copy-button-text-color: #eee;
   --copy-button-border-color: #ccc;
+  --example-divider-color: #444;
   --example-bg-color: transparent;
   --example-header-bg-color: #444;
   --example-header-text-color: #eee;
@@ -203,7 +205,7 @@ a:visited {
 }
 
 .example hr {
-  border: 1px dashed #eee;
+  border: 1px dashed var(--example-divider-color);
   width: 100%;
   margin-block-start: 32px;
 }
