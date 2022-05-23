@@ -24,9 +24,9 @@
   --copy-button-text-color: #000;
   --copy-button-border-color: #e0e0e0;
   --example-bg-color: #fff;
-  --example-header-text-color: #000;
-  --example-header-grad-first-color: #EBEDEFFF;
-  --example-header-grad-second-color: #FFFFFF00;
+  --example-header-bg-color: #f0f0f0;
+  --example-header-number-bg-color: #f2f1f0;
+  --example-header-text-color: #111;
   --theme-switch-icon-color: #000;
   --theme-switch-bg-color: #fff;
 }
@@ -44,9 +44,9 @@
   --copy-button-text-color: #eee;
   --copy-button-border-color: #ccc;
   --example-bg-color: transparent;
-  --example-header-text-color: #141414;
-  --example-header-grad-first-color: #b5bfc0e0;
-  --example-header-grad-second-color: transparent;
+  --example-header-bg-color: #444;
+  --example-header-text-color: #eee;
+  --example-header-number-bg-color: #4f4e4d;
   --theme-switch-icon-color: #fefefe;
   --theme-switch-bg-color: var(--surface-color);
 }
@@ -174,11 +174,21 @@ a:visited {
 }
 
 .example-header {
-  padding-block: 4px;
+  /* width: fit-content; */
   color: var(--example-header-text-color);
-  padding-inline: 16px;
-  background-image: linear-gradient(to right, var(--example-header-grad-first-color), var(--example-header-grad-second-color));
+  background: var(--example-header-bg-color);
   border-radius: 50px;
+  padding-block: 4px;
+  padding-inline: 16px;
+}
+
+.example-number {
+  color: var(--example-header-text-color);
+  background: var(--example-header-number-bg-color);
+  box-shadow: 0px 1px 2px 0px #0006;
+  padding: 10px 16px;
+  border-radius: 50px;
+  margin-inline-end: 6px;
 }
 
 .example {
