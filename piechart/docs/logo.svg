@@ -1,0 +1,27 @@
+<svg version="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="linearGradient2166-2" x1="12" x2="12" y1="12" y2="15.439" gradientTransform="matrix(1,0,0,-1,0,24)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#699b00" offset="0"/>
+      <stop stop-color="#a1ea00" offset="1"/>
+    </linearGradient>
+    <linearGradient id="linearGradient2158-2" x1="12.5" x2="15.395" y1="11.13" y2="9.3425" gradientTransform="matrix(1,0,0,-1,0,24)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#d2ad08" offset="0"/>
+      <stop stop-color="#f7cf1d" offset="1"/>
+    </linearGradient>
+    <linearGradient id="linearGradient2174-9" x1="11.5" x2="8.593" y1="11.13" y2="9.3349" gradientTransform="matrix(1,0,0,-1,0,24)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1587bd" offset="0"/>
+      <stop stop-color="#44b6ea" offset="1"/>
+    </linearGradient>
+    <clipPath id="clip-5">
+      <path d="m1 2v20h22v-20zm10.939 5a4 4 0 0 1 0.061 0 4 4 0 0 1 4 4 4 4 0 0 1-4 4 4 4 0 0 1-4-4 4 4 0 0 1 3.939-4z"/>
+    </clipPath>
+  </defs>
+  <path d="m12 12-3.326-1.66a4 4 0 0 1 3.326-1.779 4 4 0 0 1 3.326 1.779z" fill="url(#linearGradient2166-2)"/>
+  <path d="m12.5 16.53v-3.66l3.273-1.64a4 4 0 0 1 0.227 1.33 4 4 0 0 1-3.5 3.97z" fill="url(#linearGradient2158-2)"/>
+  <path d="m11.5 16.53a4 4 0 0 1-3.5-3.97 4 4 0 0 1 0.227-1.33l3.273 1.64z" fill="url(#linearGradient2174-9)"/>
+  <g transform="matrix(1,0,0,-1,0,23.56)" clip-path="url(#clip-5)" fill="none">
+    <circle cx="15.586" cy="8.7843" r="4" stroke="#f4c909"/>
+    <circle transform="scale(-1,1)" cx="-8.414" cy="8.7843" r="4" stroke="#189ddb" style="mix-blend-mode:screen"/>
+    <circle cx="12.017" cy="14.73" r="4" stroke="#8fd100" style="mix-blend-mode:screen"/>
+  </g>
+</svg>

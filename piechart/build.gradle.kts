@@ -195,6 +195,39 @@ tasks {
     }
 }
 
+tasks.dokkaHtml.configure {
+    dokkaSourceSets {
+        configureEach { // OR named("main") {
+            noAndroidSdkLink.set(false)
+            // See https://github.com/Kotlin/dokka/issues/2406
+            pluginsMapConfiguration.set(
+                mapOf(
+                    "org.jetbrains.dokka.base.DokkaBase" to
+                            """{ 
+                                   "customStyleSheets": ["${file("docs/logo-styles.css").path.replace('\\', '/')}"],
+                                   "customAssets" : [
+                                       "${file("docs/logo.svg").path.replace('\\', '/')}",
+                                       "${file("docs/logo-icon.svg").path.replace('\\', '/')}"
+                                   ],
+                                   "separateInheritedMembers": true
+                            }"""
+                )
+            )
+            sourceLink {
+                // Unix based directory relative path to the root of the project (where you execute gradle respectively).
+                localDirectory.set(file("src/main/kotlin"))
+
+                // URL showing where the source code can be accessed through the web browser
+                remoteUrl.set(
+                    uri("https://github.com/mahozad/$githubProjectName/blob/main/${projectDir.name}/src/main/kotlin").toURL()
+                )
+                // Suffix which is used to append the line number to the URL. Use #L for GitHub
+                remoteLineSuffix.set("#L")
+            }
+        }
+    }
+}
+
 /**
  * Maven Publish plugin allows you to publish build artifacts to an Apache Maven repository.
  * See [here](https://docs.gradle.org/current/userguide/publishing_maven.html)
