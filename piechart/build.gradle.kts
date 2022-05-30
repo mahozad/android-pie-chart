@@ -97,6 +97,7 @@ android {
     buildTypes {
         getByName("debug") {
             isTestCoverageEnabled = true
+            isShrinkResources = false
             isMinifyEnabled = false
             // isUseProguard = false
 
@@ -110,6 +111,7 @@ android {
         }
         getByName("release") {
             isTestCoverageEnabled = true
+            isShrinkResources = false
             // There is no need to obfuscate an open source library
             // nor is it necessary to shrink the code because the user can do it
             isMinifyEnabled = false
