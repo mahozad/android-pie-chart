@@ -10,8 +10,8 @@
   will only run on devices running Android 8.0 (API 26) or newer. Older phones will
   skip the execution of these tests completely, marking them as "ignored".
 - Do not change the device display dimensions in
-  *Settings* -> *Developer options* -> *Smallest width OR in *Settings* -> *Display* -> *Display size*
-  as it impacts the screenshots and other measurement tests
+  *Settings* -> *Developer options* -> *Smallest width* OR in *Settings* -> *Display* -> *Display size*
+  as it impacts the screenshots and other measurement tests.
 - The screenshot tests do not work the same on the GitHub emulator
   (even though the emulator device defined in ci.yml is the same as our main local device).
   Probably, it is because of the previous note (modified display dimensions on our local device).
