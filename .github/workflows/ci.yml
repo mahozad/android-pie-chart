@@ -16,6 +16,11 @@ jobs:
         id: step1
         uses: actions/checkout@v2
       # See https://developer.android.com/studio/test/command-line for test types and their result location
+      - name: Set up a specific Java version
+        uses: actions/setup-java@v3
+        with:
+          distribution: "temurin" # OR adopt OR microsoft OR...
+          java-version: "11"
       - name: Run all unit tests
         run: ./gradlew :piechart:test --stacktrace
       - name: Run all instrumentation tests
