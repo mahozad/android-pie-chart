@@ -204,10 +204,10 @@ tasks.dokkaHtml.configure {
                 mapOf(
                     "org.jetbrains.dokka.base.DokkaBase" to
                             """{ 
-                                   "customStyleSheets": ["${file("docs/logo-styles.css").path.replace('\\', '/')}"],
+                                   "customStyleSheets": ["${file("docs/logo-styles.css").invariantSeparatorsPath}"],
                                    "customAssets" : [
-                                       "${file("docs/logo.svg").path.replace('\\', '/')}",
-                                       "${file("docs/logo-icon.svg").path.replace('\\', '/')}"
+                                       "${file("docs/logo.svg").invariantSeparatorsPath}",
+                                       "${file("docs/logo-icon.svg").invariantSeparatorsPath}"
                                    ],
                                    "separateInheritedMembers": true
                             }"""
