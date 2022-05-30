@@ -213,6 +213,8 @@ tasks.dokkaHtml.configure {
                             }"""
                 )
             )
+            // The label shown for the link in the "Sources" tab of an element docs
+            displayName.set("GitHub")
             sourceLink {
                 // Unix based directory relative path to the root of the project (where you execute gradle respectively).
                 localDirectory.set(file("src/main/kotlin"))
