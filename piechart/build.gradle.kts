@@ -1,4 +1,15 @@
 import com.adarshr.gradle.testlogger.theme.ThemeType.STANDARD
+import org.jetbrains.dokka.base.DokkaBase
+import org.jetbrains.dokka.base.DokkaBaseConfiguration
+
+buildscript {
+    dependencies {
+        // Needed to be able to configure Dokka like
+        // pluginConfiguration<DokkaBase, DokkaBaseConfiguration> { ...
+        // See https://github.com/Kotlin/dokka/issues/2513#issuecomment-1141043184
+        classpath("org.jetbrains.dokka:dokka-base:1.6.21")
+    }
+}
 
 // Could also have used ${rootProject.extra["kotlinVersion"]}
 val kotlinVersion: String by rootProject.extra
@@ -197,22 +208,19 @@ tasks {
 
 tasks.dokkaHtml.configure {
     dokkaSourceSets {
+        // See the buildscript block above and also
+        // https://github.com/Kotlin/dokka/issues/2406
+        pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
+            customAssets = listOf(
+                file("docs/logo.svg"),
+                file("docs/logo-icon.svg")
+            )
+            customStyleSheets = listOf(file("docs/logo-styles.css"))
+            separateInheritedMembers = true
+        }
+
         configureEach { // OR named("main") {
             noAndroidSdkLink.set(false)
-            // See https://github.com/Kotlin/dokka/issues/2406
-            pluginsMapConfiguration.set(
-                mapOf(
-                    "org.jetbrains.dokka.base.DokkaBase" to
-                            """{ 
-                                   "customStyleSheets": ["${file("docs/logo-styles.css").invariantSeparatorsPath}"],
-                                   "customAssets" : [
-                                       "${file("docs/logo.svg").invariantSeparatorsPath}",
-                                       "${file("docs/logo-icon.svg").invariantSeparatorsPath}"
-                                   ],
-                                   "separateInheritedMembers": true
-                            }"""
-                )
-            )
             // The label shown for the link in the "Sources" tab of an element docs
             displayName.set("GitHub")
             sourceLink {
