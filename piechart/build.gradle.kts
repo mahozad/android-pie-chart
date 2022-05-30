@@ -4,8 +4,8 @@ import org.jetbrains.dokka.base.DokkaBaseConfiguration
 
 buildscript {
     dependencies {
-        // Needed to be able to configure Dokka like
-        // pluginConfiguration<DokkaBase, DokkaBaseConfiguration> { ...
+        // Needed to be able to configure Dokka like below
+        //  pluginConfiguration<DokkaBase, DokkaBaseConfiguration> { ...
         // See https://github.com/Kotlin/dokka/issues/2513#issuecomment-1141043184
         classpath("org.jetbrains.dokka:dokka-base:1.6.21")
     }
