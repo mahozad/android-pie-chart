@@ -77,6 +77,7 @@ android {
         unitTests.isIncludeAndroidResources = true
     }
 
+    // See https://developer.android.com/reference/tools/gradle-api/7.1/com/android/build/api/dsl/Lint
     lint {
         isCheckReleaseBuilds = false
         isAbortOnError = false
@@ -128,11 +129,13 @@ android {
         }
     }
     compileOptions {
+        // AGP 7.+ requires Java 11 to run
+        //  See https://developer.android.com/studio/releases/gradle-plugin?buildsystem=cmake#jdk-11
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "11" // See the comment in compileOptions
     }
 }
 
