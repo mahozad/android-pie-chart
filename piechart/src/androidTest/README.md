@@ -80,8 +80,8 @@ Add new experimental APIs for screenshots:
 Introduced new experimental, platform independent, test API: an interface *ComposeUiTest* and a
 `fun runComposeUiTest(block: ComposeUiTest.() -> Unit)`, that can be used to run Compose Ui tests without
 the need for a TestRule. To run a test without a *ComposeTestRule*, pass the test as a lambda to *runComposeUiTest*,
-and use the methods and members in the receiver scope *ComposeUiTest*, which are the same ones as in *
-ComposeContentTestRule*.
+and use the methods and members in the receiver scope *ComposeUiTest*, which are the same ones as in
+*ComposeContentTestRule*.
 
 The Android specific interface *AndroidComposeUiTest*
 and `fun runAndroidComposeUiTest(block: AndroidComposeUiTest.() -> Unit)`
