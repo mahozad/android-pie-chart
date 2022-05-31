@@ -67,13 +67,13 @@ These tests are used to visually inspect the chart to avoid any regressions.
 Also, they are used to test whether changing chart properties work as expected.
 They are a kind of end-to-end testing.
 
-## New features in *androidx.test.core-ktx version 1.4.1*
+## New features in *[androidx.test.core-ktx version 1.4.1](https://developer.android.com/jetpack/androidx/releases/test#core-1.4.1-alpha02)*
 
-Add new experimental APIs for screenshots:
+Added new experimental APIs for screenshots:
   - `View.captureToBitmap` extension function
   - `Window.captureRegionToBitmap` extension function
   - `takeScreenshot()`
-  - Add experimental `Bitmap.writeToTestStorage` API
+  - Addded experimental `Bitmap.writeToTestStorage` API
 
 ## New features in *Compose UI 1.2.0-beta01*:
 
