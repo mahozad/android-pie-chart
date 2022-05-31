@@ -6,14 +6,16 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Environment
 import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.test.ComposeUiTest
+import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.captureToImage
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.onRoot
 import androidx.test.platform.app.InstrumentationRegistry
 import org.assertj.core.api.Assertions.assertThat
 import java.io.File
 
-fun ComposeContentTestRule.takeScreenshot() = onRoot().captureToImage().asAndroidBitmap()
+@OptIn(ExperimentalTestApi::class)
+fun ComposeUiTest.takeScreenshot() = onRoot().captureToImage().asAndroidBitmap()
 
 fun Bitmap.saveIfNeeded(shouldSave: Boolean, name: String): Bitmap {
     if (shouldSave) save(name)
