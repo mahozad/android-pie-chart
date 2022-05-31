@@ -73,9 +73,9 @@ Added new experimental APIs for screenshots:
   - `View.captureToBitmap` extension function
   - `Window.captureRegionToBitmap` extension function
   - `takeScreenshot()`
-  - Addded experimental `Bitmap.writeToTestStorage` API
+  - Added experimental `Bitmap.writeToTestStorage` API
 
-## New features in *Compose UI 1.2.0-beta01*:
+## New features in *[Compose UI 1.2.0-beta01](https://developer.android.com/jetpack/androidx/releases/compose-ui#1.2.0-beta01)*
 
 Introduced new experimental, platform independent, test API: an interface *ComposeUiTest* and a
 `fun runComposeUiTest(block: ComposeUiTest.() -> Unit)`, that can be used to run Compose Ui tests without
