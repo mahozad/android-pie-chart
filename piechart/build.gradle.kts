@@ -83,13 +83,12 @@ android {
         isAbortOnError = false
     }
 
-    compileSdk = 30
-
     defaultConfig {
         // Note that versionCode and versionName properties cannot be specified (not applicable)
         //  for Android library modules. See https://stackoverflow.com/a/67803541
         minSdk = 21
         targetSdk = 30
+        compileSdk = 30
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments["runnerBuilder"] = "de.mannodermaus.junit5.AndroidJUnit5Builder"
         consumerProguardFiles("consumer-rules.pro")

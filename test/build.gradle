@@ -20,8 +20,6 @@ android {
         exclude 'META-INF/*.kotlin_module'
     }
 
-    compileSdkVersion 30
-
     buildFeatures {
         // Enables Jetpack Compose for this module
         compose true
@@ -34,6 +32,7 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 30
+        compileSdkVersion 30
         versionCode 1
         versionName '1.0'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
