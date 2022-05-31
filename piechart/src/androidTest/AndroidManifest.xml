@@ -10,7 +10,7 @@
 
   <application android:theme="@style/ScreenshotTestAppTheme"
                android:requestLegacyExternalStorage="true">
-    <activity android:name=".ScreenshotTestActivity">
+    <activity android:exported="false" android:name=".ScreenshotTestActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>

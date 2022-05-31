@@ -14,7 +14,7 @@ buildscript {
 // Could also have used ${rootProject.extra["kotlinVersion"]}
 val kotlinVersion: String by rootProject.extra
 val jacocoVersion: String by rootProject.extra
-val composeVersion = "1.0.2"
+val composeVersion = "1.2.0-beta02"
 
 plugins {
     id("com.android.library")
@@ -87,8 +87,8 @@ android {
         // Note that versionCode and versionName properties cannot be specified (not applicable)
         //  for Android library modules. See https://stackoverflow.com/a/67803541
         minSdk = 21
-        targetSdk = 30
-        compileSdk = 30
+        targetSdk = 31
+        compileSdk = 31
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments["runnerBuilder"] = "de.mannodermaus.junit5.AndroidJUnit5Builder"
         consumerProguardFiles("consumer-rules.pro")
