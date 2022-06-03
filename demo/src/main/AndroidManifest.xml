@@ -3,15 +3,15 @@
           package="chart.test">
 
   <application android:theme="@style/TestAppTheme">
-    <activity android:name="chart.test.ShowcaseMainActivity" android:exported="true">
+    <activity android:name="chart.test.DemoMainActivity" android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
-    <activity android:name=".ShowcaseComposeActivity" />
-    <activity android:name=".ShowcaseLegacyActivity" />
-    <activity android:name=".ShowcaseViewActivity" />
+    <activity android:name=".ComposeDemoActivity" />
+    <activity android:name=".LegacyDemoActivity" />
+    <activity android:name=".ViewDemoActivity" />
   </application>
 
 </manifest>
