@@ -1,4 +1,4 @@
-package chart.test
+package chart.demo
 
 import android.graphics.Color
 import android.os.Bundle
@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import ir.mahozad.android.PieChart
 
-class ShowcaseLegacyActivity : ComponentActivity() {
+class LegacyDemoActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +29,7 @@ class ShowcaseLegacyActivity : ComponentActivity() {
     }
 
     private fun legacyViewFromXML() {
-        setContentView(R.layout.showcase_legacy_view_activity)
+        setContentView(R.layout.demo_for_legacy_activity)
         val chart = findViewById<PieChart>(R.id.pieChart)
         chart.setOnClickListener {
             chart.slices = listOf(

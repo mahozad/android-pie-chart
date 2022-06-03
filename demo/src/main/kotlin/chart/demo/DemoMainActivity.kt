@@ -1,4 +1,4 @@
-package chart.test
+package chart.demo
 
 import android.app.Activity
 import android.content.Context
@@ -20,7 +20,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import kotlin.reflect.KClass
 
-class ShowcaseMainActivity : ComponentActivity() {
+class DemoMainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,21 +41,21 @@ class ShowcaseMainActivity : ComponentActivity() {
     }
 
     @Composable fun ComposeButton(context: Context) = Button(
-        onClick = { context.start(ShowcaseComposeActivity::class) },
+        onClick = { context.start(ComposeDemoActivity::class) },
         colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.button_compose_color))
     ) {
         Text(stringResource(id = R.string.button_compose_title))
     }
 
     @Composable fun ViewButton(context: Context) = Button(
-        onClick = { context.start(ShowcaseViewActivity::class) },
+        onClick = { context.start(ViewDemoActivity::class) },
         colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.button_view_color))
     ) {
         Text(stringResource(id = R.string.button_view_title))
     }
 
     @Composable fun LegacyButton(context: Context) = Button(
-        onClick = { context.start(ShowcaseLegacyActivity::class) },
+        onClick = { context.start(LegacyDemoActivity::class) },
         colors = ButtonDefaults.buttonColors(backgroundColor = colorResource(id = R.color.button_legacy_color))
     ) {
         Text(

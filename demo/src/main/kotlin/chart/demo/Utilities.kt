@@ -1,4 +1,4 @@
-package chart.test
+package chart.demo
 
 import androidx.compose.ui.graphics.Color
 import kotlin.random.Random

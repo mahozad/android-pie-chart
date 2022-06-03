@@ -1,4 +1,4 @@
-package chart.test
+package chart.demo
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -25,7 +25,7 @@ import ir.mahozad.android.compose.SliceCompose
 import ir.mahozad.android.compose.defaultSlices
 import kotlin.random.Random
 
-class ShowcaseComposeActivity : ComponentActivity() {
+class ComposeDemoActivity : ComponentActivity() {
 
     private val random = Random(0 /* OR System.currentTimeMillis */)
 

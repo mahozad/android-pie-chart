@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="chart.test">
+          package="chart.demo">
 
   <application android:theme="@style/TestAppTheme">
-    <activity android:name="chart.test.ShowcaseMainActivity" android:exported="true">
+    <activity android:name=".DemoMainActivity" android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
-    <activity android:name=".ShowcaseComposeActivity" />
-    <activity android:name=".ShowcaseLegacyActivity" />
-    <activity android:name=".ShowcaseViewActivity" />
+    <activity android:name=".ComposeDemoActivity" />
+    <activity android:name=".LegacyDemoActivity" />
+    <activity android:name=".ViewDemoActivity" />
   </application>
 
 </manifest>

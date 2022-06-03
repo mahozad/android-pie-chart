@@ -176,8 +176,8 @@ jobs:
       - name: Publish the package
         run: ./gradlew :piechart:publishReleasePublicationToSonatypeRepository --max-workers 1 closeAndReleaseSonatypeStagingRepository :piechart:publishReleasePublicationToGitHubPackagesRepository
 
-  create-showcase:
-    name: Generate the showcase APK
+  create-demo:
+    name: Generate the demo APK
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the code
@@ -190,15 +190,15 @@ jobs:
       - name: Decode the keystore file stored in GitHub
         run: echo $RELEASE_STORE_FILE_CONTENT_BASE_64 | base64 -di > $RELEASE_STORE_FILE_PATH
       - name: Build the APK
-        run: ./gradlew :test:assembleRelease --stacktrace
+        run: ./gradlew :demo:assembleRelease --stacktrace
       - name: Upload the APK
         uses: actions/upload-artifact@v2
         with:
-          name: showcase-app
+          name: demo-app
           path: test/build/outputs/apk/release/*.apk
 
   create-github-release:
-    needs: [ publish-to-repositories, create-showcase ]
+    needs: [ publish-to-repositories, create-demo ]
     name: Create a new release in the GitHub repository
     runs-on: ubuntu-latest
     steps:
@@ -209,13 +209,13 @@ jobs:
       - name: Download the APK uploaded by previous job
         uses: actions/download-artifact@v2
         with:
-          name: showcase-app
+          name: demo-app
       - name: Rename the apk to something better
-        run: mv *.apk showcase.apk
+        run: mv *.apk demo.apk
       - name: Create the release
         uses: softprops/action-gh-release@v1
         with:
           body_path: changelog.txt
-          files: showcase.apk
+          files: demo.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

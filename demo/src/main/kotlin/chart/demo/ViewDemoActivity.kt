@@ -1,14 +1,14 @@
-package chart.test
+package chart.demo
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import ir.mahozad.android.compose.PieChartView
 import ir.mahozad.android.compose.SliceCompose
 
-class ShowcaseViewActivity: ComponentActivity() {
+class ViewDemoActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.showcase_view_activity)
+        setContentView(R.layout.demo_for_view_activity)
         val chart = findViewById<PieChartView>(R.id.pieChart)
         chart.setOnClickListener {
             chart.slices = generateRandomNumbers().map { fraction ->
