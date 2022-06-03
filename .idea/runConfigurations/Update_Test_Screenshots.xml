@@ -3,7 +3,7 @@
     <module name="Android_Pie_Chart.demo" />
     <shortenClasspath name="NONE" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-    <option name="filePath" value="D:\Android\android-pie-chart\scripts\update-test-screenshots.main.kts" />
+    <option name="filePath" value="C:\Users\Mahdi\IdeaProjects\android-pie-chart\scripts\update-test-screenshots.main.kts" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>
