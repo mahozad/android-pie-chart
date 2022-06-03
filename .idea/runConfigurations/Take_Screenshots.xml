@@ -4,12 +4,14 @@
       <option name="executionName" />
       <option name="externalProjectPath" value="$PROJECT_DIR$/piechart" />
       <option name="externalSystemIdString" value="GRADLE" />
-      <option name="scriptParameters" value=":piechart:connectedAndroidTest --stacktrace -Pandroid.testInstrumentationRunnerArguments.class=ir.mahozad.android.ScreenshotTest -Pandroid.testInstrumentationRunnerArguments.shouldSave=true -Pandroid.testInstrumentationRunnerArguments.shouldAssert=false" />
+      <option name="scriptParameters" value="--stacktrace -Pandroid.testInstrumentationRunnerArguments.class=ir.mahozad.android.ScreenshotTest -Pandroid.testInstrumentationRunnerArguments.shouldSave=true -Pandroid.testInstrumentationRunnerArguments.shouldAssert=false" />
       <option name="taskDescriptions">
         <list />
       </option>
       <option name="taskNames">
-        <list />
+        <list>
+          <option value=":piechart:connectedAndroidTest" />
+        </list>
       </option>
       <option name="vmOptions" />
     </ExternalSystemSettings>
