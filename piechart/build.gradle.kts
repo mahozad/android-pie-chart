@@ -86,7 +86,7 @@ android {
     }
 
     buildTypes {
-        getByName("debug") {
+        debug {
             isTestCoverageEnabled = true
             isShrinkResources = false
             isMinifyEnabled = false
@@ -100,7 +100,7 @@ android {
             buildConfigField("Boolean", "CI", "$isCI")
             // buildConfigField("String", "NAME", """"value"""") // String example
         }
-        getByName("release") {
+        release {
             isTestCoverageEnabled = true
             isShrinkResources = false
             // There is no need to obfuscate an open source library
