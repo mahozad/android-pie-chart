@@ -8,13 +8,6 @@ def kotlinVersion = rootProject.properties["kotlinVersion"]
 def composeVersion = "1.2.0-beta02"
 
 android {
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-        debug.java.srcDirs += 'src/debug/kotlin'
-        test.java.srcDirs += 'src/test/kotlin'
-        androidTest.java.srcDirs += 'src/androidTest/kotlin'
-    }
-
     packagingOptions {
         exclude 'META-INF/LICENSE*'
         exclude 'META-INF/*.kotlin_module'

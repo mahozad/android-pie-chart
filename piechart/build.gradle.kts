@@ -34,15 +34,6 @@ version = "0.7.0"
 val githubProjectName = "android-pie-chart"
 
 android {
-    sourceSets {
-        get("main").java.srcDirs("src/main/kotlin")
-        get("debug").java.srcDirs("src/debug/kotlin")
-        get("release").java.srcDirs("src/release/kotlin")
-        get("test").java.srcDirs("src/test/kotlin")
-        get("androidTest").java.srcDirs("src/androidTest/kotlin")
-        get("debug").assets.srcDirs("src/androidTest/assets")
-    }
-
     // Since we are saving our screenshot tests on an external storage, we need to make sure that
     // we have *WRITE_EXTERNAL_STORAGE* permission added in the manifest.
     // When running on Marshmallow+, we also need to have those permissions granted before running a test.
