@@ -14,19 +14,17 @@
 
 [comment]: <> (!*†‡;)
 
+
+<img align="right" src="logo-animated.svg">
+
 [![CI workflow]](https://github.com/mahozad/android-pie-chart/actions/workflows/ci.yml)
 [![Codecov]](https://codecov.io/gh/mahozad/android-pie-chart)
 [![Latest Maven Central release]](https://search.maven.org/artifact/ir.mahozad.android/pie-chart)
 ![Kotlin]
 
-<div align="center">
-
-  ![Logo]
-
-</div>
-
 A Pie/Donut<sup id="ref-1">[*]</sup>/Ring chart for Android, customizable to the most extent possible.  
 For tutorial and examples refer to the [website].
+
 
 ### build.gradle[.kts]
 ```groovy
