@@ -18,7 +18,7 @@ jobs:
         id: update-badges
         run: kotlin scripts/update-badges-if-needed.main.kts ${{ steps.get-current-kotlin-version.outputs.kotlinVersion }}
       - name: Commit the changes made to README
-        if: ${{ steps.update-badges.outputs.changed == 'true' }}
+        if: ${{ steps.update-badges.outputs.isChanged == 'true' }}
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Update badges in README

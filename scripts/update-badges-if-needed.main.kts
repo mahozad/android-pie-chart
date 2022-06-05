@@ -14,10 +14,9 @@ val kotlinVersion = kotlinVersionRegex.find(kotlinLine)?.value
 val newKotlinLine = kotlinLine.replace(kotlinVersionRegex, newKotlinVersion)
 val newReadme = readmeLines
     .joinToString("\n")
-    .plus("\n")
     .replace(kotlinLine, newKotlinLine)
+    .plus("\n")
 readmeFile.writeText(newReadme)
-
-// Set outputs for GitHub action
+// Set output for GitHub Actions
 val changed = newKotlinVersion != kotlinVersion
-println("::set-output name=changed::$changed")
+println("::set-output name=isChanged::$changed")
