@@ -15,7 +15,7 @@
 [comment]: <> (!*†‡;)
 
 
-<img align="right" src="logo-animated.svg">
+<img align="left" src="logo-animated.svg" height="54px">
 
 [![CI workflow]](https://github.com/mahozad/android-pie-chart/actions/workflows/ci.yml)
 [![Codecov]](https://codecov.io/gh/mahozad/android-pie-chart)
