@@ -14,6 +14,7 @@ val kotlinVersion = kotlinVersionRegex.find(kotlinLine)?.value
 val newKotlinLine = kotlinLine.replace(kotlinVersionRegex, newKotlinVersion)
 val newReadme = readmeLines
     .joinToString("\n")
+    .plus("\n")
     .replace(kotlinLine, newKotlinLine)
 readmeFile.writeText(newReadme)
 
