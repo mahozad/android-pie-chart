@@ -1,0 +1,25 @@
+name: Keep the badges in README.md up-to-date
+
+on: push
+
+jobs:
+  update-badges-if-needed:
+    name: Update badges if needed
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew
+      - name: Get current Kotlin version
+        id: get-current-kotlin-version
+        run: ./gradlew :piechart:printKotlinVersion --stacktrace
+      - name: Run the updater
+        id: update-badges
+        run: kotlin scripts/update-badges-if-needed.main.kts ${{ steps.get-current-kotlin-version.outputs.kotlinVersion }}
+      - name: Commit the changes made to README
+        if: ${{ steps.update-badges.outputs.changed == 'true' }}
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update badges in README
+          file_pattern: README.md
