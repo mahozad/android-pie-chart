@@ -391,3 +391,18 @@ dependencies {
     androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.2.2")
     androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.2.2")
 }
+
+// Used by a GitHub Action. See .github/ directory.
+// Could also use the following command and then parse it:
+//  ./gradlew :piechart:dependencyInsight --configuration kotlinCompilerClasspath --dependency org.jetbrains.kotlin:kotlin-stdlib
+tasks.register("printKotlinVersion") {
+    group = "Custom"
+    description = "Prints the version of Kotlin stdlib used in the project."
+    val version = configurations
+        .getByName("implementation")
+        .dependencies
+        .first { it.name == "kotlin-stdlib" }
+        .version
+    println(version)
+    println("::set-output name=kotlinVersion::$version")
+}
