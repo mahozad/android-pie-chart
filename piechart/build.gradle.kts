@@ -351,6 +351,21 @@ tasks.create("incrementVersion") {
     }
 }
 
+// Used by a GitHub Action. See .github/ directory.
+// Could also use the following command and then parse it:
+//  ./gradlew :piechart:dependencyInsight --configuration kotlinCompilerClasspath --dependency org.jetbrains.kotlin:kotlin-stdlib
+tasks.register("printKotlinVersion") {
+    group = "Custom"
+    description = "Prints the version of Kotlin stdlib used in the project."
+    val version = configurations
+        .getByName("implementation")
+        .dependencies
+        .first { it.name == "kotlin-stdlib" }
+        .version
+    println(version)
+    println("::set-output name=kotlinVersion::$version")
+}
+
 // val PUBLISH_GROUP_ID by extra("ir.mahozad.android")
 // val PUBLISH_ARTIFACT_ID by extra("pie-chart")
 // val PUBLISH_VERSION by extra("0.1.0")
@@ -390,19 +405,4 @@ dependencies {
     androidTestImplementation("org.assertj:assertj-core:3.20.2")
     androidTestImplementation("de.mannodermaus.junit5:android-test-core:1.3.0")
     androidTestRuntimeOnly("de.mannodermaus.junit5:android-test-runner:1.3.0")
-}
-
-// Used by a GitHub Action. See .github/ directory.
-// Could also use the following command and then parse it:
-//  ./gradlew :piechart:dependencyInsight --configuration kotlinCompilerClasspath --dependency org.jetbrains.kotlin:kotlin-stdlib
-tasks.register("printKotlinVersion") {
-    group = "Custom"
-    description = "Prints the version of Kotlin stdlib used in the project."
-    val version = configurations
-        .getByName("implementation")
-        .dependencies
-        .first { it.name == "kotlin-stdlib" }
-        .version
-    println(version)
-    println("::set-output name=kotlinVersion::$version")
 }
