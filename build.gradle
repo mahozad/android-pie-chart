@@ -1,7 +1,7 @@
 buildscript {
     ext.kotlinVersion = "1.6.21"
     ext.jacocoVersion = "0.8.7"
-    ext.androidJunit5Version = "1.7.1.1"
+    ext.androidJunit5Version = "1.8.2.0"
     repositories {
         mavenCentral()
         google()
