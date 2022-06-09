@@ -47,7 +47,7 @@ jobs:
       fail-fast: false
       matrix:
         # JUnit 5 tests are skipped on API 25 or lower (https://github.com/mannodermaus/android-junit5)
-        api-level: [ 29, 30 ]
+        api-level: [ 29, 30, 31 ]
         target: [ default, google_apis ]
         arch: [ x86_64 ]
         exclude:
@@ -87,7 +87,7 @@ jobs:
       - name: Run the tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 30
+          api-level: 31
           target: google_apis
           arch: x86_64
           profile: Nexus 6
