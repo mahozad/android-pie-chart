@@ -46,12 +46,12 @@ class DimensionTest {
     private fun argumentProvider() = listOf(
         arguments(PX(0f), 0f, 0f, 0f),
         arguments(PX(10f), 10f, 3.8f, 3.8f),
-        arguments(PX(47f), 47f, 17.86f, 17.86f),
+        arguments(PX(47f), 47f, 17.9f, 17.9f),
         arguments(DP(0f), 0f, 0f, 0f),
-        arguments(DP(10f), 26.31f, 10f, 10f),
-        arguments(DP(47f), 123.67f, 47f, 47f),
+        arguments(DP(10f), 26.25f, 10f, 10f),
+        arguments(DP(47f), 123.38f, 47f, 47f),
         arguments(SP(0f), 0f, 0f, 0f),
-        arguments(SP(10f), 26.31f, 10f, 10f),
-        arguments(SP(47f), 123.67f, 47f, 47f),
+        arguments(SP(10f), 26.25f, 10f, 10f),
+        arguments(SP(47f), 123.38f, 47f, 47f),
     )
 }
