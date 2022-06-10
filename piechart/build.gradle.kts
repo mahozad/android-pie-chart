@@ -357,13 +357,15 @@ tasks.create("incrementVersion") {
 tasks.register("printKotlinVersion") {
     group = "Custom"
     description = "Prints the version of Kotlin stdlib used in the project."
-    val version = configurations
-        .getByName("implementation")
-        .dependencies
-        .first { it.name == "kotlin-stdlib" }
-        .version
-    println(version)
-    println("::set-output name=kotlinVersion::$version")
+    doLast {
+        val version = configurations
+            .getByName("implementation")
+            .dependencies
+            .first { it.name == "kotlin-stdlib" }
+            .version
+        println(version)
+        println("::set-output name=kotlinVersion::$version")
+    }
 }
 
 // val PUBLISH_GROUP_ID by extra("ir.mahozad.android")
