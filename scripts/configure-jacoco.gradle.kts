@@ -1,5 +1,7 @@
 /* See https://medium.com/@ranjeetsinha/jacoco-with-kotlin-dsl-f1f067e42cd0 */
-/* TODO: migrate to kover https://github.com/Kotlin/kotlinx-kover */
+/* TODO: migrate to kover https://github.com/Kotlin/kotlinx-kover
+*  See https://github.com/mahozad/android-pie-chart/issues/66
+*/
 
 val minimumRequiredCoverage = 0.80
 
