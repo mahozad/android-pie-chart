@@ -67,9 +67,7 @@ tasks.register<JacocoReport>("jacocoAndroidTestReport") {
     group = "verification"
     description = "Code coverage report for unit tests."
     dependsOn("testDebugUnitTest", "createDebugCoverageReport")
-    reports {
-        reports()
-    }
+    reports { reports() }
     setDirectories()
 }
 
