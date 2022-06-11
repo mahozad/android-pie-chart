@@ -68,6 +68,10 @@ android {
         unitTests.isIncludeAndroidResources = true
     }
 
+    // testCoverage {
+        // jacocoVersion = "0.8.8"
+    // }
+
     // See https://developer.android.com/reference/tools/gradle-api/7.1/com/android/build/api/dsl/Lint
     lint {
         isCheckReleaseBuilds = false
