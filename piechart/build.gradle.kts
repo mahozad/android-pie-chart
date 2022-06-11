@@ -133,6 +133,18 @@ jacoco {
     toolVersion = jacocoVersion
 }
 
+// Fixes the problem with JaCoCo in GitHub CI
+// See https://youtrack.jetbrains.com/issue/KT-44757
+configurations.all{
+    resolutionStrategy {
+        eachDependency {
+            if (requested.group == "org.jacoco") {
+                useVersion("0.8.8")
+            }
+        }
+    }
+}
+
 apply(from = "${rootProject.projectDir}/scripts/configure-jacoco.gradle.kts")
 
 /*
