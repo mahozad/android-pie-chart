@@ -1,4 +1,4 @@
-package chart.test
+package chart.demo
 
 import android.graphics.Color
 import android.os.Bundle

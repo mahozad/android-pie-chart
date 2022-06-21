@@ -1,4 +1,4 @@
-package chart.test
+package chart.demo
 
 import android.app.Activity
 import android.content.Context

@@ -1,4 +1,4 @@
-package chart.test
+package chart.demo
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
