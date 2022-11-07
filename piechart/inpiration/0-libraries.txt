@@ -12,3 +12,4 @@ https://github.com/apexcharts/apexcharts.js
 https://github.com/HackPlan/AndroidCharts
 https://github.com/AppPear/ChartView
 https://github.com/imaNNeoFighT/fl_chart
+https://github.com/ChartsCSS/charts.css
