@@ -21,6 +21,7 @@
   /* Use opaque color so if the tip overlaps, the overlap color is not changed */
   --tooltip-bg-color: #4F5050;
   --tooltip-text-color: #fff;
+  --code-container-border-color: #0000001a;
   --copy-button-text-color: #000;
   --copy-button-border-color: #e0e0e0;
   --example-divider-color: #eee;
@@ -42,6 +43,7 @@
   /* Use opaque color so if the tip overlaps, the overlap color is not changed */
   --tooltip-bg-color: #E0E0E0;
   --tooltip-text-color: #000;
+  --code-container-border-color: #ffffff1a;
   --copy-button-text-color: #eee;
   --copy-button-border-color: #ccc;
   --example-divider-color: #444;
@@ -222,6 +224,9 @@ code {
 
 .code {
   position: relative;
+  border: 1px solid var(--code-container-border-color);
+  border-radius: 8px;
+  margin-block-start: 4px;
   width: 100%;
 }
 
@@ -244,8 +249,8 @@ code {
   border: 1px solid var(--copy-button-border-color);
   border-radius: 3px;
   position: absolute;
-  inset-block-start: 21px;
-  inset-inline-end: 0;
+  inset-block-start: 12px;
+  inset-inline-end: 12px;
   transition: all 100ms;
 }
 
