@@ -17,6 +17,7 @@
   --color-primary: #0091D8;
   --color-secondary: #EB5BA5;
   --icon-color-animation-duration: 100ms;
+  --theme-color-animation-duration: 300ms;
   --surface-color: #fff;
   --link-color: var(--color-primary);
   --link-visited-color: var(--color-primary);
@@ -79,10 +80,16 @@ body {
 }
 
 /* Animate the transition of light/dark theme */
+/*
+ * The theme-switch selector has no effect (is kept just for reminder) because
+ * another rule specifies the transition (with additional properties to animate)
+ */
 code, body, main, aside, theme-switch, .copy, code * {
   /* NOTE: The gradient background cannot be animated
    * See https://stackoverflow.com/a/63848864/8583692 */
-  transition: background-color 300ms ease, color 300ms ease;
+  transition:
+      background-color var(--theme-color-animation-duration) ease,
+       color var(--theme-color-animation-duration) ease;
 }
 
 theme-switch {
@@ -93,7 +100,10 @@ theme-switch {
   border-radius: 8px;
   background: var(--theme-switch-bg-color);
   box-shadow: #0000002D 0 2px 4px;
-  transition: --theme-switch-icon-color var(--icon-color-animation-duration);
+  transition:
+      --theme-switch-icon-color var(--icon-color-animation-duration),
+      background-color var(--theme-color-animation-duration) ease,
+      color var(--theme-color-animation-duration) ease;
 }
 
 theme-switch:hover {
