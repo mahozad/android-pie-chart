@@ -7,9 +7,16 @@
 @import url(https://fonts.googleapis.com/css2?family=Roboto);
 @import url(https://fonts.googleapis.com/css2?family=JetBrains+Mono);
 
+@property --theme-switch-icon-color {
+  syntax: '<color>';
+  initial-value: #000;
+  inherits: true;
+}
+
 :root {
   --color-primary: #0091D8;
   --color-secondary: #EB5BA5;
+  --icon-color-animation-duration: 100ms;
   --surface-color: #fff;
   --link-color: var(--color-primary);
   --link-visited-color: var(--color-primary);
@@ -29,8 +36,8 @@
   --example-header-bg-color: #f0f0f0;
   --example-header-number-bg-color: #f2f1f0;
   --example-header-text-color: #111;
-  --theme-switch-icon-color: #000;
-  --theme-switch-bg-color: #fff;
+  --theme-switch-icon-color: var(--sidebar-icon-color);
+  --theme-switch-bg-color: var(--surface-color);
 }
 
 [data-theme="dark"] {
@@ -51,8 +58,6 @@
   --example-header-bg-color: #444;
   --example-header-text-color: #eee;
   --example-header-number-bg-color: #4f4e4d;
-  --theme-switch-icon-color: #fefefe;
-  --theme-switch-bg-color: var(--surface-color);
 }
 
 html {
@@ -88,6 +93,11 @@ theme-switch {
   border-radius: 8px;
   background: var(--theme-switch-bg-color);
   box-shadow: #0000002D 0 2px 4px;
+  transition: --theme-switch-icon-color var(--icon-color-animation-duration);
+}
+
+theme-switch:hover {
+    --theme-switch-icon-color: var(--link-color);
 }
 
 aside {
@@ -143,7 +153,7 @@ aside {
 
 .side-item .icon {
   fill: var(--sidebar-icon-color);
-  transition: 100ms;
+  transition: var(--icon-color-animation-duration);
 }
 
 .side-item:hover .icon {
