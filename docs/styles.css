@@ -271,11 +271,20 @@ code {
   position: absolute;
   inset-block-start: 12px;
   inset-inline-end: 12px;
-  transition: all 100ms;
+  transition: border 100ms;
 }
 
-.copy:hover {
+.copy:hover:not(.copy-success) {
   border: 1px solid #aaa;
+}
+
+.copy-success {
+  background: #66ab1811;
+  font-family: "Helvetica";
+  border: 1px solid #66ab18;
+  color: #66ab18;
+  font-size: 14px;
+  font-weight: 900;
 }
 
 p {
