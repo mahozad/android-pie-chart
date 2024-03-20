@@ -17,7 +17,7 @@
 
 <img align="right" src="logo.svg" height="84px">
 
-[![CI workflow]](https://github.com/mahozad/android-pie-chart/actions/workflows/ci.yml)
+[comment]: <> ([![CI workflow]]&#40;https://github.com/mahozad/android-pie-chart/actions/workflows/ci.yml&#41;)
 [![Codecov]](https://codecov.io/gh/mahozad/android-pie-chart)
 [![Latest Maven Central release]](https://search.maven.org/artifact/ir.mahozad.android/pie-chart)
 ![Kotlin]
